@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2016 Robert Keller and Harvey Mudd College XML export code
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -25,12 +25,14 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.gui.Notate;
 import imp.lickgen.LickGen;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import polya.Polylist;
 
 /**
@@ -43,13 +45,13 @@ public class PhraseTable {
     private Notate notate;
     private LickGen lickGen;
     private static int intervalSoloLength = 12;
-    
-    
-    public PhraseTable(Notate notate){
+
+
+    public PhraseTable(Notate notate) {
         phrases = new HashMap<Integer, LinkedList<MelodyPart>>();
         this.notate = notate;
         this.lickGen = notate.getLickGen();
-        
+
         intervals = new IntervalLearner();
 //        for (int i = 0; i < intervalSoloLength; i++) {
 //            //MelodyPart intervalSolo = notate.genSolo(0, notate.getScoreLength() * intervalSoloLength);
@@ -63,40 +65,39 @@ public class PhraseTable {
             //Logger.getLogger(PhraseTable.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void addPhrase(MelodyPart phraseToAdd){
+
+    public void addPhrase(MelodyPart phraseToAdd) {
         LinkedList<Integer> pitches = getNotes(phraseToAdd);
-        if (pitches.size() > 0){
+        if (pitches.size() > 0) {
             int newNoteKey = pitches.get(0);
             //System.out.println("INSERT PITCH " + newNoteKey);
             LinkedList<MelodyPart> melodies = phrases.get(newNoteKey);
-            if(melodies == null){
+            if (melodies == null) {
                 melodies = new LinkedList<MelodyPart>();
                 melodies.add(phraseToAdd);
                 phrases.put(newNoteKey, melodies);
-            } else{
+            } else {
                 melodies.add(phraseToAdd);
                 phrases.put(newNoteKey, melodies);
             }
         }
     }
-    
+
     /**
      * Searches database of phrases, returns null if none found.
      * @param lastPhrase
-     * @return 
+     * @return
      */
-    public MelodyPart getNextPhrase(MelodyPart lastPhrase){
+    public MelodyPart getNextPhrase(MelodyPart lastPhrase) {
         LinkedList<Integer> notes = getNotes(lastPhrase);
-        if(notes.size() >= 2){
+        if (notes.size() >= 2) {
             MelodyPart nextPhrase;
             int nextNote = getNextNote(notes);
             //System.out.println("Searching for pitch" + nextNote);
             nextPhrase = getLastPhrase(nextNote);
             //System.out.println("phrases: " + phrases.get(nextNote));
             return nextPhrase;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -111,20 +112,20 @@ public class PhraseTable {
             return melodies.getLast();
         }
     }
-    
-    public static LinkedList<Integer> getNotes(MelodyPart aMelody){
+
+    public static LinkedList<Integer> getNotes(MelodyPart aMelody) {
         ArrayList<Note> notesWithRests = aMelody.getNoteList();
         LinkedList<Integer> notes = new LinkedList<Integer>();
-        for(Note n : notesWithRests){
+        for (Note n : notesWithRests) {
             int pitch = n.getPitch();
-            if (pitch != -1){
+            if (pitch != -1) {
                 notes.add(pitch);
             }
         }
         return notes;
     }
-    
-    public int getNextNote(LinkedList<Integer> notes){
+
+    public int getNextNote(LinkedList<Integer> notes) {
         return intervals.bestPitch(notes);
     }
 }

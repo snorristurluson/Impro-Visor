@@ -8,44 +8,39 @@ package imp.data;
 import imp.gui.Stave;
 
 /**
- *
  * @author muddCS15
  */
+
 /**
-* Defines a selection in a stave from a melody with start and end slots.
-*/
+ * Defines a selection in a stave from a melody with start and end slots.
+ */
 public class MelodyInContext {
     private MelodyPart melody;
     private Stave stave;
     private int start;
     private int stop;
 
-    public MelodyInContext(MelodyPart melody,Stave stave, int start, int stop)
-    {
+    public MelodyInContext(MelodyPart melody, Stave stave, int start, int stop) {
         this.melody = melody;
         this.stave = stave;
         this.start = start;
         this.stop = stop;
     }
 
-    public MelodyPart getMelody()
-    {
+    public MelodyPart getMelody() {
         return this.melody.copy();
     }
 
-    public Stave getStave()
-    {
+    public Stave getStave() {
         return this.stave;
     }
 
-    public int getStart()
-    {
+    public int getStart() {
         return this.start;
     }
 
-    public int getStop()
-    {
+    public int getStop() {
         return this.stop;
     }
-    
+
 }

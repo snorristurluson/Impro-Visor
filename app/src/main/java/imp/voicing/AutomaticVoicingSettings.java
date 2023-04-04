@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -25,8 +25,8 @@ package imp.voicing;
  * @author Daniel Scanteianu
  */
 public class AutomaticVoicingSettings {
-    
-    public AutomaticVoicingSettings(){
+
+    public AutomaticVoicingSettings() {
         setDefaults();
     }
 
@@ -206,42 +206,40 @@ public class AutomaticVoicingSettings {
     public void setFullStepReducer(double fullStepReducer) {
         this.fullStepReducer = fullStepReducer;
     }
-    
- 
-    
-    public void setDefaults()
-    {
-        leftHandLowerLimit=46;
-        rightHandLowerLimit=60;
-        leftHandUpperLimit=67;
-        rightHandUpperLimit=81;
-        leftHandSpread=9;
-        rightHandSpread=9;
-        leftHandMinNotes=1;
-        leftHandMaxNotes=2;
-        rightHandMinNotes=1;
-        rightHandMaxNotes=4;
+
+
+    public void setDefaults() {
+        leftHandLowerLimit = 46;
+        rightHandLowerLimit = 60;
+        leftHandUpperLimit = 67;
+        rightHandUpperLimit = 81;
+        leftHandSpread = 9;
+        rightHandSpread = 9;
+        leftHandMinNotes = 1;
+        leftHandMaxNotes = 2;
+        rightHandMinNotes = 1;
+        rightHandMaxNotes = 4;
         //voice leading controls
-        preferredMotion=0;
-        preferredMotionRange=3;
-        previousVoicingMultiplier=4;// multiplier for notes used in previous voicing
-        halfStepAwayMultiplier=3;
-        fullStepAwayMultiplier=2;
+        preferredMotion = 0;
+        preferredMotionRange = 3;
+        previousVoicingMultiplier = 4;// multiplier for notes used in previous voicing
+        halfStepAwayMultiplier = 3;
+        fullStepAwayMultiplier = 2;
         //voicing control
-        leftColorPriority=0;//priority of any color note
-        rightColorPriority=0;
-        maxPriority=6;//max priority a note in the priority array can have
-        priorityMultiplier=.667;//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
-        repeatMultiplier=.3;
-        halfStepReducer=0;
-        fullStepReducer=.7;
-        invertM9=false;
-        voiceAll=false;
-        rootless=false;
-        leftMinInterval=0;
-        rightMinInterval=0;
+        leftColorPriority = 0;//priority of any color note
+        rightColorPriority = 0;
+        maxPriority = 6;//max priority a note in the priority array can have
+        priorityMultiplier = .667;//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
+        repeatMultiplier = .3;
+        halfStepReducer = 0;
+        fullStepReducer = .7;
+        invertM9 = false;
+        voiceAll = false;
+        rootless = false;
+        leftMinInterval = 0;
+        rightMinInterval = 0;
     }
-    
+
     private int leftHandLowerLimit;
     private int rightHandLowerLimit;
     private int leftHandUpperLimit;
@@ -287,13 +285,15 @@ public class AutomaticVoicingSettings {
     public void setRightMinInterval(int rightMinInterval) {
         this.rightMinInterval = rightMinInterval;
     }
-    
+
     public boolean isRootless() {
         return rootless;
     }
+
     public boolean getRootless() {
         return rootless;
     }
+
     public void setRootless(boolean rootless) {
         this.rootless = rootless;
     }
@@ -301,9 +301,11 @@ public class AutomaticVoicingSettings {
     public boolean isVoiceAll() {
         return voiceAll;
     }
-     public boolean getVoiceAll() {
+
+    public boolean getVoiceAll() {
         return voiceAll;
     }
+
     public void setVoiceAll(boolean voiceAll) {
         this.voiceAll = voiceAll;
     }
@@ -315,13 +317,13 @@ public class AutomaticVoicingSettings {
     public void setInvertM9(boolean invertM9) {
         this.invertM9 = invertM9;
     }
-    public boolean getInvertM9(){
+
+    public boolean getInvertM9() {
         return invertM9;
     }
-    
-       @Override
-    public String toString()
-      {
+
+    @Override
+    public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append("(LH-lower-limit " + getLeftHandLowerLimit() + ")\n");
         buffer.append("(RH-lower-limit " + getRightHandLowerLimit() + ")\n");
@@ -333,35 +335,35 @@ public class AutomaticVoicingSettings {
         buffer.append("(LH-max-notes " + getLeftHandMaxNotes() + ")\n");
         buffer.append("(RH-min-notes " + getRightHandMinNotes() + ")\n");
         buffer.append("(RH-max-notes " + getRightHandMaxNotes() + ")\n");
-                    //voice leading controls
+        //voice leading controls
         buffer.append("(pref-motion " + getPreferredMotion() + ")\n");
         buffer.append("(pref-motion-range " + getPreferredMotionRange() + ")\n");
-        buffer.append("(prev-voicing-multiplier "+(int)(getPreviousVoicingMultiplier()*10) + ")\n");// multiplier for notes used in previous voicing
-        buffer.append("(half-step-multiplier "+(int)(getHalfStepAwayMultiplier()*10) + ")\n");
-        buffer.append("(full-step-multiplier "+(int)(getFullStepAwayMultiplier()*10) + ")\n");
-                    //voicing control
+        buffer.append("(prev-voicing-multiplier " + (int) (getPreviousVoicingMultiplier() * 10) + ")\n");// multiplier for notes used in previous voicing
+        buffer.append("(half-step-multiplier " + (int) (getHalfStepAwayMultiplier() * 10) + ")\n");
+        buffer.append("(full-step-multiplier " + (int) (getFullStepAwayMultiplier() * 10) + ")\n");
+        //voicing control
         buffer.append("(LH-color-priority " + getLeftColorPriority() + ")\n");//priority of any color note
         buffer.append("(RH-color-priority " + getRightColorPriority() + ")\n");//priority of any color note
         buffer.append("(max-priority " + getMaxPriority() + ")\n");//max priority a note in the priority array can have
-        buffer.append("(priority-multiplier "+(int)( + getPriorityMultiplier()*10) + ")\n");//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
-        buffer.append("(repeat-multiplier "+(int)(getRepeatMultiplier()*10) + ")\n");
-        buffer.append("(half-step-reducer "+(int)(getHalfStepReducer()*10) + ")\n");
-        buffer.append("(full-step-reducer "+(int)(getFullStepReducer()*10) + ")\n");
-        buffer.append("(left-min-interval "+(int)(getLeftMinInterval())+")");
-        buffer.append("(right-min-interval "+(int)(getRightMinInterval())+")");
-                    if(getInvertM9())
+        buffer.append("(priority-multiplier " + (int) (+getPriorityMultiplier() * 10) + ")\n");//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
+        buffer.append("(repeat-multiplier " + (int) (getRepeatMultiplier() * 10) + ")\n");
+        buffer.append("(half-step-reducer " + (int) (getHalfStepReducer() * 10) + ")\n");
+        buffer.append("(full-step-reducer " + (int) (getFullStepReducer() * 10) + ")\n");
+        buffer.append("(left-min-interval " + (int) (getLeftMinInterval()) + ")");
+        buffer.append("(right-min-interval " + (int) (getRightMinInterval()) + ")");
+        if (getInvertM9())
             buffer.append("(invert-9th on)\n");
-                    else
+        else
             buffer.append("(invert-9th off)\n");
-                    if(getVoiceAll())
+        if (getVoiceAll())
             buffer.append("(voice-all on)\n");
-                    else
+        else
             buffer.append("(voice-all off)");
-                    if(getRootless())
+        if (getRootless())
             buffer.append("(rootless on)");
-                    else
+        else
             buffer.append("(rootless off)");
 
-    return buffer.toString();
+        return buffer.toString();
     }
 }

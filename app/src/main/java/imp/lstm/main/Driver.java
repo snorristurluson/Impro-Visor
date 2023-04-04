@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -21,7 +21,9 @@
 package imp.lstm.main;
 
 import imp.lstm.architecture.NetworkConnectomeLoader;
+
 import java.io.File;
+
 import imp.lstm.io.leadsheet.LeadSheetDataSequence;
 import imp.lstm.architecture.FragmentedNeuralQueue;
 import imp.lstm.architecture.FullyConnectedLayer;
@@ -33,6 +35,7 @@ import imp.lstm.encoding.Group;
 import imp.lstm.filters.GroupedSoftMaxSampler;
 import imp.lstm.filters.Operations;
 import imp.lstm.io.leadsheet.LeadSheetIO;
+
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -40,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
 import imp.lstm.architecture.InvalidParametersException;
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
@@ -262,7 +266,7 @@ public class Driver {
                         FragmentedNeuralQueue origQueue = autoencoder.getQueue();
 
                         for (int i = 0; i < numCombinations; i++) {
-                            
+
                             LogTimer.startLog("Performing queue interpolation...");
                             AVector combinationStrengths = Vector.createLength(queuePopulation.size());
                             Random vectorRand = new Random(i);

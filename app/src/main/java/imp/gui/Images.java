@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -34,8 +34,8 @@ import java.awt.Image;
  *
  * @see Stave
  * @see ToolkitImages
- * 
- * @author  Adam Kirby
+ *
+ * @author Adam Kirby
  * @version 0.0.1, 8th July 2001  
  */
 public interface Images {
@@ -127,117 +127,117 @@ public interface Images {
 
     /**
      * Returns an Image representing a quaver rest.
-     */                                                                       
+     */
     public Image getQuaverRest();
 
     /**
      * Returns an Image representing a semiquaver rest.
-     */                                                                       
+     */
     public Image getSemiquaverRest();
 
     /**
      * Returns an Image representing a demisemiquaver rest.
-     */                                                                       
+     */
     public Image getDemisemiquaverRest();
-    
+
     /**
      * Returns an Image representing the dot symbol used to indicate the
      * duration of the preceeding symbol should be about half as long again.
-     */                                                                       
+     */
     public Image getDot();
 
     /**
      * Returns an Image representing a sharp symbol.
-     */                                                                       
+     */
     public Image[] getSharp();
 
     /**
      * Returns an Image representing a flat symbol.
-     */                                                                       
+     */
     public Image[] getFlat();
 
     /**
      * Returns an Image representing a natural symbol.
-     */                                                                       
+     */
     public Image[] getNatural();
 
     /**
      * Returns an Image representing a small box symbol (used for very small rests)
-     */                                                                       
+     */
     public Image getSmallBox();
 
     /**
      * Returns an Image representing the digit '1' used in time signatures.
-     */                                                                       
+     */
     public Image getOne();
 
     /**
      * Returns an Image representing the digit '2' used in time signatures.
-     */                                                                       
+     */
     public Image getTwo();
 
     /**
      * Returns an Image representing the digit '3' used in time signatures.
-     */                                                                       
+     */
     public Image getThree();
 
     /**
      * Returns an Image representing the digit '4' used in time signatures.
-     */                                                                       
+     */
     public Image getFour();
 
     /**
      * Returns an Image representing the digit '5' used in time signatures.
-     */                                                                       
+     */
     public Image getFive();
 
     /**
      * Returns an Image representing the digit '6' used in time signatures.
-     */                                                                       
+     */
     public Image getSix();
 
     /**
      * Returns an Image representing the digit '7' used in time signatures.
-     */                                                                       
+     */
     public Image getSeven();
 
     /**
      * Returns an Image representing the digit '8' used in time signatures.
-     */                                                                       
+     */
     public Image getEight();
 
     /**
      * Returns an Image representing the digit '9' used in time signatures.
-     */                                                                       
+     */
     public Image getNine();
-    
+
     /**
      * Returns an Image representing the digit '9' used in time signatures.
-     */                                                                       
+     */
     public Image getZero();
 
     /**
      * Returns an Image representing a tie used with notes that have stems
      * lowered.
-     */                                                                       
+     */
     public Image getTieOver();
 
     /**
      * Returns an Image representing a tie used with notes that have stems
      * raised.
-     */                                                                       
+     */
     public Image getTieUnder();
-    
+
     /**
      * Returns an image used for indicating what notes are part of an n-tuplet
      */
     public Image getTupletBracket();
-    
+
     /**
      * Returns an image used for indicating what beat a user is on
      */
     public Image getBeatBracket();
-    
+
     public Image getSplash();
 
 }

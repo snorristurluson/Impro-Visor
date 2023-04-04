@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,18 +26,16 @@ import imp.Constants;
  *
  * @author keller
  */
-public class SaveLickDialog extends javax.swing.JDialog
-  {
+public class SaveLickDialog extends javax.swing.JDialog {
     Notate notate;
-    
+
     // This Mode is the default, selected when dialog first opens.
     Constants.ExtractMode saveSelectionMode = Constants.ExtractMode.LICK;
 
     /**
      * Creates new form SaveLick
      */
-    public SaveLickDialog(Notate notate, boolean modal)
-    {
+    public SaveLickDialog(Notate notate, boolean modal) {
         super(notate, modal);
         initComponents();
         this.notate = notate;
@@ -45,9 +43,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         getRootPane().setDefaultButton(okSaveButton);
         enterLickTitle.requestFocusInWindow();
     }
-    
-    public void setSaveName(String string)
-    {
+
+    public void setSaveName(String string) {
         enterLickTitle.setText(string);
     }
 
@@ -59,8 +56,7 @@ public class SaveLickDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         saveLickButtonGroup = new javax.swing.ButtonGroup();
@@ -101,17 +97,13 @@ public class SaveLickDialog extends javax.swing.JDialog
         enterLickTitle.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         enterLickTitle.setMinimumSize(new java.awt.Dimension(200, 30));
         enterLickTitle.setPreferredSize(new java.awt.Dimension(400, 30));
-        enterLickTitle.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        enterLickTitle.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 enterLickTitleGetsFocus(evt);
             }
         });
-        enterLickTitle.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        enterLickTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enterLickTitleActionPerformed(evt);
             }
         });
@@ -145,10 +137,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         cancelLickTitle.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cancelLickTitle.setDefaultCapable(false);
         cancelLickTitle.setOpaque(true);
-        cancelLickTitle.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelLickTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelLickTitleActionPerformed(evt);
             }
         });
@@ -169,10 +159,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         okSaveButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         okSaveButton.setOpaque(true);
         okSaveButton.setSelected(true);
-        okSaveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okSaveButtonActionPerformed(evt);
             }
         });
@@ -193,10 +181,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         rhythmRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         rhythmRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         rhythmRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        rhythmRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rhythmRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rhythmRadioButtonActionPerformed(evt);
             }
         });
@@ -215,10 +201,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         cellRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         cellRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         cellRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        cellRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cellRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cellRadioButtonActionPerformed(evt);
             }
         });
@@ -237,10 +221,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         idiomRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         idiomRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         idiomRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        idiomRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        idiomRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idiomRadioButtonActionPerformed(evt);
             }
         });
@@ -260,10 +242,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         lickRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         lickRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         lickRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        lickRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        lickRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lickRadioButtonActionPerformed(evt);
             }
         });
@@ -282,10 +262,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         quoteRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         quoteRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         quoteRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        quoteRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        quoteRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quoteRadioButtonActionPerformed(evt);
             }
         });
@@ -304,10 +282,8 @@ public class SaveLickDialog extends javax.swing.JDialog
         brickRadioButton.setMargin(new java.awt.Insets(1, 5, 0, 0));
         brickRadioButton.setMinimumSize(new java.awt.Dimension(150, 50));
         brickRadioButton.setPreferredSize(new java.awt.Dimension(150, 50));
-        brickRadioButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        brickRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 brickRadioButtonActionPerformed(evt);
             }
         });
@@ -329,7 +305,7 @@ public class SaveLickDialog extends javax.swing.JDialog
 
     private void enterLickTitleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_enterLickTitleActionPerformed
     {//GEN-HEADEREND:event_enterLickTitleActionPerformed
-           okSaveButtonActionPerformed(evt);
+        okSaveButtonActionPerformed(evt);
     }//GEN-LAST:event_enterLickTitleActionPerformed
 
     private void cancelLickTitleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_cancelLickTitleActionPerformed
@@ -340,11 +316,10 @@ public class SaveLickDialog extends javax.swing.JDialog
     private void okSaveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_okSaveButtonActionPerformed
     {//GEN-HEADEREND:event_okSaveButtonActionPerformed
         String text = enterLickTitle.getText().trim();
-        if( text.equals("") )
-          {
+        if (text.equals("")) {
             text = "unnamed";
-          }
-        notate.saveSelection(saveSelectionMode, text);        
+        }
+        notate.saveSelection(saveSelectionMode, text);
     }//GEN-LAST:event_okSaveButtonActionPerformed
 
     private void rhythmRadioButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_rhythmRadioButtonActionPerformed
@@ -391,4 +366,4 @@ public class SaveLickDialog extends javax.swing.JDialog
     private javax.swing.JRadioButton rhythmRadioButton;
     private javax.swing.ButtonGroup saveLickButtonGroup;
     // End of variables declaration//GEN-END:variables
-  }
+}

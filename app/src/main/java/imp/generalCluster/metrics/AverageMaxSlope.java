@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -28,16 +28,16 @@ import polya.Polylist;
  *
  * @author Cai Glencross
  */
-public class AverageMaxSlope extends Metric  {
-    
-    public AverageMaxSlope(double weight){
+public class AverageMaxSlope extends Metric {
+
+    public AverageMaxSlope(double weight) {
         super(weight, "averageMaxSlope", true);
     }
-    
-    public double getAverageMaxSlope(Polylist rule){
+
+    public double getAverageMaxSlope(Polylist rule) {
         double averageMaxSlope = 0;
         int numSegments = 0;
-         if (rule.last().equals("STARTTIED")) {
+        if (rule.last().equals("STARTTIED")) {
             rule = rule.allButLast();
         }
 
@@ -68,7 +68,7 @@ public class AverageMaxSlope extends Metric  {
                 averageMaxSlope += Math.abs(maxslope);
                 //get rid of slopes
                 inner = inner.rest().rest().rest();
-               
+
                 //increment number of segments
                 numSegments++;
                 //loop through terminals of segments
@@ -80,9 +80,9 @@ public class AverageMaxSlope extends Metric  {
         }
         return averageMaxSlope / numSegments;
     }
-    
+
     @Override
-    public double compute(String ruleString, IndexedMelodyPart exactMelody, Polylist rule){
+    public double compute(String ruleString, IndexedMelodyPart exactMelody, Polylist rule) {
         this.value = getAverageMaxSlope(rule);
         return this.value;
     }

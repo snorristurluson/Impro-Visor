@@ -1,46 +1,50 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 package imp.lstm.main;
+
 import imp.lstm.architecture.InvalidParametersException;
 import imp.ImproVisor;
 import imp.gui.Notate;
 import imp.gui.WindowRegistry;
 import imp.util.NonExistentParameterException;
 import imp.util.Preferences;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import javax.swing.JFileChooser;
+
 import imp.lstm.io.leadsheet.Constants;
+
 /**
  *
  * @author cssummer16
  */
 public class LSTMNetworkFrame extends javax.swing.JDialog {
-    
+
     private LSTMGen lstmGen;
     private Notate notate;
     private File paramfile;
-    
+
     /**
      * Creates new form LSTMNetworkFrame
      */
@@ -48,7 +52,7 @@ public class LSTMNetworkFrame extends javax.swing.JDialog {
         notate = n;
         lstmGen = gen;
         initComponents();
-        
+
         paramFileChooser.setCurrentDirectory(ImproVisor.getConnectomeDirectory());
         try {
             String lastPrefPathString = Preferences.getPreferenceQuietly(Preferences.LSTM_GEN_PARAMS);
@@ -343,7 +347,7 @@ public class LSTMNetworkFrame extends javax.swing.JDialog {
         maxRestLengthLabel.setText("Rest limit length: ");
         resetOptionPanel.add(maxRestLengthLabel, new java.awt.GridBagConstraints());
 
-        maxRestLength.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quarter rest", "Half rest", "1 bar rest", "2 bar rest", "4 bar rest" }));
+        maxRestLength.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Quarter rest", "Half rest", "1 bar rest", "2 bar rest", "4 bar rest"}));
         maxRestLength.setSelectedIndex(2);
         maxRestLength.setEnabled(false);
         maxRestLength.addActionListener(new java.awt.event.ActionListener() {
@@ -463,7 +467,7 @@ public class LSTMNetworkFrame extends javax.swing.JDialog {
 
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         int dialogResult = paramFileChooser.showOpenDialog(this);
-        if(dialogResult == JFileChooser.APPROVE_OPTION){
+        if (dialogResult == JFileChooser.APPROVE_OPTION) {
             paramfile = paramFileChooser.getSelectedFile();
             filePathLabel.setText(paramfile.getAbsolutePath());
             Preferences.setPreference(Preferences.LSTM_GEN_PARAMS, paramfile.getAbsolutePath());
@@ -480,24 +484,24 @@ public class LSTMNetworkFrame extends javax.swing.JDialog {
     }//GEN-LAST:event_justInTimeRadioActionPerformed
 
     private void updateProbabilityScaling(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_updateProbabilityScaling
-        double riskLevel = ((double) riskLevelSlider.getValue() - 50.0)/25.0;
-        double expertWeights = ((double) expertWeightingSlider.getValue() - 50.0)/50.0;
+        double riskLevel = ((double) riskLevelSlider.getValue() - 50.0) / 25.0;
+        double expertWeights = ((double) expertWeightingSlider.getValue() - 50.0) / 50.0;
         lstmGen.setProbabilityAdjust(riskLevel, expertWeights);
     }//GEN-LAST:event_updateProbabilityScaling
 
     private void updatePostprocessing(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePostprocessing
         maxRestLength.setEnabled(!restLimitNoneRadio.isSelected());
         colorTonesCheckbox.setEnabled(rectifyCheckbox.isSelected());
-        
+
         int restLen = Constants.QUARTER;
-        for(int i = maxRestLength.getSelectedIndex(); i > 0; i--)
+        for (int i = maxRestLength.getSelectedIndex(); i > 0; i--)
             restLen *= 2;
-        lstmGen.setPostprocess( rectifyCheckbox.isSelected(),
-                                colorTonesCheckbox.isSelected(),
-                                mergeRepeatedCheckbox.isSelected(),
-                                restLimitResetRadio.isSelected(),
-                                restLimitForceRadio.isSelected(),
-                                restLen );
+        lstmGen.setPostprocess(rectifyCheckbox.isSelected(),
+                colorTonesCheckbox.isSelected(),
+                mergeRepeatedCheckbox.isSelected(),
+                restLimitResetRadio.isSelected(),
+                restLimitForceRadio.isSelected(),
+                restLen);
     }//GEN-LAST:event_updatePostprocessing
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -528,16 +532,16 @@ public class LSTMNetworkFrame extends javax.swing.JDialog {
                 }
                 browseButton.setEnabled(true);
             }
-            
+
         }).start();
     }
-    
+
     public void closeWindow() {
         this.setVisible(false);
         WindowRegistry.unregisterWindow(this);
     }
-    
-    public boolean justInTimeGenerationEnabled(){
+
+    public boolean justInTimeGenerationEnabled() {
         return justInTimeRadio.isSelected();
     }
 

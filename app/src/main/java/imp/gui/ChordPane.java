@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -20,6 +20,7 @@
 package imp.gui;
 
 import static imp.gui.VoicingKeyboard.OFFSETX;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JLabel;
@@ -30,8 +31,7 @@ import javax.swing.JSeparator;
  * ChordPane is a class that holds one Panel in displayPane
  * and has a few methods useful for organizing the notes on the panel
  */
-class ChordPane extends JPanel
-  {
+class ChordPane extends JPanel {
 
     boolean debug = false;
 
@@ -55,7 +55,7 @@ class ChordPane extends JPanel
 
     public final javax.swing.ImageIcon wholeNoteIcon
             = new javax.swing.ImageIcon(
-                    getClass().getResource("/graphics/wholeNote.gif"));
+            getClass().getResource("/graphics/wholeNote.gif"));
 
     static int ledgerLineWidth = 30;         // Width of ledger lines
 
@@ -64,8 +64,7 @@ class ChordPane extends JPanel
     /**
      * constructor for ChordPane
      */
-    public ChordPane(String chordName)
-    {
+    public ChordPane(String chordName) {
         super();
         setChordName(chordName);
         notes = new JLabel[NOTE_VALUES];
@@ -82,8 +81,7 @@ class ChordPane extends JPanel
         setChordName(chordName);
     }
 
-    public JLabel makeChordLabel(String chordName)
-    {
+    public JLabel makeChordLabel(String chordName) {
         JLabel label = new JLabel(chordName);
         label.setForeground(Color.BLACK);
         label.setBounds(chordLabelBounds);
@@ -92,16 +90,14 @@ class ChordPane extends JPanel
         return label;
     }
 
-    public void setChordName(String chordName)
-    {
-    if( chordLabel != null )
-      {
-        remove(chordLabel);
-      }
-    this.chordName = chordName;
-    chordLabel = makeChordLabel(chordName);
-    add(chordLabel);
-    repaint();
+    public void setChordName(String chordName) {
+        if (chordLabel != null) {
+            remove(chordLabel);
+        }
+        this.chordName = chordName;
+        chordLabel = makeChordLabel(chordName);
+        add(chordLabel);
+        repaint();
     }
 
     /**
@@ -110,10 +106,9 @@ class ChordPane extends JPanel
      * @param MIDIvalue midi value of the note
      * @param label     the actual note being added
      */
-    public void addNote(int MIDIvalue, JLabel label)
-    {
-    add(label);
-    notes[MIDIvalue] = label;
+    public void addNote(int MIDIvalue, JLabel label) {
+        add(label);
+        notes[MIDIvalue] = label;
     }
 
     /**
@@ -121,9 +116,8 @@ class ChordPane extends JPanel
      *
      * @return array of all notes in panel
      */
-    public JLabel[] getNotes()
-    {
-    return notes;
+    public JLabel[] getNotes() {
+        return notes;
     }
 
     /**
@@ -131,9 +125,8 @@ class ChordPane extends JPanel
      *
      * @return array of all accidental in panel
      */
-    public JLabel[] getAccidentals()
-    {
-    return accidentals;
+    public JLabel[] getAccidentals() {
+        return accidentals;
     }
 
     /**
@@ -141,9 +134,8 @@ class ChordPane extends JPanel
      *
      * @return array of all ledger lines in panel
      */
-    public JSeparator[] getLedgerLines()
-    {
-    return ledgerLines;
+    public JSeparator[] getLedgerLines() {
+        return ledgerLines;
     }
 
     /**
@@ -151,9 +143,8 @@ class ChordPane extends JPanel
      *
      * @return ledgerLine with at specific index
      */
-    public JSeparator getLedgerLine(int index)
-    {
-    return ledgerLines[index];
+    public JSeparator getLedgerLine(int index) {
+        return ledgerLines[index];
     }
 
     /**
@@ -163,10 +154,9 @@ class ChordPane extends JPanel
      * @param MIDIvalue midi value of the note
      * @param label     the actual accidental being added
      */
-    public void addAccidental(int MIDIvalue, JLabel label)
-    {
-    add(label);
-    accidentals[MIDIvalue] = label;
+    public void addAccidental(int MIDIvalue, JLabel label) {
+        add(label);
+        accidentals[MIDIvalue] = label;
     }
 
     /**
@@ -175,41 +165,35 @@ class ChordPane extends JPanel
      *
      * @param p panel with all the data to move over
      */
-    public void copyFrom(ChordPane p)
-    {
-    clear();
-    chordName = p.chordName;
-    chordLabel = makeChordLabel(chordName);
-    add(chordLabel);
-    for( int i = 0; i < notes.length; i++ )
-      {
-        notes[i] = p.notes[i];
-        accidentals[i] = p.accidentals[i];
-        if( notes[i] != null )
-          {
-            add(notes[i]);
-          }
-        if( accidentals[i] != null )
-          {
-            add(accidentals[i]);
-          }
-      }
-    repaint();
+    public void copyFrom(ChordPane p) {
+        clear();
+        chordName = p.chordName;
+        chordLabel = makeChordLabel(chordName);
+        add(chordLabel);
+        for (int i = 0; i < notes.length; i++) {
+            notes[i] = p.notes[i];
+            accidentals[i] = p.accidentals[i];
+            if (notes[i] != null) {
+                add(notes[i]);
+            }
+            if (accidentals[i] != null) {
+                add(accidentals[i]);
+            }
+        }
+        repaint();
     }
 
     /**
      * clears the panel and the arrays
      */
-    public void clear()
-    {
-    removeAll();
-    chordLabel = null;
-    for( int i = 0; i < notes.length; i++ )
-      {
-        notes[i] = null;
-        accidentals[i] = null;
-      }
-    repaint();
+    public void clear() {
+        removeAll();
+        chordLabel = null;
+        for (int i = 0; i < notes.length; i++) {
+            notes[i] = null;
+            accidentals[i] = null;
+        }
+        repaint();
     }
 
     /**
@@ -217,38 +201,28 @@ class ChordPane extends JPanel
      *
      * @param MIDIvalue uses the MIDIvalue to determine what note to remove
      */
-    public void removeNote(int MIDIvalue)
-    {
-    if( notes[MIDIvalue] == null )
-      {
-        //check to make sure there is something there to take out
-      }
-    else
-      {
-        remove(notes[MIDIvalue]);
-        notes[MIDIvalue] = null;
-      }
-    if( accidentals[MIDIvalue] == null )
-      {
-        //check to make sure there is something there to take out
-      }
-    else
-      {
-        remove(accidentals[MIDIvalue]);
-        accidentals[MIDIvalue] = null;
-      }
+    public void removeNote(int MIDIvalue) {
+        if (notes[MIDIvalue] == null) {
+            //check to make sure there is something there to take out
+        } else {
+            remove(notes[MIDIvalue]);
+            notes[MIDIvalue] = null;
+        }
+        if (accidentals[MIDIvalue] == null) {
+            //check to make sure there is something there to take out
+        } else {
+            remove(accidentals[MIDIvalue]);
+            accidentals[MIDIvalue] = null;
+        }
     }
 
-    public void drawLedgerLine(int xStart, int yStart)
-    {
-        if( g != null )
-          {
-          g.drawLine(xStart, yStart, xStart + ledgerLineWidth, yStart);
-          }
+    public void drawLedgerLine(int xStart, int yStart) {
+        if (g != null) {
+            g.drawLine(xStart, yStart, xStart + ledgerLineWidth, yStart);
+        }
     }
 
-    public void clearLedgerLine(int xStart, int yStart)
-    {
+    public void clearLedgerLine(int xStart, int yStart) {
         g.clearRect(xStart, yStart, 0, 0);
     }
 
@@ -261,21 +235,17 @@ class ChordPane extends JPanel
      * @param offsetY   where on the staff it is
      * @return true if any note is around it
      */
-    public boolean hasBorderY(int MIDIvalue, int offsetY)
-    {
+    public boolean hasBorderY(int MIDIvalue, int offsetY) {
         //check the notes around it  
-        for( int i = MIDIvalue - 2; i <= MIDIvalue + 2; i++ )
-          {
-            if( notes[i] != null && i != MIDIvalue )
-              {
+        for (int i = MIDIvalue - 2; i <= MIDIvalue + 2; i++) {
+            if (notes[i] != null && i != MIDIvalue) {
                 int yPos = notes[i].getY();
                 int differenceY = offsetY - yPos;
-                if( Math.abs(differenceY) <= 6 && notes[i].getX() != OFFSETX[2] )
-                  {
+                if (Math.abs(differenceY) <= 6 && notes[i].getX() != OFFSETX[2]) {
                     return true;
-                  }
-              }
-          }
+                }
+            }
+        }
         return false;
     }
 
@@ -286,34 +256,26 @@ class ChordPane extends JPanel
      * @param offsetX   where on the staff it is
      * @return true if any note is around it
      */
-    public boolean hasBorderX(int MIDIvalue, int offsetX)
-    {
+    public boolean hasBorderX(int MIDIvalue, int offsetX) {
         //check the notes around it  
         int center = getWidth() / 2 - (wholeNoteIcon.getIconWidth() / 2);
-        for( int i = MIDIvalue - 2; i <= MIDIvalue + 2; i++ )
-          {
-            if( notes[i] != null && i != MIDIvalue )
-              {
+        for (int i = MIDIvalue - 2; i <= MIDIvalue + 2; i++) {
+            if (notes[i] != null && i != MIDIvalue) {
                 int xPos = notes[i].getX();
-                if( xPos == center )
-                  {
+                if (xPos == center) {
                     //make sure you aren't comparing to the center of the panel
-                  }
-                else
-                  {
+                } else {
                     int differenceX = offsetX - xPos;
-                    if( differenceX == 0 )
-                      {
-                        if( debug )
-                          {
+                    if (differenceX == 0) {
+                        if (debug) {
                             System.out.println("differenceX: " + differenceX);
-                          }
+                        }
                         return true;
-                      }
-                  }
+                    }
+                }
 
-              }
-          }
+            }
+        }
         return false;
     }
 
@@ -323,40 +285,33 @@ class ChordPane extends JPanel
      * @param MIDIvalue the note to check
      * @return true if accidental
      */
-    public boolean isAccidental(int MIDIvalue)
-    {
+    public boolean isAccidental(int MIDIvalue) {
         return accidentals[MIDIvalue] != null;
     }
 
-    public void setLedgerLine(JSeparator line, int index)
-    {
+    public void setLedgerLine(JSeparator line, int index) {
         ledgerLines[index] = line;
-        if( debug )
-          {
+        if (debug) {
             System.out.println("activated" + index);
-          }
+        }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder buffer = new StringBuilder();
-        if( chordLabel != null )
-          {
+        if (chordLabel != null) {
             buffer.append(chordLabel.getText());
             buffer.append(": ");
-          }
+        }
         int index = 0;
-        for( JLabel n : notes )
-          {
-            if( n != null )
-              {
+        for (JLabel n : notes) {
+            if (n != null) {
                 buffer.append(index);
                 buffer.append(" ");
-              }
+            }
             index++;
-          }
+        }
 
         return buffer.toString();
     }
-  } // end class ChordPane
+} // end class ChordPane

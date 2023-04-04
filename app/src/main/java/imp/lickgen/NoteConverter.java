@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2014 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -20,7 +20,9 @@
 package imp.lickgen;
 
 import imp.Constants;
+
 import static imp.Constants.REST;
+
 import imp.data.Chord;
 import imp.data.ChordPart;
 import imp.guidetone.GuideLineGenerator;
@@ -31,7 +33,9 @@ import imp.data.PitchClass;
 import imp.data.Unit;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
+
 import java.util.ArrayList;
+
 import polya.Polylist;
 import polya.PolylistEnum;
 
@@ -43,17 +47,17 @@ public class NoteConverter {
 
     private static final int octave = 12; //number of semitones in an octave
     private static final int rootOffset = 60; //middle C (the MIDI number for middle C is 60, +- n for +- n semitones) for now
-    
+
 //    chord families: minor, minor7, major, dominant, half-diminished, diminished, augmented
 //    create arrays for each chord family that store the scale degree corresponding to each number of half steps
- 
+
 //    Note: I tried to give each scale degree a name that was logical and/or corresponded to common practice.
 //    It was less clear, however, to name some pitches (#5 or b13?  2 or 9, 4 or 11, 6 or 13?).
 //    Some scales (e.g. diminished, augmented), by virtue of how their accidentals are arranged, also were strange.
 //    Thus, there was definitely room for interpretation.
 //    However, this nomenclature system should be consistent and thus suitable for its primary use, which is internal.
 //    Further explanatory comments provided as needed.
-    
+
     //minor (i.e. melodic minor)
     private static final String[] minorScaleDegrees = {"1", "b2", "2", "3", "#3", "4", "b5", "5", "b6", "6", "b7", "7"};
     //minor 7 (i.e. Dorian)
@@ -88,7 +92,7 @@ public class NoteConverter {
         //the root offset transposes notes so they're in a "normal" pitch range, though this probably isn't strictly necessary
         int pitch = note.getPitch() % octave + rootOffset;
         //gives number of semitones the pitch of the root is above a C, plus the offset (which makes it above middle C)
-        int root = chord.getRootSemitones() + rootOffset; 
+        int root = chord.getRootSemitones() + rootOffset;
         //make sure the note is at least as high in pitch as the root (otherwise transpose up)
         if (pitch - root < 0) {
             pitch += octave;
@@ -100,15 +104,15 @@ public class NoteConverter {
         //Part 2 of the note construction: add scale degree
         int pitchOffset = pitch - root; //note: this has been normalized to be between 0 and 11
         if (chord.isNOCHORD()) {
-            relativeNote = relativeNote.addToEnd("1");                            
+            relativeNote = relativeNote.addToEnd("1");
         } else if (chordFamily.equals("minor")) {
             relativeNote = relativeNote.addToEnd(minorScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("minor7")) {
             relativeNote = relativeNote.addToEnd(minor7ScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("major")) {
             relativeNote = relativeNote.addToEnd(majorScaleDegrees[pitchOffset]);
-        } else if (chordFamily.equals("dominant") 
-                || chordFamily.equals("sus4") 
+        } else if (chordFamily.equals("dominant")
+                || chordFamily.equals("sus4")
                 || chordFamily.equals("alt")) { //treat sus4, alt chords like dominant
             relativeNote = relativeNote.addToEnd(dominantScaleDegrees[pitchOffset]);
         } else if (chordFamily.equals("half-diminished")) {
@@ -118,7 +122,7 @@ public class NoteConverter {
         } else if (chordFamily.equals("augmented")) {
             relativeNote = relativeNote.addToEnd(augScaleDegrees[pitchOffset]);
         } else {
-            relativeNote = relativeNote.addToEnd("0");                         
+            relativeNote = relativeNote.addToEnd("0");
             ErrorLog.log(ErrorLog.COMMENT, "Unrecognized chord family: " + chordFamily);
         }
 
@@ -126,7 +130,7 @@ public class NoteConverter {
         relativeNote = relativeNote.addToEnd(noteLength);
         return relativeNote;
     }
-    
+
     /**
      * Converts a scale degree to a Note
      * does not specify accidental - fix this
@@ -136,28 +140,28 @@ public class NoteConverter {
      * @param rhythmValue the desired rhythm value of the note
      * @return Note corresponding to the given scale degree, null if degree not in chord's scale
      */
-    public static Note scaleDegreeToNote(String degree, Chord chord, int octave, int rhythmValue){
-        if(chord.isNOCHORD()){
+    public static Note scaleDegreeToNote(String degree, Chord chord, int octave, int rhythmValue) {
+        if (chord.isNOCHORD()) {
             return new Note(REST, Constants.Accidental.NOTHING, rhythmValue);//Chord is NC, return rest
         }
         PitchClass pc = scaleDegreeToPitchClass(degree, chord);
-        if(pc!=null){
+        if (pc != null) {
             NoteSymbol ns = new NoteSymbol(pc, octave, rhythmValue);
             int midi = ns.getMIDI();
             return new Note(midi, rhythmValue);
-        }else{//scale degree could not be found in chord's scale or chord does not have an associated scale
+        } else {//scale degree could not be found in chord's scale or chord does not have an associated scale
             return highestPriority(chord, rhythmValue);
         }
-        
+
     }
-    
-    public static Note highestPriority(Chord chord, int duration){
+
+    public static Note highestPriority(Chord chord, int duration) {
         PolylistEnum priorityList = chord.getPriority().elements();
-        Note highestPriority = ((NoteSymbol)priorityList.nextElement()).toNote();
+        Note highestPriority = ((NoteSymbol) priorityList.nextElement()).toNote();
         highestPriority.setRhythmValue(duration);
         return highestPriority;
     }
-    
+
     /**
      * Converts a scale degree to a pitch class, to be used to create a note
      * @param degree the scale degree
@@ -166,57 +170,56 @@ public class NoteConverter {
      * returns pitch class of root if scale degree isn't in the chord's associated scale,
      * returns null if chord is no chord
      */
-    public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord){
-        if(!chord.isNOCHORD()){
+    public static PitchClass scaleDegreeToPitchClass(String degree, Chord chord) {
+        if (!chord.isNOCHORD()) {
             PitchClass rootPc = chord.getRootPitchClass();
-            String [] array = chordToArray(chord);
-            if(array!=null){
+            String[] array = chordToArray(chord);
+            if (array != null) {
                 int semitonesAboveRoot = indexOf(degree, array);
-                if(semitonesAboveRoot!=-1){
+                if (semitonesAboveRoot != -1) {
                     return PitchClass.transpose(rootPc, semitonesAboveRoot);
-                }else{
+                } else {
                     //scale degree not in the scale associated with that chord, return null
-                    return null; 
+                    return null;
                 }
-            }else{
+            } else {
                 //chord family does not have an associated scale, return null
                 return null;
             }
-        }
-        else{
+        } else {
             //Chord is NC - return null. There is no PitchClass representing a rest, only a pitchClassName, "r", and a pitch, REST (-1)
             return null;
         }
     }
-    
+
     /**
      * Given a scale family, it returns the array with the corresponding scale
      * degree.
      * @param family The type of scale
      * @return The array of the scale degrees
      */
-    private static String [] chordToArray(Chord c){
-        if(c.isNOCHORD()){
+    private static String[] chordToArray(Chord c) {
+        if (c.isNOCHORD()) {
             return null;//chord is no chord, there is no corresponding array
         }
         String family = c.getFamily();
-        if(family.equals("minor")){
+        if (family.equals("minor")) {
             return minorScaleDegrees;
-        }else if(family.equals("minor7")){
+        } else if (family.equals("minor7")) {
             return minor7ScaleDegrees;
-        }else if(family.equals("major")){
+        } else if (family.equals("major")) {
             return majorScaleDegrees;
-        }else if(family.equals("dominant")
-                ||family.equals("sus4")
-                ||family.equals("alt")){
+        } else if (family.equals("dominant")
+                || family.equals("sus4")
+                || family.equals("alt")) {
             return dominantScaleDegrees;
-        }else if(family.equals("half-diminished")){
+        } else if (family.equals("half-diminished")) {
             return halfDimScaleDegrees;
-        }else if(family.equals("diminished")){
+        } else if (family.equals("diminished")) {
             return dimScaleDegrees;
-        }else if(family.equals("augmented")){
+        } else if (family.equals("augmented")) {
             return augScaleDegrees;
-        }else{
+        } else {
             return null;//chord family is note or bass, return null
         }
     }
@@ -228,10 +231,10 @@ public class NoteConverter {
      * @param scale The scale that we are using to get the index value
      * @return index of scale degree in scale array, -1 if not found
      */
-    private static int indexOf(String degree, String[]scale){
+    private static int indexOf(String degree, String[] scale) {
         int index = -1;
-        for(int i=0; i<scale.length; i++){
-            if(scale[i].equals(degree)){
+        for (int i = 0; i < scale.length; i++) {
+            if (scale[i].equals(degree)) {
                 index = i;
             }
         }
@@ -239,6 +242,7 @@ public class NoteConverter {
     }
 
     //method to test that the conversion works
+
     /**
      * testConversion Test the conversion process to see if it produces xNote,
      * the note you think it will
@@ -275,9 +279,9 @@ public class NoteConverter {
         //int startSlot = Integer.parseInt(exactMelodyData[0]);
 
         //index of the i-th chord in this measure we've looked at as a possible match for this note
-        int chordNumber = 0; 
+        int chordNumber = 0;
         //total number of slots belonging to chords we've looked at as a possible match for this note
-        int totalChordDurationInMelody = allChords.get(0).getRhythmValue(); 
+        int totalChordDurationInMelody = allChords.get(0).getRhythmValue();
         int totalNoteDurationInMelody = 0; //total number of slots that have gone by in this measure up to this note
         for (int i = 1; i < exactMelodyData.length; i += 2) {
             //System.out.println("exactMelodyData[" + i + "]: " + exactMelodyData[i] + " " + exactMelodyData[i+1]);
@@ -287,13 +291,13 @@ public class NoteConverter {
                 while (totalNoteDurationInMelody >= totalChordDurationInMelody) { //we need to move on to the next chord
                     chordNumber++;
                     totalChordDurationInMelody += allChords.get(chordNumber).getRhythmValue();
-                } 
+                }
             } catch (Exception e) {
                 //System.out.println("Exception when matching notes to chords: " + e.toString());
                 //System.out.println("Exact melody: " + exactMelody);
                 //System.out.println("\n");
             }
-            
+
             try {
                 if (pitch >= 0) { //pitch is a note
                     Note note = new Note(pitch, duration);
@@ -302,10 +306,9 @@ public class NoteConverter {
                     if (relativePitch == null) {
                         System.out.println("*** Internal error: relativePitch is null at note = "
                                 + note + ", chord = " + chord);
-                      }
-                    else {
-                      relativePitchMelody.append(relativePitch.toString());
-                      }
+                    } else {
+                        relativePitchMelody.append(relativePitch.toString());
+                    }
                 } else { //"pitch" is a rest
                     String rest = " R" + Note.getDurationString(duration) + " ";
                     relativePitchMelody.append(rest.toString());
@@ -317,8 +320,8 @@ public class NoteConverter {
         }
         return relativePitchMelody.toString();
     }
-    
-     /**
+
+    /**
      * melPartToRelativePitch 
      * Convert a MelodyPart to a sequence of relative pitches
      *
@@ -351,54 +354,49 @@ public class NoteConverter {
      * Note that the chordSlot applies only to the ChordPart.
      * The melody is assumed to start in slot 0.
      * Added by Bob Keller 12 August 2014.
-     * 
+     *
      * @param melody
      * @param chords
-     * @param chordSlot 
+     * @param chordSlot
      */
-    public static Polylist melodyPart2Relative(MelodyPart melody, ChordPart chordProg, int chordSlot)
-      {
-       ArrayList<Integer> melodyData = melody.getArrayListForm();
-       return melodyPart2Relative(melodyData, chordProg, chordSlot);
-      }
-    
-     public static Polylist melodyPart2Relative(ArrayList<Integer> melodyData, ChordPart chordProg, int chordSlot)
-      {
-       int slotsPerSection = 480; // FIX: This is not universal
-       StringBuilder buffer = new StringBuilder();
+    public static Polylist melodyPart2Relative(MelodyPart melody, ChordPart chordProg, int chordSlot) {
+        ArrayList<Integer> melodyData = melody.getArrayListForm();
+        return melodyPart2Relative(melodyData, chordProg, chordSlot);
+    }
+
+    public static Polylist melodyPart2Relative(ArrayList<Integer> melodyData, ChordPart chordProg, int chordSlot) {
+        int slotsPerSection = 480; // FIX: This is not universal
+        StringBuilder buffer = new StringBuilder();
         // Note: Blank is critical in next statement.
         buffer.append(chordSlot);
         buffer.append(" ");
-        for( Integer s: melodyData )
-          {
+        for (Integer s : melodyData) {
             buffer.append(s);
             buffer.append(" ");
-          }
+        }
         String melString = buffer.toString();
         //System.out.println("melString = " + melString);
         String relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, melString);
         return Polylist.PolylistFromString(relativePitchMelody);
-      }
-    
-      public static Polylist melodyPart2RelativeString(ArrayList<String> melodyData, ChordPart chordProg, int chordSlot)
-      {
-       int slotsPerSection = 480; // FIX: This is not universal
-       StringBuilder buffer = new StringBuilder();
+    }
+
+    public static Polylist melodyPart2RelativeString(ArrayList<String> melodyData, ChordPart chordProg, int chordSlot) {
+        int slotsPerSection = 480; // FIX: This is not universal
+        StringBuilder buffer = new StringBuilder();
         // Note: Blank is critical in next statement.
 
-        for( String s: melodyData )
-          {
+        for (String s : melodyData) {
             buffer.append(s);
             buffer.append(" ");
-          }
+        }
         String melString = buffer.toString();
         System.out.println("melString = " + melString);
         String relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, melString);
         return Polylist.PolylistFromString(relativePitchMelody);
-      }
-         
-    
-     /**
+    }
+
+
+    /**
      * noteToAbstract 
      * Convert a note in a tune to an abstract pitch
      *
@@ -421,7 +419,7 @@ public class NoteConverter {
             //add pitch to notes
             //get note type
             char notetype;
-            
+
             int[] notetone = lickgen.getNoteTypes(noteIndex, pitch, pitch,
                     chordProg);
             switch (notetone[0]) {
@@ -452,7 +450,7 @@ public class NoteConverter {
         return rhythmString;
     }
 
-     /**
+    /**
      * melodyToAbstract 
      * Convert a MelodyPart to abstract melody
      *
@@ -532,7 +530,7 @@ public class NoteConverter {
         }
 
         while (current < melPart.getSize()) {
-            
+
             //if null note, make it a rest
             if (melPart.getNote(current) == null) {
                 int next = melPart.getNextIndex(current);
@@ -551,7 +549,6 @@ public class NoteConverter {
             int rhythm = 0;
 
 
-
             if (currentNote.isRest()) {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
             } else {
@@ -560,7 +557,7 @@ public class NoteConverter {
                 notes.add(pitch);
                 //get note type
                 char notetype;
-                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch, chordPart); 
+                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch, chordPart);
                 switch (notetone[0]) {
                     case LickGen.CHORD:
                         notetype = 'C';

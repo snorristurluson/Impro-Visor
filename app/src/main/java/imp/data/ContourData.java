@@ -10,29 +10,28 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
  * @author cssummer17
  */
-public class ContourData implements Serializable{
+public class ContourData implements Serializable {
     private int numSlopeChanges;
     private ArrayList<Short> slopeTypes;
-    
+
     //shorts for types of slope changes
     public static final short FLAT = 0;
     public static final short UP = 1;
     public static final short DOWN = 2;
-    
-    public ContourData(ArrayList<Short> slopeTypes, int numSlopeChanges){
-        this.slopeTypes=slopeTypes;
+
+    public ContourData(ArrayList<Short> slopeTypes, int numSlopeChanges) {
+        this.slopeTypes = slopeTypes;
         this.numSlopeChanges = numSlopeChanges;
     }
-    
-    public int getNumContourChanges(){
+
+    public int getNumContourChanges() {
         return numSlopeChanges;
     }
-    
-    public ArrayList<Short> getContourArray(){
+
+    public ArrayList<Short> getContourArray() {
         return slopeTypes;
     }
-    
+
 }

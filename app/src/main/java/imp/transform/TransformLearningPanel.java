@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College XML export code
  * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -37,6 +37,7 @@ import imp.lickgen.transformations.Transformation;
 import imp.lickgen.transformations.TrendDetector;
 import imp.lickgen.transformations.TrendSegment;
 import imp.lickgen.transformations.trends.*;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -44,43 +45,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.ListIterator;
+
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+
 import polya.*;
 
 /**
  * Panel that displays functions used in TransformLearning. Panel is drawn in 
  * LickgenFrame.
- * 
+ *
  * @author Alex Putman
  */
 public class TransformLearningPanel extends javax.swing.JPanel {
-    
+
     /**
      * The class that contains the methods used to learn and flatten
      */
     private TransformLearning transformLearning;
-    
+
     private Notate notate;
-    
+
     /**
      * The melody that is saved and is used to compare against when flattening,
      * subtracting and learning
      */
     private MelodyPart original;
-    
+
     /**
      * The list of melodies that were saved from the leadsheet
      */
     private PartList originalList;
-    
+
     private ArrayList<MelodyPart> flatList;
-    
+
     /**
      * The melody result after flattening that is used in subtracting and 
      * learning
      */
     private MelodyPart flattened;
-    
+
     /**
      * The latest resolution used to flatten a melody 
      */
@@ -90,20 +93,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      * The transform created after learning
      */
     private Transform transform;
-    
+
     /**
      * the TransformPanel in LickgenFrame that is to put the learned 
      * transform
      */
     TransformPanel transformPanel;
-    
+
     //names of trends
-    String [] trendNames = {"All", "Arpeggio", "Ascending", "Chromatic", "Descending", "Diatonic", "Skip"};
-    
+    String[] trendNames = {"All", "Arpeggio", "Ascending", "Chromatic", "Descending", "Diatonic", "Skip"};
+
     /**
      * Creates new form TransformLearningPanel
      */
-    public TransformLearningPanel(Notate notate, 
+    public TransformLearningPanel(Notate notate,
                                   TransformPanel subPanel) {
         initComponents();
         this.notate = notate;
@@ -125,8 +128,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         shortcutPanel = new javax.swing.JPanel();
@@ -197,10 +199,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         shortcutPanel.add(shortcutLabel, gridBagConstraints);
 
         learnAllButton.setText("Learn All!");
-        learnAllButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        learnAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 learnAllButtonActionPerformed(evt);
             }
         });
@@ -256,10 +256,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         saveOriginalButton.setToolTipText("Save the currently selected melody");
         saveOriginalButton.setMinimumSize(new java.awt.Dimension(156, 25));
         saveOriginalButton.setPreferredSize(new java.awt.Dimension(156, 25));
-        saveOriginalButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveOriginalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveOriginalButtonActionPerformed(evt);
             }
         });
@@ -269,10 +267,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         saveAllButton.setText("Save All Choruses");
         saveAllButton.setToolTipText("Save all open choruses in the leadsheet");
-        saveAllButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAllButtonActionPerformed(evt);
             }
         });
@@ -294,10 +290,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         replaceWithOriginalButton.setEnabled(false);
         replaceWithOriginalButton.setMinimumSize(new java.awt.Dimension(340, 25));
         replaceWithOriginalButton.setPreferredSize(new java.awt.Dimension(340, 25));
-        replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        replaceWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceWithOriginalButtonActionPerformed(evt);
             }
         });
@@ -310,10 +304,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         replaceAllWithOriginalButton.setText("Replace All with Original");
         replaceAllWithOriginalButton.setToolTipText("Replace all choruses with their original");
         replaceAllWithOriginalButton.setEnabled(false);
-        replaceAllWithOriginalButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        replaceAllWithOriginalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceAllWithOriginalButtonActionPerformed(evt);
             }
         });
@@ -375,10 +367,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         allowRepeatsCheckBox.setSelected(true);
         allowRepeatsCheckBox.setText("Allow Repeat Pitches");
         allowRepeatsCheckBox.setToolTipText("Whether ajacent notes with the same pitch in the flattened melody will be combined or not");
-        allowRepeatsCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        allowRepeatsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 allowRepeatsCheckBoxActionPerformed(evt);
             }
         });
@@ -402,7 +392,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         flattenPanel.setBackground(new java.awt.Color(252, 196, 80));
         flattenPanel.setLayout(new java.awt.GridBagLayout());
 
-        flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Whole Note", "Half Note", "Quarter Note", "Eighth Note" }));
+        flattenValueComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Whole Note", "Half Note", "Quarter Note", "Eighth Note"}));
         flattenValueComboBox.setToolTipText("select the resolution to flatten at");
         flattenValueComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
         flattenValueComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
@@ -418,10 +408,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         flattenButton.setEnabled(false);
         flattenButton.setMinimumSize(new java.awt.Dimension(171, 25));
         flattenButton.setPreferredSize(new java.awt.Dimension(171, 25));
-        flattenButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        flattenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenButtonActionPerformed(evt);
             }
         });
@@ -434,10 +422,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         flattenAllButton.setText("Flatten All Choruses");
         flattenAllButton.setEnabled(false);
-        flattenAllButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        flattenAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flattenAllButtonActionPerformed(evt);
             }
         });
@@ -489,7 +475,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         generateTransformPanel.setBackground(new java.awt.Color(130, 217, 151));
         generateTransformPanel.setLayout(new java.awt.GridBagLayout());
 
-        generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Windowing", "Trend Detection" }));
+        generateTransformMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Windowing", "Trend Detection"}));
         generateTransformMethodComboBox.setToolTipText("select the method for learning");
         generateTransformMethodComboBox.setMinimumSize(new java.awt.Dimension(165, 25));
         generateTransformMethodComboBox.setPreferredSize(new java.awt.Dimension(165, 25));
@@ -507,10 +493,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         createTransformButton.setMaximumSize(new java.awt.Dimension(200, 25));
         createTransformButton.setMinimumSize(new java.awt.Dimension(200, 25));
         createTransformButton.setPreferredSize(new java.awt.Dimension(200, 25));
-        createTransformButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        createTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createTransformButtonActionPerformed(evt);
             }
         });
@@ -522,7 +506,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         generateTransformPanel.add(createTransformButton, gridBagConstraints);
 
-        windowResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Flatten Resolution", "Double Flatten Resolution" }));
+        windowResolutionComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Flatten Resolution", "Double Flatten Resolution"}));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -530,10 +514,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         createAllTransform.setText("Generate All Transform");
         createAllTransform.setEnabled(false);
-        createAllTransform.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        createAllTransform.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createAllTransformActionPerformed(evt);
             }
         });
@@ -565,10 +547,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         subFlatFromOrigButton.setEnabled(false);
         subFlatFromOrigButton.setMinimumSize(new java.awt.Dimension(340, 25));
         subFlatFromOrigButton.setPreferredSize(new java.awt.Dimension(340, 25));
-        subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        subFlatFromOrigButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subFlatFromOrigButtonActionPerformed(evt);
             }
         });
@@ -580,10 +560,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
         subAllFlatFromOriginal.setText("Subtract Flattening from All");
         subAllFlatFromOriginal.setEnabled(false);
-        subAllFlatFromOriginal.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        subAllFlatFromOriginal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 subAllFlatFromOriginalActionPerformed(evt);
             }
         });
@@ -628,10 +606,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         setTransformButton.setEnabled(false);
         setTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
         setTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
-        setTransformButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        setTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setTransformButtonActionPerformed(evt);
             }
         });
@@ -664,10 +640,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         showTransformButton.setEnabled(false);
         showTransformButton.setMinimumSize(new java.awt.Dimension(340, 25));
         showTransformButton.setPreferredSize(new java.awt.Dimension(340, 25));
-        showTransformButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showTransformButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showTransformButtonActionPerformed(evt);
             }
         });
@@ -685,11 +659,11 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveOriginalButtonActionPerformed
-        
+
         notate.adjustSelection();
         original = notate.getCurrentMelodyPart().copy();
         notate.repaint();
-        
+
         replaceWithOriginalButton.setEnabled(true);
         subFlatFromOrigButton.setEnabled(true);
         createTransformButton.setEnabled(true);
@@ -703,11 +677,11 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart origSel = original.extract(start, stop, true, true);
-        MelodyPart outlineSel = notate.getCurrentMelodyPart().extract(start, 
-                                                                      stop, 
-                                                                      true, 
-                                                                      true);
-        
+        MelodyPart outlineSel = notate.getCurrentMelodyPart().extract(start,
+                stop,
+                true,
+                true);
+
         MelodyPart subtracted = subtractOutline(origSel, outlineSel, start, stop);
         pasteOver(notate.getCurrentMelodyPart(), subtracted, start);
         notate.repaint();
@@ -724,31 +698,28 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     private void replaceWithOriginalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithOriginalButtonActionPerformed
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
-        int stop  = notate.getCurrentSelectionEnd();
+        int stop = notate.getCurrentSelectionEnd();
         MelodyPart replace = original.extract(start, stop, true, true);
         pasteOver(notate.getCurrentMelodyPart(), replace, start);
         notate.repaint();
     }//GEN-LAST:event_replaceWithOriginalButtonActionPerformed
 
     private void flattenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenButtonActionPerformed
-        String flattenValue = (String)flattenValueComboBox.getSelectedItem();
+        String flattenValue = (String) flattenValueComboBox.getSelectedItem();
         resolution = getResolution(flattenValue);
         flatten(resolution);
     }//GEN-LAST:event_flattenButtonActionPerformed
 
     private void createTransformButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTransformButtonActionPerformed
-        
-        String method = 
+
+        String method =
                 generateTransformMethodComboBox.getSelectedItem().toString();
-        if(method.equals("Windowing"))
-        {
+        if (method.equals("Windowing")) {
             transform = learnByWindowing();
             transform.hasChanged = true;
             showTransformButton.setEnabled(true);
             setTransformButton.setEnabled(true);
-        }
-        else if(method.equals("Trend Detection"))
-        {
+        } else if (method.equals("Trend Detection")) {
             transform = learnByTrendDetection();
             transform.hasChanged = true;
             showTransformButton.setEnabled(true);
@@ -762,17 +733,17 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 
     private void saveAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllButtonActionPerformed
         originalList = new PartList(0);
-        
+
         notate.selectAll2();
         notate.adjustSelection();
-        
+
         PartList list = notate.getScore().getPartList();
-        for(int i = 0; i < list.size(); ++i){
+        for (int i = 0; i < list.size(); ++i) {
             MelodyPart part = list.get(i).copy();
             originalList.add(part);
         }
         notate.repaint();
-        
+
         replaceAllWithOriginalButton.setEnabled(true);
         flattenAllButton.setEnabled(true);
         createAllTransform.setEnabled(true);
@@ -787,8 +758,8 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         notate.selectAll2();
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
-        
-        for(int i = 0; i < notate.getScore().size(); ++i){
+
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart replace = originalList.get(i);
             pasteOver(notate.getMelodyPart(notate.getStaveAtTab(i)), replace, start);
         }
@@ -796,23 +767,20 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_replaceAllWithOriginalButtonActionPerformed
 
     private void flattenAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenAllButtonActionPerformed
-        String flattenValue = (String)flattenValueComboBox.getSelectedItem();
+        String flattenValue = (String) flattenValueComboBox.getSelectedItem();
         resolution = getResolution(flattenValue);
         flattenAll(resolution);
     }//GEN-LAST:event_flattenAllButtonActionPerformed
 
     private void createAllTransformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAllTransformActionPerformed
-        String method = 
+        String method =
                 generateTransformMethodComboBox.getSelectedItem().toString();
-        if(method.equals("Windowing"))
-        {
+        if (method.equals("Windowing")) {
             transform = learnAllByWindowing();
             transform.hasChanged = true;
             showTransformButton.setEnabled(true);
             setTransformButton.setEnabled(true);
-        }
-        else if(method.equals("Trend Detection"))
-        {
+        } else if (method.equals("Trend Detection")) {
             transform = learnAllByTrendDetection();
             transform.hasChanged = true;
             showTransformButton.setEnabled(true);
@@ -828,81 +796,81 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         learnAll();
     }//GEN-LAST:event_learnAllButtonActionPerformed
 
-    private void learnAll(){
+    private void learnAll() {
         transform = new Transform();
         saveAll();
-        int [] resolutions = {Constants.WHOLE, Constants.HALF, Constants.QUARTER, Constants.EIGHTH};
-        for(int res : resolutions){
+        int[] resolutions = {Constants.WHOLE, Constants.HALF, Constants.QUARTER, Constants.EIGHTH};
+        for (int res : resolutions) {
             shortcutFlattenAll(res);
             extractFromAll(res);
-            extractFromAll(res*2);
+            extractFromAll(res * 2);
         }
-        
+
         transformPanel.setTransform(transform);
     }
-    
-    private void saveAll(){
+
+    private void saveAll() {
         originalList = new PartList(0);
-        
+
         notate.selectAll2();
         notate.adjustSelection();
-        
+
         PartList list = notate.getScore().getPartList();
-        for(int i = 0; i < list.size(); ++i){
+        for (int i = 0; i < list.size(); ++i) {
             MelodyPart part = list.get(i).copy();
             originalList.add(part);
         }
         notate.repaint();
     }
-    
-    private void shortcutFlattenAll(int resolution){
+
+    private void shortcutFlattenAll(int resolution) {
         flatList.clear();
         boolean allowRepeats = allowRepeatsCheckBox.isSelected();
-        for(int i = 0; i < notate.getScore().size(); ++i){
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart current = notate.getMelodyPart(notate.getStaveAtTab(i));
             MelodyPart result = flattenPartByResolution(current,
-                                                resolution, 
-                                                !allowRepeats, 
-                                                0, 
-                                                current.size()-1);
+                    resolution,
+                    !allowRepeats,
+                    0,
+                    current.size() - 1);
             flatList.add(result);
         }
     }
-    
-    private void extractFromAll(int res){
+
+    private void extractFromAll(int res) {
         Transform result = new Transform();
-        for(int i = 0; i < originalList.size(); i++){
+        for (int i = 0; i < originalList.size(); i++) {
             MelodyPart orig = originalList.get(i).copy();
             int start = 0, stop = orig.getSize();
             Transform trans = transformLearning.createBlockTransform(flatList.get(i).copy(),
-                                                                     originalList.get(i).copy(),
-                                                                     notate.getChordProg(),
-                                                                     start,
-                                                                     stop,
-                                                                     res);
+                    originalList.get(i).copy(),
+                    notate.getChordProg(),
+                    start,
+                    stop,
+                    res);
             result = transformLearning.merge(result, trans);
         }
         transform = transformLearning.merge(transform, result);
     }
-    
-    private static Trend getTrend(String s){
-        if(s.equals("Arpeggio")){
+
+    private static Trend getTrend(String s) {
+        if (s.equals("Arpeggio")) {
             return new ArpeggioTrend();
-        }else if(s.equals("Ascending")){
+        } else if (s.equals("Ascending")) {
             return new AscendingTrend();
-        }else if(s.equals("Chromatic")){
+        } else if (s.equals("Chromatic")) {
             return new ChromaticTrend();
-        }else if(s.equals("Descending")){
+        } else if (s.equals("Descending")) {
             return new DescendingTrend();
-        }else if(s.equals("Diatonic")){
+        } else if (s.equals("Diatonic")) {
             return new DiatonicTrend();
-        }else if(s.equals("Skip")){
+        } else if (s.equals("Skip")) {
             return new SkipTrend();
-        }else{
+        } else {
             return null;//all trends
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allowRepeatsCheckBox;
     private javax.swing.JButton createAllTransform;
@@ -951,246 +919,239 @@ public class TransformLearningPanel extends javax.swing.JPanel {
     /**
      * Allow for command undoing in notate
      */
-    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot)
-    {
-        PasteCommand paste = new PasteCommand(source,dest,startingSlot,false);
+    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot) {
+        PasteCommand paste = new PasteCommand(source, dest, startingSlot, false);
         notate.cm.execute(paste);
     }
-    
+
     /**
      * Opens the generated transform in a new TextArea Dialogue
      */
-    public void showTransform()
-    {
-        TransformDialogue transEditor = 
+    public void showTransform() {
+        TransformDialogue transEditor =
                 new TransformDialogue(notate.getLickgenFrame(), transform);
-        
+
         transEditor.setLocationRelativeTo(this);
         transEditor.toFront();
     }
-    
+
     /**
      * Sets the desired resolution and calls one of the flattening methods
      * then pastes the result into the leadsheet
      */
-    private void flatten(int resolution)
-    {
+    private void flatten(int resolution) {
         this.resolution = resolution;
         boolean allowRepeats = allowRepeatsCheckBox.isSelected();
-        
+
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
-        
-        MelodyPart result = flattenByResolution(resolution, 
-                                                !allowRepeats, 
-                                                start, 
-                                                stop);
-        
+
+        MelodyPart result = flattenByResolution(resolution,
+                !allowRepeats,
+                start,
+                stop);
+
         pasteOver(notate.getCurrentMelodyPart(), result, start);
-        
+
         notate.repaint();
     }
+
     /**
      * Flattens all choruses in the leadsheet and pastes the result into the
      * leadsheet
-     * @param resolution 
+     * @param resolution
      */
-    private void flattenAll(int resolution)
-    {
+    private void flattenAll(int resolution) {
         this.resolution = resolution;
         boolean allowRepeats = allowRepeatsCheckBox.isSelected();
-        
+
         notate.selectAll2();
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
-        
-        for(int i = 0; i < notate.getScore().size(); ++i){
+
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart current = notate.getMelodyPart(notate.getStaveAtTab(i));
             MelodyPart result = flattenPartByResolution(current,
-                                                resolution, 
-                                                !allowRepeats, 
-                                                start, 
-                                                stop);
-            
+                    resolution,
+                    !allowRepeats,
+                    start,
+                    stop);
+
             pasteOver(current, result, start);
         }
         notate.repaint();
     }
-    
+
     /**
      * Divides the melody into sections of length determined by the length of
      * the chords in the melody, it then proceeds to flatten by resolution.
      */
-    private MelodyPart flattenByChord(int resolution, 
-                                      boolean concatRepeats, 
-                                      int start, 
-                                      int stop)
-    {
+    private MelodyPart flattenByChord(int resolution,
+                                      boolean concatRepeats,
+                                      int start,
+                                      int stop) {
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        MelodyPart flattenedPart = 
-                transformLearning.flattenByChord(melody, 
-                                                 chords, 
-                                                 resolution, 
-                                                 start, 
-                                                 stop, 
-                                                 concatRepeats);
-        
+        MelodyPart flattenedPart =
+                transformLearning.flattenByChord(melody,
+                        chords,
+                        resolution,
+                        start,
+                        stop,
+                        concatRepeats);
+
         return flattenedPart.extract(start, stop, true, true);
-        
+
     }
-    
+
     /**
      * Divides the melody into segments of length resolution, gets the best note
      * in each segment and set every note in the segment to that note.
      */
-    private MelodyPart flattenByResolution(int resolution, 
+    private MelodyPart flattenByResolution(int resolution,
                                            boolean concatRepeats,
                                            int start,
-                                           int stop)
-    {
+                                           int stop) {
         MelodyPart melody = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        MelodyPart flattenedPart = 
-                transformLearning.flattenByResolution(melody, 
-                                                      chords,
-                                                      resolution, 
-                                                      start,
-                                                      stop,
-                                                      concatRepeats);
-        
+        MelodyPart flattenedPart =
+                transformLearning.flattenByResolution(melody,
+                        chords,
+                        resolution,
+                        start,
+                        stop,
+                        concatRepeats);
+
         return flattenedPart.extract(start, stop, true, true);
     }
+
     /**
      * Flattens one chorus in the leadsheet
      */
     private MelodyPart flattenPartByResolution(MelodyPart part,
-                                           int resolution, 
-                                           boolean concatRepeats,
-                                           int start,
-                                           int stop)
-    {
+                                               int resolution,
+                                               boolean concatRepeats,
+                                               int start,
+                                               int stop) {
         MelodyPart melody = part.copy();
         ChordPart chords = notate.getChordProg();
-        MelodyPart flattenedPart = 
-                transformLearning.flattenByResolution(melody, 
-                                                      chords,
-                                                      resolution, 
-                                                      start,
-                                                      stop,
-                                                      concatRepeats);
-        
+        MelodyPart flattenedPart =
+                transformLearning.flattenByResolution(melody,
+                        chords,
+                        resolution,
+                        start,
+                        stop,
+                        concatRepeats);
+
         return flattenedPart.extract(start, stop, true, true);
     }
-    
+
     /**
      * Learns transformations by taking each original melody segment of length
      * resolution and builds a transformation that can make them from their 
      * associated flattened note. 
      */
-    private Transform learnByWindowing()
-    {
+    private Transform learnByWindowing() {
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
         int res = getResolution(windowResolutionComboBox.getSelectedItem().toString());
-        Transform result = 
-                transformLearning.createBlockTransform(outline, 
-                                                                     original.copy(),
-                                                                     chords,
-                                                                     start,
-                                                                     stop,
-                                                                     res);
+        Transform result =
+                transformLearning.createBlockTransform(outline,
+                        original.copy(),
+                        chords,
+                        start,
+                        stop,
+                        res);
 
         return result;
     }
+
     /**
      * Learns transforms using windowing from all the choruses
      * open in the leadsheet
-     * @return 
+     * @return
      */
-    private Transform learnAllByWindowing()
-    {
+    private Transform learnAllByWindowing() {
         //important fix!!!
         Transform result = new Transform();
         //
         notate.selectAll2();
         notate.adjustSelection();
-        
+
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         ChordPart chords = notate.getChordProg();
         int res = getResolution(windowResolutionComboBox.getSelectedItem().toString());
-        
-        for(int i = 0; i < notate.getScore().size(); ++i){
+
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart outline = notate.getMelodyPart(notate.getStaveAtTab(i));
             MelodyPart originalPart = originalList.get(i);
             Transform trans = transformLearning.createBlockTransform(outline,
-                                                                     originalPart.copy(),
-                                                                     chords,
-                                                                     start,
-                                                                     stop,
-                                                                     res);
+                    originalPart.copy(),
+                    chords,
+                    start,
+                    stop,
+                    res);
             result = transformLearning.merge(result, trans);
         }
         return result;
     }
-    
+
     /**
      * Learns transformations by going through the notes in a melody
      * sequentially and detecting sections that contain a trend. Then a
      * transformations is created by the definition of the trend detected.
      * TRENDS CURRENTLY BEING DETECTED: Diatonic Displacement
      */
-    private Transform learnByTrendDetection()
-    {
+    private Transform learnByTrendDetection() {
         notate.adjustSelection();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart outline = notate.getCurrentMelodyPart();
         ChordPart chords = notate.getChordProg();
-        Transform result = 
-                transformLearning.createTrendTransform(outline, 
-                                                       original.copy(), 
-                                                       chords, 
-                                                       start, 
-                                                       stop);
-        
+        Transform result =
+                transformLearning.createTrendTransform(outline,
+                        original.copy(),
+                        chords,
+                        start,
+                        stop);
+
         return result;
     }
+
     /**
      * Learns transforms using trend detection from all the choruses
      * open in the leadsheet
-     * @return 
+     * @return
      */
-    private Transform learnAllByTrendDetection()
-    {
+    private Transform learnAllByTrendDetection() {
         //important fix!!!
         Transform result = new Transform();
         notate.selectAll2();
         notate.adjustSelection();
-        
+
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         ChordPart chords = notate.getChordProg();
-        
-        for(int i = 0; i < notate.getScore().size(); ++i){
+
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart outline = notate.getMelodyPart(notate.getStaveAtTab(i));
             MelodyPart originalPart = originalList.get(i);
             Transform trans = transformLearning.createTrendTransform(outline,
-                                                                     originalPart.copy(),
-                                                                     chords,
-                                                                     start,
-                                                                     stop);
+                    originalPart.copy(),
+                    chords,
+                    start,
+                    stop);
             result = transformLearning.merge(result, trans);
         }
         return result;
     }
-    
+
 //    private Transform learnByNewTrendDetection(){
 //        String trendString = (String) trendChooser.getSelectedItem();
 //        Trend trend = getTrend(trendString);
@@ -1221,6 +1182,7 @@ public class TransformLearningPanel extends javax.swing.JPanel {
 //        return newTransform;
 //
 //    }
+
     /**
      * Goes through each note in the original melody and if it equals the note 
      * at the same place in the flattened melody, turn it into a rest. This 
@@ -1228,96 +1190,90 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      * from the outline notes. 
      */
     private MelodyPart subtractOutline(MelodyPart original,
-                                 MelodyPart outline,
-                                 int start,
-                                 int stop)
-    {
+                                       MelodyPart outline,
+                                       int start,
+                                       int stop) {
         notate.adjustSelection();
-        
+
         flattened = outline.copy();
         MelodyPart subFromOrig = new MelodyPart();
-        
+
         // First look at the index of each note in the original selection
-        for(int i = 0; i < original.size(); i = original.getNextIndex(i))
-        {
+        for (int i = 0; i < original.size(); i = original.getNextIndex(i)) {
             Note origNote = original.getCurrentNote(i);
             Note outlineNote = outline.getCurrentNote(i);
             // if the note is the same as the note in the outline location,
             // make it a rest
-            if(origNote.samePitch(outlineNote))
-            {
+            if (origNote.samePitch(outlineNote)) {
                 origNote = Note.makeRest(origNote.getRhythmValue());
             }
             subFromOrig.addNote(origNote);
         }
         // Then make sure the new melody doesn't have notes that extend into
         // being the same pitch as the outline note in the same location
-        for(int i = 0; i < outline.size(); i = outline.getNextIndex(i))
-        {
+        for (int i = 0; i < outline.size(); i = outline.getNextIndex(i)) {
             Note origNote = subFromOrig.getCurrentNote(i);
             Note outlineNote = outline.getCurrentNote(i);
             // if the note is the same as the note in the outline location,
             // then cut off the duration of the note so it doesn't overlap
             // with the outlined note
-            if(origNote.samePitch(outlineNote))
-            {
+            if (origNote.samePitch(outlineNote)) {
                 int diff = origNote.getRhythmValue() - outlineNote.getRhythmValue();
                 origNote.setRhythmValue(diff);
                 Note addRest = Note.makeRest(outlineNote.getRhythmValue());
                 subFromOrig.setNote(i, addRest);
             }
-            
+
         }
         return subFromOrig;
     }
-    
+
     /**
      * Goes through each note in all the original choruses and if it equals the
      * note at the same place in the flattened melody, turn it into a rest. This 
      * shows you the notes in the original melody that could be transformed
      * from the outline notes. 
      */
-    private void subtractAllOutline()
-    {
+    private void subtractAllOutline() {
         notate.selectAll2();
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
-        
-        for(int i = 0; i < notate.getScore().size(); ++i){
+
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart current = notate.getMelodyPart(notate.getStaveAtTab(i));
             MelodyPart flat = originalList.get(i);
-            
+
             MelodyPart subtracted = subtractOutline(flat,
-                                                    current,
-                                                    start,
-                                                    stop);
-            
+                    current,
+                    start,
+                    stop);
+
             pasteOver(current, subtracted, start);
         }
         notate.repaint();
     }
+
     /**
      * Get the integer resolution value associated with the selected string
      * @param flattenValue
-     * @return 
+     * @return
      */
-    private int getResolution(String flattenValue)
-    {
+    private int getResolution(String flattenValue) {
 //        int [] metre = this.notate.getScore().getMetre();
-        if(flattenValue.equals("Whole Note"))
+        if (flattenValue.equals("Whole Note"))
             return Constants.WHOLE;
-        else if(flattenValue.equals("Half Note"))
+        else if (flattenValue.equals("Half Note"))
             return Constants.HALF;
-        else if(flattenValue.equals("Quarter Note"))
+        else if (flattenValue.equals("Quarter Note"))
             return Constants.QUARTER;
-        else if(flattenValue.equals("Eighth Note"))
+        else if (flattenValue.equals("Eighth Note"))
             return Constants.EIGHTH;
 //        else if(flattenValue.equals("Sixteenth Note"))
 //            return 30;
-        else if(flattenValue.equals("Flatten Resolution"))
-            return getResolution((String)flattenValueComboBox.getSelectedItem());
-        else if(flattenValue.equals("Double Flatten Resolution"))
-            return 2 * getResolution((String)flattenValueComboBox.getSelectedItem());
+        else if (flattenValue.equals("Flatten Resolution"))
+            return getResolution((String) flattenValueComboBox.getSelectedItem());
+        else if (flattenValue.equals("Double Flatten Resolution"))
+            return 2 * getResolution((String) flattenValueComboBox.getSelectedItem());
 //        else if(flattenValue.equals("Every Beat"))
 //            return beatLength(metre);
 //        else if(flattenValue.equals("Measure Length"))
@@ -1327,31 +1283,31 @@ public class TransformLearningPanel extends javax.swing.JPanel {
         else
             return 480;
     }
-    
+
     /**
      * beatLength
      * @return length in slots of a single beat
      */
-    private int beatLength(int [] metre){
-        return Constants.WHOLE/metre[1];
+    private int beatLength(int[] metre) {
+        return Constants.WHOLE / metre[1];
     }
-    
+
     /**
      * beatsPerMeasure
      * @return number of beats in a measure
      */
-    private int beatsPerMeasure(int [] metre){
+    private int beatsPerMeasure(int[] metre) {
         return metre[0];
     }
-    
+
     /**
      * measureLength
      * @return length of a measure in slots
      */
-    private int measureLength(int [] metre){
-        return beatLength(metre)*beatsPerMeasure(metre);
+    private int measureLength(int[] metre) {
+        return beatLength(metre) * beatsPerMeasure(metre);
     }
-    
+
     /**
      * strongBeatsPerMeasure
      * Determines number of strong beats per measure based on the top
@@ -1361,67 +1317,66 @@ public class TransformLearningPanel extends javax.swing.JPanel {
      * it default to a two feel
      * @return number of strong beats per measure
      */
-    private int strongBeatsPerMeasure(int [] metre){
+    private int strongBeatsPerMeasure(int[] metre) {
         int beatsPerMeasure = beatsPerMeasure(metre);
         int strongBeats;
-   
-        if(beatsPerMeasure <= 3){               //  2/4, 3/4, ...
+
+        if (beatsPerMeasure <= 3) {               //  2/4, 3/4, ...
             strongBeats = 1;
-        }else if(beatsPerMeasure % 2 == 0){     //  4/4, 6/8, 12/8, ...
+        } else if (beatsPerMeasure % 2 == 0) {     //  4/4, 6/8, 12/8, ...
             strongBeats = 2;
-        }else if(beatsPerMeasure % 3 == 0){     //  9/8, ...
+        } else if (beatsPerMeasure % 3 == 0) {     //  9/8, ...
             strongBeats = 3;
-        }else{                                  //  7/8, ...
+        } else {                                  //  7/8, ...
             strongBeats = 1;
         }
-        
+
         return strongBeats;
     }
-    
+
     /**
      * timeBetweenStrongBeats
      * @return length in slots between one strong beat and the next
      */
-    private int timeBetweenStrongBeats(int [] metre){
+    private int timeBetweenStrongBeats(int[] metre) {
         return measureLength(metre) / strongBeatsPerMeasure(metre);
     }
-    
+
     /**
      * Shows the generated transform file in a new Dialogue. 
      */
-    public class TransformDialogue extends javax.swing.JDialog implements ActionListener  {
+    public class TransformDialogue extends javax.swing.JDialog implements ActionListener {
 
-    private Transform trans;
-    private javax.swing.JTextArea contents;
-    
-    public TransformDialogue(javax.swing.JFrame frame, Transform trans)
-    {
-        super(frame, "Transformation Editor", false);
-        super.setSize(800,600);
-        this.trans = trans;
-        StringBuilder transFile = new StringBuilder();
-        trans.toFile(transFile);
-        contents = new javax.swing.JTextArea();
-        contents.setFont(new Font("monospaced", Font.PLAIN, 14));
-        contents.setTabSize(8);
-        contents.setText(transFile.toString());
-        super.setLocationRelativeTo(frame);
-        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane();
-        scroll.setPreferredSize(new Dimension(820,620));
-        scroll.setViewportView(contents);
-        getContentPane().add(scroll);
-        
-        javax.swing.JButton saveButton = new javax.swing.JButton("Close"); 
-        saveButton.addActionListener(this);
-        getContentPane().add(saveButton, BorderLayout.SOUTH);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        pack(); 
-        setVisible(true);
+        private Transform trans;
+        private javax.swing.JTextArea contents;
+
+        public TransformDialogue(javax.swing.JFrame frame, Transform trans) {
+            super(frame, "Transformation Editor", false);
+            super.setSize(800, 600);
+            this.trans = trans;
+            StringBuilder transFile = new StringBuilder();
+            trans.toFile(transFile);
+            contents = new javax.swing.JTextArea();
+            contents.setFont(new Font("monospaced", Font.PLAIN, 14));
+            contents.setTabSize(8);
+            contents.setText(transFile.toString());
+            super.setLocationRelativeTo(frame);
+            javax.swing.JScrollPane scroll = new javax.swing.JScrollPane();
+            scroll.setPreferredSize(new Dimension(820, 620));
+            scroll.setViewportView(contents);
+            getContentPane().add(scroll);
+
+            javax.swing.JButton saveButton = new javax.swing.JButton("Close");
+            saveButton.addActionListener(this);
+            getContentPane().add(saveButton, BorderLayout.SOUTH);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            pack();
+            setVisible(true);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            setVisible(false);
+        }
     }
-    
-    public void actionPerformed(ActionEvent e) {
-        dispose(); 
-        setVisible(false); 
-    }
-}       
 }

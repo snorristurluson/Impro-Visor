@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,7 +29,7 @@ import imp.util.Trace;
  * @see         Command
  * @see         MelodyPart
  * @see         Note
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class ToggleEnharmonicCommand implements Command {
 
@@ -59,8 +59,8 @@ public class ToggleEnharmonicCommand implements Command {
      * @param startSlot the first slot to toggle
      * @param endSlot   the last slot to toggle
      */
-    public ToggleEnharmonicCommand(Part part, 
-            int startSlot, int endSlot) {
+    public ToggleEnharmonicCommand(Part part,
+                                   int startSlot, int endSlot) {
         this.part = part;
         this.startSlot = startSlot;
         this.endSlot = endSlot;
@@ -73,8 +73,8 @@ public class ToggleEnharmonicCommand implements Command {
     public void execute() {
         Trace.log(2, "executing ToggleEnharmonicCommand");
         undoable = false;
-        for(int i = startSlot; i <= endSlot; i++)
-            if(part.getUnit(i) != null && 
+        for (int i = startSlot; i <= endSlot; i++)
+            if (part.getUnit(i) != null &&
                     part.getUnit(i).toggleEnharmonic())
                 undoable = true;
     }
@@ -83,8 +83,8 @@ public class ToggleEnharmonicCommand implements Command {
      * Toggles again.
      */
     public void undo() {
-        for(int i = startSlot; i <= endSlot; i++)
-            if(part.getUnit(i) != null)
+        for (int i = startSlot; i <= endSlot; i++)
+            if (part.getUnit(i) != null)
                 part.getUnit(i).toggleEnharmonic();
     }
 
@@ -92,8 +92,8 @@ public class ToggleEnharmonicCommand implements Command {
      * Toggles again.
      */
     public void redo() {
-        for(int i = startSlot; i <= endSlot; i++)
-            if(part.getUnit(i) != null)
+        for (int i = startSlot; i <= endSlot; i++)
+            if (part.getUnit(i) != null)
                 part.getUnit(i).toggleEnharmonic();
     }
 

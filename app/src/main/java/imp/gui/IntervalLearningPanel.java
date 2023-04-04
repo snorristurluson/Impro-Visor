@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -29,6 +29,7 @@ import imp.data.MelodyGenerator;
 import imp.data.MelodyPart;
 import imp.data.RhythmGenerator;
 import imp.util.CountsFilter;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +37,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
+
 import static javax.swing.JFileChooser.SAVE_DIALOG;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -47,8 +50,8 @@ import javax.swing.JOptionPane;
 public class IntervalLearningPanel extends javax.swing.JPanel {
 
     private Notate notate;
-    private JLabel [][] probabilityLabels;
-    private int [] range;
+    private JLabel[][] probabilityLabels;
+    private int[] range;
     private boolean displayProbabilities;
     private boolean displayOrder;
     private boolean addToRunningTotal;
@@ -57,78 +60,77 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
     private String filename;
     private int interval1;
     private IntervalLearner learner;
-    
+
     private static final boolean FIRST = true;
     private static final boolean SECOND = false;
-    
+
     private static final Color cold = Color.white;
     private static final Color hot = Color.red;
-    
+
     /**
      * IntervalLearningPanel constructor
      * Creates new form IntervalLearningPanel
      * @param notate - notate that this interval learning panel was spawned from
      */
-    public IntervalLearningPanel(Notate notate){
+    public IntervalLearningPanel(Notate notate) {
         learner = new IntervalLearner();
         filename = "newFile.counts";
         this.notate = notate;
         initComponents();
         filenameLabel.setText(filename);
-        range = new int [2];
+        range = new int[2];
         //default
         range[0] = Constants.G3;
         range[1] = Constants.G5;
         probabilityLabels = new JLabel[26][26];
-        for(int row = 0; row<probabilityLabels.length; row++){
-            for(int column = 0; column<probabilityLabels[row].length; column++){
-                
+        for (int row = 0; row < probabilityLabels.length; row++) {
+            for (int column = 0; column < probabilityLabels[row].length; column++) {
+
                 probabilityLabels[row][column] = new JLabel();
-                if(row == 0 && column == 0){
+                if (row == 0 && column == 0) {
                     probabilityLabels[row][column].setText("X");
-                }else if(row == 0){
-                    probabilityLabels[row][column].setText(Integer.toString(column-Constants.OCTAVE-1));
-                }else if(column == 0){
-                    probabilityLabels[row][column].setText(Integer.toString(row-Constants.OCTAVE-1));
-                }else{
+                } else if (row == 0) {
+                    probabilityLabels[row][column].setText(Integer.toString(column - Constants.OCTAVE - 1));
+                } else if (column == 0) {
+                    probabilityLabels[row][column].setText(Integer.toString(row - Constants.OCTAVE - 1));
+                } else {
                     //probabilityLabels[row][column].setText("n/a"); 
                 }
-                
-                if(row == 0 || column == 0){
+
+                if (row == 0 || column == 0) {
                     probabilityLabels[row][column].setOpaque(true);
                     probabilityLabels[row][column].setBackground(Color.GREEN);
-                }
-                else if(row == Constants.OCTAVE+1 || column == Constants.OCTAVE+1){
+                } else if (row == Constants.OCTAVE + 1 || column == Constants.OCTAVE + 1) {
                     probabilityLabels[row][column].setOpaque(true);
                     probabilityLabels[row][column].setBackground(Color.green);
-                }else{
+                } else {
                     probabilityLabels[row][column].setOpaque(true);
                     probabilityLabels[row][column].setBackground(Color.WHITE);
                 }
                 probabilitiesPanel.add(probabilityLabels[row][column]);
-                
+
             }
-            
+
         }
         displayProbabilities = getDisplayFromButton();
         displayOrder = getOrderDisplayFromButton();
         interval1 = interval1Slider.getValue();
         refreshDisplay();
         addToRunningTotal = addToTotal.isSelected();
-        
+
         //file chooser - same as in transform panel
-        chooser = new JFileChooser(){
+        chooser = new JFileChooser() {
             @Override
-            public void approveSelection(){
+            public void approveSelection() {
                 File f = getSelectedFile();
-                if(!f.getAbsolutePath().endsWith(EXTENSION))
-                    f = new File(f.getAbsolutePath()+EXTENSION);
-                if(f.exists() && getDialogType() == SAVE_DIALOG){
+                if (!f.getAbsolutePath().endsWith(EXTENSION))
+                    f = new File(f.getAbsolutePath() + EXTENSION);
+                if (f.exists() && getDialogType() == SAVE_DIALOG) {
                     int result = JOptionPane.showConfirmDialog(this,
-                                                               "The file exists, overwrite?",
-                                                               "Existing file",
-                                                               JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch(result){
+                            "The file exists, overwrite?",
+                            "Existing file",
+                            JOptionPane.YES_NO_CANCEL_OPTION);
+                    switch (result) {
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();
                             return;
@@ -142,24 +144,24 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
                     }
                 }
                 super.approveSelection();
-            }        
+            }
         };
-        
+
         chooser.setCurrentDirectory(ImproVisor.getCountsDirectory());
         chooser.setFileFilter(new CountsFilter());
-        try{
+        try {
             setDefaultCounts();
-        }catch(FileNotFoundException e){
-            
+        } catch (FileNotFoundException e) {
+
         }
-        
+
     }
 
-    private void setDefaultCounts() throws FileNotFoundException{
+    private void setDefaultCounts() throws FileNotFoundException {
         File f = ImproVisor.getCountsFile();
         open(f);
     }
-    
+
     /**
      * color
      * Returns a color based on a probability
@@ -167,21 +169,21 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * @param probability - probability to find a color for
      * @return a color corresponding to the probability - more red for higher, more blue for lower
      */
-    private static Color color(double probability){
-        int r = cold.getRed() + (int)(probability*(hot.getRed()-cold.getRed()));
-        int g = cold.getGreen() + (int)(probability*(hot.getGreen()-cold.getGreen()));
-        int b = cold.getBlue() + (int)(probability*(hot.getBlue()-cold.getBlue()));
+    private static Color color(double probability) {
+        int r = cold.getRed() + (int) (probability * (hot.getRed() - cold.getRed()));
+        int g = cold.getGreen() + (int) (probability * (hot.getGreen() - cold.getGreen()));
+        int b = cold.getBlue() + (int) (probability * (hot.getBlue() - cold.getBlue()));
         return new Color(r, g, b);
     }
-    
+
     /**
      * getDisplayFromButton
      * @return - true for probabilities, false for counts
      */
-    private boolean getDisplayFromButton(){
+    private boolean getDisplayFromButton() {
         return toggleView.getText().equals("Probabilities");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -708,64 +710,64 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * generateSolo
      * Generate a solo in a new chorus based on transition probabilities
      */
-    public void generateSolo(){
-        if(Chorus1.isSelected()){
+    public void generateSolo() {
+        if (Chorus1.isSelected()) {
             Chorus1Solo();
-        }else if(Eighth.isSelected()){
+        } else if (Eighth.isSelected()) {
             EighthNoteSolo();
-        }else if(GrammarRhythm.isSelected()){
+        } else if (GrammarRhythm.isSelected()) {
             GrammarSolo();
         }
         play();
     }
-    
+
     /**
      * Chorus1Solo
      * Makes a solo with the same rhythm as chorus 1
      */
-    private void Chorus1Solo(){
+    private void Chorus1Solo() {
         ChordPart chords = notate.getChordProg();
         MelodyPart rhythm = notate.getScore().getPart(0);
         MelodyGenerator mgen;
         MelodyPart result;
         boolean rectify = rectifyCheckbox.isSelected();
-        boolean [] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
+        boolean[] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
         mgen = new MelodyGenerator(learner, rhythm, chords, range, mergeCheckbox.isSelected(), rectify, include);
         result = firstOrderButton.isSelected() ? mgen.melody() : mgen.melody2();
         notate.getCurrentMelodyPart().newPasteOver(result, 0);
         //notate.addChorus(result);
     }
-    
+
     /**
      * EighthNoteSolo
      * Makes a solo whose rhythm is just eighth notes
      */
-    private void EighthNoteSolo(){
+    private void EighthNoteSolo() {
         ChordPart chords = notate.getChordProg();
         RhythmGenerator rgen = new RhythmGenerator(notate.getScore().getLength());
         MelodyPart rhythm = rgen.rhythm(Constants.EIGHTH);
         MelodyGenerator mgen;
         MelodyPart result;
         boolean rectify = rectifyCheckbox.isSelected();
-        boolean [] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
+        boolean[] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
         mgen = new MelodyGenerator(learner, rhythm, chords, range, mergeCheckbox.isSelected(), rectify, include);
         result = firstOrderButton.isSelected() ? mgen.melody() : mgen.melody2();
         notate.getCurrentMelodyPart().newPasteOver(result, 0);
         //notate.addChorus(result);
     }
-    
+
     /**
      * GrammarSolo
      * Makes a solo based on the currently selected grammar
      * NOTE: Currently, this works by reducing an abstract melody to just a rhythm
      * Ideally, just rhythmic information would be learned from the solos
      */
-    private void GrammarSolo(){
+    private void GrammarSolo() {
         ChordPart chords = notate.getChordProg();
         MelodyGenerator mgen;
         MelodyPart result;
         boolean rectify = rectifyCheckbox.isSelected();
-        boolean [] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
+        boolean[] include = {chordBox.isSelected(), colorBox.isSelected(), approachBox.isSelected()};
         mgen = new MelodyGenerator(learner, notate, chords, range, mergeCheckbox.isSelected(), rectify, include);
         result = firstOrderButton.isSelected() ? mgen.melody() : mgen.melody2();
         notate.getCurrentMelodyPart().newPasteOver(result, 0);
@@ -776,61 +778,55 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * play
      * play the melody in the current chorus
      */
-    private void play(){
+    private void play() {
         notate.selectAll();
-        notate.playCurrentSelection(true, 
-                                        0, 
-                                        PlayScoreCommand.USEDRUMS, 
-                                        "interval-learning solo");
+        notate.playCurrentSelection(true,
+                0,
+                PlayScoreCommand.USEDRUMS,
+                "interval-learning solo");
         ImproVisor.setPlayEntrySounds(true);
     }
-    
+
     /**
      * saveCounts
      * Saves counts as .counts file
      * @return true if successful
-     * @throws IOException 
+     * @throws IOException
      */
-    public boolean saveCounts() throws IOException{
+    public boolean saveCounts() throws IOException {
         chooser.setSelectedFile(new File(filename));
-        
-        if( chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
-          {
-            if( chooser.getSelectedFile().getName().endsWith(
-                EXTENSION) )
-              {
+
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (chooser.getSelectedFile().getName().endsWith(
+                    EXTENSION)) {
                 filename = chooser.getSelectedFile().getName();
-                
+
                 saveCountsFile(chooser.getSelectedFile().getAbsolutePath());
-              }
-            else
-              {
+            } else {
                 filename = chooser.getSelectedFile().getName() + EXTENSION;
 
                 saveCountsFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
-              }
+            }
             filenameLabel.setText(filename);
             return true;
-          }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * saveCountsFile
      * writes counts to file
      * @param filePath - absolute path of file to be written to
-     * @throws IOException 
+     * @throws IOException
      */
-    private void saveCountsFile(String filePath) throws IOException{
+    private void saveCountsFile(String filePath) throws IOException {
         FileWriter writer = new FileWriter(new File(filePath));
         String s = countsToString();
         writer.write(s);
         writer.close();
     }
-    
+
     /**
      * countsToString
      * Returns String representation of 1st order and 2nd order counts data
@@ -838,55 +834,55 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * Next 25 25X25 arrays contain the 2nd order counts
      * @return String representation of counts data
      */
-    private String countsToString(){
-        return countsToString(learner.getDeg1Counts())+"\n"+countsToString(learner.getDeg2Counts());
+    private String countsToString() {
+        return countsToString(learner.getDeg1Counts()) + "\n" + countsToString(learner.getDeg2Counts());
     }
-    
+
     /**
      * Converts an array to a String
      * @param array - array of counts
      * @return String representation of array
      */
-    private String countsToString(int [][] array){
+    private String countsToString(int[][] array) {
         String result = "";
-        for(int [] row : array){
-            for(int count : row){
-                result += count+"\t";
+        for (int[] row : array) {
+            for (int count : row) {
+                result += count + "\t";
             }
             result += "\n";
         }
         return result;
     }
-    
+
     /**
      * Converts a 3D array to a String
      * (list of 2D arrays)
      * @param threeD - 3D counts array
      * @return String representation of array
      */
-    private String countsToString(int [][][] threeD){
+    private String countsToString(int[][][] threeD) {
         String result = "";
-        for(int [][] twoD : threeD){
+        for (int[][] twoD : threeD) {
             result += countsToString(twoD);
             result += "\n";
         }
         return result;
     }
-    
+
     private void chooseRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseRangeActionPerformed
         RangeChooser rangeChooser = new RangeChooser(notate, range[0], range[1], Constants.OCTAVE);
         range = rangeChooser.getRange();
     }//GEN-LAST:event_chooseRangeActionPerformed
 
     private void toggleViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleViewActionPerformed
-        if(toggleView.getText().equals("Probabilities")){
+        if (toggleView.getText().equals("Probabilities")) {
             toggleView.setText("Counts");
             displayProbabilities = false;
-        }else{
+        } else {
             toggleView.setText("Probabilities");
             displayProbabilities = true;
         }
-        
+
         refreshDisplay();
     }//GEN-LAST:event_toggleViewActionPerformed
 
@@ -894,23 +890,23 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * addAllToTotal
      * Learn from all choruses, adding to running total
      */
-    private void addAllToTotal(){
-        for(int i = 0; i < notate.getScore().size(); ++i){
+    private void addAllToTotal() {
+        for (int i = 0; i < notate.getScore().size(); ++i) {
             MelodyPart learnFromThis = notate.getMelodyPart(notate.getStaveAtTab(i));
             learner.learnFrom(learnFromThis);
         }
         refreshDisplay();
     }
-    
+
     /**
      * addThisToTotal
      * add current chorus to total
      */
-    private void addThisToTotal(){
+    private void addThisToTotal() {
         learner.learnFrom(notate.getCurrentMelodyPart());
         refreshDisplay();
     }
-    
+
     private void clearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllActionPerformed
         clearAll();
     }//GEN-LAST:event_clearAllActionPerformed
@@ -919,11 +915,11 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * clearAll
      * clear all data, refresh display
      */
-    private void clearAll(){
+    private void clearAll() {
         learner.clearAll();
         refreshDisplay();
     }
-    
+
     private void addToTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToTotalActionPerformed
         addToRunningTotal = true;
     }//GEN-LAST:event_addToTotalActionPerformed
@@ -937,18 +933,18 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_generateSoloActionPerformed
 
     private void orderViewToggleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderViewToggleActionPerformed
-        if(orderViewToggle.getText().equals("First Order")){
+        if (orderViewToggle.getText().equals("First Order")) {
             orderViewToggle.setText("Second Order");
             displayOrder = SECOND;
             interval1Slider.setEnabled(true);
-        }else{
+        } else {
             orderViewToggle.setText("First Order");
             displayOrder = FIRST;
             interval1Slider.setEnabled(false);
         }
-        
+
         refreshDisplay();
-        
+
     }//GEN-LAST:event_orderViewToggleActionPerformed
 
     private void interval1SliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_interval1SliderMouseReleased
@@ -957,20 +953,20 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_interval1SliderMouseReleased
 
     private void rectifyCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rectifyCheckboxActionPerformed
-        if(rectifyCheckbox.isSelected()){
+        if (rectifyCheckbox.isSelected()) {
             enableOptions(true);
-        }else{
+        } else {
             enableOptions(false);
         }
     }//GEN-LAST:event_rectifyCheckboxActionPerformed
 
     private void learnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_learnButtonActionPerformed
-        if(!addToRunningTotal){
+        if (!addToRunningTotal) {
             clearAll();
         }
-        if(thisChorusOption.isSelected()){
+        if (thisChorusOption.isSelected()) {
             addThisToTotal();
-        }else{
+        } else {
             addAllToTotal();
         }
     }//GEN-LAST:event_learnButtonActionPerformed
@@ -980,123 +976,121 @@ public class IntervalLearningPanel extends javax.swing.JPanel {
      * enable or disable the chord, color, and approach check boxes
      * @param enable - true to enable, false to disable
      */
-    private void enableOptions(boolean enable){
+    private void enableOptions(boolean enable) {
         chordBox.setEnabled(enable);
         colorBox.setEnabled(enable);
         approachBox.setEnabled(enable);
     }
-    
+
     /**
      * newFile
      * Clear All data, set file name to newFile
      */
-    public void newFile(){
+    public void newFile() {
         clearAll();
         filename = "newFile.counts";
         filenameLabel.setText(filename);
     }
-    
+
     /**
      * addFromFile
      * Add counts from a .counts file
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
-    public void addFromFile() throws FileNotFoundException{
-        if( chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
-        {
+    public void addFromFile() throws FileNotFoundException {
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File f = chooser.getSelectedFile();
             addToCountsAndUpdateProbabilities(f);
         }
     }
-    
+
     /**
      * Add from file, adding to counts and updating the probabilities
      * @param f - file to add counts from
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
-    private void addToCountsAndUpdateProbabilities(File f) throws FileNotFoundException{
+    private void addToCountsAndUpdateProbabilities(File f) throws FileNotFoundException {
         learner.learnFrom(f);
         refreshDisplay();
     }
-    
+
     /**
      * open
      * Loads a .counts file (Clears all data first)
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
-    public void open() throws FileNotFoundException{
-        if( chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
-        {
+    public void open() throws FileNotFoundException {
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File f = chooser.getSelectedFile();
             open(f);
         }
     }
-    
-    public void open(File f) throws FileNotFoundException{
+
+    public void open(File f) throws FileNotFoundException {
         filename = f.getName();
         filenameLabel.setText(filename);
         updateCountsAndProbabilities(f);
     }
-    
+
     /**
      * updateCountsAndProbabilities
      * Clear All data, then add counts from file
      * @param f - file to be loaded
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
-    private void updateCountsAndProbabilities(File f) throws FileNotFoundException{
+    private void updateCountsAndProbabilities(File f) throws FileNotFoundException {
         clearAll();
         learner.learnFrom(f);
         refreshDisplay();
     }
-    
+
     /**
      * refreshDisplay
      * refreshes the display matrix
      */
-    private void refreshDisplay(){
+    private void refreshDisplay() {
         //int x = IntervalLearner.intervalToIndex(interval1);
         DecimalFormat df = new DecimalFormat("#.##");
-        if(displayProbabilities){
-            if(displayOrder == FIRST){
-                double [][] probabilities = learner.getDeg1Probs();
-                for(int row = 0; row < probabilities.length; row++){
-                    for(int column = 0; column < probabilities[row].length; column++){
-                        probabilityLabels[row+1][column+1].setText(df.format(probabilities[row][column]));
-                        probabilityLabels[row+1][column+1].setBackground(color(probabilities[row][column]));
+        if (displayProbabilities) {
+            if (displayOrder == FIRST) {
+                double[][] probabilities = learner.getDeg1Probs();
+                for (int row = 0; row < probabilities.length; row++) {
+                    for (int column = 0; column < probabilities[row].length; column++) {
+                        probabilityLabels[row + 1][column + 1].setText(df.format(probabilities[row][column]));
+                        probabilityLabels[row + 1][column + 1].setBackground(color(probabilities[row][column]));
                     }
                 }
-            }else{
-                double [][] crossSection = learner.getProbsCrossSection(interval1);
-                for(int y = 0; y < crossSection.length; y++){
-                    for(int z = 0; z < crossSection[y].length; z++){
-                        probabilityLabels[y+1][z+1].setText(df.format(crossSection[y][z]));
-                        probabilityLabels[y+1][z+1].setBackground(color(crossSection[y][z]));
-                    }
-                }
-            }
-            
-        }else{
-            if(displayOrder == FIRST){
-                int [][] counts = learner.getDeg1Counts();
-                double [][] probabilities = learner.getDeg1Probs();
-                for(int row = 0; row < counts.length; row++){
-                    for(int column = 0; column < counts[row].length; column++){
-                        probabilityLabels[row+1][column+1].setText(Integer.toString(counts[row][column]));
-                        probabilityLabels[row+1][column+1].setBackground(color(probabilities[row][column]));
-                    }
-                }
-            }else{
-                int [][] crossSection = learner.getCountsCrossSection(interval1);
-                double [][] probsCrossSection = learner.getProbsCrossSection(interval1);
-                for(int y = 0; y < crossSection.length; y++){
-                    for(int z = 0; z < crossSection[y].length; z++){
-                        probabilityLabels[y+1][z+1].setText(Integer.toString(crossSection[y][z]));
-                        probabilityLabels[y+1][z+1].setBackground(color(probsCrossSection[y][z]));
+            } else {
+                double[][] crossSection = learner.getProbsCrossSection(interval1);
+                for (int y = 0; y < crossSection.length; y++) {
+                    for (int z = 0; z < crossSection[y].length; z++) {
+                        probabilityLabels[y + 1][z + 1].setText(df.format(crossSection[y][z]));
+                        probabilityLabels[y + 1][z + 1].setBackground(color(crossSection[y][z]));
                     }
                 }
             }
-            
+
+        } else {
+            if (displayOrder == FIRST) {
+                int[][] counts = learner.getDeg1Counts();
+                double[][] probabilities = learner.getDeg1Probs();
+                for (int row = 0; row < counts.length; row++) {
+                    for (int column = 0; column < counts[row].length; column++) {
+                        probabilityLabels[row + 1][column + 1].setText(Integer.toString(counts[row][column]));
+                        probabilityLabels[row + 1][column + 1].setBackground(color(probabilities[row][column]));
+                    }
+                }
+            } else {
+                int[][] crossSection = learner.getCountsCrossSection(interval1);
+                double[][] probsCrossSection = learner.getProbsCrossSection(interval1);
+                for (int y = 0; y < crossSection.length; y++) {
+                    for (int z = 0; z < crossSection[y].length; z++) {
+                        probabilityLabels[y + 1][z + 1].setText(Integer.toString(crossSection[y][z]));
+                        probabilityLabels[y + 1][z + 1].setBackground(color(probsCrossSection[y][z]));
+                    }
+                }
+            }
+
         }
     }
 

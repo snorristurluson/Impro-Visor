@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -20,6 +20,7 @@
 package imp.cluster;
 
 import static imp.Constants.BEAT;
+
 import imp.cluster.motif.CreateMotifGrammar;
 import imp.data.ChordPart;
 import imp.data.Duration;
@@ -27,12 +28,14 @@ import imp.data.Note;
 import imp.data.Unit;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
+
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
+
 import polya.Polylist;
 
 
@@ -49,9 +52,9 @@ public class CreateGrammar implements imp.Constants {
     private static boolean MOTIF_GRAMMAR_ON = true;
     // properties to set for motif grammar
     private static int MOTIF_WINDOW_SIZE = 4;
-    private static double MOTIFNESS      = 0.7;
-    
-    
+    private static double MOTIFNESS = 0.7;
+
+
     private static final int SEG_LENGTH = 3;  //length of the word SEG
     private static final int XNOTATIONDELIMITER_LENGTH = 11;
     private static final int BRICKTYPEDELIMITER_LENGTH = 12; //"(Brick-type ".length
@@ -64,22 +67,21 @@ public class CreateGrammar implements imp.Constants {
      * calls clustering algorithm on the productions and writes the results
      * into the grammar
      */
-    public static void create(ChordPart chordProg, 
+    public static void create(ChordPart chordProg,
                               StringWriter inWriter,
                               String outFile,
-                              int repsPerCluster, 
-                              boolean Markov, 
-                              int markovLength, 
-                              boolean useRelative, 
+                              int repsPerCluster,
+                              boolean Markov,
+                              int markovLength,
+                              boolean useRelative,
                               boolean useAbstract,
-                              Notate notate) 
-      {
+                              Notate notate) {
         notate.setLickGenStatus("Writing grammar rules: " + outFile);
 
         //make initial calls to read from the file
         Polylist[] rules = getRulesFromWriter(inWriter);
         String[] ruleStrings = getRuleStringsFromWriter(inWriter);
-        
+
         // FOR TESTING
         /*
         System.out.println("------------BEGIN INPUTTED RULE PRINTING---------");
@@ -88,7 +90,7 @@ public class CreateGrammar implements imp.Constants {
         }
         System.out.println("-------------END INPUTTED RULE PRINTING----------");
         */
-        
+
         //initialize vectors
         Vector<DataPoint> dataPoints = new Vector<DataPoint>();
 
@@ -108,22 +110,22 @@ public class CreateGrammar implements imp.Constants {
         /**
          * TODO: change "magic numbers" to user input
          */
-        if(MOTIF_GRAMMAR_ON){
-            
-            int magicWindowSizeSlide = MOTIF_WINDOW_SIZE;
-            double magicMotifness    = MOTIFNESS;
+        if (MOTIF_GRAMMAR_ON) {
 
-            
+            int magicWindowSizeSlide = MOTIF_WINDOW_SIZE;
+            double magicMotifness = MOTIFNESS;
+
+
             //System.out.println("Motifness:" + magicMotifness + "\tWindow Size: " + magicWindowSizeSlide);
-            
-            
+
+
 //            Polylist[] motifGrammar = CreateMotifGrammar.create(repsPerCluster,
 //                    clusters, dataPoints, magicWindowSizeSlide, magicWindowSizeSlide, magicMotifness);
 //        
 //            CreateMotifGrammar.writeMotifGrammar(motifGrammar, outFile);
         }
-        
-        
+
+
         //create grammar with Markov chains and create soloist file
         if (Markov) {
 
@@ -188,8 +190,8 @@ public class CreateGrammar implements imp.Constants {
 
     }
 
-    public static Vector<NGram> getChains(Vector<Vector<DataPoint>> orders, 
-                                          Cluster[] clusters, 
+    public static Vector<NGram> getChains(Vector<Vector<DataPoint>> orders,
+                                          Cluster[] clusters,
                                           int chainLength) {
         Vector<NGram> ngrams = new Vector<NGram>();
         //last marks whether the ngram we are creating ends a chorus
@@ -247,22 +249,22 @@ public class CreateGrammar implements imp.Constants {
         }
     }
 
-    public static void setMotifGrammarUse(boolean status){
+    public static void setMotifGrammarUse(boolean status) {
         MOTIF_GRAMMAR_ON = status;
         //System.out.println("Motif Grammar use set to: " + MOTIF_GRAMMAR_ON);
     }
-    
-    public static void setMotifness(float m){
+
+    public static void setMotifness(float m) {
         MOTIFNESS = m;
         //System.out.printf("Motifness set to: %1.2f\n", MOTIFNESS);
 
     }
-    
-    public static void setMotifWindowSizeAndSlide(int sizeAndSlide){
+
+    public static void setMotifWindowSizeAndSlide(int sizeAndSlide) {
         MOTIF_WINDOW_SIZE = sizeAndSlide;
         //System.out.println("Window size and slide set to: " +  MOTIF_WINDOW_SIZE);
     }
-    
+
     public static Vector<float[]> getChainProbabilitiesForGrammar(Vector<NGram> ngrams) {
         for (int i = 0; i < ngrams.size(); i++) {
             NGram current = ngrams.get(i);
@@ -307,11 +309,11 @@ public class CreateGrammar implements imp.Constants {
         return chains;
     }
 
-    public static void writeGrammarWithChains(Vector<NGram> ngrams, 
-                                              Vector<float[]> chains, 
+    public static void writeGrammarWithChains(Vector<NGram> ngrams,
+                                              Vector<float[]> chains,
                                               DataPoint[] reps,
-                                              Cluster[] clusters, 
-                                              String outFile, 
+                                              Cluster[] clusters,
+                                              String outFile,
                                               ChordPart chordProg,
                                               boolean useRelative,
                                               boolean useAbstract) {
@@ -466,13 +468,13 @@ public class CreateGrammar implements imp.Constants {
                 String rule = null;
                 if (useRelative) {
                     writeRule(reps[i].getRelativePitchMelody(), clusterNumber, numAppearances, out);
-                } 
+                }
                 if (useAbstract) {
                     writeRule(reps[i].getObjData(), clusterNumber, numAppearances, out);
                 }
                 if (!(useRelative || useAbstract)) {
                     ErrorLog.log(ErrorLog.COMMENT, "No note option specified."
-                                    + "Please try again using relative pitches and/or abstract melodies for windows");
+                            + "Please try again using relative pitches and/or abstract melodies for windows");
                     return;
                 }
             }
@@ -482,7 +484,7 @@ public class CreateGrammar implements imp.Constants {
             System.out.println("IO EXCEPTION!" + e.toString());
         }
     }
-    
+
     public static void writeRule(String rule, int clusterNumber, float numAppearances, BufferedWriter out) {
         try {
             out.write("(rule (Q"
@@ -491,7 +493,7 @@ public class CreateGrammar implements imp.Constants {
                     + rule
                     + ") "
                     + df.format(numAppearances / REPS_PER_CLUSTER)
-                    + ")\n");          
+                    + ")\n");
         } catch (Exception e) {
             System.out.println("IO exception: " + e.toString());
         }
@@ -558,7 +560,7 @@ public class CreateGrammar implements imp.Constants {
     }
 
     public static Vector<Double> getSimilaritiesToHead(Vector<DataPoint> dataPoints,
-            Vector<DataPoint> headData) {
+                                                       Vector<DataPoint> headData) {
         Vector<Double> values = new Vector<Double>();
         for (int i = 0; i < dataPoints.size(); i++) {
             DataPoint d = dataPoints.get(i);
@@ -595,7 +597,7 @@ public class CreateGrammar implements imp.Constants {
         Vector<String> chords = new Vector<String>();
 
         //we process the rule string, starting at the end and working backward
-        
+
         //extract chord data
         int stopIndex = ruleString.length();
         if (ruleString.contains("CHORDS")) {
@@ -626,7 +628,7 @@ public class CreateGrammar implements imp.Constants {
 
         //create new melody part with the original melody and the start index
         IndexedMelodyPart exactMelody = new IndexedMelodyPart(melody);
-        
+
         //make sure there are no merged rests that last too long
         int slots = segLength * BEAT;
         if (exactMelody.getSize() > slots) {
@@ -636,12 +638,12 @@ public class CreateGrammar implements imp.Constants {
         //remove the exact melody from the string now that we've extracted it
         ruleString = ruleString.substring(0, stopIndex - 1);
         ruleString = removeTrailingSpaces(ruleString);
-        
+
         //extract brick type data
         //string "Brick-type" denotes where the brick type information is
         stopIndex = ruleString.indexOf("(Brick-type ");
         String brickType = ruleString.substring(stopIndex + BRICKTYPEDELIMITER_LENGTH, ruleString.length() - 1); //-1 to chop off closing parenthesis
-        
+
         //remove the brick type data from the string now that we've extracted it
         ruleString = ruleString.substring(0, stopIndex - 1);
         ruleString = removeTrailingSpaces(ruleString);
@@ -734,25 +736,25 @@ public class CreateGrammar implements imp.Constants {
 
 
         int exactStartBeat = getStartBeat(exactMelody);
-        DataPoint d = new DataPoint(exactStartBeat, 
-                                    consonance, 
-                                    noteCount, 
-                                    restDuration, 
-                                    averageMaxSlope / (numSegments),
-                                    startBeat, 
-                                    numSegments, 
-                                    i, 
-                                    ruleString, 
-                                    segLength,
-                                    starter, 
-                                    exactMelody, 
-                                    relativePitchMelodyString, 
-                                    brickType, 
-                                    head, 
-                                    chorusNumber, 
-                                    chords, 
-                                    startTied, 
-                                    endTied);
+        DataPoint d = new DataPoint(exactStartBeat,
+                consonance,
+                noteCount,
+                restDuration,
+                averageMaxSlope / (numSegments),
+                startBeat,
+                numSegments,
+                i,
+                ruleString,
+                segLength,
+                starter,
+                exactMelody,
+                relativePitchMelodyString,
+                brickType,
+                head,
+                chorusNumber,
+                chords,
+                startTied,
+                endTied);
         return d;
     }
 
@@ -818,8 +820,7 @@ public class CreateGrammar implements imp.Constants {
     }
 
     public static Polylist readRule(Polylist rule) {
-        if( rule.isEmpty() )
-        {
+        if (rule.isEmpty()) {
             return rule; //shouldn't happen, but has
         }
         Polylist result = Polylist.nil;
@@ -885,13 +886,13 @@ public class CreateGrammar implements imp.Constants {
             rulesArray[i] = rulesList.get(i);
             rulesArray[i] = readRule(rulesArray[i]);
         }
-        
+
         return rulesArray;
     }
     // Loads the grammar rules from in a polylist
 
     public static String[] getRuleStringsFromWriter(StringWriter inWriter) {
-        
+
         ArrayList<String> stringsList = new ArrayList<String>();
         String input = inWriter.toString();
         String[] inputStrings = input.split("\n");
@@ -971,9 +972,9 @@ public class CreateGrammar implements imp.Constants {
         for (int i = 0; i < clusters.length; i++) {
             totalPoints += clusters[i].getNumDataPoints();
         }
-        
+
         int averageClusterSize = totalPoints / clusters.length;
-        
+
         //get number of clusters that are big enough
         //currently we are keeping all clusters
         int numGoodClusters = 0;
@@ -1005,14 +1006,13 @@ public class CreateGrammar implements imp.Constants {
      * Writes 6 objects in order:
      * datapoints, clusters, clusterSets, transitions, reverseTransitions, outlines
      */
-    public static void createSoloistFile(Vector<DataPoint> dataPoints, 
+    public static void createSoloistFile(Vector<DataPoint> dataPoints,
                                          Cluster[] clusters,
-                                         Vector<ClusterSet> clusterSets, 
+                                         Vector<ClusterSet> clusterSets,
                                          Vector<NGramWithTransitions> transitions,
-                                         Vector<NGramWithTransitions> reverseTransitions, 
-                                         Vector<Vector<ClusterSet>> outlines, 
-                                         File outFile) 
-      {
+                                         Vector<NGramWithTransitions> reverseTransitions,
+                                         Vector<Vector<ClusterSet>> outlines,
+                                         File outFile) {
         FileOutputStream fileOut;
         ObjectOutputStream objOut;
         try {
@@ -1055,9 +1055,9 @@ public class CreateGrammar implements imp.Constants {
     //Takes the numbers of the clusters and returns vectors of ClusterSets
     //NOTE: was private
     public static Vector<Vector<ClusterSet>> getOutlines(Vector<Vector<DataPoint>> orders,
-            Cluster[] clusters,
-            Vector<ClusterSet> clusterSets) {
-        
+                                                         Cluster[] clusters,
+                                                         Vector<ClusterSet> clusterSets) {
+
         Vector<Vector<ClusterSet>> outlines = new Vector<Vector<ClusterSet>>();
 
         for (int i = 0; i < orders.size(); i++) {
@@ -1097,7 +1097,7 @@ public class CreateGrammar implements imp.Constants {
     }
 
     private static Vector<NGramWithTransitions> getTransitions(Vector<NGram> ngrams,
-            Cluster[] clusters) {
+                                                               Cluster[] clusters) {
 
         Vector<NGramWithTransitions> transitions = new Vector<NGramWithTransitions>();
         for (int i = 0; i < clusters.length; i++) {
@@ -1223,17 +1223,14 @@ public class CreateGrammar implements imp.Constants {
 
             //sort the points by distance from averagePoint
             Vector<DataPoint> points = tempCluster.getDataPoints();
-            
+
             // This causes an exception sometime. Do we really need it?
             //java.lang.IllegalArgumentException: Comparison method violates its general contract!
-            try
-              {
-              Collections.sort((List) points, new DataPointDistanceComparer());
-              }
-            catch( Exception e )
-              {
+            try {
+                Collections.sort((List) points, new DataPointDistanceComparer());
+            } catch (Exception e) {
                 // Do nothing for now
-              }
+            }
 
             //remove duplicates
             for (int j = 0; j < points.size() - 1; j++) {

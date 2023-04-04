@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -35,7 +35,7 @@ import imp.util.Trace;
  * @see         Part
  * @see         CopyCommand
  * @see         PasteCommand
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class CutCommand implements Command {
 
@@ -48,7 +48,7 @@ public class CutCommand implements Command {
      * the undoable command used to delete the units
      */
     private DeleteUnitsCommand deleteUnits;
-    
+
     /**
      * the Part to copy into
      */
@@ -94,7 +94,7 @@ public class CutCommand implements Command {
      * @param undoable          a boolean saying if this can be undone
      */
     public CutCommand(Part source, Part dest, int startSlot, int endSlot,
-                                                        boolean undoable) {
+                      boolean undoable) {
         this(source, dest, startSlot, endSlot);
         this.undoable = undoable;
     }
@@ -115,13 +115,13 @@ public class CutCommand implements Command {
         while(i.hasNext())
             dest.addUnit(i.next());
         */
-        
+
         Command copyCommand = new CopyCommand(source, dest, startSlot, endSlot);
         copyCommand.execute();
 
         deleteUnits = new DeleteUnitsCommand(source, startSlot, endSlot);
         deleteUnits.execute();
-        if(!deleteUnits.isUndoable()){
+        if (!deleteUnits.isUndoable()) {
             undoable = false;
         }
     }

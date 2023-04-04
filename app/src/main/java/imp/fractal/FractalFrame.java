@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -30,6 +30,7 @@ import imp.gui.Notate;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -38,7 +39,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+
 import static javax.swing.JFileChooser.SAVE_DIALOG;
+
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -50,37 +53,37 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class FractalFrame extends javax.swing.JDialog {
     private final Notate notate;
     private final CommandManager cm;
-    
+
     private String EXTENSION = ".fractal";
     private JFileChooser chooser;
     private String filename;
-    
+
     private Fractal fractal;
-    
+
     /**
      * Creates new form FractalFrame
      */
     public FractalFrame(Notate notate, CommandManager cm) {
         this.notate = notate;
         this.cm = cm;
-        
+
         this.setTitle("Fractal Improvisation");
-        
+
         initComponents();
-        
+
         // set the file chooser and add the detection of overriding a file
-        chooser = new JFileChooser(){
+        chooser = new JFileChooser() {
             @Override
-            public void approveSelection(){
+            public void approveSelection() {
                 File f = getSelectedFile();
-                if(!f.getAbsolutePath().endsWith(EXTENSION))
-                    f = new File(f.getAbsolutePath()+EXTENSION);
-                if(f.exists() && getDialogType() == SAVE_DIALOG){
+                if (!f.getAbsolutePath().endsWith(EXTENSION))
+                    f = new File(f.getAbsolutePath() + EXTENSION);
+                if (f.exists() && getDialogType() == SAVE_DIALOG) {
                     int result = JOptionPane.showConfirmDialog(this,
-                                                               "The file exists, overwrite?",
-                                                               "Existing file",
-                                                               JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch(result){
+                            "The file exists, overwrite?",
+                            "Existing file",
+                            JOptionPane.YES_NO_CANCEL_OPTION);
+                    switch (result) {
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();
                             return;
@@ -94,17 +97,17 @@ public class FractalFrame extends javax.swing.JDialog {
                     }
                 }
                 super.approveSelection();
-            }        
+            }
         };
-        
+
         chooser.setCurrentDirectory(ImproVisor.getFractalDirectory());
-        
+
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Fractal Files",
-                                                                     "fractal");
+                "fractal");
         chooser.setFileFilter(filter);
-        
+
         filename = "My.fractal";
-       
+
         this.fractal = new Fractal(ImproVisor.getFractalFile());
         setTextBoxes();
     }
@@ -492,8 +495,10 @@ public class FractalFrame extends javax.swing.JDialog {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -528,64 +533,65 @@ public class FractalFrame extends javax.swing.JDialog {
         playCurrentSelection();
     }//GEN-LAST:event_multDivideButtonActionPerformed
 
-    private MelodyPart fractalSolo(){
+    private MelodyPart fractalSolo() {
         setProbabilities();
         setTextBoxes();
-        int numTimes = (Integer)numDivisionsSpinner.getValue();
+        int numTimes = (Integer) numDivisionsSpinner.getValue();
         MelodyPart fractalSolo = fractal.fractalImprovise(notate.getCurrentMelodyPart(), numTimes);
         notate.cm.execute(new RectifyPitchesCommand(fractalSolo,
-                                                    0,
-                                                    fractalSolo.getSize() - 1,
-                                                    notate.getChordProg(),
-                                                    false,
-                                                    false,
-                                                    true,
-                                                    true,
-                                                    true,
-                                                    true));
+                0,
+                fractalSolo.getSize() - 1,
+                notate.getChordProg(),
+                false,
+                false,
+                true,
+                true,
+                true,
+                true));
         return fractalSolo;
     }
-    
-    private void putSoloInNewChorus(MelodyPart fractalSolo){
+
+    private void putSoloInNewChorus(MelodyPart fractalSolo) {
         notate.addChorus(fractalSolo);
     }
-    
-    private void putSoloInCurrentChorus(MelodyPart fractalSolo){
+
+    private void putSoloInCurrentChorus(MelodyPart fractalSolo) {
         notate.getCurrentMelodyPart().newPasteOver(fractalSolo, 0);
     }
-    
-    private void playCurrentSelection(){
-        notate.playCurrentSelection(true, 
-                                    0, 
-                                    true, 
-                                    "Playing fractal line");
+
+    private void playCurrentSelection() {
+        notate.playCurrentSelection(true,
+                0,
+                true,
+                "Playing fractal line");
     }
+
     //for use in trading
-    public void dividePastePlay(){
+    public void dividePastePlay() {
         MelodyPart fractalSolo = fractalSolo();
         putSoloInCurrentChorus(fractalSolo);
         playCurrentSelection();
     }
-    
+
     private void singleDivideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleDivideButtonActionPerformed
         setProbabilities();
         setTextBoxes();
         MelodyPart fractalSolo = fractal.fractalImprovise(notate.getCurrentMelodyPart(), 1);
         notate.cm.execute(new RectifyPitchesCommand(fractalSolo,
-                                                    0,
-                                                    fractalSolo.getSize() - 1,
-                                                    notate.getChordProg(),
-                                                    false,
-                                                    false,
-                                                    true,
-                                                    true,
-                                                    true,
-                                                    true));
+                0,
+                fractalSolo.getSize() - 1,
+                notate.getChordProg(),
+                false,
+                false,
+                true,
+                true,
+                true,
+                true));
         notate.addChorus(fractalSolo);
-        notate.playCurrentSelection(true, 
-                                    0, 
-                                    true, 
-                                    "Playing fractal line");
+        notate.playCurrentSelection(true,
+                0,
+                true,
+                "Playing fractal line");
     }//GEN-LAST:event_singleDivideButtonActionPerformed
 
     private void openFileMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileMIActionPerformed
@@ -629,7 +635,7 @@ public class FractalFrame extends javax.swing.JDialog {
     }//GEN-LAST:event_tripleTextActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        
+
         closeWindow();
     }//GEN-LAST:event_formWindowClosed
 
@@ -689,9 +695,8 @@ public class FractalFrame extends javax.swing.JDialog {
     /**
      * Opens the open file dialog
      */
-    public void open(){
-        if( chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION )
-        {
+    public void open() {
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             String newFilename = chooser.getSelectedFile().getName();
             String fractalStr = "";
             try {
@@ -699,84 +704,72 @@ public class FractalFrame extends javax.swing.JDialog {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(TransformPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if(fractalStr.length() > 0)
-            {
+            if (fractalStr.length() > 0) {
                 fractal = new Fractal(fractalStr);
                 setTextBoxes();
             }
         }
     }
-    
+
     /**
      * Opens the file chooser to save a new/existing file
-     * @return 
+     * @return
      */
-    public boolean saveCurrentFractal()
-    {
+    public boolean saveCurrentFractal() {
         chooser.setSelectedFile(new File(filename));
-        
-        if( chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION )
-          {
-            if( chooser.getSelectedFile().getName().endsWith(
-                EXTENSION) )
-              {
+
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            if (chooser.getSelectedFile().getName().endsWith(
+                    EXTENSION)) {
                 filename = chooser.getSelectedFile().getName();
 
                 saveFractalFile(chooser.getSelectedFile().getAbsolutePath());
-              }
-            else
-              {
+            } else {
                 filename = chooser.getSelectedFile().getName() + EXTENSION;
 
                 saveFractalFile(chooser.getSelectedFile().getAbsolutePath() + EXTENSION);
-              }
+            }
             return true;
-          }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * Saves a file
      * @param filepath
-     * @return 
+     * @return
      */
     private int saveFractalFile(String filepath) {
-        try
-        {
+        try {
             String content = fractal.toString();
             FileWriter out = new FileWriter(new File(filepath));
             out.write(content);
             out.close();
             return 0;
-        }
-        catch( IOException e )
-        {
+        } catch (IOException e) {
             ErrorLog.log(ErrorLog.WARNING, "Error saving to " + filename);
             return -1;
         }
     }
-    
+
     /**
      * Loads the probabilities from a file
      * @param file
-     * @return 
+     * @return
      */
-    private String loadProbabilities(File file)
-    {
+    private String loadProbabilities(File file) {
         String probString = fileToString(file);
         fractal.setProbabilities(probString);
         return probString;
     }
-    
+
     /**
      * Converts a file to a string that can be parsed
      * @param file
-     * @return 
+     * @return
      */
-    private static String fileToString(File file){
+    private static String fileToString(File file) {
         String probStr = "";
         try {
             probStr = new Scanner(file).useDelimiter("\\Z").next();
@@ -785,26 +778,25 @@ public class FractalFrame extends javax.swing.JDialog {
         }
         return probStr;
     }
-    
+
     /**
      * Gets the probabilities stored in Fractal and puts them into the
      * text boxes
      */
-    private void setTextBoxes()
-    {
+    private void setTextBoxes() {
         double tripletProb = fractal.getTripletProb();
         tripleText.setText(String.valueOf(tripletProb));
-        
+
         double twoProb = 1.0 - tripletProb;
         doubleText.setText(String.valueOf(twoProb));
-        
+
         wholeDivText.setText(String.valueOf(fractal.getWholeDivProb()));
         halfDivText.setText(String.valueOf(fractal.getHalfDivProb()));
         quarterDivText.setText(String.valueOf(fractal.getQuarterDivProb()));
         eighthDivText.setText(String.valueOf(fractal.getEighthDivProb()));
         sixteenthDivText.setText(String.valueOf(fractal.getSixteenthDivProb()));
         defaultDivText.setText(String.valueOf(fractal.getDefaultDivProb()));
-        
+
         wholeRestText.setText(String.valueOf(fractal.getWholeRestProb()));
         halfRestText.setText(String.valueOf(fractal.getHalfRestProb()));
         quarterRestText.setText(String.valueOf(fractal.getQuarterRestProb()));
@@ -812,25 +804,24 @@ public class FractalFrame extends javax.swing.JDialog {
         sixteenthRestText.setText(String.valueOf(fractal.getSixteenthRestProb()));
         defaultRestText.setText(String.valueOf(fractal.getDefaultRestProb()));
     }
-    
+
     /**
      * Gets the values from the text boxes and sets the probabilities in Fractal
      */
-    private void setProbabilities()
-    {
+    private void setProbabilities() {
         double triplet = parseProb(tripleText.getText());
-        
+
         doubleText.setText(String.valueOf(1.0 - triplet));
-                
+
         fractal.setTripletProb(triplet);
-        
+
         fractal.setWholeDivProb(parseProb(wholeDivText.getText()));
         fractal.setHalfDivProb(parseProb(halfDivText.getText()));
         fractal.setQuarterDivProb(parseProb(quarterDivText.getText()));
         fractal.setEighthDivProb(parseProb(eighthDivText.getText()));
         fractal.setSixteenthDivProb(parseProb(sixteenthDivText.getText()));
         fractal.setDefaultDivProb(parseProb(defaultDivText.getText()));
-        
+
         fractal.setWholeRestProb(parseProb(wholeRestText.getText()));
         fractal.setHalfRestProb(parseProb(halfRestText.getText()));
         fractal.setQuarterRestProb(parseProb(quarterRestText.getText()));
@@ -838,22 +829,21 @@ public class FractalFrame extends javax.swing.JDialog {
         fractal.setSixteenthRestProb(parseProb(sixteenthRestText.getText()));
         fractal.setDefaultRestProb(parseProb(defaultRestText.getText()));
     }
-    
+
     /**
      * Converts a string to a double.
      * If it is empty, returns 0.0
      * @param text
-     * @return 
+     * @return
      */
-    private double parseProb(String text)
-    {
-        if(text.isEmpty()){
+    private double parseProb(String text) {
+        if (text.isEmpty()) {
             return 0.0;
         } else {
             return Double.parseDouble(text);
         }
     }
-    
+
     /**
      * Closes the Fractal Frame
      */

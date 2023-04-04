@@ -3,13 +3,11 @@ package imp.audio;
 import java.io.*;
 
 /**
- *
  * @author Anna Turner
  * @author Brian Kwak
  * @author mkyong, from
  * http://www.mkyong.com/java/how-to-detect-os-in-java-systemgetpropertyosname/
- * @author
- * http://stackoverflow.com/questions/54686/how-to-get-a-list-of-current-open-windows-process-with-java
+ * @author http://stackoverflow.com/questions/54686/how-to-get-a-list-of-current-open-windows-process-with-java
  * @since June 27 2013
  */
 public class SCHandler {
@@ -21,7 +19,7 @@ public class SCHandler {
 
     /**
      * According to OS, open SuperCollider.
-     *
+     * <p>
      * The Startup file included in the download runs automatically upon opening
      * of SC.
      */
@@ -54,12 +52,12 @@ public class SCHandler {
                     firstTimeOpen = false;
                 } else if (!isRunning(process)) { // OK to open again
                     openSCHelperWindows();
-                } 
+                }
             } else if (isOsX) {
                 String dir = System.getProperty("user.dir");
 //                System.out.println("Attempting to open Pitch Tracker : " + dir + "/sc/PitchTracker.app");
                 process = runTime.exec("open " + dir + "/sc/PitchTracker619.app");
-                
+
             } else { // is linux
                 process = null;
             }

@@ -1,24 +1,24 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
- 
+
 package imp.gui;
 
 import java.awt.Image;
@@ -30,7 +30,7 @@ import java.awt.Toolkit;
  *
  * @see     Stave
  *
- * @author  Andrew Sorensen, Andrew Brown, Adam Kirby
+ * @author Andrew Sorensen, Andrew Brown, Adam Kirby
  * @version 0.0.1, 8th July 2001
  */
 public class ToolkitImages implements Images {
@@ -70,7 +70,7 @@ public class ToolkitImages implements Images {
     private final Image[] natural;
 
     private final Image semibreveRest;
-    
+
     private final Image minimRest;
 
     private final Image crotchetRest;
@@ -78,7 +78,7 @@ public class ToolkitImages implements Images {
     private final Image quaverRest;
 
     private final Image semiquaverRest;
-    
+
     private final Image demisemiquaverRest;
 
     private final Image smallBox;
@@ -102,28 +102,28 @@ public class ToolkitImages implements Images {
     private final Image eight;
 
     private final Image nine;
-    
+
     private final Image zero;
 
     private final Image tieOver;
 
     private final Image tieUnder;
-    
+
     private final Image tupletBracket;
-    
+
     private final Image beatBracket;
-    
+
     private final Image splash;
 
     private static ToolkitImages instance = null;
-    
+
     public static ToolkitImages getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new ToolkitImages();
-        
+
         return instance;
     }
-    
+
     /**
      * Constructs a set of stave images.
      */
@@ -134,160 +134,160 @@ public class ToolkitImages implements Images {
                 Stave.class.getResource("/graphics/trebleClef.png"));
         bassClef = toolkit.getImage(
                 Stave.class.getResource("/graphics/bassClef.png"));
-        
+
         /**
          * Load the notes into arrays where
          * Black = 0, Red = 1, Green = 2, Blue =3
          */
         crotchetDown = new Image[4];
         crotchetDown[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/crotchetDown.png"));
+                Stave.class.getResource("/graphics/blacknotes/crotchetDown.png"));
         crotchetDown[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/crotchetDown.png"));
+                Stave.class.getResource("/graphics/rednotes/crotchetDown.png"));
         crotchetDown[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/crotchetDown.png"));
+                Stave.class.getResource("/graphics/greennotes/crotchetDown.png"));
         crotchetDown[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/crotchetDown.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/crotchetDown.png"));
+
         crotchetUp = new Image[4];
         crotchetUp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/crotchetUp.png"));
+                Stave.class.getResource("/graphics/blacknotes/crotchetUp.png"));
         crotchetUp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/crotchetUp.png"));
+                Stave.class.getResource("/graphics/rednotes/crotchetUp.png"));
         crotchetUp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/crotchetUp.png"));
+                Stave.class.getResource("/graphics/greennotes/crotchetUp.png"));
         crotchetUp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/crotchetUp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/crotchetUp.png"));
+
         filledNoteHead = new Image[4];
         filledNoteHead[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/filledNoteHead.png"));
+                Stave.class.getResource("/graphics/blacknotes/filledNoteHead.png"));
         filledNoteHead[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/filledNoteHead.png"));
+                Stave.class.getResource("/graphics/rednotes/filledNoteHead.png"));
         filledNoteHead[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/filledNoteHead.png"));
+                Stave.class.getResource("/graphics/greennotes/filledNoteHead.png"));
         filledNoteHead[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/filledNoteHead.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/filledNoteHead.png"));
+
         quaverDown = new Image[4];
         quaverDown[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/quaverDown.png"));
+                Stave.class.getResource("/graphics/blacknotes/quaverDown.png"));
         quaverDown[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/quaverDown.png"));
+                Stave.class.getResource("/graphics/rednotes/quaverDown.png"));
         quaverDown[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/quaverDown.png"));
+                Stave.class.getResource("/graphics/greennotes/quaverDown.png"));
         quaverDown[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/quaverDown.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/quaverDown.png"));
+
         quaverUp = new Image[4];
         quaverUp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/quaverUp.png"));
+                Stave.class.getResource("/graphics/blacknotes/quaverUp.png"));
         quaverUp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/quaverUp.png"));
+                Stave.class.getResource("/graphics/rednotes/quaverUp.png"));
         quaverUp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/quaverUp.png"));
+                Stave.class.getResource("/graphics/greennotes/quaverUp.png"));
         quaverUp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/quaverUp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/quaverUp.png"));
+
         semiquaverDown = new Image[4];
         semiquaverDown[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/semiquaverDown.png"));
+                Stave.class.getResource("/graphics/blacknotes/semiquaverDown.png"));
         semiquaverDown[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/semiquaverDown.png"));
+                Stave.class.getResource("/graphics/rednotes/semiquaverDown.png"));
         semiquaverDown[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/semiquaverDown.png"));
+                Stave.class.getResource("/graphics/greennotes/semiquaverDown.png"));
         semiquaverDown[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/semiquaverDown.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/semiquaverDown.png"));
+
         semiquaverUp = new Image[4];
         semiquaverUp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/semiquaverUp.png"));
+                Stave.class.getResource("/graphics/blacknotes/semiquaverUp.png"));
         semiquaverUp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/semiquaverUp.png"));
+                Stave.class.getResource("/graphics/rednotes/semiquaverUp.png"));
         semiquaverUp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/semiquaverUp.png"));
+                Stave.class.getResource("/graphics/greennotes/semiquaverUp.png"));
         semiquaverUp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/semiquaverUp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/semiquaverUp.png"));
+
         demisemiquaverDown = new Image[4];
         demisemiquaverDown[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/demisemiquaverDown.png"));
+                Stave.class.getResource("/graphics/blacknotes/demisemiquaverDown.png"));
         demisemiquaverDown[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/demisemiquaverDown.png"));
+                Stave.class.getResource("/graphics/rednotes/demisemiquaverDown.png"));
         demisemiquaverDown[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/demisemiquaverDown.png"));
+                Stave.class.getResource("/graphics/greennotes/demisemiquaverDown.png"));
         demisemiquaverDown[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/demisemiquaverDown.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/demisemiquaverDown.png"));
+
         demisemiquaverUp = new Image[4];
         demisemiquaverUp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/demisemiquaverUp.png"));
+                Stave.class.getResource("/graphics/blacknotes/demisemiquaverUp.png"));
         demisemiquaverUp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/demisemiquaverUp.png"));
+                Stave.class.getResource("/graphics/rednotes/demisemiquaverUp.png"));
         demisemiquaverUp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/demisemiquaverUp.png"));
+                Stave.class.getResource("/graphics/greennotes/demisemiquaverUp.png"));
         demisemiquaverUp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/demisemiquaverUp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/demisemiquaverUp.png"));
+
         minimDown = new Image[4];
         minimDown[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/minimDown.png"));
+                Stave.class.getResource("/graphics/blacknotes/minimDown.png"));
         minimDown[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/minimDown.png"));
+                Stave.class.getResource("/graphics/rednotes/minimDown.png"));
         minimDown[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/minimDown.png"));
+                Stave.class.getResource("/graphics/greennotes/minimDown.png"));
         minimDown[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/minimDown.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/minimDown.png"));
+
         minimUp = new Image[4];
         minimUp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/minimUp.png"));
+                Stave.class.getResource("/graphics/blacknotes/minimUp.png"));
         minimUp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/minimUp.png"));
+                Stave.class.getResource("/graphics/rednotes/minimUp.png"));
         minimUp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/minimUp.png"));
+                Stave.class.getResource("/graphics/greennotes/minimUp.png"));
         minimUp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/minimUp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/minimUp.png"));
+
         semibreve = new Image[4];
         semibreve[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/semibreve.png"));
+                Stave.class.getResource("/graphics/blacknotes/semibreve.png"));
         semibreve[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/semibreve.png"));
+                Stave.class.getResource("/graphics/rednotes/semibreve.png"));
         semibreve[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/semibreve.png"));
+                Stave.class.getResource("/graphics/greennotes/semibreve.png"));
         semibreve[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/semibreve.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/semibreve.png"));
+
         sharp = new Image[4];
         sharp[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/sharp.png"));
+                Stave.class.getResource("/graphics/blacknotes/sharp.png"));
         sharp[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/sharp.png"));
+                Stave.class.getResource("/graphics/rednotes/sharp.png"));
         sharp[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/sharp.png"));
+                Stave.class.getResource("/graphics/greennotes/sharp.png"));
         sharp[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/sharp.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/sharp.png"));
+
         flat = new Image[4];
         flat[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/flat.png"));
+                Stave.class.getResource("/graphics/blacknotes/flat.png"));
         flat[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/flat.png"));
+                Stave.class.getResource("/graphics/rednotes/flat.png"));
         flat[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/flat.png"));
+                Stave.class.getResource("/graphics/greennotes/flat.png"));
         flat[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/flat.png"));
-        
+                Stave.class.getResource("/graphics/bluenotes/flat.png"));
+
         natural = new Image[4];
         natural[0] = toolkit.getImage(
-            Stave.class.getResource("/graphics/blacknotes/natural.png"));
+                Stave.class.getResource("/graphics/blacknotes/natural.png"));
         natural[1] = toolkit.getImage(
-            Stave.class.getResource("/graphics/rednotes/natural.png"));
+                Stave.class.getResource("/graphics/rednotes/natural.png"));
         natural[2] = toolkit.getImage(
-            Stave.class.getResource("/graphics/greennotes/natural.png"));
+                Stave.class.getResource("/graphics/greennotes/natural.png"));
         natural[3] = toolkit.getImage(
-            Stave.class.getResource("/graphics/bluenotes/natural.png"));
+                Stave.class.getResource("/graphics/bluenotes/natural.png"));
 
         dot = toolkit.getImage(
                 Stave.class.getResource("/graphics/dot.png"));
@@ -323,8 +323,8 @@ public class ToolkitImages implements Images {
                 Stave.class.getResource("/graphics/eight.png"));
         nine = toolkit.getImage(
                 Stave.class.getResource("/graphics/nine.png"));
-	zero = toolkit.getImage(
-		Stave.class.getResource("/graphics/zero.png"));
+        zero = toolkit.getImage(
+                Stave.class.getResource("/graphics/zero.png"));
         tieOver = toolkit.getImage(
                 Stave.class.getResource("/graphics/tieOver.png"));
         tieUnder = toolkit.getImage(
@@ -333,8 +333,8 @@ public class ToolkitImages implements Images {
                 Stave.class.getResource("/graphics/tupletBracket.png"));
         beatBracket = toolkit.getImage(
                 Stave.class.getResource("/graphics/beatBracket.png"));
-	splash = toolkit.getImage(
-		Stave.class.getResource("/graphics/splash.png"));
+        splash = toolkit.getImage(
+                Stave.class.getResource("/graphics/splash.png"));
     }
 
     public Image getTrebleClef() {
@@ -384,7 +384,7 @@ public class ToolkitImages implements Images {
     public Image[] getSemiquaverDown() {
         return semiquaverDown;
     }
-    
+
     public Image[] getDemisemiquaverUp() {
         return demisemiquaverUp;
     }
@@ -472,9 +472,9 @@ public class ToolkitImages implements Images {
     public Image getNine() {
         return nine;
     }
-    
+
     public Image getZero() {
-	return zero;
+        return zero;
     }
 
     public Image getTieOver() {
@@ -484,16 +484,16 @@ public class ToolkitImages implements Images {
     public Image getTieUnder() {
         return tieUnder;
     }
-    
+
     public Image getTupletBracket() {
         return tupletBracket;
     }
-    
+
     public Image getBeatBracket() {
         return beatBracket;
     }
-    
+
     public Image getSplash() {
-	return splash;
+        return splash;
     }
 }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -28,6 +28,7 @@ import imp.gui.Notate;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.util.ErrorLog;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -36,463 +37,431 @@ import javax.swing.*;
 
 /**
  *
- * @author  Robert Keller, Sayuri Soejima
+ * @author Robert Keller, Sayuri Soejima
  * June 2008
  */
-public class PianoRoll extends JDialog
-  {
-String DEFAULT_DURATION_STRING = "8";
+public class PianoRoll extends JDialog {
+    String DEFAULT_DURATION_STRING = "8";
 
-public static final double BEAT_DOUBLE = 120.;
+    public static final double BEAT_DOUBLE = 120.;
 
-public static final int MIN_PIXELS_PER_BEAT = 30;
+    public static final int MIN_PIXELS_PER_BEAT = 30;
 
-public static final int MAX_PIXELS_PER_BEAT = 120;
+    public static final int MAX_PIXELS_PER_BEAT = 120;
 
-public static final int MIN_TICKS_PER_BEAT = 1;
+    public static final int MIN_TICKS_PER_BEAT = 1;
 
-public static final int MAX_TICKS_PER_BEAT = 120;
+    public static final int MAX_TICKS_PER_BEAT = 120;
 
-public static final int WINDOWHEIGHT = 730;
+    public static final int WINDOWHEIGHT = 730;
 
-public static final int WINDOWWIDTH = 1030;
+    public static final int WINDOWWIDTH = 1030;
 
-public static final int PANELHEIGHT = 550;
+    public static final int PANELHEIGHT = 550;
 
-public static final int PANELWIDTH = 770;
+    public static final int PANELWIDTH = 770;
 
-public static final int SCROLLMARGIN = 10;
+    public static final int SCROLLMARGIN = 10;
 
-public static final Color BGCOLOR = Color.WHITE;
+    public static final Color BGCOLOR = Color.WHITE;
 
-public static final Color GRIDCOLOR = Color.LIGHT_GRAY; // color of the grid lines
+    public static final Color GRIDCOLOR = Color.LIGHT_GRAY; // color of the grid lines
 
-public static int LOOP_LIMIT = 10;
+    public static int LOOP_LIMIT = 10;
 
-int xTitleOffset = 10;
-int yTitleOffset = 0;
-int yTitleSpacing = 25;
-
-
-public static final int BASS_CHORD_ROWS = 2;
+    int xTitleOffset = 10;
+    int yTitleOffset = 0;
+    int yTitleSpacing = 25;
 
 
-private StyleEditor styleEditor;
-
-  // Have to convert the RGB values to HSB values in order to get color below
-  // This is the original periwinkle/blue color that was used to implement the
-  // PianoRoll, although once the other colors are added, it isn't necessary.
-  // It can be taken out for functionality purposes, but I'm leaving the code
-  // in here for the moment because I'm pretty fond of the color it produces. -Sayuri
-  // EDIT: A blue color (same shade as in the Style Editor table) can be used 
-  //       to represent a bar that is "selected," once that functionality is
-  //       implemented.
-
-  public static final
-          Color BARBORDERCOLOR = Color.BLACK;    // color of bar borders
-
- public static final
-          Color BASSCOLOR = Color.ORANGE;    // color of bass bars
-  
- public static final
-          Color CHORDCOLOR = Color.GREEN;    // color of chord bars
-
- public static final
-          Color DRUMSCOLOR = Color.YELLOW;   // color of drum bars
-
- public static final
-          Color SELECTEDCOLOR = Color.getHSBColor(0.46F, 0.25F, 0.9F); // LIGHT_BLUE
-
- public static final
-          int NUMROWS = 38;          // number of rows in the grid
-
- public static final
-          int NUMSLOTS = 2120;        // number of slots in the grid, enough for 16 beats
-
- public static final
-          int ROWHEIGHT = 10;        // the height of each row in grid
-  
- public static final
-          int ROWCUSHION = 15;       // height of the cushion between each row
-
- public static final
-          int TICKHEIGHT = 10;        // length of the slot-division lines (top & bottom)
-
- public static final
-          int SLOTDIVISIONS = 8;     // the default for the tick display is
-                                     // to display a tick for eighth notes,
-                                     // which is 120/2 = 60 slots
-  
- public static final
-          int SLOTSPERBEAT = 120;     // 120 slots, or a quarternote, 
-                                      // is the default for one beat value
-  
- public static final
-          int BEATSPERROW = 16;       // the number of beats per row
-  
- public static final int BASS_ROW = 0; // bass row in piano roll
- public static final int CHORD_ROW = 1; // chord row in piano roll
- public static final int FIRST_DRUM_ROW = 2; // first percussion row in piano roll
-  
-  
-  /**
-   * The JPanel derivative on which the grid is drawn.
-   * Note that this is passed as an argument to the constructor of the
-   * JScrollPane.
-   */
-  private PianoRollPanel pianoRollPanel;
-
-  /**
-   * Grid representing contents
-   */
-  private PianoRollGrid grid;
-  
-  /**
-   * off-screen buffer, initialized after JFrame is opened.
-   */
-  private Image buffer;
-
-  /**
-   * The x and y coordinates that are recorded on mouseclicks and 
-   * will be used when we want to add a new bar through the jPopUpMenu.
-   */
-  public int x;
-  public int y;
-
-  private int styleEditorColumn = 1;
+    public static final int BASS_CHORD_ROWS = 2;
 
 
-  private PianoRollBar selectedBar = null;
+    private StyleEditor styleEditor;
 
-  /** 
-   * Creates new form BeanForm 
-   */  
-  public PianoRoll(StyleEditor styleEditor, int x, int y) 
-    {
-    this.styleEditor = styleEditor;
-    grid = new PianoRollGrid(NUMROWS, NUMSLOTS, ROWHEIGHT, ROWCUSHION, this);
-    pianoRollPanel = new PianoRollPanel(grid, this); // passed to JScrollPane constructor in initComponents() 
-    initComponents();
+    // Have to convert the RGB values to HSB values in order to get color below
+    // This is the original periwinkle/blue color that was used to implement the
+    // PianoRoll, although once the other colors are added, it isn't necessary.
+    // It can be taken out for functionality purposes, but I'm leaving the code
+    // in here for the moment because I'm pretty fond of the color it produces. -Sayuri
+    // EDIT: A blue color (same shade as in the Style Editor table) can be used
+    //       to represent a bar that is "selected," once that functionality is
+    //       implemented.
 
-    makeRowButtons(rowTitlePanel);
-    
-    setSize(WINDOWWIDTH, WINDOWHEIGHT);
-    setLocation(x, y);
-    setVisible(true);
-    initBuffer(); 
-    WindowRegistry.registerWindow(this);
-    }
-  
+    public static final
+    Color BARBORDERCOLOR = Color.BLACK;    // color of bar borders
 
-  /**
-   * initBuffer() creates the off-screen buffer. 
-   *
-   * NOTE: Must call only AFTER this JFrame is open!!!
-   * due to the use of createImage.
-   */
-  public void initBuffer()
-    {
-    try
-    {
-    buffer = createImage(slotsToPixels(1+NUMSLOTS),
-                         ((1+NUMROWS)*ROWHEIGHT) + (1+NUMROWS)*ROWCUSHION);
-    pianoRollPanel.setBuffer(buffer);
-    pianoRollPanel.setSize(PANELWIDTH, PANELHEIGHT);
-    pianoRollScrollPane.setSize(SCROLLMARGIN+PANELWIDTH, SCROLLMARGIN+PANELHEIGHT);
+    public static final
+    Color BASSCOLOR = Color.ORANGE;    // color of bass bars
 
-    }
-    catch( OutOfMemoryError e )
-    {
-        ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to create image at this resolution");
-    }
+    public static final
+    Color CHORDCOLOR = Color.GREEN;    // color of chord bars
+
+    public static final
+    Color DRUMSCOLOR = Color.YELLOW;   // color of drum bars
+
+    public static final
+    Color SELECTEDCOLOR = Color.getHSBColor(0.46F, 0.25F, 0.9F); // LIGHT_BLUE
+
+    public static final
+    int NUMROWS = 38;          // number of rows in the grid
+
+    public static final
+    int NUMSLOTS = 2120;        // number of slots in the grid, enough for 16 beats
+
+    public static final
+    int ROWHEIGHT = 10;        // the height of each row in grid
+
+    public static final
+    int ROWCUSHION = 15;       // height of the cushion between each row
+
+    public static final
+    int TICKHEIGHT = 10;        // length of the slot-division lines (top & bottom)
+
+    public static final
+    int SLOTDIVISIONS = 8;     // the default for the tick display is
+    // to display a tick for eighth notes,
+    // which is 120/2 = 60 slots
+
+    public static final
+    int SLOTSPERBEAT = 120;     // 120 slots, or a quarternote,
+    // is the default for one beat value
+
+    public static final
+    int BEATSPERROW = 16;       // the number of beats per row
+
+    public static final int BASS_ROW = 0; // bass row in piano roll
+    public static final int CHORD_ROW = 1; // chord row in piano roll
+    public static final int FIRST_DRUM_ROW = 2; // first percussion row in piano roll
+
+
+    /**
+     * The JPanel derivative on which the grid is drawn.
+     * Note that this is passed as an argument to the constructor of the
+     * JScrollPane.
+     */
+    private PianoRollPanel pianoRollPanel;
+
+    /**
+     * Grid representing contents
+     */
+    private PianoRollGrid grid;
+
+    /**
+     * off-screen buffer, initialized after JFrame is opened.
+     */
+    private Image buffer;
+
+    /**
+     * The x and y coordinates that are recorded on mouseclicks and
+     * will be used when we want to add a new bar through the jPopUpMenu.
+     */
+    public int x;
+    public int y;
+
+    private int styleEditorColumn = 1;
+
+
+    private PianoRollBar selectedBar = null;
+
+    /**
+     * Creates new form BeanForm
+     */
+    public PianoRoll(StyleEditor styleEditor, int x, int y) {
+        this.styleEditor = styleEditor;
+        grid = new PianoRollGrid(NUMROWS, NUMSLOTS, ROWHEIGHT, ROWCUSHION, this);
+        pianoRollPanel = new PianoRollPanel(grid, this); // passed to JScrollPane constructor in initComponents()
+        initComponents();
+
+        makeRowButtons(rowTitlePanel);
+
+        setSize(WINDOWWIDTH, WINDOWHEIGHT);
+        setLocation(x, y);
+        setVisible(true);
+        initBuffer();
+        WindowRegistry.registerWindow(this);
     }
 
-  /** 
-   * Draw a bar on the grid, at row, col, representing numSlots slots.
-   */
-  public void drawBar(int row, int startSlot, int numSlots, Color barColor, Color borderColor, Color tabColor)
-    {
-    grid.drawBar(buffer.getGraphics(), barColor, borderColor, tabColor, row, startSlot, numSlots);
-    }
-  
 
-  /** 
-   * Add a bar to this PianoRoll and draw it.
-   */
-  public void addBar(int row, 
-                     int startSlot, 
-                     int numSlots, 
-                     Object text, 
-                     Color barColor, 
-                     Color borderColor,
-                     int volume,
-                     boolean volumeImplied)
-    {
-    //System.out.println("adding bar text: " + text);
+    /**
+     * initBuffer() creates the off-screen buffer.
+     *
+     * NOTE: Must call only AFTER this JFrame is open!!!
+     * due to the use of createImage.
+     */
+    public void initBuffer() {
+        try {
+            buffer = createImage(slotsToPixels(1 + NUMSLOTS),
+                    ((1 + NUMROWS) * ROWHEIGHT) + (1 + NUMROWS) * ROWCUSHION);
+            pianoRollPanel.setBuffer(buffer);
+            pianoRollPanel.setSize(PANELWIDTH, PANELHEIGHT);
+            pianoRollScrollPane.setSize(SCROLLMARGIN + PANELWIDTH, SCROLLMARGIN + PANELHEIGHT);
 
-    PianoRollBar bar = new PianoRollBar(row, 
-                                        startSlot, 
-                                        numSlots, 
-                                        text, 
-                                        barColor, 
-                                        borderColor,
-                                        volume,
-                                        volumeImplied,
-                                        grid, 
-                                        this);
-
-    addBar(bar);
-    }
-
-   /**
-   * Add a bar to this PianoRoll and draw it.
-   */
-  public void addBar(PianoRollBar bar)
-    {
-    pianoRollPanel.addBar(bar);
-    selectBar(bar);
+        } catch (OutOfMemoryError e) {
+            ErrorLog.log(ErrorLog.SEVERE, "Not enough memory to create image at this resolution");
+        }
     }
 
     /**
-   * Add a bar to this PianoRoll, with optional end block, and draw it.
-   */
-  public void addBarWithOptionalEndBlock(PianoRollBar bar)
-    {
-    pianoRollPanel.addBarWithOptionalEndBlock(bar);
-    selectBar(bar);
-    }
-
-   /**
-   * Add Endblock
-   */
-  public void placeEndBlock(int row, int startSlot)
-    {
-    pianoRollPanel.placeEndBlock(row, startSlot);
+     * Draw a bar on the grid, at row, col, representing numSlots slots.
+     */
+    public void drawBar(int row, int startSlot, int numSlots, Color barColor, Color borderColor, Color tabColor) {
+        grid.drawBar(buffer.getGraphics(), barColor, borderColor, tabColor, row, startSlot, numSlots);
     }
 
 
-  /**
-   * 
-   * @param slots
-   * @return the number of pixels equivalent to the slots number.
-   */  
-  public int slotsToPixels(int slots)
-    {
-    int pixelsPerBeat = getPixelsPerBeat();
-    return (slots * pixelsPerBeat)/SLOTSPERBEAT;
-    }  
-  
-  /**
-   * @return The number of pixels we want one beat's worth to be.
-   * @throws java.lang.NumberFormatException
-   */
-  public int getPixelsPerBeat()
-    {
-    int value = intFromTextField(pixelsPerBeatTextField, MIN_PIXELS_PER_BEAT, MAX_PIXELS_PER_BEAT, MIN_PIXELS_PER_BEAT);
-    return value;
-    }
-  
-  /**
-   * @return The number of ticks we'd want to dislay per beat,
-   *         A.K.A. the resolution, or the number of divisions
-   *         we'd have within a quarter note duration.
-   * @throws java.lang.NumberFormatException
-   */
-  public int getTicksPerBeat() 
-    {
-    int value = intFromTextField(ticksPerBeatTextField, MIN_TICKS_PER_BEAT, MAX_TICKS_PER_BEAT, MIN_TICKS_PER_BEAT);
-    return value;
+    /**
+     * Add a bar to this PianoRoll and draw it.
+     */
+    public void addBar(int row,
+                       int startSlot,
+                       int numSlots,
+                       Object text,
+                       Color barColor,
+                       Color borderColor,
+                       int volume,
+                       boolean volumeImplied) {
+        //System.out.println("adding bar text: " + text);
+
+        PianoRollBar bar = new PianoRollBar(row,
+                startSlot,
+                numSlots,
+                text,
+                barColor,
+                borderColor,
+                volume,
+                volumeImplied,
+                grid,
+                this);
+
+        addBar(bar);
     }
 
-  static int intFromTextField(javax.swing.JTextField field, int low, int high, int error)
-      {
+    /**
+     * Add a bar to this PianoRoll and draw it.
+     */
+    public void addBar(PianoRollBar bar) {
+        pianoRollPanel.addBar(bar);
+        selectBar(bar);
+    }
+
+    /**
+     * Add a bar to this PianoRoll, with optional end block, and draw it.
+     */
+    public void addBarWithOptionalEndBlock(PianoRollBar bar) {
+        pianoRollPanel.addBarWithOptionalEndBlock(bar);
+        selectBar(bar);
+    }
+
+    /**
+     * Add Endblock
+     */
+    public void placeEndBlock(int row, int startSlot) {
+        pianoRollPanel.placeEndBlock(row, startSlot);
+    }
+
+
+    /**
+     *
+     * @param slots
+     * @return the number of pixels equivalent to the slots number.
+     */
+    public int slotsToPixels(int slots) {
+        int pixelsPerBeat = getPixelsPerBeat();
+        return (slots * pixelsPerBeat) / SLOTSPERBEAT;
+    }
+
+    /**
+     * @return The number of pixels we want one beat's worth to be.
+     * @throws java.lang.NumberFormatException
+     */
+    public int getPixelsPerBeat() {
+        int value = intFromTextField(pixelsPerBeatTextField, MIN_PIXELS_PER_BEAT, MAX_PIXELS_PER_BEAT, MIN_PIXELS_PER_BEAT);
+        return value;
+    }
+
+    /**
+     * @return The number of ticks we'd want to dislay per beat,
+     *         A.K.A. the resolution, or the number of divisions
+     *         we'd have within a quarter note duration.
+     * @throws java.lang.NumberFormatException
+     */
+    public int getTicksPerBeat() {
+        int value = intFromTextField(ticksPerBeatTextField, MIN_TICKS_PER_BEAT, MAX_TICKS_PER_BEAT, MIN_TICKS_PER_BEAT);
+        return value;
+    }
+
+    static int intFromTextField(javax.swing.JTextField field, int low, int high, int error) {
         String contents = field.getText();
 
-        try
-          {
+        try {
             int value = Notate.intFromString(contents);
 
-            if (value >= low && value <= high)
-              {
+            if (value >= low && value <= high) {
                 return value;
-              }
+            }
 
             field.setText("" + error);
             ErrorLog.log(ErrorLog.COMMENT,
                     "Number out of range, must be integer between " + low + " and " + high + "; using " + error);
 
             return error;
-          }
-        catch( NumberFormatException e )
-          {
+        } catch (NumberFormatException e) {
             field.setText("" + error);
             ErrorLog.log(ErrorLog.COMMENT,
-                    "Invalid Number Format, must be integer between " + low + " and " + high+ "; using " + error);
+                    "Invalid Number Format, must be integer between " + low + " and " + high + "; using " + error);
 
             return error;
-          }
-      }
-
-  /**
-   * Blackens (enables) the right-click paste bar menu item.
-   */
-  public void enablePasteBar() 
-    {
-    pasteBar.setEnabled(true);
-    }
-  
-  /**
-   * Grays out (disables) the right-click paste bar menu item.
-   */
-  public void disablePasteBar() 
-    {
-    pasteBar.setEnabled(false);
-    }
- 
-
-  /**
-   * Clear the bars from the PianoRoll.
-   */
-  public void clearBars()
-    {
-    pianoRollPanel.clearBars();
-    }
-  
-  /**
-   * Get the bars from the PianoRoll.
-   */
-  public ArrayList<PianoRollBar> getBars()
-    {
-    return pianoRollPanel.getBars();  
-    }
-  
-  /**
-   * Get the bars sorted from the PianoRoll.
-   */
-  public ArrayList<PianoRollBar> getSortedBars()
-    {
-    return pianoRollPanel.getSortedBars();  
-    }
-  /**
-   * Display the PianoRoll.
-   */
-  public void display()
-    {
-    if( pianoRollPanel == null )
-      {
-        return;
-      }
-    
-    pianoRollPanel.drawAll(buffer.getGraphics());
-    //makeRowButtons(rowTitlePanel);
-
-    setRowButtonLabels(rowTitlePanel);
-    setVisible(true);
-    toFront();
+        }
     }
 
-  private AbstractButton rowButton[] = new AbstractButton[NUMROWS];
+    /**
+     * Blackens (enables) the right-click paste bar menu item.
+     */
+    public void enablePasteBar() {
+        pasteBar.setEnabled(true);
+    }
 
-  public void makeRowButtons(JPanel rowTitlePanel)
-  {
-     ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
+    /**
+     * Grays out (disables) the right-click paste bar menu item.
+     */
+    public void disablePasteBar() {
+        pasteBar.setEnabled(false);
+    }
 
-      makeRowPressButton(0, "Bass", BASSCOLOR, rowTitlePanel);
-      makeRowPressButton(1, "Chord", CHORDCOLOR, rowTitlePanel);
 
-      int vectorSize = rowHeaders.size();
+    /**
+     * Clear the bars from the PianoRoll.
+     */
+    public void clearBars() {
+        pianoRollPanel.clearBars();
+    }
 
-      for (int row = 2; row < NUMROWS; row++)
-      {
-      String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
-      makeRowToggleButtons(row, header, DRUMSCOLOR, rowTitlePanel);
-      }
+    /**
+     * Get the bars from the PianoRoll.
+     */
+    public ArrayList<PianoRollBar> getBars() {
+        return pianoRollPanel.getBars();
+    }
 
-  }
+    /**
+     * Get the bars sorted from the PianoRoll.
+     */
+    public ArrayList<PianoRollBar> getSortedBars() {
+        return pianoRollPanel.getSortedBars();
+    }
 
-   public void makeRowPressButton(final int row, String instrument, Color color, JPanel rowTitlePanel)
-  {
-      int boxHeight = 21;
-      int boxXoffset = 0;
-      int boxYmargin = 2;
+    /**
+     * Display the PianoRoll.
+     */
+    public void display() {
+        if (pianoRollPanel == null) {
+            return;
+        }
 
-      int buttonHeight = 21;
-      int buttonWidth = 190;
-      int buttonXmargin = 14;
-      int buttonYmargin = 2;
+        pianoRollPanel.drawAll(buffer.getGraphics());
+        //makeRowButtons(rowTitlePanel);
 
-      int yPosition = yTitleOffset + row* yTitleSpacing;
+        setRowButtonLabels(rowTitlePanel);
+        setVisible(true);
+        toFront();
+    }
 
-      JButton thisButton = new JButton();
-      rowButton[row] = thisButton;
-      thisButton.setText(instrument);
-      thisButton.setBackground(color);
-      thisButton.setOpaque(true);
-      thisButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, Color.black, Color.black));
-      thisButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-      thisButton.addActionListener(new java.awt.event.ActionListener() {
+    private AbstractButton rowButton[] = new AbstractButton[NUMROWS];
+
+    public void makeRowButtons(JPanel rowTitlePanel) {
+        ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
+
+        makeRowPressButton(0, "Bass", BASSCOLOR, rowTitlePanel);
+        makeRowPressButton(1, "Chord", CHORDCOLOR, rowTitlePanel);
+
+        int vectorSize = rowHeaders.size();
+
+        for (int row = 2; row < NUMROWS; row++) {
+            String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
+            makeRowToggleButtons(row, header, DRUMSCOLOR, rowTitlePanel);
+        }
+
+    }
+
+    public void makeRowPressButton(final int row, String instrument, Color color, JPanel rowTitlePanel) {
+        int boxHeight = 21;
+        int boxXoffset = 0;
+        int boxYmargin = 2;
+
+        int buttonHeight = 21;
+        int buttonWidth = 190;
+        int buttonXmargin = 14;
+        int buttonYmargin = 2;
+
+        int yPosition = yTitleOffset + row * yTitleSpacing;
+
+        JButton thisButton = new JButton();
+        rowButton[row] = thisButton;
+        thisButton.setText(instrument);
+        thisButton.setBackground(color);
+        thisButton.setOpaque(true);
+        thisButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, Color.black, Color.black));
+        thisButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        thisButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playRowBtnActionPerformed(evt, row);
             }
         });
-      thisButton.setBounds(buttonXmargin + xTitleOffset, buttonYmargin + yPosition, buttonWidth, buttonHeight);
-      rowTitlePanel.add(thisButton);
-  }
+        thisButton.setBounds(buttonXmargin + xTitleOffset, buttonYmargin + yPosition, buttonWidth, buttonHeight);
+        rowTitlePanel.add(thisButton);
+    }
 
-  public void makeRowToggleButtons(final int row, String instrument, Color color, JPanel rowTitlePanel)
-  {
-      int boxHeight = 21;
-      int boxXoffset = 0;
-      int boxYmargin = 2;
+    public void makeRowToggleButtons(final int row, String instrument, Color color, JPanel rowTitlePanel) {
+        int boxHeight = 21;
+        int boxXoffset = 0;
+        int boxYmargin = 2;
 
-      int buttonHeight = 21;
-      int buttonWidth = 190;
-      int buttonXmargin = 14;
-      int buttonYmargin = 2;
-      
-      int yPosition = yTitleOffset + row* yTitleSpacing;
-      
-      JToggleButton thisButton = new JToggleButton();
-      rowButton[row] = thisButton;
-      thisButton.setText(instrument);
-      thisButton.setBackground(color);
-      thisButton.setOpaque(true);
-      thisButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, Color.black, Color.black));
-      thisButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-      thisButton.addActionListener(new java.awt.event.ActionListener() {
+        int buttonHeight = 21;
+        int buttonWidth = 190;
+        int buttonXmargin = 14;
+        int buttonYmargin = 2;
+
+        int yPosition = yTitleOffset + row * yTitleSpacing;
+
+        JToggleButton thisButton = new JToggleButton();
+        rowButton[row] = thisButton;
+        thisButton.setText(instrument);
+        thisButton.setBackground(color);
+        thisButton.setOpaque(true);
+        thisButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, Color.black, Color.black));
+        thisButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        thisButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playRowBtnLoopActionPerformed(evt, row);
             }
         });
-      thisButton.setBounds(buttonXmargin + xTitleOffset, buttonYmargin + yPosition, buttonWidth, buttonHeight);
-      rowTitlePanel.add(thisButton);
-  }
+        thisButton.setBounds(buttonXmargin + xTitleOffset, buttonYmargin + yPosition, buttonWidth, buttonHeight);
+        rowTitlePanel.add(thisButton);
+    }
 
 
-  public void setRowButtonLabels(JPanel rowTitlePanel)
-  {
-     ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
+    public void setRowButtonLabels(JPanel rowTitlePanel) {
+        ArrayList<String> rowHeaders = styleEditor.getRowHeaders();
 
-     for (int row = 2; row < NUMROWS; row++)
-      {
-      String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
-      rowButton[row].setText(header);
-      }
-  }
+        for (int row = 2; row < NUMROWS; row++) {
+            String header = rowHeaders.get(row - BASS_CHORD_ROWS + StyleTableModel.FIRST_PERCUSSION_INSTRUMENT_ROW);
+            rowButton[row].setText(header);
+        }
+    }
 
- 
-public void paint(Graphics g)
-{
-  super.paint(g);
-  display();
-}
- 
-  /** This method is called from within the constructor to
-   * initialize the form.
-   * WARNING: Do NOT modify this code. The content of this method is
-   * always regenerated by the Form Editor.
-   */
-  @SuppressWarnings("unchecked")
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        display();
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
@@ -1175,7 +1144,7 @@ public void paint(Graphics g)
         pianoRollResolutionsPanel.add(bpmLabel, gridBagConstraints);
 
         tempoComboBox.setMaximumRowCount(30);
-        tempoComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30", "40", "50", "60", "70", "80", "90", "100", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280" }));
+        tempoComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"30", "40", "50", "60", "70", "80", "90", "100", "120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280"}));
         tempoComboBox.setSelectedIndex(9);
         tempoComboBox.setToolTipText("Change tempo for the style editor.");
         tempoComboBox.setMinimumSize(new java.awt.Dimension(100, 27));
@@ -1216,7 +1185,7 @@ public void paint(Graphics g)
         pianoRollResolutionsPanel.add(pixelsPerBeatTextField, gridBagConstraints);
 
         pixelsPerBeatComboBox.setMaximumRowCount(4);
-        pixelsPerBeatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "120", "90", "60" }));
+        pixelsPerBeatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"120", "90", "60"}));
         pixelsPerBeatComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pixelsPerBeatComboBoxActionPerformed(evt);
@@ -1256,7 +1225,7 @@ public void paint(Graphics g)
         pianoRollResolutionsPanel.add(ticksPerBeatTextField, gridBagConstraints);
 
         ticksPerBeatComboBox.setMaximumRowCount(20);
-        ticksPerBeatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "120", "60", "40", "30", "20", "15", "12", "9", "8", "7", "6", "5", "4", "3", "2", "1" }));
+        ticksPerBeatComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"120", "60", "40", "30", "20", "15", "12", "9", "8", "7", "6", "5", "4", "3", "2", "1"}));
         ticksPerBeatComboBox.setSelectedIndex(8);
         ticksPerBeatComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1343,7 +1312,7 @@ public void paint(Graphics g)
         importExportPanel.add(exportToColumnTF, gridBagConstraints);
 
         importFromColumnComboBox.setMaximumRowCount(30);
-        importFromColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " " }));
+        importFromColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " "}));
         importFromColumnComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importFromColumnComboBoxActionPerformed(evt);
@@ -1355,7 +1324,7 @@ public void paint(Graphics g)
         importExportPanel.add(importFromColumnComboBox, gridBagConstraints);
 
         exportToColumnComboBox.setMaximumRowCount(30);
-        exportToColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " " }));
+        exportToColumnComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", " "}));
         exportToColumnComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportToColumnComboBoxActionPerformed(evt);
@@ -1515,8 +1484,10 @@ public void paint(Graphics g)
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -1546,702 +1517,687 @@ public void paint(Graphics g)
         setJMenuBar(pianoRollMenuBar);
     }// </editor-fold>//GEN-END:initComponents
 
-/**
- * When stuff is changed in the jTextField, we need to update the window
- * to reflect the changes in the tick divisions.
- * @param evt
- */
-private void pixelsPerBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pixelsPerBeatTextFieldActionPerformed
-    initBuffer();
-    pianoRollPanel.drawAll(buffer.getGraphics());
-    repaint();
-}//GEN-LAST:event_pixelsPerBeatTextFieldActionPerformed
+    /**
+     * When stuff is changed in the jTextField, we need to update the window
+     * to reflect the changes in the tick divisions.
+     * @param evt
+     */
+    private void pixelsPerBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pixelsPerBeatTextFieldActionPerformed
+        initBuffer();
+        pianoRollPanel.drawAll(buffer.getGraphics());
+        repaint();
+    }//GEN-LAST:event_pixelsPerBeatTextFieldActionPerformed
 
-/**
- * When stuff is changed in the jTextField, we need to update the window
- * to reflect the changes in the tick divisions.
- * @param evt
- */
-private void ticksPerBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticksPerBeatTextFieldActionPerformed
-    initBuffer();
-    pianoRollPanel.drawAll(buffer.getGraphics());
-    repaint();
-}//GEN-LAST:event_ticksPerBeatTextFieldActionPerformed
+    /**
+     * When stuff is changed in the jTextField, we need to update the window
+     * to reflect the changes in the tick divisions.
+     * @param evt
+     */
+    private void ticksPerBeatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticksPerBeatTextFieldActionPerformed
+        initBuffer();
+        pianoRollPanel.drawAll(buffer.getGraphics());
+        repaint();
+    }//GEN-LAST:event_ticksPerBeatTextFieldActionPerformed
 
-/**
- * Add a new bar to the row at the tick right before where the user specified.
- * @param evt
- */
-private void addNewBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewBarActionPerformed
-    // Convert the x and y coordinates (in pixels) into row and column numbers
-    // so that we can add the bars at the appropriate locations.
-    int row = y / (ROWHEIGHT + ROWCUSHION);
-    
-    Color barColor;
-    Color borderColor = BARBORDERCOLOR;
-    
-    if(row == 0)
-      barColor = BASSCOLOR;
-    else if(row == 1)
-      barColor = CHORDCOLOR;    
-    else
-      barColor = DRUMSCOLOR;
-    
-    // Define where the bar should start
-    int clickedSlot = (x * SLOTSPERBEAT) / getPixelsPerBeat();
-    int oneTick = SLOTSPERBEAT / getTicksPerBeat();
-    //round it off so that it snaps to the tick before where the click was
-    int startSlot = pianoRollPanel.nearestTick(clickedSlot, oneTick);    
-    
-    // Define the size of the bar, or where it ends
-    ArrayList<PianoRollBar> bars = pianoRollPanel.getBars();
-    int barWidth; // in slots
-    int maxWidth = SLOTSPERBEAT/2; // the default value, in slots
-    for(int i = 0; i < bars.size(); ++i)
-      {
-      PianoRollBar bar = bars.get(i);   // go through all the bars
-      if(bar.row == row)                      // in the row we want to add into
-        {
-        barWidth = bar.startSlot - startSlot; // distance to the next bar (to the right)
-        // define how wide we want to make the bar, depending on the next bar's place
-        if((barWidth < maxWidth) && (barWidth > 0)) 
-            maxWidth = barWidth;
+    /**
+     * Add a new bar to the row at the tick right before where the user specified.
+     * @param evt
+     */
+    private void addNewBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewBarActionPerformed
+        // Convert the x and y coordinates (in pixels) into row and column numbers
+        // so that we can add the bars at the appropriate locations.
+        int row = y / (ROWHEIGHT + ROWCUSHION);
+
+        Color barColor;
+        Color borderColor = BARBORDERCOLOR;
+
+        if (row == 0)
+            barColor = BASSCOLOR;
+        else if (row == 1)
+            barColor = CHORDCOLOR;
+        else
+            barColor = DRUMSCOLOR;
+
+        // Define where the bar should start
+        int clickedSlot = (x * SLOTSPERBEAT) / getPixelsPerBeat();
+        int oneTick = SLOTSPERBEAT / getTicksPerBeat();
+        //round it off so that it snaps to the tick before where the click was
+        int startSlot = pianoRollPanel.nearestTick(clickedSlot, oneTick);
+
+        // Define the size of the bar, or where it ends
+        ArrayList<PianoRollBar> bars = pianoRollPanel.getBars();
+        int barWidth; // in slots
+        int maxWidth = SLOTSPERBEAT / 2; // the default value, in slots
+        for (int i = 0; i < bars.size(); ++i) {
+            PianoRollBar bar = bars.get(i);   // go through all the bars
+            if (bar.row == row)                      // in the row we want to add into
+            {
+                barWidth = bar.startSlot - startSlot; // distance to the next bar (to the right)
+                // define how wide we want to make the bar, depending on the next bar's place
+                if ((barWidth < maxWidth) && (barWidth > 0))
+                    maxWidth = barWidth;
+            }
         }
-      }
 
-    // Actually make the bar with the width and starting positions defined above
-    PianoRollBar newBar = 
-        barColor == BASSCOLOR ? //BassNoteType noteType, int degree, AccidentalType accidental, String durationString, DirectionType direction
-            new PianoRollBassBar(startSlot, new BassPatternElement(DEFAULT_DURATION_STRING), 127, true, this)
-          : new PianoRollBar(row, startSlot, maxWidth, barColor, borderColor, 127, true, grid, this);
-    
-    if(!pianoRollPanel.collides(newBar))  // if an added bar wouldn't collide 
-      {                                   // with existing bars        
-      addBarWithOptionalEndBlock(newBar);
-      }
-}//GEN-LAST:event_addNewBarActionPerformed
+        // Actually make the bar with the width and starting positions defined above
+        PianoRollBar newBar =
+                barColor == BASSCOLOR ? //BassNoteType noteType, int degree, AccidentalType accidental, String durationString, DirectionType direction
+                        new PianoRollBassBar(startSlot, new BassPatternElement(DEFAULT_DURATION_STRING), 127, true, this)
+                        : new PianoRollBar(row, startSlot, maxWidth, barColor, borderColor, 127, true, grid, this);
 
-private void selectBar()
-{
-PianoRollBar bar = pianoRollPanel.findBar(x, y);
-selectBar(bar);
-}
+        if (!pianoRollPanel.collides(newBar))  // if an added bar wouldn't collide
+        {                                   // with existing bars
+            addBarWithOptionalEndBlock(newBar);
+        }
+    }//GEN-LAST:event_addNewBarActionPerformed
 
-public void selectBar(PianoRollBar bar)
-{
-if( bar != null )
-   {
-   if( selectedBar != null )
-     {
-     selectedBar.setSelected(false);
-     }
-   selectedBar = bar;
-   bar.setSelected(true);
-   updateBarEditor(selectedBar);
-   
-   boolean volumeImplied = bar.getVolumeImplied();
-   barVolumeImpliedCheckBox.setSelected(volumeImplied);
-   barVolumeSlider.setEnabled(!volumeImplied);
-   barVolumeTF.setEnabled(!volumeImplied);
-   int imputedVolume = pianoRollPanel.getImputedVolume(selectedBar); 
-   setVolumeIndicators(imputedVolume);
-   pianoRollPanel.drawAll(buffer.getGraphics());
-   }
-}
+    private void selectBar() {
+        PianoRollBar bar = pianoRollPanel.findBar(x, y);
+        selectBar(bar);
+    }
+
+    public void selectBar(PianoRollBar bar) {
+        if (bar != null) {
+            if (selectedBar != null) {
+                selectedBar.setSelected(false);
+            }
+            selectedBar = bar;
+            bar.setSelected(true);
+            updateBarEditor(selectedBar);
+
+            boolean volumeImplied = bar.getVolumeImplied();
+            barVolumeImpliedCheckBox.setSelected(volumeImplied);
+            barVolumeSlider.setEnabled(!volumeImplied);
+            barVolumeTF.setEnabled(!volumeImplied);
+            int imputedVolume = pianoRollPanel.getImputedVolume(selectedBar);
+            setVolumeIndicators(imputedVolume);
+            pianoRollPanel.drawAll(buffer.getGraphics());
+        }
+    }
 
 
-/**
- * Delete the bar at which this action was called.
- * @param evt
- */
-private void deleteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBarActionPerformed
-    // Remove the bar from the vector which stores
-    // the information for the bars.
-    PianoRollBar bar = pianoRollPanel.findBar(x, y);
-    pianoRollPanel.removeBar(bar);
-    
-    // Redraw the screen to reflect the change in the vector.
-    pianoRollPanel.drawAll(buffer.getGraphics());
-}//GEN-LAST:event_deleteBarActionPerformed
+    /**
+     * Delete the bar at which this action was called.
+     * @param evt
+     */
+    private void deleteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBarActionPerformed
+        // Remove the bar from the vector which stores
+        // the information for the bars.
+        PianoRollBar bar = pianoRollPanel.findBar(x, y);
+        pianoRollPanel.removeBar(bar);
 
-/**
- * Copies the bar at the position where the action was called.
- * @param evt
- */
-private void copyBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBarActionPerformed
-    PianoRollBar bar = pianoRollPanel.findBar(x, y);
-    pianoRollPanel.addTempBar(bar);
-    selectBar(bar);
-}//GEN-LAST:event_copyBarActionPerformed
+        // Redraw the screen to reflect the change in the vector.
+        pianoRollPanel.drawAll(buffer.getGraphics());
+    }//GEN-LAST:event_deleteBarActionPerformed
 
-/**
- * Cuts the bar at the position where the action was called.
- * @param evt
- */
-private void cutBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutBarActionPerformed
-    PianoRollBar bar = pianoRollPanel.findBar(x, y);
-    pianoRollPanel.addTempBar(bar);
-    pianoRollPanel.removeBar(bar);
-    
-    // Redraw the screen to reflect the change in the bars vector.
-    pianoRollPanel.drawAll(buffer.getGraphics());      
-}//GEN-LAST:event_cutBarActionPerformed
+    /**
+     * Copies the bar at the position where the action was called.
+     * @param evt
+     */
+    private void copyBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBarActionPerformed
+        PianoRollBar bar = pianoRollPanel.findBar(x, y);
+        pianoRollPanel.addTempBar(bar);
+        selectBar(bar);
+    }//GEN-LAST:event_copyBarActionPerformed
 
-private void barEditorCommit()
-{
-    if( selectedBar != null && selectedBar instanceof PianoRollBassBar )
-    {
-        PianoRollBassBar bar = (PianoRollBassBar)selectedBar;
+    /**
+     * Cuts the bar at the position where the action was called.
+     * @param evt
+     */
+    private void cutBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutBarActionPerformed
+        PianoRollBar bar = pianoRollPanel.findBar(x, y);
+        pianoRollPanel.addTempBar(bar);
+        pianoRollPanel.removeBar(bar);
 
-        bar.setBassParameters(
-              pitchToneButton.isSelected()    ? BassPatternElement.BassNoteType.PITCH
-            : repeatPitchButton.isSelected()  ? BassPatternElement.BassNoteType.REPEAT
-            : chordToneButton.isSelected()    ? BassPatternElement.BassNoteType.CHORD
-            : scaleToneButton.isSelected()    ? BassPatternElement.BassNoteType.SCALE
-            : approachToneButton.isSelected() ? BassPatternElement.BassNoteType.APPROACH
-            : nextToneButton.isSelected()     ? BassPatternElement.BassNoteType.NEXT
-            : BassPatternElement.BassNoteType.BASS,
+        // Redraw the screen to reflect the change in the bars vector.
+        pianoRollPanel.drawAll(buffer.getGraphics());
+    }//GEN-LAST:event_cutBarActionPerformed
 
-            bar.getNumSlots(),
+    private void barEditorCommit() {
+        if (selectedBar != null && selectedBar instanceof PianoRollBassBar) {
+            PianoRollBassBar bar = (PianoRollBassBar) selectedBar;
 
-              flatAccidental.isSelected() ? BassPatternElement.AccidentalType.FLAT
-            : sharpAccidental.isSelected() ? BassPatternElement.AccidentalType.SHARP
-            : BassPatternElement.AccidentalType.NONE,
+            bar.setBassParameters(
+                    pitchToneButton.isSelected() ? BassPatternElement.BassNoteType.PITCH
+                            : repeatPitchButton.isSelected() ? BassPatternElement.BassNoteType.REPEAT
+                            : chordToneButton.isSelected() ? BassPatternElement.BassNoteType.CHORD
+                            : scaleToneButton.isSelected() ? BassPatternElement.BassNoteType.SCALE
+                            : approachToneButton.isSelected() ? BassPatternElement.BassNoteType.APPROACH
+                            : nextToneButton.isSelected() ? BassPatternElement.BassNoteType.NEXT
+                            : BassPatternElement.BassNoteType.BASS,
 
-              pitch2Button.isSelected() ? 2
-            : pitch3Button.isSelected() ? 3
-            : pitch4Button.isSelected() ? 4
-            : pitch5Button.isSelected() ? 5
-            : pitch6Button.isSelected() ? 6
-            : pitch7Button.isSelected() ? 7
-            : 1,
+                    bar.getNumSlots(),
 
-              upDirection.isSelected() ? BassPatternElement.DirectionType.UP
-            : downDirection.isSelected() ? BassPatternElement.DirectionType.DOWN
-            : BassPatternElement.DirectionType.ANY
+                    flatAccidental.isSelected() ? BassPatternElement.AccidentalType.FLAT
+                            : sharpAccidental.isSelected() ? BassPatternElement.AccidentalType.SHARP
+                            : BassPatternElement.AccidentalType.NONE,
+
+                    pitch2Button.isSelected() ? 2
+                            : pitch3Button.isSelected() ? 3
+                            : pitch4Button.isSelected() ? 4
+                            : pitch5Button.isSelected() ? 5
+                            : pitch6Button.isSelected() ? 6
+                            : pitch7Button.isSelected() ? 7
+                            : 1,
+
+                    upDirection.isSelected() ? BassPatternElement.DirectionType.UP
+                            : downDirection.isSelected() ? BassPatternElement.DirectionType.DOWN
+                            : BassPatternElement.DirectionType.ANY
             );
 
-        selectedBar.setText(barEditorContents.getText());
+            selectedBar.setText(barEditorContents.getText());
 
-        selectBar(selectedBar);
+            selectBar(selectedBar);
+        }
     }
- }
 
-/**
- * Pastes the last bar that was cut/copied at the location at which the
- * action was called.
- * @param evt
- */
-private void pasteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteBarActionPerformed
-    PianoRollBar bar = pianoRollPanel.getLastTempBar();
+    /**
+     * Pastes the last bar that was cut/copied at the location at which the
+     * action was called.
+     * @param evt
+     */
+    private void pasteBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteBarActionPerformed
+        PianoRollBar bar = pianoRollPanel.getLastTempBar();
 
-    Color barColor = bar.barColor;
-    Color borderColor = bar.borderColor;
-    int numSlots = bar.numSlots;
-    int row = y / (ROWHEIGHT + ROWCUSHION);
+        Color barColor = bar.barColor;
+        Color borderColor = bar.borderColor;
+        int numSlots = bar.numSlots;
+        int row = y / (ROWHEIGHT + ROWCUSHION);
 
-    // Define where the bar should start
-    int clickedSlot = (x * SLOTSPERBEAT) / getPixelsPerBeat();
-    int oneTick = SLOTSPERBEAT / getTicksPerBeat();
-    //round it off so that it snaps to the tick before where the click was
-    int startSlot = pianoRollPanel.nearestTick(clickedSlot, oneTick);
+        // Define where the bar should start
+        int clickedSlot = (x * SLOTSPERBEAT) / getPixelsPerBeat();
+        int oneTick = SLOTSPERBEAT / getTicksPerBeat();
+        //round it off so that it snaps to the tick before where the click was
+        int startSlot = pianoRollPanel.nearestTick(clickedSlot, oneTick);
 
-    if( bar instanceof PianoRollBassBar )
-      {
-        if( row == BASS_ROW )
-          {
-            PianoRollBassBar bassBar = (PianoRollBassBar)bar;
-            addBarWithOptionalEndBlock(new PianoRollBassBar(startSlot,
-                                        bassBar.getElementCopy(),
-                                        bassBar.getVolume(),
-                                        bassBar.getVolumeImplied(),
-                                        this));
-          }
-      // Don't paste if row does not correspond to instrument
-      }
-    else
-      {
-        if( row != BASS_ROW )
-          {
-            Color color = row == CHORD_ROW ? CHORDCOLOR : DRUMSCOLOR;
-            addBarWithOptionalEndBlock(new PianoRollBar(row, startSlot, numSlots, color,
-                                      borderColor, bar.getVolume(), bar.getVolumeImplied(), grid, this));
-          }
-      // Don't paste if row does not correspond to instrument
-      }
-}//GEN-LAST:event_pasteBarActionPerformed
+        if (bar instanceof PianoRollBassBar) {
+            if (row == BASS_ROW) {
+                PianoRollBassBar bassBar = (PianoRollBassBar) bar;
+                addBarWithOptionalEndBlock(new PianoRollBassBar(startSlot,
+                        bassBar.getElementCopy(),
+                        bassBar.getVolume(),
+                        bassBar.getVolumeImplied(),
+                        this));
+            }
+            // Don't paste if row does not correspond to instrument
+        } else {
+            if (row != BASS_ROW) {
+                Color color = row == CHORD_ROW ? CHORDCOLOR : DRUMSCOLOR;
+                addBarWithOptionalEndBlock(new PianoRollBar(row, startSlot, numSlots, color,
+                        borderColor, bar.getVolume(), bar.getVolumeImplied(), grid, this));
+            }
+            // Don't paste if row does not correspond to instrument
+        }
+    }//GEN-LAST:event_pasteBarActionPerformed
 
-public void setColumnsInOut(int col, String styleName)
-{
-    setTitle("Piano-Roll Pattern Editor: Column " + col + " of " + styleName);
-    setColumnIn(col);
-    setColumnOut(col);
-    styleEditorColumn = col;
-}
+    public void setColumnsInOut(int col, String styleName) {
+        setTitle("Piano-Roll Pattern Editor: Column " + col + " of " + styleName);
+        setColumnIn(col);
+        setColumnOut(col);
+        styleEditorColumn = col;
+    }
 
-public void setColumnIn(int col)
-{
-    importFromColumnTF.setText("" + col);
-    importFromColumnComboBox.setSelectedIndex(col-1);
-}
-
-public void setColumnOut(int col)
-{
-  exportToColumnTF.setText("" + col);
-  exportToColumnComboBox.setSelectedIndex(col-1);
-}
-
-
-/**
- * Call to move a column From the Piano Roll to the Style Editor
- * @param evt
- */
-
-private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-    int minColumn = 1; // FIX
-    int maxColumn = styleEditor.getNumColumns();
-
-    int col = intFromTextField(exportToColumnTF, minColumn, maxColumn, 0); // FIX!
-
-    // col <= 0 indicates an error
-
-    if( col > 0 )
-      {
-        styleEditor.pianoRollToStyleEditorColumn(this, col);
-      }
-}//GEN-LAST:event_exportButtonActionPerformed
-
-
-
-private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
-  importFromStyleEditorColumn();
-}//GEN-LAST:event_importButtonActionPerformed
-
-
-/**
- * Call to move a column From the Style Editor to the Piano Roll
- * @param evt
- */
-
-private void importFromStyleEditorColumn()
-  {
-    int minColumn = 1; // FIX
-    int maxColumn = styleEditor.getNumColumns();
-
-    int col = intFromTextField(importFromColumnTF, minColumn, maxColumn, 0); // FIX!
-
-    // col <= 0 indicates an error
-
-    if( col > 0 )
-      {
+    public void setColumnIn(int col) {
+        importFromColumnTF.setText("" + col);
         importFromColumnComboBox.setSelectedIndex(col - 1);
-        styleEditor.styleEditorColumnToPianoRoll(col, this);
-        updatePlayablePercussion();
-      }    
-  }
-
-private void playPercussionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPercussionButtonActionPerformed
-styleEditor.playPercussionColumn(styleEditorColumn);
-}//GEN-LAST:event_playPercussionButtonActionPerformed
-
-private void playChordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordButtonActionPerformed
-styleEditor.playChordColumn(styleEditorColumn);
-}//GEN-LAST:event_playChordButtonActionPerformed
-
-private void playBassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBassButtonActionPerformed
-styleEditor.playBassColumn(styleEditorColumn);
-}//GEN-LAST:event_playBassButtonActionPerformed
-
-private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
-    
-    closeWindow();
-}//GEN-LAST:event_closePianoRollWindow
-
-private void exportToColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnTFActionPerformed
-    exportButtonActionPerformed(null);
-}//GEN-LAST:event_exportToColumnTFActionPerformed
-
-public void openBarEditor()
-{
-   barEditorFrame.setLocation(100, 100);
-   barEditorFrame.setSize(400, 560);
-   barEditorFrame.setVisible(true);
-   if( selectedBar != null )
-   {
-   updateBarEditor(selectedBar);
-   }
-}
-
-public void updateBarEditor(PianoRollBar barBeingEdited)
-{
-   if( !(barBeingEdited instanceof PianoRollBassBar) )
-   {
-       return;
-   }
-
-   PianoRollBassBar bar = (PianoRollBassBar)barBeingEdited;
-
-   if( bar != null )
-   {
-   barEditorContents.setText(bar.getText().toString());
-
-   int slots = bar.getSlots();
-
-   slotsTextField.setText("" + slots);
-
-   beatsTextField.setText("" + (slots/BEAT_DOUBLE));
-
-   //barEditorFrame.setLocation(x+100, y+100);
-   //barEditorFrame.setSize(350, 500);
-
-   switch( bar.getNoteType() )
-   {
-       case BASS:     bassNoteButton.setSelected(true);     break;
-       case PITCH:    pitchToneButton.setSelected(true);    break;
-       case REPEAT:   repeatPitchButton.setSelected(true);  break;
-       case CHORD:    chordToneButton.setSelected(true);    break;
-       case SCALE:    scaleToneButton.setSelected(true);    break;
-       case APPROACH: approachToneButton.setSelected(true); break;
-       case NEXT:     nextToneButton.setSelected(true);     break;
-
-   }
-
-   switch( bar.getAccidental() )
-   {
-       case FLAT:   flatAccidental.setSelected(true);   break;
-       case NONE:   noAccidental.setSelected(true);     break;
-       case SHARP:  sharpAccidental.setSelected(true);  break;
-   }
-
-   switch( bar.getDegree() )
-   {
-       case 1: pitch1Button.setSelected(true); break;
-       case 2: pitch2Button.setSelected(true); break;
-       case 3: pitch3Button.setSelected(true); break;
-       case 4: pitch4Button.setSelected(true); break;
-       case 5: pitch5Button.setSelected(true); break;
-       case 6: pitch6Button.setSelected(true); break;
-       case 7: pitch7Button.setSelected(true); break;
     }
 
-   switch( bar.getDirection() )
-   {
-       case UP:   upDirection.setSelected(true); break;
-       case ANY:  noDirection.setSelected(true); break;
-       case DOWN: downDirection.setSelected(true); break;
-   }
-  }
-barEditorFrame.repaint();
-}
+    public void setColumnOut(int col) {
+        exportToColumnTF.setText("" + col);
+        exportToColumnComboBox.setSelectedIndex(col - 1);
+    }
 
-private void barEditorContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barEditorContentsActionPerformed
-    barEditorCommit();
-}//GEN-LAST:event_barEditorContentsActionPerformed
 
-private void barEditorContentsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barEditorContentsKeyPressed
+    /**
+     * Call to move a column From the Piano Roll to the Style Editor
+     * @param evt
+     */
 
-    if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
+        int minColumn = 1; // FIX
+        int maxColumn = styleEditor.getNumColumns();
+
+        int col = intFromTextField(exportToColumnTF, minColumn, maxColumn, 0); // FIX!
+
+        // col <= 0 indicates an error
+
+        if (col > 0) {
+            styleEditor.pianoRollToStyleEditorColumn(this, col);
+        }
+    }//GEN-LAST:event_exportButtonActionPerformed
+
+
+    private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+        importFromStyleEditorColumn();
+    }//GEN-LAST:event_importButtonActionPerformed
+
+
+    /**
+     * Call to move a column From the Style Editor to the Piano Roll
+     * @param evt
+     */
+
+    private void importFromStyleEditorColumn() {
+        int minColumn = 1; // FIX
+        int maxColumn = styleEditor.getNumColumns();
+
+        int col = intFromTextField(importFromColumnTF, minColumn, maxColumn, 0); // FIX!
+
+        // col <= 0 indicates an error
+
+        if (col > 0) {
+            importFromColumnComboBox.setSelectedIndex(col - 1);
+            styleEditor.styleEditorColumnToPianoRoll(col, this);
+            updatePlayablePercussion();
+        }
+    }
+
+    private void playPercussionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playPercussionButtonActionPerformed
+        styleEditor.playPercussionColumn(styleEditorColumn);
+    }//GEN-LAST:event_playPercussionButtonActionPerformed
+
+    private void playChordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordButtonActionPerformed
+        styleEditor.playChordColumn(styleEditorColumn);
+    }//GEN-LAST:event_playChordButtonActionPerformed
+
+    private void playBassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBassButtonActionPerformed
+        styleEditor.playBassColumn(styleEditorColumn);
+    }//GEN-LAST:event_playBassButtonActionPerformed
+
+    private void closePianoRollWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closePianoRollWindow
+
+        closeWindow();
+    }//GEN-LAST:event_closePianoRollWindow
+
+    private void exportToColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnTFActionPerformed
+        exportButtonActionPerformed(null);
+    }//GEN-LAST:event_exportToColumnTFActionPerformed
+
+    public void openBarEditor() {
+        barEditorFrame.setLocation(100, 100);
+        barEditorFrame.setSize(400, 560);
+        barEditorFrame.setVisible(true);
+        if (selectedBar != null) {
+            updateBarEditor(selectedBar);
+        }
+    }
+
+    public void updateBarEditor(PianoRollBar barBeingEdited) {
+        if (!(barBeingEdited instanceof PianoRollBassBar)) {
+            return;
+        }
+
+        PianoRollBassBar bar = (PianoRollBassBar) barBeingEdited;
+
+        if (bar != null) {
+            barEditorContents.setText(bar.getText().toString());
+
+            int slots = bar.getSlots();
+
+            slotsTextField.setText("" + slots);
+
+            beatsTextField.setText("" + (slots / BEAT_DOUBLE));
+
+            //barEditorFrame.setLocation(x+100, y+100);
+            //barEditorFrame.setSize(350, 500);
+
+            switch (bar.getNoteType()) {
+                case BASS:
+                    bassNoteButton.setSelected(true);
+                    break;
+                case PITCH:
+                    pitchToneButton.setSelected(true);
+                    break;
+                case REPEAT:
+                    repeatPitchButton.setSelected(true);
+                    break;
+                case CHORD:
+                    chordToneButton.setSelected(true);
+                    break;
+                case SCALE:
+                    scaleToneButton.setSelected(true);
+                    break;
+                case APPROACH:
+                    approachToneButton.setSelected(true);
+                    break;
+                case NEXT:
+                    nextToneButton.setSelected(true);
+                    break;
+
+            }
+
+            switch (bar.getAccidental()) {
+                case FLAT:
+                    flatAccidental.setSelected(true);
+                    break;
+                case NONE:
+                    noAccidental.setSelected(true);
+                    break;
+                case SHARP:
+                    sharpAccidental.setSelected(true);
+                    break;
+            }
+
+            switch (bar.getDegree()) {
+                case 1:
+                    pitch1Button.setSelected(true);
+                    break;
+                case 2:
+                    pitch2Button.setSelected(true);
+                    break;
+                case 3:
+                    pitch3Button.setSelected(true);
+                    break;
+                case 4:
+                    pitch4Button.setSelected(true);
+                    break;
+                case 5:
+                    pitch5Button.setSelected(true);
+                    break;
+                case 6:
+                    pitch6Button.setSelected(true);
+                    break;
+                case 7:
+                    pitch7Button.setSelected(true);
+                    break;
+            }
+
+            switch (bar.getDirection()) {
+                case UP:
+                    upDirection.setSelected(true);
+                    break;
+                case ANY:
+                    noDirection.setSelected(true);
+                    break;
+                case DOWN:
+                    downDirection.setSelected(true);
+                    break;
+            }
+        }
+        barEditorFrame.repaint();
+    }
+
+    private void barEditorContentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barEditorContentsActionPerformed
         barEditorCommit();
+    }//GEN-LAST:event_barEditorContentsActionPerformed
+
+    private void barEditorContentsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barEditorContentsKeyPressed
+
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            barEditorCommit();
+        }
+    }//GEN-LAST:event_barEditorContentsKeyPressed
+
+    private void okEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okEditBtnActionPerformed
+        barEditorCommit();
+    }//GEN-LAST:event_okEditBtnActionPerformed
+
+    private void barEditorFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_barEditorFrameComponentHidden
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barEditorFrameComponentHidden
+
+    private void barEditorFrameadviceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_barEditorFrameadviceFocusGained
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_barEditorFrameadviceFocusGained
+
+    private void barEditorFrameadviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_barEditorFrameadviceWindowClosing
+
+    }//GEN-LAST:event_barEditorFrameadviceWindowClosing
+
+    private void cancelEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelEditButtonActionPerformed
+        barEditorFrame.setVisible(false);
+    }//GEN-LAST:event_cancelEditButtonActionPerformed
+
+    private void pitch2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pitch2ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pitch2ButtonActionPerformed
+
+    private void pitch6ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pitch6ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pitch6ButtonActionPerformed
+
+    private void bassEditorToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassEditorToggleButton1ActionPerformed
+        openBarEditor();
+    }//GEN-LAST:event_bassEditorToggleButton1ActionPerformed
+
+    private void importFromColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnComboBoxActionPerformed
+        importFromColumnTF.setText(importFromColumnComboBox.getSelectedItem().toString());
+        importFromStyleEditorColumn();
+    }//GEN-LAST:event_importFromColumnComboBoxActionPerformed
+
+    private void exportToColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnComboBoxActionPerformed
+        exportToColumnTF.setText(exportToColumnComboBox.getSelectedItem().toString());
+    }//GEN-LAST:event_exportToColumnComboBoxActionPerformed
+
+    private void importFromColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importFromColumnTFActionPerformed
+
+    private void chordToneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordToneButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chordToneButtonActionPerformed
+
+    private void pixelsPerBeatComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pixelsPerBeatComboBoxActionPerformed
+        pixelsPerBeatTextField.setText(pixelsPerBeatComboBox.getSelectedItem().toString());
+        if (checkPixelBeatConstraint()) {
+            pixelsPerBeatTextFieldActionPerformed(evt);
+        }
+    }//GEN-LAST:event_pixelsPerBeatComboBoxActionPerformed
+
+    private void ticksPerBeatComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticksPerBeatComboBoxActionPerformed
+        ticksPerBeatTextField.setText(ticksPerBeatComboBox.getSelectedItem().toString());
+        if (checkPixelBeatConstraint()) {
+            ticksPerBeatTextFieldActionPerformed(evt);
+        }
+    }//GEN-LAST:event_ticksPerBeatComboBoxActionPerformed
+
+
+    /**
+     * This is called when a (non-toggle) button at the left end of a row is pressed.
+     * It corresponds to bass and chord instruments, which don't get looped.
+     * @param evt
+     * @param row
+     */
+
+    private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row) {
+        setLooping(false);
+
+        Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
+
+        AbstractButton thisButton = rowButton[row];
+
+        updatePlayablePercussion();
+
+        if (playable != null) {
+            playable.playMe();
+        }
+
     }
-}//GEN-LAST:event_barEditorContentsKeyPressed
-
-private void okEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okEditBtnActionPerformed
-    barEditorCommit();
-}//GEN-LAST:event_okEditBtnActionPerformed
-
-private void barEditorFrameComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_barEditorFrameComponentHidden
-
-    // TODO add your handling code here:
-}//GEN-LAST:event_barEditorFrameComponentHidden
-
-private void barEditorFrameadviceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_barEditorFrameadviceFocusGained
-
-    // TODO add your handling code here:
-}//GEN-LAST:event_barEditorFrameadviceFocusGained
-
-private void barEditorFrameadviceWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_barEditorFrameadviceWindowClosing
-    
-}//GEN-LAST:event_barEditorFrameadviceWindowClosing
-
-private void cancelEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelEditButtonActionPerformed
-    barEditorFrame.setVisible(false);
-}//GEN-LAST:event_cancelEditButtonActionPerformed
-
-private void pitch2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pitch2ButtonActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_pitch2ButtonActionPerformed
-
-private void pitch6ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pitch6ButtonActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_pitch6ButtonActionPerformed
-
-private void bassEditorToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bassEditorToggleButton1ActionPerformed
-openBarEditor();
-}//GEN-LAST:event_bassEditorToggleButton1ActionPerformed
-
-private void importFromColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnComboBoxActionPerformed
-    importFromColumnTF.setText(importFromColumnComboBox.getSelectedItem().toString());
-    importFromStyleEditorColumn();
-}//GEN-LAST:event_importFromColumnComboBoxActionPerformed
-
-private void exportToColumnComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToColumnComboBoxActionPerformed
-    exportToColumnTF.setText(exportToColumnComboBox.getSelectedItem().toString());
-}//GEN-LAST:event_exportToColumnComboBoxActionPerformed
-
-private void importFromColumnTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importFromColumnTFActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_importFromColumnTFActionPerformed
-
-private void chordToneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordToneButtonActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_chordToneButtonActionPerformed
-
-private void pixelsPerBeatComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pixelsPerBeatComboBoxActionPerformed
-pixelsPerBeatTextField.setText(pixelsPerBeatComboBox.getSelectedItem().toString());
-if( checkPixelBeatConstraint() )
-{
-    pixelsPerBeatTextFieldActionPerformed(evt);
-}
-}//GEN-LAST:event_pixelsPerBeatComboBoxActionPerformed
-
-private void ticksPerBeatComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticksPerBeatComboBoxActionPerformed
-ticksPerBeatTextField.setText(ticksPerBeatComboBox.getSelectedItem().toString());
-if( checkPixelBeatConstraint() )
-{
-    ticksPerBeatTextFieldActionPerformed(evt);
-}
-}//GEN-LAST:event_ticksPerBeatComboBoxActionPerformed
 
 
-/**
- * This is called when a (non-toggle) button at the left end of a row is pressed.
- * It corresponds to bass and chord instruments, which don't get looped.
- * @param evt
- * @param row 
- */
+    /**
+     * This is called when a toggle button at the left end of a row is toggled.
+     * It corresponds to  percussion instruments, and starts looping them.
+     * @param evt
+     * @param row
+     */
 
-private void playRowBtnActionPerformed(java.awt.event.ActionEvent evt, int row)
-  {
-    setLooping(false);
-    
-    Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
+    private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row) {
+        Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
 
-    AbstractButton thisButton = rowButton[row];
+        AbstractButton thisButton = rowButton[row];
 
-    updatePlayablePercussion();
-    
-    if( playable != null )
-      {
-      playable.playMe();
-      }
+        if (thisButton.isSelected()) {
+            setLooping(true);
+            thisButton.setBackground(SELECTEDCOLOR);
+        } else {
+            // Don't stop looping in this case, because other drums may still be on
+            thisButton.setBackground(DRUMSCOLOR);
+        }
 
-  }
-
-
-/**
- * This is called when a toggle button at the left end of a row is toggled.
- * It corresponds to  percussion instruments, and starts looping them.
- * @param evt
- * @param row 
- */
-
-private void playRowBtnLoopActionPerformed(java.awt.event.ActionEvent evt, int row)
-  {
-    Playable playable = styleEditor.getPlayableFromPianoRollRow(this, row);
-
-    AbstractButton thisButton = rowButton[row];
-
-    if( thisButton.isSelected() )
-      {
-        setLooping(true);
-        thisButton.setBackground(SELECTEDCOLOR);
-      }
-    else
-      {
-        // Don't stop looping in this case, because other drums may still be on
-        thisButton.setBackground(DRUMSCOLOR);
-      }
-
-    updatePlayablePercussion();
-  }
+        updatePlayablePercussion();
+    }
 
 
-/**
- * Sets selected percussion instruments to loop or not.
- * @param value 
- */
+    /**
+     * Sets selected percussion instruments to loop or not.
+     * @param value
+     */
 
-public void setLooping(boolean value)
-  {
-    if( value )
-      {
-        loopToggleButton.setBackground(SELECTEDCOLOR);
-        loopToggleButton.setText("<html><center>Stop Looping</center></html>");
-        loopToggleButton.setSelected(true);
-        styleEditor.setLooping(true);
-        startPlaying();
-      }
-    else
-      {
-        loopToggleButton.setBackground(DRUMSCOLOR);
-        loopToggleButton.setText("<html><center>Loop Percussion</center></html>");
-        loopToggleButton.setSelected(false);
-        styleEditor.setLooping(false);
-        stopPlaying();
-      }   
-  }
+    public void setLooping(boolean value) {
+        if (value) {
+            loopToggleButton.setBackground(SELECTEDCOLOR);
+            loopToggleButton.setText("<html><center>Stop Looping</center></html>");
+            loopToggleButton.setSelected(true);
+            styleEditor.setLooping(true);
+            startPlaying();
+        } else {
+            loopToggleButton.setBackground(DRUMSCOLOR);
+            loopToggleButton.setText("<html><center>Loop Percussion</center></html>");
+            loopToggleButton.setSelected(false);
+            styleEditor.setLooping(false);
+            stopPlaying();
+        }
+    }
 
-/**
- * This is for communication with StyleEditor, so that it can determine whether
- * or not the pianoroll is looping.
- * @return 
- */
-public boolean getLooping()
-  {
-    return loopToggleButton.isSelected();
-  }
+    /**
+     * This is for communication with StyleEditor, so that it can determine whether
+     * or not the pianoroll is looping.
+     * @return
+     */
+    public boolean getLooping() {
+        return loopToggleButton.isSelected();
+    }
 
 
-Playable nowPlaying = null;
+    Playable nowPlaying = null;
 
 
-/**
- * Update nowPlaying to include the instruments defined by selected buttons
- * in array rowButton.
- * 
- * If looping, i.e. already playing, stop playing in order to update.,
- * then restart following the update.
- */
+    /**
+     * Update nowPlaying to include the instruments defined by selected buttons
+     * in array rowButton.
+     *
+     * If looping, i.e. already playing, stop playing in order to update.,
+     * then restart following the update.
+     */
 
-public void updatePlayablePercussion()
-  {
-  //System.out.println("updatePlayablePercussion");
-    
-    if( loopToggleButton.isSelected() )
-      {
-      stopPlaying();
-      
-      nowPlaying = getPlayablePercussion();
-      
-      startPlaying();
-      }
-    else
-      {
-       nowPlaying = getPlayablePercussion();       
-      }
-  }
+    public void updatePlayablePercussion() {
+        //System.out.println("updatePlayablePercussion");
 
-private Playable getPlayablePercussion()
-  {
-    return styleEditor.getPlayablePercussionFromPianoRoll(this, rowButton);
-  }
+        if (loopToggleButton.isSelected()) {
+            stopPlaying();
 
-public void stopPlaying()
-  {
-    //System.out.println("stopPlaying: " + nowPlaying);
-    if( nowPlaying != null )
-      {
-        nowPlaying.stopPlaying();
-      }
-  }
+            nowPlaying = getPlayablePercussion();
 
-public void startPlaying()
-  {
-    if( nowPlaying != null )
-      {
-        nowPlaying.playMe();
-      }
-  }
+            startPlaying();
+        } else {
+            nowPlaying = getPlayablePercussion();
+        }
+    }
 
-public boolean nowPlaying()
-  {
-    return nowPlaying != null;
-  }
+    private Playable getPlayablePercussion() {
+        return styleEditor.getPlayablePercussionFromPianoRoll(this, rowButton);
+    }
 
-private void tempoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempoComboBoxActionPerformed
-styleEditor.setTempo((String)tempoComboBox.getSelectedItem());
-}//GEN-LAST:event_tempoComboBoxActionPerformed
+    public void stopPlaying() {
+        //System.out.println("stopPlaying: " + nowPlaying);
+        if (nowPlaying != null) {
+            nowPlaying.stopPlaying();
+        }
+    }
 
-private void loopToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonActionPerformed
+    public void startPlaying() {
+        if (nowPlaying != null) {
+            nowPlaying.playMe();
+        }
+    }
+
+    public boolean nowPlaying() {
+        return nowPlaying != null;
+    }
+
+    private void tempoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tempoComboBoxActionPerformed
+        styleEditor.setTempo((String) tempoComboBox.getSelectedItem());
+    }//GEN-LAST:event_tempoComboBoxActionPerformed
+
+    private void loopToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonActionPerformed
 // Note that the entire array of rowButton is passed, so that the combination
 // can be discerened.
 
-    setLooping(loopToggleButton.isSelected());
+        setLooping(loopToggleButton.isSelected());
 
-}//GEN-LAST:event_loopToggleButtonActionPerformed
+    }//GEN-LAST:event_loopToggleButtonActionPerformed
 
-private void downDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downDirectionActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_downDirectionActionPerformed
+    private void downDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downDirectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_downDirectionActionPerformed
 
-private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
-    
-    closeWindow();
-}//GEN-LAST:event_closeWindowMIActionPerformed
+    private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
 
-private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
-    
-    WindowRegistry.cascadeWindows(this);
-}//GEN-LAST:event_cascadeMIActionPerformed
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMIActionPerformed
 
-private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
-    
-    windowMenu.removeAll();
-    
-    windowMenu.add(closeWindowMI);
-    
-    windowMenu.add(cascadeMI);
-    
-    windowMenu.add(windowMenuSeparator);
-    
-    for(WindowMenuItem w : WindowRegistry.getWindows()) {
-        
-        windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-        
-    }
-    
-    windowMenu.repaint();
-}//GEN-LAST:event_windowMenuMenuSelected
+    private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
 
-private void barVolumeTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeTFActionPerformed
-  {//GEN-HEADEREND:event_barVolumeTFActionPerformed
-    int value = Integer.parseInt(barVolumeTF.getText());
-    
-    if( value > 127 )
-      {
-        value = 127;
-      }
-    else if( value < 0 )
-      {
-        value = 0;
-      }
-    
-    setVolumeIndicators(value);
-    setBarVolume(value);
-  }//GEN-LAST:event_barVolumeTFActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMIActionPerformed
 
-private void barVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_barVolumeSliderStateChanged
-  {//GEN-HEADEREND:event_barVolumeSliderStateChanged
-    int value = barVolumeSlider.getValue();
-    barVolumeTF.setText("" + value);
-    setBarVolume(value);
-  }//GEN-LAST:event_barVolumeSliderStateChanged
+    private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
 
-private void SaveEntireStyleButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SaveEntireStyleButtonActionPerformed
-  {//GEN-HEADEREND:event_SaveEntireStyleButtonActionPerformed
-    styleEditor.saveStyle();
-  }//GEN-LAST:event_SaveEntireStyleButtonActionPerformed
+        windowMenu.removeAll();
 
-private void barVolumeImpliedCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeImpliedCheckBoxActionPerformed
-  {//GEN-HEADEREND:event_barVolumeImpliedCheckBoxActionPerformed
-    boolean volumeImplied = barVolumeImpliedCheckBox.isSelected();
-    if( selectedBar != null )
-      {
-        selectedBar.setVolumeImplied(volumeImplied); 
-      }
-    barVolumeSlider.setEnabled(!volumeImplied);
-    barVolumeTF.setEnabled(!volumeImplied);
-  }//GEN-LAST:event_barVolumeImpliedCheckBoxActionPerformed
+        windowMenu.add(closeWindowMI);
+
+        windowMenu.add(cascadeMI);
+
+        windowMenu.add(windowMenuSeparator);
+
+        for (WindowMenuItem w : WindowRegistry.getWindows()) {
+
+            windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+
+        }
+
+        windowMenu.repaint();
+    }//GEN-LAST:event_windowMenuMenuSelected
+
+    private void barVolumeTFActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeTFActionPerformed
+    {//GEN-HEADEREND:event_barVolumeTFActionPerformed
+        int value = Integer.parseInt(barVolumeTF.getText());
+
+        if (value > 127) {
+            value = 127;
+        } else if (value < 0) {
+            value = 0;
+        }
+
+        setVolumeIndicators(value);
+        setBarVolume(value);
+    }//GEN-LAST:event_barVolumeTFActionPerformed
+
+    private void barVolumeSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_barVolumeSliderStateChanged
+    {//GEN-HEADEREND:event_barVolumeSliderStateChanged
+        int value = barVolumeSlider.getValue();
+        barVolumeTF.setText("" + value);
+        setBarVolume(value);
+    }//GEN-LAST:event_barVolumeSliderStateChanged
+
+    private void SaveEntireStyleButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_SaveEntireStyleButtonActionPerformed
+    {//GEN-HEADEREND:event_SaveEntireStyleButtonActionPerformed
+        styleEditor.saveStyle();
+    }//GEN-LAST:event_SaveEntireStyleButtonActionPerformed
+
+    private void barVolumeImpliedCheckBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barVolumeImpliedCheckBoxActionPerformed
+    {//GEN-HEADEREND:event_barVolumeImpliedCheckBoxActionPerformed
+        boolean volumeImplied = barVolumeImpliedCheckBox.isSelected();
+        if (selectedBar != null) {
+            selectedBar.setVolumeImplied(volumeImplied);
+        }
+        barVolumeSlider.setEnabled(!volumeImplied);
+        barVolumeTF.setEnabled(!volumeImplied);
+    }//GEN-LAST:event_barVolumeImpliedCheckBoxActionPerformed
 
     private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
         columnStepBackward();
@@ -2251,69 +2207,59 @@ private void barVolumeImpliedCheckBoxActionPerformed(java.awt.event.ActionEvent 
         columnStepForward();
     }//GEN-LAST:event_pianoRollButtonStepForwardBtnActionPerformed
 
-private void columnStepForward()
-{
-    Object selectedItem = importFromColumnComboBox.getSelectedItem();
-    int selectedIndex = importFromColumnComboBox.getSelectedIndex();
-    int columnNumber = Integer.parseInt(((String)selectedItem));
-    if (selectedIndex == styleEditor.getColumns().getColumnCount()-2 ) 
-      { 
-       // Already at last column
-       return;
-      }
-    importFromColumnComboBox.setSelectedIndex(selectedIndex+1);
-    importFromStyleEditorColumn();
-}
-
-private void columnStepBackward()
-{
-    Object selectedItem = importFromColumnComboBox.getSelectedItem();
-    int selectedIndex = importFromColumnComboBox.getSelectedIndex();
-    int columnNumber = Integer.parseInt(((String)selectedItem));
-    if (selectedIndex == 0) 
-    { 
-      // Already at first column
-       return;
+    private void columnStepForward() {
+        Object selectedItem = importFromColumnComboBox.getSelectedItem();
+        int selectedIndex = importFromColumnComboBox.getSelectedIndex();
+        int columnNumber = Integer.parseInt(((String) selectedItem));
+        if (selectedIndex == styleEditor.getColumns().getColumnCount() - 2) {
+            // Already at last column
+            return;
+        }
+        importFromColumnComboBox.setSelectedIndex(selectedIndex + 1);
+        importFromStyleEditorColumn();
     }
-    importFromColumnComboBox.setSelectedIndex(selectedIndex-1);
-    importFromStyleEditorColumn();
-}
-private void setBarVolume(int value)
-  {
-    if( selectedBar != null && !selectedBar.getVolumeImplied() )
-      {
-        selectedBar.setVolume(value);
-      }
-  }
 
-private void setVolumeIndicators(int value)
-  {
-    barVolumeTF.setText("" + value);
-    
-    barVolumeSlider.setValue(value);    
-  }
-
-private boolean checkPixelBeatConstraint()
-{
-int ticksPerBeat = intFromTextField(ticksPerBeatTextField, MIN_TICKS_PER_BEAT, MAX_TICKS_PER_BEAT, MIN_TICKS_PER_BEAT);
-int pixelsPerBeat = intFromTextField(pixelsPerBeatTextField, MIN_PIXELS_PER_BEAT, MAX_PIXELS_PER_BEAT, MIN_PIXELS_PER_BEAT);
-if( pixelsPerBeat >= ticksPerBeat )
-    {
-    return true;
+    private void columnStepBackward() {
+        Object selectedItem = importFromColumnComboBox.getSelectedItem();
+        int selectedIndex = importFromColumnComboBox.getSelectedIndex();
+        int columnNumber = Integer.parseInt(((String) selectedItem));
+        if (selectedIndex == 0) {
+            // Already at first column
+            return;
+        }
+        importFromColumnComboBox.setSelectedIndex(selectedIndex - 1);
+        importFromStyleEditorColumn();
     }
-ErrorLog.log(ErrorLog.WARNING, "Pixels per beat must be greater than or equal to ticks per beat.");
-return false;
-}
 
-PianoRollGrid getGrid()
-{
-    return grid;
-}
+    private void setBarVolume(int value) {
+        if (selectedBar != null && !selectedBar.getVolumeImplied()) {
+            selectedBar.setVolume(value);
+        }
+    }
 
-PianoRollPanel getPanel()
-{
-    return pianoRollPanel;
-}
+    private void setVolumeIndicators(int value) {
+        barVolumeTF.setText("" + value);
+
+        barVolumeSlider.setValue(value);
+    }
+
+    private boolean checkPixelBeatConstraint() {
+        int ticksPerBeat = intFromTextField(ticksPerBeatTextField, MIN_TICKS_PER_BEAT, MAX_TICKS_PER_BEAT, MIN_TICKS_PER_BEAT);
+        int pixelsPerBeat = intFromTextField(pixelsPerBeatTextField, MIN_PIXELS_PER_BEAT, MAX_PIXELS_PER_BEAT, MIN_PIXELS_PER_BEAT);
+        if (pixelsPerBeat >= ticksPerBeat) {
+            return true;
+        }
+        ErrorLog.log(ErrorLog.WARNING, "Pixels per beat must be greater than or equal to ticks per beat.");
+        return false;
+    }
+
+    PianoRollGrid getGrid() {
+        return grid;
+    }
+
+    PianoRollPanel getPanel() {
+        return pianoRollPanel;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton SaveEntireStyleButton;
@@ -2403,7 +2349,7 @@ PianoRollPanel getPanel()
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
-public void closeWindow() {
+    public void closeWindow() {
         setLooping(false);
         styleEditor.unusePianoRoll();
         setVisible(false);

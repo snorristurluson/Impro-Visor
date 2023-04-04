@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,7 +24,9 @@ import imp.data.ChordPart;
 import imp.roadmap.brickdictionary.Block;
 import imp.roadmap.brickdictionary.ChordBlock;
 import imp.style.stylePatterns.Interpolant;
+
 import java.util.ArrayList;
+
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -32,17 +34,14 @@ import polya.PolylistBuffer;
  *
  * @author Isys Johnson
  */
-public class Interpolate
-  {
+public class Interpolate {
 
 
-    public static Polylist ArraytoPoly(ArrayList array)
-    {
+    public static Polylist ArraytoPoly(ArrayList array) {
         PolylistBuffer buffer = new PolylistBuffer();
-        for( Object item : array )
-          {
+        for (Object item : array) {
             buffer.append(item);
-          }
+        }
         return buffer.toPolylist();
     }
 
@@ -56,19 +55,17 @@ public class Interpolate
      * @param index
      * @param minVal
      * @param prob
-     * @return 
+     * @return
      */
-    public static Polylist willInterpolate(ChordPart chordPart, int index, int minVal, float prob)
-    {
-        
-        if( chordPart.getChord(index) == null )
-          {
+    public static Polylist willInterpolate(ChordPart chordPart, int index, int minVal, float prob) {
+
+        if (chordPart.getChord(index) == null) {
             return Polylist.nil;
-          }
-        
+        }
+
         Chord currentChord = chordPart.getChord(index);
 
-        
+
         //finds the number of "slots" available for interpolations depending on the
         //specified minimum duration within the style file
         //for example if minimum slots is 120, then a chord with a duration of 480 would be able
@@ -78,31 +75,25 @@ public class Interpolate
         int steps;
         Polylist list = Polylist.nil;
 
-        if( currentChord.getRhythmValue() <=  minVal)
-          {
+        if (currentChord.getRhythmValue() <= minVal) {
             steps = 0;
-          }
-        else
-          {
+        } else {
             steps = currentChord.getRhythmValue() / minVal - 1;
-          }
-        
+        }
+
         //at each step, using probability and the block, we will determine whether or not a interpolation should be available at
         //a that step
         int willInterpolate = (int) (Math.random() * 100 + 1);
-        if((willInterpolate > (prob*100) || steps == 0) && (chordPart.getNextChord(index) != null))
-        {
+        if ((willInterpolate > (prob * 100) || steps == 0) && (chordPart.getNextChord(index) != null)) {
             list = list.cons(false);
             Polylist result = Polylist.list(currentChord, list);
             index += currentChord.getRhythmValue();
             return willInterpolate(chordPart, index, minVal, prob).cons(result);
         }
-        
+
         list = list.cons(true);
-        
-              
-          
-        
+
+
         //zips together the current chord and it's boolean list and places them into a Polylist
         //for example, if the first chord is Fm7 with a duration of 480, minVal of 120, and
         //and no interpolations are to be added
@@ -111,4 +102,4 @@ public class Interpolate
         index += currentChord.getRhythmValue();
         return willInterpolate(chordPart, index, minVal, prob).cons(result);
     } // willInterpolate
-  }
+}

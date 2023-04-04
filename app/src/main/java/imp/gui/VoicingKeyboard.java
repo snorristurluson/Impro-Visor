@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,38 +29,38 @@ import imp.voicing.VoicingDistanceCalculator;
 import java.io.StringReader;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.KeyStroke; 
-import java.awt.Color; 
+import javax.swing.KeyStroke;
+import java.awt.Color;
 
 import polya.Polylist;
 import polya.Tokenizer;
 
 import java.util.Calendar;
 import javax.swing.JPanel;
-import javax.swing.JSeparator; 
+import javax.swing.JSeparator;
 import java.util.*;
 
 /**
  *
- * @author  Emma Carlson (2009), 
+ * @author Emma Carlson (2009),
  * Mira Jambusaria and RObert Keller (2016) for labels and visichord integration
  * VisiChord uses some code from Erika Rice Sherpelz, Jeffrey Sherpelz, 
  * Adrian Mettler, and Gabriel Neer
- * 
+ *
  */
 
 public class VoicingKeyboard extends javax.swing.JDialog {
 
     boolean debug = false;
-    
+
     Notate notate;
     boolean singleNoteMode = false;
-    
-    boolean turnOnOffLabels = true; 
+
+    boolean turnOnOffLabels = true;
     //if true, labels on. else, labels off 
-    
+
     int numberOfDisplayedPanes = 6;
-    
+
     /** Creates new form VoicingKeyboard
      * @param notate
      * @param x
@@ -73,48 +73,60 @@ public class VoicingKeyboard extends javax.swing.JDialog {
         setSize(1045, 285);
         setLocation(x, y);
         WindowRegistry.registerWindow(this);
-        setInvisible(); 
-        
-        setVisichordDialog(); 
+        setInvisible();
+
+        setVisichordDialog();
     }
-    
-@Override
-public void toFront() {
-  super.toFront();
-  if( visichordDialog != null )
-    {
-    visichordDialog.toFront();
+
+    @Override
+    public void toFront() {
+        super.toFront();
+        if (visichordDialog != null) {
+            visichordDialog.toFront();
+        }
     }
-}
-    Notate getNotate()
-    {
-      return notate;
+
+    Notate getNotate() {
+        return notate;
     }
-    
+
     /**
      * Set additional keys that delegate to the Notate window
      */
-    private void setDelegatedKeys()
-    {
+    private void setDelegatedKeys() {
         // A huge chunk of code, just to have a key stroke do something.
         // In this case, the something is to have control-I open the voicing editor.
         // I tried to accomplish this by adding an accelerator, but everytime
         // I did that in netbeans, it broke the piano key display.
-        
+
         KeyStroke stroke = KeyStroke.getKeyStroke('I', java.awt.event.InputEvent.CTRL_DOWN_MASK);
-        jPanel1.getInputMap().put(stroke,  "doSomething");
+        jPanel1.getInputMap().put(stroke, "doSomething");
         jPanel1.getActionMap().put("doSomething",
-                            new javax.swing.Action()
-              {
-              public void actionPerformed(java.awt.event.ActionEvent e) {
-                /*getNotate().openVoicingEditor();*/}
-              public void addPropertyChangeListener(java.beans.PropertyChangeListener x) {}
-              public void removePropertyChangeListener(java.beans.PropertyChangeListener x) {}
-              public boolean isEnabled() {return true;}
-              public void setEnabled(boolean x) {}
-              public void putValue(String y, Object x) {}
-              public Object getValue(String y) {return null;}
-              }
+                new javax.swing.Action() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        /*getNotate().openVoicingEditor();*/
+                    }
+
+                    public void addPropertyChangeListener(java.beans.PropertyChangeListener x) {
+                    }
+
+                    public void removePropertyChangeListener(java.beans.PropertyChangeListener x) {
+                    }
+
+                    public boolean isEnabled() {
+                        return true;
+                    }
+
+                    public void setEnabled(boolean x) {
+                    }
+
+                    public void putValue(String y, Object x) {
+                    }
+
+                    public Object getValue(String y) {
+                        return null;
+                    }
+                }
         );
     }
 
@@ -2241,8 +2253,10 @@ public void toFront() {
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -2274,399 +2288,368 @@ public void toFront() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-/**
- * Getting the piano key images.
- */
-public javax.swing.ImageIcon whiteKey = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/whitekey.jpg"));
+    /**
+     * Getting the piano key images.
+     */
+    public javax.swing.ImageIcon whiteKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/whitekey.jpg"));
 
-public javax.swing.ImageIcon whiteKeyPressed = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/whitekeypressed.jpg"));
+    public javax.swing.ImageIcon whiteKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/whitekeypressed.jpg"));
 
-public javax.swing.ImageIcon blackKey = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/blackkey.jpg"));
+    public javax.swing.ImageIcon blackKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackkey.jpg"));
 
-public javax.swing.ImageIcon blackKeyPressed = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/blackkeypressed.jpg"));
+    public javax.swing.ImageIcon blackKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackkeypressed.jpg"));
 
-public javax.swing.ImageIcon bassKey = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/rootkey.jpg"));
+    public javax.swing.ImageIcon bassKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/rootkey.jpg"));
 
-public javax.swing.ImageIcon bassKeyPressed = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/rootkeypressed.jpg"));
+    public javax.swing.ImageIcon bassKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/rootkeypressed.jpg"));
 
-public javax.swing.ImageIcon blackBassKey = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/blackrootkey.jpg"));
+    public javax.swing.ImageIcon blackBassKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackrootkey.jpg"));
 
-public javax.swing.ImageIcon blackBassKeyPressed = 
-    new javax.swing.ImageIcon(
-        getClass().getResource("/graphics/blackrootkeypressed.jpg"));
+    public javax.swing.ImageIcon blackBassKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackrootkeypressed.jpg"));
 
- public javax.swing.ImageIcon staffIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/staff.gif"));
- 
- public javax.swing.ImageIcon clefsIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/clefs.gif"));
- 
- public final javax.swing.ImageIcon wholeNoteIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/wholeNote.gif"));
+    public javax.swing.ImageIcon staffIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/staff.gif"));
 
- public javax.swing.ImageIcon sharpIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/sharp.gif"));
- 
-  public javax.swing.ImageIcon flatIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/flat.gif"));
-  
- public javax.swing.ImageIcon staffEndIcon = 
-    new javax.swing.ImageIcon(
-            getClass().getResource("/graphics/endStaff.gif"));
- 
-public JLabel staff = new JLabel(staffIcon);
-public JLabel clefs = new JLabel(clefsIcon);
-//public JLabel wholeNote = new JLabel(wholeNoteIcon);
-public JLabel sharp = new JLabel(sharpIcon); 
-public JLabel flat = new JLabel(flatIcon); 
-public JLabel staffEnd = new JLabel(staffEndIcon); 
-        
-/**
- * Setting some useful constants.
- */
+    public javax.swing.ImageIcon clefsIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/clefs.gif"));
 
-public boolean playback = false;    // true if keyboard is in playback mode
+    public final javax.swing.ImageIcon wholeNoteIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/wholeNote.gif"));
 
-public boolean[] currentVoicing = makeValueArray();  
+    public javax.swing.ImageIcon sharpIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/sharp.gif"));
 
-public final int BKHEIGHT = 80;     // height of a black key
+    public javax.swing.ImageIcon flatIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/flat.gif"));
 
-public final int BKWIDTH = 14;      // width of a black key
+    public javax.swing.ImageIcon staffEndIcon =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/endStaff.gif"));
 
-public final int WKWIDTH = 20;      // width of a white key
+    public JLabel staff = new JLabel(staffIcon);
+    public JLabel clefs = new JLabel(clefsIcon);
+    //public JLabel wholeNote = new JLabel(wholeNoteIcon);
+    public JLabel sharp = new JLabel(sharpIcon);
+    public JLabel flat = new JLabel(flatIcon);
+    public JLabel staffEnd = new JLabel(staffEndIcon);
 
-public final int WKHEIGHT = 120;    // height of a white key
+    /**
+     * Setting some useful constants.
+     */
 
-public final int OCTAVE = 140;      // width of an octave
+    public boolean playback = false;    // true if keyboard is in playback mode
 
-public final int OCTKEYS = 7;       // 7 white keys per octave
+    public boolean[] currentVoicing = makeValueArray();
 
-public final int P_OCTAVE = 12;     // 12 notes per octave
+    public final int BKHEIGHT = 80;     // height of a black key
 
-public final int A = 21;            // MIDI value of 1st key on keyboard
+    public final int BKWIDTH = 14;      // width of a black key
 
-public final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
+    public final int WKWIDTH = 20;      // width of a white key
 
-public final String CTRLCLICK = "Ctrl+Button1";
+    public final int WKHEIGHT = 120;    // height of a white key
 
-public final String SHIFTCLICK = "Shift+Button1";
+    public final int OCTAVE = 140;      // width of an octave
 
-public final String CTRLSHFTCLICK = "Ctrl+Shift+Button1";
+    public final int OCTKEYS = 7;       // 7 white keys per octave
 
-public final String NO_MODIFIER = "";
+    public final int P_OCTAVE = 12;     // 12 notes per octave
 
-public final String FROM_MIDI_KEYBOARD = "from MIDI keyboard";
+    public final int A = 21;            // MIDI value of 1st key on keyboard
 
-public final String SHARP = "#";
+    public final int C_EIGHTH = 108;    // MIDI value of last key on keyboard
 
-public final String FLAT = "b";
+    public final String CTRLCLICK = "Ctrl+Button1";
 
-public final String ADDTOSEQ = "A";
+    public final String SHIFTCLICK = "Shift+Button1";
 
-public final String BACKSPACE = "Backspace";
+    public final String CTRLSHFTCLICK = "Ctrl+Shift+Button1";
 
-public final String PLAYCHORD = "P";
+    public final String NO_MODIFIER = "";
 
-public final String EMPTY = "";
+    public final String FROM_MIDI_KEYBOARD = "from MIDI keyboard";
 
-public final String UP = "up";
+    public final String SHARP = "#";
 
-public final String DOWN = "down";
+    public final String FLAT = "b";
 
-private long LAST_MIDI_ENTRY = 0;
+    public final String ADDTOSEQ = "A";
 
-private long CHORD_GAP = 1000; // The amount of time (in milliseconds) that must
-                               // elapse between two keys played on the MIDI
-                               // keyboard in order for the keyboard to be
-                               // cleared.
+    public final String BACKSPACE = "Backspace";
 
-private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
+    public final String PLAYCHORD = "P";
 
-    playback = false;
-    
-    // Getting the position of the mouse click
-    int y = evt.getY();
-    int x = evt.getX();
-    
-    if (y < WKHEIGHT && !playback)
-    {
-        // True if the user clicked a black key.
-        boolean blackPianoKey = false;
+    public final String EMPTY = "";
 
-        // Determines the key number
-        int keyNum = x / WKWIDTH;
+    public final String UP = "up";
 
-        int note = keyNum;
+    public final String DOWN = "down";
 
-        // gives the octave number (ex. 4 in C4 for middle C) by 
-        // determining where midi is in relation to the pixel width of an octave
-        int octave = ( (x + 5*WKWIDTH) / OCTAVE);
+    private long LAST_MIDI_ENTRY = 0;
 
-        // Only occurs if the click is at a y position that could be a black key
-        if (y < BKHEIGHT) {
-            // find the position of the click within the key
-            int inKey = x - keyNum*WKWIDTH;
+    private long CHORD_GAP = 1000; // The amount of time (in milliseconds) that must
+    // elapse between two keys played on the MIDI
+    // keyboard in order for the keyboard to be
+    // cleared.
 
-            // if click is in right half of black key
-            if (inKey < (BKWIDTH/2 + 1)){
-                blackPianoKey = true;
-                note -= 1;
+    private void keyboardLPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyboardLPMouseClicked
 
-                // not on a black key if note number is 1 or 4
-                if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
-                    blackPianoKey = false;
+        playback = false;
+
+        // Getting the position of the mouse click
+        int y = evt.getY();
+        int x = evt.getX();
+
+        if (y < WKHEIGHT && !playback) {
+            // True if the user clicked a black key.
+            boolean blackPianoKey = false;
+
+            // Determines the key number
+            int keyNum = x / WKWIDTH;
+
+            int note = keyNum;
+
+            // gives the octave number (ex. 4 in C4 for middle C) by
+            // determining where midi is in relation to the pixel width of an octave
+            int octave = ((x + 5 * WKWIDTH) / OCTAVE);
+
+            // Only occurs if the click is at a y position that could be a black key
+            if (y < BKHEIGHT) {
+                // find the position of the click within the key
+                int inKey = x - keyNum * WKWIDTH;
+
+                // if click is in right half of black key
+                if (inKey < (BKWIDTH / 2 + 1)) {
+                    blackPianoKey = true;
+                    note -= 1;
+
+                    // not on a black key if note number is 1 or 4
+                    if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
+                        blackPianoKey = false;
+                    }
+                }
+
+                // if click is in left half of black key
+                else if (inKey > WKWIDTH - (BKWIDTH / 2 + 1)) {
+                    blackPianoKey = true;
+                    note = keyNum;
+
+                    // not on a black key if note number is 1 or 4
+                    if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
+                        blackPianoKey = false;
+                    }
                 }
             }
 
-            // if click is in left half of black key
-            else if (inKey > WKWIDTH - (BKWIDTH/2 + 1)) {
-                blackPianoKey = true;
-                note = keyNum;
+            // determine the MIDI value of the note clicked
+            int baseMidi = 0;
 
-                // not on a black key if note number is 1 or 4
-                if (note % OCTKEYS == 1 || note % OCTKEYS == 4) {
-                    blackPianoKey = false;
+            int oct = note - OCTKEYS * (octave - 1);
+
+            if (octave == 0) {
+                oct = note - OCTKEYS * octave;
+            }
+
+            // if the note is a black key
+            if (blackPianoKey) {
+                switch (oct) {
+                    case 0:
+                        baseMidi = A + 1;     //Bb
+                        break;
+                    case 2:
+                        baseMidi = A + 4;     //C#
+                        break;
+                    case 3:
+                        baseMidi = A + 6;     //Eb
+                        break;
+                    case 5:
+                        baseMidi = A + 9;     //F#
+                        break;
+                    case 6:
+                        baseMidi = A + 11;    //G#
+                        break;
+                    case 7:
+                        baseMidi = A + 13;    //Bb
+                        break;
                 }
             }
-        }
-
-        // determine the MIDI value of the note clicked
-        int baseMidi = 0;
-
-        int oct = note - OCTKEYS*(octave - 1);
-
-        if (octave == 0) {
-            oct = note - OCTKEYS*octave;
-        }
-
-        // if the note is a black key
-        if (blackPianoKey)
-        {
-            switch(oct) {
-                case 0:
-                    baseMidi = A + 1;     //Bb
-                    break;
-                case 2:
-                    baseMidi = A + 4;     //C#
-                    break;
-                case 3:
-                    baseMidi = A + 6;     //Eb
-                    break;
-                case 5:
-                    baseMidi = A + 9;     //F#
-                    break;
-                case 6:
-                    baseMidi = A + 11;    //G#
-                    break;
-                case 7:
-                    baseMidi = A + 13;    //Bb
-                    break;
+            // if the note is not a black key
+            else {
+                switch (oct) {
+                    case 0:
+                        baseMidi = A;      //A
+                        break;
+                    case 1:
+                        baseMidi = A + 2;  //B
+                        break;
+                    case 2:
+                        baseMidi = A + 3;  //C
+                        break;
+                    case 3:
+                        baseMidi = A + 5;  //D
+                        break;
+                    case 4:
+                        baseMidi = A + 7;  //E
+                        break;
+                    case 5:
+                        baseMidi = A + 8;  //F
+                        break;
+                    case 6:
+                        baseMidi = A + 10; //G
+                        break;
+                    case 7:
+                        baseMidi = A + 12; //A
+                        break;
+                    case 8:
+                        baseMidi = A + 14; //B
+                        break;
+                }
             }
-        }
-        // if the note is not a black key
-        else
-        {
-            switch(oct) {
-                case 0:
-                    baseMidi = A;      //A
-                    break;
-                case 1:
-                    baseMidi = A + 2;  //B
-                    break;
-                case 2:
-                    baseMidi = A + 3;  //C
-                    break;
-                case 3:
-                    baseMidi = A + 5;  //D
-                    break;
-                case 4:
-                    baseMidi = A + 7;  //E
-                    break;
-                case 5:
-                    baseMidi = A + 8;  //F
-                    break;
-                case 6:
-                    baseMidi = A + 10; //G
-                    break;
-                case 7:
-                    baseMidi = A + 12; //A
-                    break;
-                case 8:
-                    baseMidi = A + 14; //B
-                    break;
+
+            // Adjust the MIDI value for different octaves
+            int midiValue = baseMidi + P_OCTAVE * (octave - 1);
+
+            if (octave == 0) {
+                midiValue = baseMidi;
             }
+            int m = evt.getModifiers();
+            String mod = evt.getMouseModifiersText(m);
+            setKeyboard(mod, midiValue);
+
+
         }
+    }//GEN-LAST:event_keyboardLPMouseClicked
 
-        // Adjust the MIDI value for different octaves
-        int midiValue = baseMidi + P_OCTAVE*(octave - 1);
-
-        if (octave == 0) {
-            midiValue = baseMidi;
-        }
-        int m = evt.getModifiers();
-        String mod = evt.getMouseModifiersText(m);
-        setKeyboard(mod, midiValue);
-         
-        
-    }
-}//GEN-LAST:event_keyboardLPMouseClicked
-
-public void setKeyboard(String mod, int midiValue)
-{       
+    public void setKeyboard(String mod, int midiValue) {
         // Pressing the keys and playing the notes
         PianoKey keyPlayed = pianoKeys()[midiValue - A];
-         
+
         // to change bass note
-        if (mod.equals(CTRLCLICK))
-        {
+        if (mod.equals(CTRLCLICK)) {
             String name = findBassName(midiValue);
             setBass(name, midiValue);
             notate.rebuildVoicingTable();
             return;
         }
-        
+
         // to add extensions to voicings
-        else if (mod.equals(CTRLSHFTCLICK))
-        {
+        else if (mod.equals(CTRLSHFTCLICK)) {
             // if the key has been pressed, unpress it.
-            if (keyPlayed.isPressed()) 
-            {
+            if (keyPlayed.isPressed()) {
                 keyPlayed.setPressed(false);
                 keyPlayed.setAsExtension(false);
-                int x = keyPlayed.getMIDI(); 
-                labels[x-21].setForeground(new Color(240,240,240)); 
-                
+                int x = keyPlayed.getMIDI();
+                labels[x - 21].setForeground(new Color(240, 240, 240));
+
             }
             // press the correct key
-            else 
-            {
+            else {
                 keyPlayed.setPressed(true);
                 keyPlayed.setAsExtension(true);
-                int x = keyPlayed.getMIDI(); 
-                labels[x-21].setForeground(Color.black);  
+                int x = keyPlayed.getMIDI();
+                labels[x - 21].setForeground(Color.black);
             }
-            
-            if (singleNoteMode)
-            {
+
+            if (singleNoteMode) {
                 pressSingleKey(keyPlayed);
                 //labels adjusted directly in the method
-                
-                
-            }
-            else
-            {
+
+
+            } else {
                 pressKey(keyPlayed);
                 //labels adjusted directly in the method
-                 
+
             }
             // display voicing in text field
             setVoicingEntryTFfromKeys();
             String s = notate.voicingEntryTFText();
             String c = notate.getChordRootTFText();
-            notate.constructAndPlayChord(c,s);
+            notate.constructAndPlayChord(c, s);
         }
-        
+
         // to change the bass note range
-        else if (mod.equals(SHIFTCLICK))
-        {
+        else if (mod.equals(SHIFTCLICK)) {
             String name = keyPlayed.getName();
             String lowRange = notate.bassLowRangeTFText();
             String highRange = notate.bassHighRangeTFText();
 
-            if (!lowRange.equals(EMPTY) && !highRange.equals(EMPTY))
-            {
+            if (!lowRange.equals(EMPTY) && !highRange.equals(EMPTY)) {
                 notate.setBassLowRangeTF(EMPTY);
                 notate.setBassHighRangeTF(EMPTY);
                 notate.setBassLowRangeTF(name);
-            }
-            else
-            {
+            } else {
                 NoteSymbol c = NoteSymbol.makeNoteSymbol(lowRange);
                 int midi = c.getMIDI();
 
-                if (midiValue > midi)
-                {
+                if (midiValue > midi) {
                     notate.setBassHighRangeTF(name);
-                }
-                else
-                {
+                } else {
                     notate.setBassLowRangeTF(name);
                     notate.setBassHighRangeTF(lowRange);
                 }
                 int root = findBass();
                 name = findBassName(root);
                 setBass(name, root);
-                
+
                 //labels[root-21].setForeground(Color.black); 
                 notate.rebuildVoicingTable();
             }
             return;
-        }
-        
-        else if (mod.equals(FROM_MIDI_KEYBOARD))
-        {
+        } else if (mod.equals(FROM_MIDI_KEYBOARD)) {
             long curTime = Calendar.getInstance().getTime().getTime();
-            
-            if (curTime - LAST_MIDI_ENTRY > CHORD_GAP)
-            {
+
+            if (curTime - LAST_MIDI_ENTRY > CHORD_GAP) {
                 clearKeyboard();
             }
-            
+
             LAST_MIDI_ENTRY = curTime;
-            
+
             keyPlayed.setPressed(true);
 
-            if (singleNoteMode)
-            {
+            if (singleNoteMode) {
                 pressSingleKey(keyPlayed);
-            }
-            else
-            {
+            } else {
                 pressKey(keyPlayed);
             }
 
             // display voicing in text field
             setVoicingEntryTFfromKeys();
-        }    
-        
+        }
+
         // if the key is just plain clicked
-        else
-        {
+        else {
             // if the key has been pressed, unpress it.
-            if (keyPlayed.isPressed()) 
-            {
+            if (keyPlayed.isPressed()) {
                 keyPlayed.setPressed(false);
             }
             // press the correct key
-            else 
-            {
+            else {
                 keyPlayed.setPressed(true);
             }
-            if (singleNoteMode)
-            {
+            if (singleNoteMode) {
                 pressSingleKey(keyPlayed);
-            }
-            else
-            {
+            } else {
                 pressKey(keyPlayed);
             }
 
@@ -2674,846 +2657,752 @@ public void setKeyboard(String mod, int midiValue)
             setVoicingEntryTFfromKeys();
             String s = notate.voicingEntryTFText();
             String c = notate.getChordRootTFText();
-            notate.constructAndPlayChord(c,s);
+            notate.constructAndPlayChord(c, s);
             //voicingPrintDistanceMetrics();
         }
-}
+    }
 
-/**
- * Finds the highest note in a given voicing
- * 
- * @param midiValues
- * @return the integer MIDI value of the highest note in a voicing
- */
-private int highestNote(Polylist midiValues)
-{
-    int highNote = 0;
-    
-    for (Polylist L = midiValues; L.nonEmpty(); L = L.rest())
-    {
-        NoteSymbol n = (NoteSymbol)L.first();
-        int midi = n.getMIDI();
-        if (midi >= highNote)
-        {
-            highNote = midi;
-        }
-    }
-    return highNote;
-}
+    /**
+     * Finds the highest note in a given voicing
+     *
+     * @param midiValues
+     * @return the integer MIDI value of the highest note in a voicing
+     */
+    private int highestNote(Polylist midiValues) {
+        int highNote = 0;
 
-/**
- * Finds the lowest note in a given voicing
- * 
- * @param midiValues
- * @return the integer MIDI value of the lowest note in the voicing
- */
-private int lowestNote(Polylist midiValues)
-{
-    int lowNote = C_EIGHTH;
-    
-    for (Polylist L = midiValues; L.nonEmpty(); L = L.rest())
-    {
-        NoteSymbol n = (NoteSymbol)L.first();
-        int midi = n.getMIDI();
-        if (midi <= lowNote)
-        {
-            lowNote = midi;
-        }
-    }
-    return lowNote;
-}
-
-/**
- * Transposes a given voicing up a half step
- * 
- * @param v, a String representing a voicing
- */
-public void transposeUpHalfStep(String v)
-{
-    if (v.equals(EMPTY)){
-        return;
-    }
-    
-    String e = notate.extEntryTFText();
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    if (highestNote(voicing) + 1 > C_EIGHTH || highestNote(extension) + 1 > C_EIGHTH)
-    {
-        return;
-    }
-    
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-
-    for (Polylist L = voicing; L.nonEmpty(); L = L.rest())
-    {
-        if (extension.nonEmpty())
-        {
-            NoteSymbol ex = (NoteSymbol)extension.first();
-            
-            int eMidiValue = ex.getMIDI() + 1;
-            PianoKey eNote = pianoKeys()[eMidiValue - A];
-            eNote.setPressed(true);
-            pressKey(eNote);
-            extension = extension.rest();
-            notate.addExtEntryTFText(eNote.getName());
-        }
-        
-        NoteSymbol n = (NoteSymbol)L.first();
-        
-        int vMidiValue = n.getMIDI() + 1;
-        PianoKey vNote = pianoKeys()[vMidiValue - A];
-        vNote.setPressed(true);
-        pressKey(vNote);
-        notate.addVoicingEntryTFText(vNote.getName());
-    }
-    int lowRange = notate.getLowerBound();
-    int highRange = C_EIGHTH + 1;
-    
-    if (notate.bassHighRangeTFText().equals(EMPTY))
-    {
-        highRange = setBassHighRange(lowRange);
-    }
-    else
-    {
-        highRange = notate.getUpperBound();
-    }
-    
-    int r = findBass() + 1;
-    if (r < lowRange)
-    {
-        int midi = r + P_OCTAVE;
-        String note = findBassName(midi);
-        setBass(note, midi);
-    }
-    else if (r > highRange)
-    {
-        int midi = r - P_OCTAVE;
-        String note = findBassName(midi);
-        setBass(note, midi);
-    }
-    else 
-    {
-        String note = findBassName(r);
-        setBass(note, r);
-    }
-    
-    v = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
-    
-    transposeRoot(c,lowRange,highRange,UP);
-    
-    notate.rebuildVoicingTable();
-    
-    notate.constructAndPlayChord(c,v);
-}
-
-/**
- * Transposes the current voicing up a half step.
- * 
- * @param evt
- */
-private void upHalfStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upHalfStepMIActionPerformed
-
-    String v = notate.voicingEntryTFText();
-    transposeUpHalfStep(v);
-
-}//GEN-LAST:event_upHalfStepMIActionPerformed
-
-/**
- * Transposes a given voicing down a half step
- * 
- * @param v, a String representing a voicing
- */
-public void transposeDownHalfStep(String v)
-{
-    if (v.equals(EMPTY)){
-        return;
-    }
-    
-    String e = notate.extEntryTFText();
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    if (lowestNote(voicing) - 1 < A || lowestNote(extension) - 1 < A)
-    {
-        return;
-    }
-    
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-
-    for (Polylist L = voicing; L.nonEmpty(); L = L.rest())
-    {
-        if (extension.nonEmpty())
-        {
-            NoteSymbol ex = (NoteSymbol)extension.first();
-            
-            int eMidiValue = ex.getMIDI() - 1;
-            PianoKey eNote = pianoKeys()[eMidiValue - A];
-            eNote.setPressed(true);
-            pressKey(eNote);
-            extension = extension.rest();
-            notate.addExtEntryTFText(eNote.getName());
-        }
-        
-        NoteSymbol n = (NoteSymbol)L.first();
-        
-        int vMidiValue = n.getMIDI() - 1;
-        PianoKey vNote = pianoKeys()[vMidiValue - A];
-        vNote.setPressed(true);
-        pressKey(vNote);
-        notate.addVoicingEntryTFText(vNote.getName());
-    }
-    int lowRange = notate.getLowerBound();
-    int highRange = C_EIGHTH + 1;
-    
-    if (notate.bassHighRangeTFText().equals(EMPTY))
-    {
-        highRange = setBassHighRange(lowRange);
-    }
-    else
-    {
-        highRange = notate.getUpperBound();
-    }
-    
-    int r = findBass() - 1;
-    
-    if (r < lowRange)
-    {
-        int midi = r + P_OCTAVE;
-        String note = findBassName(midi);
-        setBass(note, midi);
-    }
-    else if (r > highRange)
-    {
-        int midi = r - P_OCTAVE;
-        String note = findBassName(midi);
-        setBass(note, midi);
-    }
-    else 
-    {
-        String note = findBassName(r);
-        setBass(note, r);
-    }
-    
-    
-    v = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
-    
-    transposeRoot(c,lowRange,highRange,DOWN);
-    
-    notate.rebuildVoicingTable();
-    
-    notate.constructAndPlayChord(c,v);
-}
-
-/**
- * Transposes the current voicing down a half step.
- * 
- * @param evt
- */
-private void downHalfStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downHalfStepMIActionPerformed
-
-    String v = notate.voicingEntryTFText();
-    transposeDownHalfStep(v);
-}//GEN-LAST:event_downHalfStepMIActionPerformed
-
-/**
- * Transposes a given voicing up an octave
- * 
- * @param v, a String representing a voicing
- */
-public void transposeUpOctave(String v)
-{
-    if (v.equals(EMPTY)){
-        return;
-    }
-    
-    String e = notate.extEntryTFText();
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    if (highestNote(voicing) + P_OCTAVE > C_EIGHTH || 
-            highestNote(extension) + P_OCTAVE > C_EIGHTH)
-    {
-        return;
-    }
-    
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-
-    for (Polylist L = voicing; L.nonEmpty(); L = L.rest())
-    {
-        if (extension.nonEmpty())
-        {
-            NoteSymbol ex = (NoteSymbol)extension.first();
-            
-            int eMidiValue = ex.getMIDI() + P_OCTAVE;
-            PianoKey eNote = pianoKeys()[eMidiValue - A];
-            eNote.setPressed(true);
-            pressKey(eNote);
-            extension = extension.rest();
-            notate.addExtEntryTFText(eNote.getName());
-        }
-        
-        NoteSymbol n = (NoteSymbol)L.first();
-        
-        int vMidiValue = n.getMIDI() + P_OCTAVE;
-        PianoKey vNote = pianoKeys()[vMidiValue - A];
-        vNote.setPressed(true);
-        pressKey(vNote);
-        notate.addVoicingEntryTFText(vNote.getName());
-    }
-    
-    v = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
-    notate.constructAndPlayChord(c,v);
-}
-
-/**
- * Transposes the current voicing up an octave.
- * 
- * @param evt
- */
-private void upOctaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upOctaveMIActionPerformed
-
-    String v = notate.voicingEntryTFText();
-    transposeUpOctave(v);
-
-}//GEN-LAST:event_upOctaveMIActionPerformed
-
-/**
- * Transposes a given voicing down an octave
- * 
- * @param v, a String representing a voicing
- */
-public void transposeDownOctave(String v)
-{
-    if (v.equals(EMPTY)){
-        return;
-    }
-    
-    String e = notate.extEntryTFText();
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    if (lowestNote(voicing) - P_OCTAVE < A || lowestNote(extension) - P_OCTAVE < A)
-    {
-        return;
-    }
-    
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-
-    for (Polylist L = voicing; L.nonEmpty(); L = L.rest())
-    {
-        if (extension.nonEmpty())
-        {
-            NoteSymbol ex = (NoteSymbol)extension.first();
-            
-            int eMidiValue = ex.getMIDI() - P_OCTAVE;
-            PianoKey eNote = pianoKeys()[eMidiValue - A];
-            eNote.setPressed(true);
-            pressKey(eNote);
-            extension = extension.rest();
-            notate.addExtEntryTFText(eNote.getName());
-        }
-        
-        NoteSymbol n = (NoteSymbol)L.first();
-        
-        int vMidiValue = n.getMIDI() - P_OCTAVE;
-        PianoKey vNote = pianoKeys()[vMidiValue - A];
-        vNote.setPressed(true);
-        pressKey(vNote);
-        notate.addVoicingEntryTFText(vNote.getName());
-    }
-    
-    v = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
-    notate.constructAndPlayChord(c,v);
-}
-
-/**
- * Transposes the current voicing down an octave.
- * 
- * @param evt
- */
-private void downOctaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downOctaveMIActionPerformed
-
-    String v = notate.voicingEntryTFText();
-    transposeDownOctave(v);
-
-}//GEN-LAST:event_downOctaveMIActionPerformed
-
-/**
- * Transposes the chord root based on the chord root text field and the bass range.
- * 
- * @param root
- * @param lowRange
- * @param highRange
- * @param direction
- */
-public void transposeRoot(String chordRoot, int lowRange,
-                          int highRange, String direction)
-{
-    if (notate.rootEqualBassCheckboxChecked())
-    {
-        return;
-    }
-    
-    int midiValue = C_EIGHTH + 1;
-    for (PianoKey pk : pianoKeys())
-    {
-        String name = pk.getName();
-        name = nameToBass(name);
-        int midi = pk.getMIDI();
-        if (name.equals(chordRoot))
-        {
-            if (midi >= lowRange && midi <= highRange && midi < midiValue)
-            {
-                midiValue = midi;
+        for (Polylist L = midiValues; L.nonEmpty(); L = L.rest()) {
+            NoteSymbol n = (NoteSymbol) L.first();
+            int midi = n.getMIDI();
+            if (midi >= highNote) {
+                highNote = midi;
             }
         }
+        return highNote;
     }
-    
-    if (direction.equals(UP))
-    {
-        midiValue += 1;
-    }
-    else
-    {
-        midiValue -= 1;
-    }
-    
-    // ?? what if midiValue - A is out of range? It has happened. FIX!!
-    
-    PianoKey root = pianoKeys()[midiValue - A];
-    String rootName = root.getName();
-    rootName = nameToBass(rootName);
-    
-    notate.setChordRootTFText(rootName);
-    
-}
 
-/**
- * Restores the keyboard to its original state.
- */
-public void clearKeyboard()
-{
-    for (PianoKey pk : pianoKeys()) 
-     {
-        if (pk.isPressed()) 
-        {
-            pk.setPressed(false);
-            pressKey(pk);
+    /**
+     * Finds the lowest note in a given voicing
+     *
+     * @param midiValues
+     * @return the integer MIDI value of the lowest note in the voicing
+     */
+    private int lowestNote(Polylist midiValues) {
+        int lowNote = C_EIGHTH;
+
+        for (Polylist L = midiValues; L.nonEmpty(); L = L.rest()) {
+            NoteSymbol n = (NoteSymbol) L.first();
+            int midi = n.getMIDI();
+            if (midi <= lowNote) {
+                lowNote = midi;
+            }
         }
-        if(pk.isBass())
-        {
-            Icon offIcon = pk.getOffIcon();
-            JLabel label = pk.getLabel(); 
-            label.setIcon(offIcon);  
+        return lowNote;
+    }
+
+    /**
+     * Transposes a given voicing up a half step
+     *
+     * @param v, a String representing a voicing
+     */
+    public void transposeUpHalfStep(String v) {
+        if (v.equals(EMPTY)) {
+            return;
         }
-    }
-    presentChordDisplay.setText(EMPTY); 
-    setInvisible(); 
-}
 
-/**
- * Creates a boolean array for determining whether two voicings are equal
- * 
- * @return
- */
-public static boolean[] makeValueArray()
-{
-    boolean result[] = new boolean[128];
-    for (boolean b : result)
-    {
-        b = false;
-    }
-    return result;
-}
+        String e = notate.extEntryTFText();
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
 
-/**
- * Creates two boolean arrays of voicing v1 and voicing v2 and compares the
- * arrays
- * 
- * @param v1
- * @param v2
- * @return true if v1 = v2, false otherwise
- */
-public boolean voicingsAreEqual(String v1, String v2)
-{
-    boolean[] voicing1 = stringToMIDI(v1);
-    boolean[] voicing2 = stringToMIDI(v2);
-    
-    boolean equal = false;
-    int it = 0;
-    while (voicing1[it] == voicing2[it])
-    {
-        equal = true;
-        if (it == voicing1.length - 1)
-        {
-            return equal;
+        if (highestNote(voicing) + 1 > C_EIGHTH || highestNote(extension) + 1 > C_EIGHTH) {
+            return;
         }
-        it++;
-    }
-    
-    equal = false;
-    return equal;
-}
 
-/**
- * Enters a voicing into a boolean array
- * 
- * @param v
- * @return a boolean array with the indices of the MIDI values of the entered
- * voicing set to true.
- */
-public boolean[] stringToMIDI(String v)
-{
-    boolean[] result = makeValueArray();
-    
-    if (v.equals(EMPTY))
-    {
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+
+        for (Polylist L = voicing; L.nonEmpty(); L = L.rest()) {
+            if (extension.nonEmpty()) {
+                NoteSymbol ex = (NoteSymbol) extension.first();
+
+                int eMidiValue = ex.getMIDI() + 1;
+                PianoKey eNote = pianoKeys()[eMidiValue - A];
+                eNote.setPressed(true);
+                pressKey(eNote);
+                extension = extension.rest();
+                notate.addExtEntryTFText(eNote.getName());
+            }
+
+            NoteSymbol n = (NoteSymbol) L.first();
+
+            int vMidiValue = n.getMIDI() + 1;
+            PianoKey vNote = pianoKeys()[vMidiValue - A];
+            vNote.setPressed(true);
+            pressKey(vNote);
+            notate.addVoicingEntryTFText(vNote.getName());
+        }
+        int lowRange = notate.getLowerBound();
+        int highRange = C_EIGHTH + 1;
+
+        if (notate.bassHighRangeTFText().equals(EMPTY)) {
+            highRange = setBassHighRange(lowRange);
+        } else {
+            highRange = notate.getUpperBound();
+        }
+
+        int r = findBass() + 1;
+        if (r < lowRange) {
+            int midi = r + P_OCTAVE;
+            String note = findBassName(midi);
+            setBass(note, midi);
+        } else if (r > highRange) {
+            int midi = r - P_OCTAVE;
+            String note = findBassName(midi);
+            setBass(note, midi);
+        } else {
+            String note = findBassName(r);
+            setBass(note, r);
+        }
+
+        v = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+
+        transposeRoot(c, lowRange, highRange, UP);
+
+        notate.rebuildVoicingTable();
+
+        notate.constructAndPlayChord(c, v);
+    }
+
+    /**
+     * Transposes the current voicing up a half step.
+     *
+     * @param evt
+     */
+    private void upHalfStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upHalfStepMIActionPerformed
+
+        String v = notate.voicingEntryTFText();
+        transposeUpHalfStep(v);
+
+    }//GEN-LAST:event_upHalfStepMIActionPerformed
+
+    /**
+     * Transposes a given voicing down a half step
+     *
+     * @param v, a String representing a voicing
+     */
+    public void transposeDownHalfStep(String v) {
+        if (v.equals(EMPTY)) {
+            return;
+        }
+
+        String e = notate.extEntryTFText();
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
+
+        if (lowestNote(voicing) - 1 < A || lowestNote(extension) - 1 < A) {
+            return;
+        }
+
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+
+        for (Polylist L = voicing; L.nonEmpty(); L = L.rest()) {
+            if (extension.nonEmpty()) {
+                NoteSymbol ex = (NoteSymbol) extension.first();
+
+                int eMidiValue = ex.getMIDI() - 1;
+                PianoKey eNote = pianoKeys()[eMidiValue - A];
+                eNote.setPressed(true);
+                pressKey(eNote);
+                extension = extension.rest();
+                notate.addExtEntryTFText(eNote.getName());
+            }
+
+            NoteSymbol n = (NoteSymbol) L.first();
+
+            int vMidiValue = n.getMIDI() - 1;
+            PianoKey vNote = pianoKeys()[vMidiValue - A];
+            vNote.setPressed(true);
+            pressKey(vNote);
+            notate.addVoicingEntryTFText(vNote.getName());
+        }
+        int lowRange = notate.getLowerBound();
+        int highRange = C_EIGHTH + 1;
+
+        if (notate.bassHighRangeTFText().equals(EMPTY)) {
+            highRange = setBassHighRange(lowRange);
+        } else {
+            highRange = notate.getUpperBound();
+        }
+
+        int r = findBass() - 1;
+
+        if (r < lowRange) {
+            int midi = r + P_OCTAVE;
+            String note = findBassName(midi);
+            setBass(note, midi);
+        } else if (r > highRange) {
+            int midi = r - P_OCTAVE;
+            String note = findBassName(midi);
+            setBass(note, midi);
+        } else {
+            String note = findBassName(r);
+            setBass(note, r);
+        }
+
+
+        v = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+
+        transposeRoot(c, lowRange, highRange, DOWN);
+
+        notate.rebuildVoicingTable();
+
+        notate.constructAndPlayChord(c, v);
+    }
+
+    /**
+     * Transposes the current voicing down a half step.
+     *
+     * @param evt
+     */
+    private void downHalfStepMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downHalfStepMIActionPerformed
+
+        String v = notate.voicingEntryTFText();
+        transposeDownHalfStep(v);
+    }//GEN-LAST:event_downHalfStepMIActionPerformed
+
+    /**
+     * Transposes a given voicing up an octave
+     *
+     * @param v, a String representing a voicing
+     */
+    public void transposeUpOctave(String v) {
+        if (v.equals(EMPTY)) {
+            return;
+        }
+
+        String e = notate.extEntryTFText();
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
+
+        if (highestNote(voicing) + P_OCTAVE > C_EIGHTH ||
+                highestNote(extension) + P_OCTAVE > C_EIGHTH) {
+            return;
+        }
+
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+
+        for (Polylist L = voicing; L.nonEmpty(); L = L.rest()) {
+            if (extension.nonEmpty()) {
+                NoteSymbol ex = (NoteSymbol) extension.first();
+
+                int eMidiValue = ex.getMIDI() + P_OCTAVE;
+                PianoKey eNote = pianoKeys()[eMidiValue - A];
+                eNote.setPressed(true);
+                pressKey(eNote);
+                extension = extension.rest();
+                notate.addExtEntryTFText(eNote.getName());
+            }
+
+            NoteSymbol n = (NoteSymbol) L.first();
+
+            int vMidiValue = n.getMIDI() + P_OCTAVE;
+            PianoKey vNote = pianoKeys()[vMidiValue - A];
+            vNote.setPressed(true);
+            pressKey(vNote);
+            notate.addVoicingEntryTFText(vNote.getName());
+        }
+
+        v = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+        notate.constructAndPlayChord(c, v);
+    }
+
+    /**
+     * Transposes the current voicing up an octave.
+     *
+     * @param evt
+     */
+    private void upOctaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upOctaveMIActionPerformed
+
+        String v = notate.voicingEntryTFText();
+        transposeUpOctave(v);
+
+    }//GEN-LAST:event_upOctaveMIActionPerformed
+
+    /**
+     * Transposes a given voicing down an octave
+     *
+     * @param v, a String representing a voicing
+     */
+    public void transposeDownOctave(String v) {
+        if (v.equals(EMPTY)) {
+            return;
+        }
+
+        String e = notate.extEntryTFText();
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
+
+        if (lowestNote(voicing) - P_OCTAVE < A || lowestNote(extension) - P_OCTAVE < A) {
+            return;
+        }
+
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+
+        for (Polylist L = voicing; L.nonEmpty(); L = L.rest()) {
+            if (extension.nonEmpty()) {
+                NoteSymbol ex = (NoteSymbol) extension.first();
+
+                int eMidiValue = ex.getMIDI() - P_OCTAVE;
+                PianoKey eNote = pianoKeys()[eMidiValue - A];
+                eNote.setPressed(true);
+                pressKey(eNote);
+                extension = extension.rest();
+                notate.addExtEntryTFText(eNote.getName());
+            }
+
+            NoteSymbol n = (NoteSymbol) L.first();
+
+            int vMidiValue = n.getMIDI() - P_OCTAVE;
+            PianoKey vNote = pianoKeys()[vMidiValue - A];
+            vNote.setPressed(true);
+            pressKey(vNote);
+            notate.addVoicingEntryTFText(vNote.getName());
+        }
+
+        v = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+        notate.constructAndPlayChord(c, v);
+    }
+
+    /**
+     * Transposes the current voicing down an octave.
+     *
+     * @param evt
+     */
+    private void downOctaveMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downOctaveMIActionPerformed
+
+        String v = notate.voicingEntryTFText();
+        transposeDownOctave(v);
+
+    }//GEN-LAST:event_downOctaveMIActionPerformed
+
+    /**
+     * Transposes the chord root based on the chord root text field and the bass range.
+     *
+     * @param root
+     * @param lowRange
+     * @param highRange
+     * @param direction
+     */
+    public void transposeRoot(String chordRoot, int lowRange,
+                              int highRange, String direction) {
+        if (notate.rootEqualBassCheckboxChecked()) {
+            return;
+        }
+
+        int midiValue = C_EIGHTH + 1;
+        for (PianoKey pk : pianoKeys()) {
+            String name = pk.getName();
+            name = nameToBass(name);
+            int midi = pk.getMIDI();
+            if (name.equals(chordRoot)) {
+                if (midi >= lowRange && midi <= highRange && midi < midiValue) {
+                    midiValue = midi;
+                }
+            }
+        }
+
+        if (direction.equals(UP)) {
+            midiValue += 1;
+        } else {
+            midiValue -= 1;
+        }
+
+        // ?? what if midiValue - A is out of range? It has happened. FIX!!
+
+        PianoKey root = pianoKeys()[midiValue - A];
+        String rootName = root.getName();
+        rootName = nameToBass(rootName);
+
+        notate.setChordRootTFText(rootName);
+
+    }
+
+    /**
+     * Restores the keyboard to its original state.
+     */
+    public void clearKeyboard() {
+        for (PianoKey pk : pianoKeys()) {
+            if (pk.isPressed()) {
+                pk.setPressed(false);
+                pressKey(pk);
+            }
+            if (pk.isBass()) {
+                Icon offIcon = pk.getOffIcon();
+                JLabel label = pk.getLabel();
+                label.setIcon(offIcon);
+            }
+        }
+        presentChordDisplay.setText(EMPTY);
+        setInvisible();
+    }
+
+    /**
+     * Creates a boolean array for determining whether two voicings are equal
+     *
+     * @return
+     */
+    public static boolean[] makeValueArray() {
+        boolean result[] = new boolean[128];
+        for (boolean b : result) {
+            b = false;
+        }
         return result;
     }
-    
-    StringReader voicingReader = new StringReader(v);
-    Tokenizer in = new Tokenizer(voicingReader);
-    Object o = in.nextSexp();
-    //int index = ImproVisor.getCurrentWindow().getCurrentSelectionStart();
-    Polylist voicing = (Polylist)o;
-    
-    while (voicing.nonEmpty())
-    {
-        NoteSymbol n = NoteSymbol.makeNoteSymbol((String)voicing.first());
-        int midi = n.getMIDI();
-        
-        result[midi] = true;
-        
-        voicing = voicing.rest();
-    }
-    
-    return result;
-}
 
-/**
- * Transposes a String that represents a voicing
- * 
- * @param v, the voicing to be transposed
- * @param direction, either "up" or "down"
- * @return a String, the transposition of v
- */
-public String transposeVoicing(String v, String direction)
-{
-    boolean up = false;
-    
-    if (direction.equals("up"))
-    {
-        up = true;
-    }
-    String e = notate.extEntryTFText();
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    if (up)
-    {
-        if (highestNote(voicing) + P_OCTAVE > C_EIGHTH ||
-                highestNote(extension) + P_OCTAVE > C_EIGHTH)
-        {
-            return v;
-        }
-    }
-    else
-    {
-        if (lowestNote(voicing) - P_OCTAVE < A ||
-                lowestNote(extension) - P_OCTAVE < A)
-        {
-            return v;
-        }
-    }
-    Polylist P = new Polylist();
-    for (Polylist L = voicing; L.nonEmpty(); L = L.rest())
-    {
-        NoteSymbol n = (NoteSymbol)L.first();
-        int midi = n.getMIDI();
-        if (up)
-        {
-            midi = midi + P_OCTAVE;
-        }
-        else
-        {
-            midi = midi - P_OCTAVE;
-        }
-        PianoKey note = pianoKeys()[midi - A];
-        String newNote = note.getName();
-        P = P.cons(newNote);
-    }
-    String newVoicing = P.toString();
-    return newVoicing;
-    
-}
+    /**
+     * Creates two boolean arrays of voicing v1 and voicing v2 and compares the
+     * arrays
+     *
+     * @param v1
+     * @param v2
+     * @return true if v1 = v2, false otherwise
+     */
+    public boolean voicingsAreEqual(String v1, String v2) {
+        boolean[] voicing1 = stringToMIDI(v1);
+        boolean[] voicing2 = stringToMIDI(v2);
 
-/**
- * From the keyboard, finds the voicing currently displayed
- * 
- * @return a String, the voicing.
- */
-public String voicingFromKeyboard()
-{
-    String text = EMPTY;
-    for( PianoKey i : pianoKeys() )
-    {
-        if( i.isPressed() )
-        {
-            String s = i.getName();
-            if (text.equals(EMPTY))
-            {
-                text = "(" + s + ")";
+        boolean equal = false;
+        int it = 0;
+        while (voicing1[it] == voicing2[it]) {
+            equal = true;
+            if (it == voicing1.length - 1) {
+                return equal;
             }
-            else 
-            {
-                text = text.replace(')', ' ') + s + ")";
+            it++;
+        }
+
+        equal = false;
+        return equal;
+    }
+
+    /**
+     * Enters a voicing into a boolean array
+     *
+     * @param v
+     * @return a boolean array with the indices of the MIDI values of the entered
+     * voicing set to true.
+     */
+    public boolean[] stringToMIDI(String v) {
+        boolean[] result = makeValueArray();
+
+        if (v.equals(EMPTY)) {
+            return result;
+        }
+
+        StringReader voicingReader = new StringReader(v);
+        Tokenizer in = new Tokenizer(voicingReader);
+        Object o = in.nextSexp();
+        //int index = ImproVisor.getCurrentWindow().getCurrentSelectionStart();
+        Polylist voicing = (Polylist) o;
+
+        while (voicing.nonEmpty()) {
+            NoteSymbol n = NoteSymbol.makeNoteSymbol((String) voicing.first());
+            int midi = n.getMIDI();
+
+            result[midi] = true;
+
+            voicing = voicing.rest();
+        }
+
+        return result;
+    }
+
+    /**
+     * Transposes a String that represents a voicing
+     *
+     * @param v, the voicing to be transposed
+     * @param direction, either "up" or "down"
+     * @return a String, the transposition of v
+     */
+    public String transposeVoicing(String v, String direction) {
+        boolean up = false;
+
+        if (direction.equals("up")) {
+            up = true;
+        }
+        String e = notate.extEntryTFText();
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
+
+        if (up) {
+            if (highestNote(voicing) + P_OCTAVE > C_EIGHTH ||
+                    highestNote(extension) + P_OCTAVE > C_EIGHTH) {
+                return v;
+            }
+        } else {
+            if (lowestNote(voicing) - P_OCTAVE < A ||
+                    lowestNote(extension) - P_OCTAVE < A) {
+                return v;
             }
         }
+        Polylist P = new Polylist();
+        for (Polylist L = voicing; L.nonEmpty(); L = L.rest()) {
+            NoteSymbol n = (NoteSymbol) L.first();
+            int midi = n.getMIDI();
+            if (up) {
+                midi = midi + P_OCTAVE;
+            } else {
+                midi = midi - P_OCTAVE;
+            }
+            PianoKey note = pianoKeys()[midi - A];
+            String newNote = note.getName();
+            P = P.cons(newNote);
+        }
+        String newVoicing = P.toString();
+        return newVoicing;
+
     }
-    return text;
-}
 
-/**
- * Sets the voicing text field based on what notes have been pressed
- */
-public void setVoicingEntryTFfromKeys()
-{
-  notate.clearVoicingEntryTF();
-
-  for( PianoKey i : pianoKeys() )
-  {
-    if( i.isPressed() && i.isExtension())
-    {
-        String s = i.getName();
-        notate.addExtEntryTFText(s);
+    /**
+     * From the keyboard, finds the voicing currently displayed
+     *
+     * @return a String, the voicing.
+     */
+    public String voicingFromKeyboard() {
+        String text = EMPTY;
+        for (PianoKey i : pianoKeys()) {
+            if (i.isPressed()) {
+                String s = i.getName();
+                if (text.equals(EMPTY)) {
+                    text = "(" + s + ")";
+                } else {
+                    text = text.replace(')', ' ') + s + ")";
+                }
+            }
+        }
+        return text;
     }
-    else if( i.isPressed() && !i.isExtension())
-    {
-        String s = i.getName();
-        notate.addVoicingEntryTFText(s);
+
+    /**
+     * Sets the voicing text field based on what notes have been pressed
+     */
+    public void setVoicingEntryTFfromKeys() {
+        notate.clearVoicingEntryTF();
+
+        for (PianoKey i : pianoKeys()) {
+            if (i.isPressed() && i.isExtension()) {
+                String s = i.getName();
+                notate.addExtEntryTFText(s);
+            } else if (i.isPressed() && !i.isExtension()) {
+                String s = i.getName();
+                notate.addVoicingEntryTFText(s);
+            }
+        }
     }
-  }
-}
 
-String currentChordName;
+    String currentChordName;
 
-/**
- * Displays the indicated voicing, represented as an S expression,
- * on the keyboard. This is only called from Notate.
- * @param chordName
- * @param v
- */
-public void showVoicingOnKeyboard(String chordName, String v, boolean shift)
-{
-    if( shift )
-      {
-        shiftLeft();
-      }
-    clearKeyboard();
-    
-    String e = notate.extEntryTFText();
-    if( debug ) System.out.println("showVoicingOnKeyboard " + chordName + " " + v);
-    currentChordName = chordName;
-    displayPane[displayPane.length - 1].setChordName(currentChordName);
-    presentChordDisplay.setText(currentChordName);
-    Polylist voicing = notate.voicingToList(v);
-    Polylist extension = notate.extensionToList(e);
-    
-    voicing = voicing.append(extension);
-    
-    while (voicing.nonEmpty()) 
-    {
-        NoteSymbol n = (NoteSymbol)voicing.first();
-        int midiValue = n.getMIDI();
-        PianoKey key = pianoKeys()[midiValue - A];
-        key.setPressed(true);
-        pressKey(key);
-        voicing = voicing.rest();
+    /**
+     * Displays the indicated voicing, represented as an S expression,
+     * on the keyboard. This is only called from Notate.
+     * @param chordName
+     * @param v
+     */
+    public void showVoicingOnKeyboard(String chordName, String v, boolean shift) {
+        if (shift) {
+            shiftLeft();
+        }
+        clearKeyboard();
+
+        String e = notate.extEntryTFText();
+        if (debug) System.out.println("showVoicingOnKeyboard " + chordName + " " + v);
+        currentChordName = chordName;
+        displayPane[displayPane.length - 1].setChordName(currentChordName);
+        presentChordDisplay.setText(currentChordName);
+        Polylist voicing = notate.voicingToList(v);
+        Polylist extension = notate.extensionToList(e);
+
+        voicing = voicing.append(extension);
+
+        while (voicing.nonEmpty()) {
+            NoteSymbol n = (NoteSymbol) voicing.first();
+            int midiValue = n.getMIDI();
+            PianoKey key = pianoKeys()[midiValue - A];
+            key.setPressed(true);
+            pressKey(key);
+            voicing = voicing.rest();
+        }
+        voicingPrintDistanceMetrics();
     }
-    voicingPrintDistanceMetrics();
-}
 
-/**
- * determines whether the keyboard is in playback mode
- * @return true if the keyboard is playing, false otherwise
- */
-public boolean isPlaying()
-{
-    return playback;
-}
-
-/**
- * turns playback mode on or off
- * @param on
- */
-public void setPlayback(boolean on)
-{
-    playback = on;
-}
-
-
-/**
- * Sets the text in the present chord display label.
- * 
- * @param text
- */
-public void setPresentChordDisplayText(String text)
-{
-    presentChordDisplay.setText(text);
-}
-
-/**
- * Gets the text displayed in the present chord display
- * 
- * @return a String - the chords displayed above the keyboard.
- */
-public String getPresentChordDisplayText()
-{
-    return presentChordDisplay.getText();
-}
-
-/**
- * Sets single note mode to be on or off.
- * 
- * @param on
- */
-public void setSingleNoteMode(boolean on)
-{
-    this.singleNoteMode = on;
-}
-
-private void singleNoteModeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleNoteModeMIActionPerformed
-
-    setSingleNoteMode(true);
-    String voicing = notate.voicingEntryTFText();
-    currentVoicing = stringToMIDI(voicing);
-
-}//GEN-LAST:event_singleNoteModeMIActionPerformed
-
-private void chordModeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordModeMIActionPerformed
-
-    setSingleNoteMode(false);
-
-}//GEN-LAST:event_chordModeMIActionPerformed
-
-private void clearKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearKeyboardMIActionPerformed
-
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-    for(int i = 0; i<numberOfDisplayedPanes; i++)
-    {
-        displayPane[i].clear();
+    /**
+     * determines whether the keyboard is in playback mode
+     * @return true if the keyboard is playing, false otherwise
+     */
+    public boolean isPlaying() {
+        return playback;
     }
-}//GEN-LAST:event_clearKeyboardMIActionPerformed
 
-private void addToSequenceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToSequenceMIActionPerformed
-
-    String v = notate.voicingEntryTFText();
-    if (v.equals(EMPTY)){
-        return;
+    /**
+     * turns playback mode on or off
+     * @param on
+     */
+    public void setPlayback(boolean on) {
+        playback = on;
     }
-    notate.addToVoicingSequence();
-    
-}//GEN-LAST:event_addToSequenceMIActionPerformed
 
-private void playChordMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordMIActionPerformed
 
-    String s = notate.voicingEntryTFText();
-    String c = notate.getChordRootTFText();
+    /**
+     * Sets the text in the present chord display label.
+     *
+     * @param text
+     */
+    public void setPresentChordDisplayText(String text) {
+        presentChordDisplay.setText(text);
+    }
 
-    notate.constructAndPlayChord(c,s);
-    
-}//GEN-LAST:event_playChordMIActionPerformed
+    /**
+     * Gets the text displayed in the present chord display
+     *
+     * @return a String - the chords displayed above the keyboard.
+     */
+    public String getPresentChordDisplayText() {
+        return presentChordDisplay.getText();
+    }
 
-private void startPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPlayMIActionPerformed
-    startPlayback();
-}//GEN-LAST:event_startPlayMIActionPerformed
+    /**
+     * Sets single note mode to be on or off.
+     *
+     * @param on
+     */
+    public void setSingleNoteMode(boolean on) {
+        this.singleNoteMode = on;
+    }
 
-private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
-    stopPlayback();
-}//GEN-LAST:event_stopPlayMIActionPerformed
+    private void singleNoteModeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleNoteModeMIActionPerformed
 
-private void startPlayback()
-{
-    playback = true;
-    notate.playScore();  
-}
+        setSingleNoteMode(true);
+        String voicing = notate.voicingEntryTFText();
+        currentVoicing = stringToMIDI(voicing);
 
-private void pausePlayback()
-{
-  if (playback)
-    {
-        notate.pauseToKeyboard();
-    }    
-}
+    }//GEN-LAST:event_singleNoteModeMIActionPerformed
 
-private void stopPlayback()
-{
-    playback = false;
-    notate.stopPlaying();
-    clearKeyboard();
-    notate.clearVoicingEntryTF();
-    resetChordDisplay();     
-}
+    private void chordModeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordModeMIActionPerformed
 
-private void startSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSelPlayMIActionPerformed
+        setSingleNoteMode(false);
 
-    playback = true;
-    notate.getCurrentStave().playSelection(false, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
+    }//GEN-LAST:event_chordModeMIActionPerformed
 
-}//GEN-LAST:event_startSelPlayMIActionPerformed
+    private void clearKeyboardMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearKeyboardMIActionPerformed
 
-private void stopSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSelPlayMIActionPerformed
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+        for (int i = 0; i < numberOfDisplayedPanes; i++) {
+            displayPane[i].clear();
+        }
+    }//GEN-LAST:event_clearKeyboardMIActionPerformed
 
-    playback = false;
-    notate.getCurrentStave().playSelection(true, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
-    
-}//GEN-LAST:event_stopSelPlayMIActionPerformed
+    private void addToSequenceMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToSequenceMIActionPerformed
 
-private void resetChordDisplayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetChordDisplayMIActionPerformed
+        String v = notate.voicingEntryTFText();
+        if (v.equals(EMPTY)) {
+            return;
+        }
+        notate.addToVoicingSequence();
 
-    resetChordDisplay();
-    
-}//GEN-LAST:event_resetChordDisplayMIActionPerformed
+    }//GEN-LAST:event_addToSequenceMIActionPerformed
 
-private void pausePlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausePlayMIActionPerformed
-    pausePlayback();   
-}//GEN-LAST:event_pausePlayMIActionPerformed
+    private void playChordMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playChordMIActionPerformed
 
-private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
+        String s = notate.voicingEntryTFText();
+        String c = notate.getChordRootTFText();
+
+        notate.constructAndPlayChord(c, s);
+
+    }//GEN-LAST:event_playChordMIActionPerformed
+
+    private void startPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startPlayMIActionPerformed
+        startPlayback();
+    }//GEN-LAST:event_startPlayMIActionPerformed
+
+    private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayMIActionPerformed
+        stopPlayback();
+    }//GEN-LAST:event_stopPlayMIActionPerformed
+
+    private void startPlayback() {
+        playback = true;
+        notate.playScore();
+    }
+
+    private void pausePlayback() {
+        if (playback) {
+            notate.pauseToKeyboard();
+        }
+    }
+
+    private void stopPlayback() {
+        playback = false;
+        notate.stopPlaying();
+        clearKeyboard();
+        notate.clearVoicingEntryTF();
+        resetChordDisplay();
+    }
+
+    private void startSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startSelPlayMIActionPerformed
+
+        playback = true;
+        notate.getCurrentStave().playSelection(false, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
+
+    }//GEN-LAST:event_startSelPlayMIActionPerformed
+
+    private void stopSelPlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopSelPlayMIActionPerformed
+
+        playback = false;
+        notate.getCurrentStave().playSelection(true, 0, PlayScoreCommand.USEDRUMS, "VoicingKeyboard");
+
+    }//GEN-LAST:event_stopSelPlayMIActionPerformed
+
+    private void resetChordDisplayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetChordDisplayMIActionPerformed
+
+        resetChordDisplay();
+
+    }//GEN-LAST:event_resetChordDisplayMIActionPerformed
+
+    private void pausePlayMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausePlayMIActionPerformed
+        pausePlayback();
+    }//GEN-LAST:event_pausePlayMIActionPerformed
+
+    private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
         closeWindow();
-}//GEN-LAST:event_closeWindowMIActionPerformed
+    }//GEN-LAST:event_closeWindowMIActionPerformed
 
-private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
-       WindowRegistry.cascadeWindows(this);
-}//GEN-LAST:event_cascadeMIActionPerformed
+    private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMIActionPerformed
 
-private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
-    
-    windowMenu.removeAll();
-    
-    windowMenu.add(closeWindowMI);
-    
-    windowMenu.add(cascadeMI);
-    
-    windowMenu.add(windowMenuSeparator);
-    
-    for(WindowMenuItem w : WindowRegistry.getWindows()) 
-      {
-      windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-      }
-    
-    windowMenu.repaint();
-}//GEN-LAST:event_windowMenuMenuSelected
+    private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
+
+        windowMenu.removeAll();
+
+        windowMenu.add(closeWindowMI);
+
+        windowMenu.add(cascadeMI);
+
+        windowMenu.add(windowMenuSeparator);
+
+        for (WindowMenuItem w : WindowRegistry.getWindows()) {
+            windowMenu.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
+
+        windowMenu.repaint();
+    }//GEN-LAST:event_windowMenuMenuSelected
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         closeWindow();
@@ -3534,7 +3423,7 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         notate.chordStepForwardDo();
         displayPane[displayPane.length - 1].setChordName(currentChordName);
         showPanes();
-        if( debug ) System.out.println("currentChordName = " + currentChordName);
+        if (debug) System.out.println("currentChordName = " + currentChordName);
     }//GEN-LAST:event_chordStepForwardButtonActionPerformed
 
     private void playChordButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_playChordButtonKeyTyped
@@ -3546,39 +3435,34 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
         String s = notate.voicingEntryTFText();
         String c = notate.getChordRootTFText();
 
-        notate.constructAndPlayChord(c,s);
+        notate.constructAndPlayChord(c, s);
     }//GEN-LAST:event_playChordButtonActionPerformed
 
     private void saveVoicingBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveVoicingBtnActionPerformed
         saveChord();
     }//GEN-LAST:event_saveVoicingBtnActionPerformed
-/**
- * if turned off, the labels will set invisible and turnOnOffLabels is changed to false
- * otherwise, goes through pianoKeys() and determines which ones are on and turns on their labels
- * @param evt 
- */
+
+    /**
+     * if turned off, the labels will set invisible and turnOnOffLabels is changed to false
+     * otherwise, goes through pianoKeys() and determines which ones are on and turns on their labels
+     * @param evt
+     */
     private void turnOnOffKeyLabelsMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turnOnOffKeyLabelsMIActionPerformed
-        if (!turnOnOffKeyLabelsMI.isSelected())
-        {
+        if (!turnOnOffKeyLabelsMI.isSelected()) {
             setInvisible();
             turnOnOffKeyLabelsMI.setText("Click To Turn On Key Labels");
-            turnOnOffLabels = false; 
-        } 
-        else
-        {
+            turnOnOffLabels = false;
+        } else {
             turnOnOffKeyLabelsMI.setText("Click To Turn Off Key Labels");
-            for(int x = 0; x<pianoKeys().length; x++)
-            {
-                if (pianoKeys()[x].isPressed())
-                {
-                    labels[x].setForeground(Color.black); 
+            for (int x = 0; x < pianoKeys().length; x++) {
+                if (pianoKeys()[x].isPressed()) {
+                    labels[x].setForeground(Color.black);
                 }
-                if (pianoKeys()[x].isBass())
-                {
+                if (pianoKeys()[x].isBass()) {
                     labels[x].setForeground(Color.black);
                 }
             }
-            turnOnOffLabels = true; 
+            turnOnOffLabels = true;
         }
     }//GEN-LAST:event_turnOnOffKeyLabelsMIActionPerformed
 
@@ -3587,237 +3471,214 @@ private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_playBtnActionPerformed
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
-       stopPlayback();
+        stopPlayback();
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
-    pausePlayback();
+        pausePlayback();
     }//GEN-LAST:event_pauseBtnActionPerformed
+
     /**
      * For Voicing Data/info
      */
-    private static int[] lastChord=null;
-    public void voicingPrintDistanceMetrics()
-    {
+    private static int[] lastChord = null;
+
+    public void voicingPrintDistanceMetrics() {
         String v = notate.voicingEntryTFText();
-        String chordName=this.getPresentChordDisplayText();
-        Polylist chordList=notate.voicingToList(v);
-        Object chordNotes[]=  chordList.array();
-        int[] chordMidi=new int[chordNotes.length];
-          for(int i=0; i<chordNotes.length; i++)
-        {
-            NoteSymbol ns=(NoteSymbol)chordNotes[i];
-            chordMidi[i]=ns.getMIDI();
+        String chordName = this.getPresentChordDisplayText();
+        Polylist chordList = notate.voicingToList(v);
+        Object chordNotes[] = chordList.array();
+        int[] chordMidi = new int[chordNotes.length];
+        for (int i = 0; i < chordNotes.length; i++) {
+            NoteSymbol ns = (NoteSymbol) chordNotes[i];
+            chordMidi[i] = ns.getMIDI();
             //ns=ns.transpose(distance);
             //chordString+=ns.toPitchString()+"8 ";
         }
-          if(lastChord!=null)
-            VoicingDebug.println("Keyboard Voicing Analytics:,,,,NumNotesOld,"+lastChord.length+",NumNotesNew,"+chordMidi.length+" ,Distance,"+VoicingDistanceCalculator.calculateDistance(lastChord,chordMidi)+", NotesChanged,"+VoicingDistanceCalculator.calculateNotesChanged(lastChord,chordMidi));
-        lastChord=chordMidi;
+        if (lastChord != null)
+            VoicingDebug.println("Keyboard Voicing Analytics:,,,,NumNotesOld," + lastChord.length + ",NumNotesNew," + chordMidi.length + " ,Distance," + VoicingDistanceCalculator.calculateDistance(lastChord, chordMidi) + ", NotesChanged," + VoicingDistanceCalculator.calculateNotesChanged(lastChord, chordMidi));
+        lastChord = chordMidi;
     }
-    
-    public JLabel [] staffDisplay; 
-    public int curChordIndex = numberOfDisplayedPanes-1;    //index number of last panel
+
+    public JLabel[] staffDisplay;
+    public int curChordIndex = numberOfDisplayedPanes - 1;    //index number of last panel
     public int indexInArray = numberOfDisplayedPanes - 1;                       //the index in the array of the chord displayed in the curChordIndex box
-    
+
     public int numStaffs = 6;           //
     /* Various constants for sizes on the staffs */
     static int staffGap = 11;           // Pixel gap between staff lines
     static int trebleBase = 110;        // Top line of the treble clef
     static int bassBase = 253;          // Top line on the bass clef
     static int staffWidth = 30;         // Width of ledger lines
-    
- /* Various note constants */
-    static int lowBLine = 2*7+4;        // Note value of lowest line on bass
-    static int highBLine = 3*7+5;       // Note value of highest line on bass
-    static int lowTLine = 4*7+2;        // Note value of lowest line on treble
-    static int highTLine = 5*7+3;       // Note value of highest line on treble
+
+    /* Various note constants */
+    static int lowBLine = 2 * 7 + 4;        // Note value of lowest line on bass
+    static int highBLine = 3 * 7 + 5;       // Note value of highest line on bass
+    static int lowTLine = 4 * 7 + 2;        // Note value of lowest line on treble
+    static int highTLine = 5 * 7 + 3;       // Note value of highest line on treble
     static int highestLine = 7;         // Highest Space -- C8 
-    
+
     static int visichordBelowKeyboard = 350;
-    
-    public void setVisichordDialog()
-    {
+
+    public void setVisichordDialog() {
         // Position chord display below keyboard
-        visichordDialog.setLocation(getX(), getY() + visichordBelowKeyboard);         
+        visichordDialog.setLocation(getX(), getY() + visichordBelowKeyboard);
         visichordDialog.setVisible(true);
         visichordDialog.setAlwaysOnTop(true);
     }
-  
-static final int MIDDLE_C_OFFSET_TREBLE = 161;     //distance midi for middleC on treble  
-static final int MIDDLE_C_OFFSET_BASS = 237;       //distance midi for middleC on bass
-static final int MIDDLE_C_MIDI_VALUE = 60;         //midi value for middle C
-static final int NOTE_ICON_WIDTH = 20;             //width of note icon
-static final int NOTE_ICON_HEIGHT = 10;            //height of note icon
-static final int FLAT_ICON_WIDTH = 12;             //width of flatLabel icon
-static final int FLAT_ICON_HEIGHT = 37;            //height of flatLabel icon
-static final int SHARP_ICON_WIDTH = 12;            //width of sharpLabel icon
-static final int SHARP_ICON_HEIGHT = 29;           //height of sharpLabel icon
-static final int OCTAVE_DISPLACEMENT = 39;         //distance between two Cs 
-static final int LEDGER_LINES_ABOVE_TREBLE = 6;    //number of ledger lines above the treble clef 
-static final int LEDGER_LINES_BELOW_TREBLE = 1;    //number of ledger lines below the treble clef 
-static final int LEDGER_LINES_ABOVE_BASS = 1;      //number of ledger lines above the bass clef 
-static final int LEDGER_LINES_BELOW_BASS = 9;      //number of ledger lines below the bass clef 
 
-ChordPane [] displayPane;
-ArrayList <ChordPane> savedPanes; 
+    static final int MIDDLE_C_OFFSET_TREBLE = 161;     //distance midi for middleC on treble
+    static final int MIDDLE_C_OFFSET_BASS = 237;       //distance midi for middleC on bass
+    static final int MIDDLE_C_MIDI_VALUE = 60;         //midi value for middle C
+    static final int NOTE_ICON_WIDTH = 20;             //width of note icon
+    static final int NOTE_ICON_HEIGHT = 10;            //height of note icon
+    static final int FLAT_ICON_WIDTH = 12;             //width of flatLabel icon
+    static final int FLAT_ICON_HEIGHT = 37;            //height of flatLabel icon
+    static final int SHARP_ICON_WIDTH = 12;            //width of sharpLabel icon
+    static final int SHARP_ICON_HEIGHT = 29;           //height of sharpLabel icon
+    static final int OCTAVE_DISPLACEMENT = 39;         //distance between two Cs
+    static final int LEDGER_LINES_ABOVE_TREBLE = 6;    //number of ledger lines above the treble clef
+    static final int LEDGER_LINES_BELOW_TREBLE = 1;    //number of ledger lines below the treble clef
+    static final int LEDGER_LINES_ABOVE_BASS = 1;      //number of ledger lines above the bass clef
+    static final int LEDGER_LINES_BELOW_BASS = 9;      //number of ledger lines below the bass clef
 
-// CAUTION: These offset are only good for the accidental assignments shown
+    ChordPane[] displayPane;
+    ArrayList<ChordPane> savedPanes;
+
+    // CAUTION: These offset are only good for the accidental assignments shown
 // and for treble clef.
-                                             /* C, C#, D, Eb, E,  F, F#,  G, G#,  A, Bb,  B */
-static final int NOTE_OFFSET_WITHIN_OCTAVE[] = {0, 0, 6, 11, 11, 17, 17, 22, 22, 28, 33, 33}; 
-public static final int OFFSETX [] = {60, 81, 101};  // list of 3 columns where the note can lie 
-static final int NOTE_OCTAVE_STEP = 4;
+    /* C, C#, D, Eb, E,  F, F#,  G, G#,  A, Bb,  B */
+    static final int NOTE_OFFSET_WITHIN_OCTAVE[] = {0, 0, 6, 11, 11, 17, 17, 22, 22, 28, 33, 33};
+    public static final int OFFSETX[] = {60, 81, 101};  // list of 3 columns where the note can lie
+    static final int NOTE_OCTAVE_STEP = 4;
 
-public void drawNote(int midi, int panelNumber)
-    {
-    int offsetX = displayPane[panelNumber].getWidth()/2 - (wholeNoteIcon.getIconWidth()/2);
+    public void drawNote(int midi, int panelNumber) {
+        int offsetX = displayPane[panelNumber].getWidth() / 2 - (wholeNoteIcon.getIconWidth() / 2);
 
-    int offsetY = MIDDLE_C_OFFSET_TREBLE; 
-    int accidentalX = offsetX - flatIcon.getIconWidth() +2; 
-    int octave = midi / 12; 
-    int distAway = 5 - octave; 
-    int index = (Math.abs((midi - MIDDLE_C_MIDI_VALUE))%12); 
-    if (distAway > 0) //move down bass  
-    {
-        int offsetWithinOctave = 0; 
-        if(index == 0) //C -- this extra if is for index out of bounds error
+        int offsetY = MIDDLE_C_OFFSET_TREBLE;
+        int accidentalX = offsetX - flatIcon.getIconWidth() + 2;
+        int octave = midi / 12;
+        int distAway = 5 - octave;
+        int index = (Math.abs((midi - MIDDLE_C_MIDI_VALUE)) % 12);
+        if (distAway > 0) //move down bass
         {
-            offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[0];
-        }
-        else
-        {
-            offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[12 - index];
-            index = 12 - index;
-        }
-
-        offsetY = MIDDLE_C_OFFSET_BASS + distAway*OCTAVE_DISPLACEMENT - offsetWithinOctave; 
-    }
-    else //move up treble 
-    {
-    int offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[(midi - MIDDLE_C_MIDI_VALUE)%12];
-        offsetY = MIDDLE_C_OFFSET_TREBLE - Math.abs(distAway)*OCTAVE_DISPLACEMENT - offsetWithinOctave;
-    }
-    String accidental = isAccidental(index);
-    JLabel sharpLabel = new JLabel(sharpIcon); 
-    JLabel flatLabel = new JLabel(flatIcon);
-
-    int accidentalY = offsetY;
-    if (accidental.equals("flat"))
-    {
-        displayPane[panelNumber].addAccidental(midi, flatLabel);
-        accidentalY = accidentalY - flatIcon.getIconWidth();
-        flatLabel.setBounds(accidentalX, accidentalY, FLAT_ICON_WIDTH, FLAT_ICON_HEIGHT);
-    }
-    else if (accidental.equals("sharp"))
-    {
-        displayPane[panelNumber].addAccidental(midi, sharpLabel);
-        accidentalY = accidentalY - sharpIcon.getIconWidth();
-        sharpLabel.setBounds(accidentalX, accidentalY, SHARP_ICON_WIDTH, SHARP_ICON_HEIGHT);
-    }
-    if(displayPane[panelNumber].hasBorderY(midi, offsetY)) //move over if next to another note
-    {
-
-        if (displayPane[panelNumber].isAccidental(midi)) // if accidental, go to right
-        {  
-            offsetX = OFFSETX[0]; 
-                    //offsetX - wholeNoteIcon.getIconWidth() - 5;
-            if(accidental.equals("flat"))
+            int offsetWithinOctave = 0;
+            if (index == 0) //C -- this extra if is for index out of bounds error
             {
-                accidentalX = OFFSETX[0] - FLAT_ICON_WIDTH; 
-                        //accidentalX - wholeNoteIcon.getIconWidth() - 5; 
-                flatLabel.setBounds(accidentalX, accidentalY, FLAT_ICON_WIDTH, FLAT_ICON_HEIGHT);
+                offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[0];
+            } else {
+                offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[12 - index];
+                index = 12 - index;
             }
-            else
+
+            offsetY = MIDDLE_C_OFFSET_BASS + distAway * OCTAVE_DISPLACEMENT - offsetWithinOctave;
+        } else //move up treble
+        {
+            int offsetWithinOctave = NOTE_OFFSET_WITHIN_OCTAVE[(midi - MIDDLE_C_MIDI_VALUE) % 12];
+            offsetY = MIDDLE_C_OFFSET_TREBLE - Math.abs(distAway) * OCTAVE_DISPLACEMENT - offsetWithinOctave;
+        }
+        String accidental = isAccidental(index);
+        JLabel sharpLabel = new JLabel(sharpIcon);
+        JLabel flatLabel = new JLabel(flatIcon);
+
+        int accidentalY = offsetY;
+        if (accidental.equals("flat")) {
+            displayPane[panelNumber].addAccidental(midi, flatLabel);
+            accidentalY = accidentalY - flatIcon.getIconWidth();
+            flatLabel.setBounds(accidentalX, accidentalY, FLAT_ICON_WIDTH, FLAT_ICON_HEIGHT);
+        } else if (accidental.equals("sharp")) {
+            displayPane[panelNumber].addAccidental(midi, sharpLabel);
+            accidentalY = accidentalY - sharpIcon.getIconWidth();
+            sharpLabel.setBounds(accidentalX, accidentalY, SHARP_ICON_WIDTH, SHARP_ICON_HEIGHT);
+        }
+        if (displayPane[panelNumber].hasBorderY(midi, offsetY)) //move over if next to another note
+        {
+
+            if (displayPane[panelNumber].isAccidental(midi)) // if accidental, go to right
             {
-                accidentalX = OFFSETX[0] - SHARP_ICON_WIDTH; 
-                //accidentalX = accidentalX - wholeNoteIcon.getIconWidth() - 5 ; 
-                sharpLabel.setBounds(accidentalX, accidentalY, SHARP_ICON_WIDTH, SHARP_ICON_HEIGHT);
+                offsetX = OFFSETX[0];
+                //offsetX - wholeNoteIcon.getIconWidth() - 5;
+                if (accidental.equals("flat")) {
+                    accidentalX = OFFSETX[0] - FLAT_ICON_WIDTH;
+                    //accidentalX - wholeNoteIcon.getIconWidth() - 5;
+                    flatLabel.setBounds(accidentalX, accidentalY, FLAT_ICON_WIDTH, FLAT_ICON_HEIGHT);
+                } else {
+                    accidentalX = OFFSETX[0] - SHARP_ICON_WIDTH;
+                    //accidentalX = accidentalX - wholeNoteIcon.getIconWidth() - 5 ;
+                    sharpLabel.setBounds(accidentalX, accidentalY, SHARP_ICON_WIDTH, SHARP_ICON_HEIGHT);
+                }
+            } else //if normal note, go to left
+            {
+                offsetX = OFFSETX[2];
+                //offsetX + wholeNoteIcon.getIconWidth() + flatIcon.getIconWidth();
             }
         }
-        else //if normal note, go to left 
-        {
-            offsetX = OFFSETX[2]; 
-                    //offsetX + wholeNoteIcon.getIconWidth() + flatIcon.getIconWidth();
+
+        JLabel wholeNote = new JLabel(wholeNoteIcon);
+        showLine(panelNumber, offsetY);
+
+        displayPane[panelNumber].addNote(midi, wholeNote); // Note is added here
+
+        wholeNote.setBounds(offsetX, offsetY, NOTE_ICON_WIDTH, NOTE_ICON_HEIGHT);
+    }
+
+    public void shiftLeft() {
+        if (debug) System.out.println("\nshiftLeft");
+
+        ChordPane p = new ChordPane("X");
+        p.copyFrom(displayPane[0]);
+        savedPanes.add(p);
+
+        if (debug) System.out.println("copy display pane 0 to savedPanes");
+
+        for (int i = 1; i < displayPane.length; i++) {
+            if (debug) System.out.println("copy display pane " + i + " to pane " + (i - 1));
+            displayPane[i - 1].copyFrom(displayPane[i]);
+            displayPane[i].clear();
+        }
+        displayPane[displayPane.length - 1].clear();
+    }
+
+
+    public void shiftRight() {
+        if (debug) System.out.println("\nshiftRight");
+
+        for (int i = displayPane.length - 1; i > 0; i--) {
+            displayPane[i].clear();
+            displayPane[i].copyFrom(displayPane[i - 1]);
+            if (debug) System.out.println("copy display pane " + (i - 1) + " to " + i);
+        }
+
+        int savedPaneTopIndex = savedPanes.size() - 1;
+        if (savedPaneTopIndex >= 0) {
+            displayPane[0].copyFrom(savedPanes.get(savedPaneTopIndex));
+            savedPanes.remove(savedPaneTopIndex);
+            if (debug) System.out.println("copy savedPane top to pane 0");
         }
     }
 
-    JLabel wholeNote = new JLabel(wholeNoteIcon);
-    showLine(panelNumber, offsetY);
-    
-    displayPane[panelNumber].addNote(midi, wholeNote); // Note is added here
-    
-    wholeNote.setBounds(offsetX, offsetY, NOTE_ICON_WIDTH, NOTE_ICON_HEIGHT);
+
+    private void showPanes() {
+        int index = 0;
+        for (ChordPane p : savedPanes) {
+            if (debug) System.out.println("savedPane   " + index + ": " + p);
+            index++;
+        }
+
+        index = 0;
+        for (ChordPane p : displayPane) {
+            if (debug) System.out.println("displayPane " + index + ": " + p);
+            index++;
+        }
     }
-    
-public void shiftLeft()
-    {
-    if( debug ) System.out.println("\nshiftLeft");
 
-    ChordPane p = new ChordPane("X");
-    p.copyFrom(displayPane[0]);
-    savedPanes.add(p);
-
-    if( debug ) System.out.println("copy display pane 0 to savedPanes");
-
-    for(int i = 1; i < displayPane.length; i++)
-      {
-        if( debug ) System.out.println("copy display pane " + i + " to pane " + (i-1));
-        displayPane[i-1].copyFrom(displayPane[i]);
-        displayPane[i].clear();
-      }   
-    displayPane[displayPane.length - 1].clear();
-    }
-    
-
-public void shiftRight()
-    {
-    if( debug ) System.out.println("\nshiftRight");
-
-    for( int i = displayPane.length-1; i > 0; i-- )
-    {
-         displayPane[i].clear();
-         displayPane[i].copyFrom(displayPane[i-1]);
-         if( debug ) System.out.println("copy display pane " + (i-1) + " to " + i);
-    } 
-
-    int savedPaneTopIndex = savedPanes.size() - 1;
-    if( savedPaneTopIndex >= 0 )
-      {
-      displayPane[0].copyFrom(savedPanes.get(savedPaneTopIndex));
-      savedPanes.remove(savedPaneTopIndex);
-      if( debug ) System.out.println("copy savedPane top to pane 0");
-      }
-    }
-    
-
-private void showPanes()
-    {
-    int index = 0;
-    for( ChordPane  p: savedPanes ) 
-      {
-        if( debug ) System.out.println("savedPane   " + index + ": " + p);
-        index++;
-      }
-
-    index = 0;
-    for( ChordPane p: displayPane )
-      {
-        if( debug ) System.out.println("displayPane " + index + ": " + p);
-        index++;            
-      }
-    }
-    
-public void removeNote(int MIDIvalue, int panelNumber)
-    {
-    displayPane[panelNumber].removeNote(MIDIvalue); 
+    public void removeNote(int MIDIvalue, int panelNumber) {
+        displayPane[panelNumber].removeNote(MIDIvalue);
     }
 
     /* C, C#, D, Eb, E,  F, F#,  G, G#,  A, Bb,  B */
-public String isAccidental(int index)
-    {
-        switch( index )
-          {
+    public String isAccidental(int index) {
+        switch (index) {
             case 1:
             case 6:
             case 8:
@@ -3827,9 +3688,9 @@ public String isAccidental(int index)
                 return "flat";
             default:
                 return "natural";
-          }
+        }
     }
-    
+
     /**
      * Draws the specified number of ledger lines below the bass clef,
      * above the bass clef, below and above the treble clef for the specified
@@ -3840,15 +3701,14 @@ public String isAccidental(int index)
      * @param aboveTreble
      * @param chordNum
      */
-    public void drawStaffLines(int belowBass, 
+    public void drawStaffLines(int belowBass,
                                int aboveBass,
-                               int belowTreble, 
+                               int belowTreble,
                                int aboveTreble,
-                               int chordNum)
-    {
+                               int chordNum) {
         /* Set the base midi and y positions, starting with the lines above
          * the treble clef */
-        int xPos = staffIcon.getIconWidth()/2 - staffWidth/2;
+        int xPos = staffIcon.getIconWidth() / 2 - staffWidth / 2;
         int yPos = trebleBase;
 
         /* Draw the specified number of lines above the treble clef, changing
@@ -3860,7 +3720,7 @@ public String isAccidental(int index)
 
         /* Set the initial y position to the bottom of the treble clef,
          * then draw the specified number of lines there */
-        yPos = trebleBase + 4*staffGap;
+        yPos = trebleBase + 4 * staffGap;
         for (int i = 0; i < belowTreble; i++) {
             yPos += staffGap;
             drawStaffLine(xPos, yPos, chordNum, i + aboveTreble);
@@ -3874,19 +3734,18 @@ public String isAccidental(int index)
         }
 
         /* Draw the lines below the bass clef */
-        yPos = bassBase + 4*staffGap;
+        yPos = bassBase + 4 * staffGap;
         for (int i = 0; i < belowBass; i++) {
             yPos += staffGap;
             drawStaffLine(xPos, yPos, chordNum, i + aboveTreble + belowTreble + aboveBass);
         }
     }
 
-/**
- * Draw a ledger line at the specified midi, y position for the given chord. 
- */
-    
-public void drawStaffLine(int xPos, int yPos, int panelNum, int index)
-    {
+    /**
+     * Draw a ledger line at the specified midi, y position for the given chord.
+     */
+
+    public void drawStaffLine(int xPos, int yPos, int panelNum, int index) {
         JSeparator line = new JSeparator();
         line.setBackground(new Color(240, 240, 240));
         line.setForeground(new Color(240, 240, 240));
@@ -3894,17 +3753,15 @@ public void drawStaffLine(int xPos, int yPos, int panelNum, int index)
         displayPane[panelNum].add(line);
         displayPane[panelNum].setLedgerLine(line, index);
     }
-    
-public void showLine(int panelNum, int yOffset)
-    {
-        int [] array;
-        int xPos = displayPane[panelNum].getWidth()/2 - staffWidth/2;
-        if(yOffset < trebleBase) //above treble
+
+    public void showLine(int panelNum, int yOffset) {
+        int[] array;
+        int xPos = displayPane[panelNum].getWidth() / 2 - staffWidth / 2;
+        if (yOffset < trebleBase) //above treble
         {
-            array = new int [LEDGER_LINES_ABOVE_TREBLE]; 
-            for(int i = 0; i< array.length; i++)
-            {
-                array[i] = trebleBase - i * staffGap; 
+            array = new int[LEDGER_LINES_ABOVE_TREBLE];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = trebleBase - i * staffGap;
             }
 //            for(int i = 0; i < array.length; i++)
 //            {
@@ -3913,17 +3770,16 @@ public void showLine(int panelNum, int yOffset)
 //                    displayPane[panelNum].drawLedgerLine(xPos, array[i]);
 //                }
 //            }
-            for (int i = 0; i < array.length; i++) 
-            {
+            for (int i = 0; i < array.length; i++) {
                 //System.out.println("numbers: " + array[i]); 
                 displayPane[panelNum].drawLedgerLine(xPos, array[i]);
             }
             //ok so we know the yOffset for the note, and we know the spacing for all the 
             //ledger lines so we can use this and calculate where to draw the line 
-            
+
             //ok each gap is 11 apart   treblebase + 11 * num 
             //how to calculate num? 
-            
+
 //            for(int i = 0; i< displayPane[panelNum].getNotes().length; i++)
 //            {
 //                int ledgerIndex =0; 
@@ -3948,46 +3804,43 @@ public void showLine(int panelNum, int yOffset)
 //        { 
 //            //staffPanels[panelNum].getLedgerLine(10).setForeground(Color.black);
 //        }
-    if(yOffset > bassBase + 4 * staffGap)  //below bass 
+        if (yOffset > bassBase + 4 * staffGap)  //below bass
         {
-            array = new int [LEDGER_LINES_BELOW_BASS]; 
-            for(int i = 0; i< array.length; i++)
-            {
-                array[i] = bassBase + (4+i) * staffGap; 
+            array = new int[LEDGER_LINES_BELOW_BASS];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = bassBase + (4 + i) * staffGap;
             }
         }
-        visichordDialog.repaint(); 
+        visichordDialog.repaint();
     }
-    
-    
-/**
- * saves current voicing in the Advisor which makes its way to My.voc eventually
- */
- private void saveChord()
-    {
+
+
+    /**
+     * saves current voicing in the Advisor which makes its way to My.voc eventually
+     */
+    private void saveChord() {
         String v = notate.voicingEntryTFText();
         String root = notate.getChordRootTFText();
         //notate.voicingToList(v)
         String chordName = this.getPresentChordDisplayText();
-        Polylist chordList=notate.voicingToList(v);
-        Object chordNotes[]=  chordList.array();
-        NoteSymbol cNote=NoteSymbol.makeNoteSymbol("c");
-        NoteSymbol rootNote=NoteSymbol.makeNoteSymbol(root);
+        Polylist chordList = notate.voicingToList(v);
+        Object chordNotes[] = chordList.array();
+        NoteSymbol cNote = NoteSymbol.makeNoteSymbol("c");
+        NoteSymbol rootNote = NoteSymbol.makeNoteSymbol(root);
         int distance = rootNote.getSemitones() - cNote.getSemitones();
         String chordString = "(";
-        for(Object o:chordNotes)
-        {
-            NoteSymbol ns=(NoteSymbol)o;
+        for (Object o : chordNotes) {
+            NoteSymbol ns = (NoteSymbol) o;
             ns = ns.transpose(-distance);
             chordString += ns.toPitchString() + " ";
         }
-        if(chordString.length()>1)
-            chordString=chordString.substring(0,chordString.length()-1);
+        if (chordString.length() > 1)
+            chordString = chordString.substring(0, chordString.length() - 1);
         chordString += ")";
 //        String userDescription=null;
-        
+
         notate.showNewVoicingDialog(chordName);
-        
+
 //        while(userDescription==null || userDescription.equals(""))
 //                userDescription = JOptionPane.showInputDialog("Please name this voicing (e.g. left-hand-A)");
 //        userDescription=userDescription.replaceAll(" ", "-");
@@ -3999,133 +3852,117 @@ public void showLine(int panelNum, int yOffset)
 //        ImproVisor.getCurrentWindow().saveAdvice();
     }
 
-/**
- * clears the chord display labels
- */
-public void resetChordDisplay()
-{
-    presentChordDisplay.setText(EMPTY);
-}
+    /**
+     * clears the chord display labels
+     */
+    public void resetChordDisplay() {
+        presentChordDisplay.setText(EMPTY);
+    }
 
-/**
- * Transforms a String of form key name (ex. c#++) into a String including
- * only the note name itself (ex. C#)
- * 
- * @param name, a String, the name of a key
- * @return a String that is the name of just a note
- */
-public String nameToBass(String name)
-{
-    String mod = EMPTY;
+    /**
+     * Transforms a String of form key name (ex. c#++) into a String including
+     * only the note name itself (ex. C#)
+     *
+     * @param name, a String, the name of a key
+     * @return a String that is the name of just a note
+     */
+    public String nameToBass(String name) {
+        String mod = EMPTY;
 
-    if (name.length() > 1)
-    {
-        String c = name.substring(1,2);
-        if (c.equals(SHARP) || c.equals(FLAT))
-        {
-            mod = c;
+        if (name.length() > 1) {
+            String c = name.substring(1, 2);
+            if (c.equals(SHARP) || c.equals(FLAT)) {
+                mod = c;
+            }
         }
+        name = name.substring(0, 1);
+        name = name.toUpperCase();
+        name = name + mod;
+
+        return name;
     }
-    name = name.substring(0,1);
-    name = name.toUpperCase();
-    name = name + mod;
-    
-    return name;
-}
 
-/**
- * For use if the user neglects to indicate a high range for the bass. Sets
- * the range at one octave above the specified low range.
- * 
- * @param lowRange
-     * @return 
- */
-public int setBassHighRange(int lowRange)
-{
-    int highRange; // was = C_EIGHTH + 1;
-    highRange = lowRange + 11;
-    PianoKey high = pianoKeys()[highRange - A];
-    String name = high.getName();
-    NoteSymbol c = NoteSymbol.makeNoteSymbol(name);
-    highRange = c.getMIDI();
-    notate.setBassHighRangeTF(name);
-    return highRange;
-}
+    /**
+     * For use if the user neglects to indicate a high range for the bass. Sets
+     * the range at one octave above the specified low range.
+     *
+     * @param lowRange
+     * @return
+     */
+    public int setBassHighRange(int lowRange) {
+        int highRange; // was = C_EIGHTH + 1;
+        highRange = lowRange + 11;
+        PianoKey high = pianoKeys()[highRange - A];
+        String name = high.getName();
+        NoteSymbol c = NoteSymbol.makeNoteSymbol(name);
+        highRange = c.getMIDI();
+        notate.setBassHighRangeTF(name);
+        return highRange;
+    }
 
-/**
- * Takes a MIDI value and finds the bass name - ex. c#-- becomes C#
- * 
- * @param midiValue
- * @return
- */
-public String findBassName(int midiValue)
-{
-    PianoKey bass = pianoKeys()[midiValue - A];
-    for (PianoKey pk : pianoKeys())
-    {
-        if (pk.isBass())
-        {
-            pk.setIsBass(false);
-            pressKey(pk);
+    /**
+     * Takes a MIDI value and finds the bass name - ex. c#-- becomes C#
+     *
+     * @param midiValue
+     * @return
+     */
+    public String findBassName(int midiValue) {
+        PianoKey bass = pianoKeys()[midiValue - A];
+        for (PianoKey pk : pianoKeys()) {
+            if (pk.isBass()) {
+                pk.setIsBass(false);
+                pressKey(pk);
+            }
         }
+        bass.setIsBass(true);
+
+        String name = bass.getName();
+        name = nameToBass(name);
+        return name;
     }
-    bass.setIsBass(true);
-    
-    String name = bass.getName();
-    name = nameToBass(name);
-    return name;
-}
 
-/**
- * Sets the chord root key to a given MIDI value.
- * 
- * @param bassNote
- * @param midiValue
- */
-public void setBass(String bassNote, int midiValue)
-{
-    PianoKey bass = pianoKeys()[midiValue - A];
-    
-    notate.setBassNoteTFText(bassNote);
-    
-    if (notate.rootEqualBassCheckboxChecked())
-    {
-        notate.setChordRootTFText(bassNote);
+    /**
+     * Sets the chord root key to a given MIDI value.
+     *
+     * @param bassNote
+     * @param midiValue
+     */
+    public void setBass(String bassNote, int midiValue) {
+        PianoKey bass = pianoKeys()[midiValue - A];
+
+        notate.setBassNoteTFText(bassNote);
+
+        if (notate.rootEqualBassCheckboxChecked()) {
+            notate.setChordRootTFText(bassNote);
+        }
+
+        pressKey(bass);
     }
-     
-    pressKey(bass);
-}
 
-public boolean enharmonic(String s1, String s2)
-{
-    boolean areEnharmonic = false;
-    if (s1.equals("Db") && s2.equals("C#") ||
-            s1.equals("C#") && s2.equals("Db"))
-    { areEnharmonic = true; }
-    
-    else if (s1.equals("D#") && s2.equals("Eb") ||
-            s1.equals("Eb") && s2.equals("D#"))
-    { areEnharmonic = true; }
-    
-    else if (s1.equals("Gb") && s2.equals("F#") ||
-            s1.equals("F#") && s2.equals("Gb"))
-    { areEnharmonic = true; }
-    
-    else if (s1.equals("Ab") && s2.equals("G#") ||
-            s1.equals("G#") && s2.equals("Ab"))
-    { areEnharmonic = true; }
-    
-    else if (s1.equals("Bb") && s2.equals("A#") ||
-            s1.equals("A#") && s2.equals("Bb"))
-    { areEnharmonic = true; }
-    
-    return areEnharmonic;
-}
+    public boolean enharmonic(String s1, String s2) {
+        boolean areEnharmonic = false;
+        if (s1.equals("Db") && s2.equals("C#") ||
+                s1.equals("C#") && s2.equals("Db")) {
+            areEnharmonic = true;
+        } else if (s1.equals("D#") && s2.equals("Eb") ||
+                s1.equals("Eb") && s2.equals("D#")) {
+            areEnharmonic = true;
+        } else if (s1.equals("Gb") && s2.equals("F#") ||
+                s1.equals("F#") && s2.equals("Gb")) {
+            areEnharmonic = true;
+        } else if (s1.equals("Ab") && s2.equals("G#") ||
+                s1.equals("G#") && s2.equals("Ab")) {
+            areEnharmonic = true;
+        } else if (s1.equals("Bb") && s2.equals("A#") ||
+                s1.equals("A#") && s2.equals("Bb")) {
+            areEnharmonic = true;
+        }
 
-public String enharmonicNote(String note)
-{
-        switch( note )
-          {
+        return areEnharmonic;
+    }
+
+    public String enharmonicNote(String note) {
+        switch (note) {
             case "Db":
                 note = "C#";
                 break;
@@ -4158,174 +3995,143 @@ public String enharmonicNote(String note)
                 break;
             default:
                 break;
-          }
-    
-    return note;
-    
-}
+        }
 
-/**
- * Finds the chord root key based on the chord root text field.
- * 
- * @return the integer value of the chord root key.
- */
-public int findBass()
-{
-    String bass = notate.getBassNoteTFText();
-        
-    bass = bass.toLowerCase();
+        return note;
 
-    String first = bass.charAt(0) + EMPTY;
-    first = first.toUpperCase();
-    if (bass.length() > 1)
-    {
-        char mod = bass.charAt(1);
-        bass = first + mod;
-    }
-    else
-    {
-        bass = first;
     }
 
-    int midiValue = C_EIGHTH + 1;
-    int lowRange = notate.getLowerBound();
-    int highRange;
-        
-    if (notate.bassHighRangeTFText().equals(EMPTY))
-    {
-        highRange = setBassHighRange(lowRange);
-    }
-    else
-    {
-        highRange = notate.getUpperBound();
-    }
+    /**
+     * Finds the chord root key based on the chord root text field.
+     *
+     * @return the integer value of the chord root key.
+     */
+    public int findBass() {
+        String bass = notate.getBassNoteTFText();
 
-    for (PianoKey pk : pianoKeys())
-    {
-        String name = pk.getName();
+        bass = bass.toLowerCase();
 
-        name = nameToBass(name);
+        String first = bass.charAt(0) + EMPTY;
+        first = first.toUpperCase();
+        if (bass.length() > 1) {
+            char mod = bass.charAt(1);
+            bass = first + mod;
+        } else {
+            bass = first;
+        }
 
-        int midi = pk.getMIDI();
-        
-        if (name.equals(bass) || enharmonic(name,bass))
-        {
-            if (midi >= lowRange && midi <= highRange && midi < midiValue)
-            {
-                midiValue = midi;
+        int midiValue = C_EIGHTH + 1;
+        int lowRange = notate.getLowerBound();
+        int highRange;
+
+        if (notate.bassHighRangeTFText().equals(EMPTY)) {
+            highRange = setBassHighRange(lowRange);
+        } else {
+            highRange = notate.getUpperBound();
+        }
+
+        for (PianoKey pk : pianoKeys()) {
+            String name = pk.getName();
+
+            name = nameToBass(name);
+
+            int midi = pk.getMIDI();
+
+            if (name.equals(bass) || enharmonic(name, bass)) {
+                if (midi >= lowRange && midi <= highRange && midi < midiValue) {
+                    midiValue = midi;
+                }
             }
         }
+        return midiValue;
     }
-    return midiValue;
-}
 
-/**
- * Displays the chord root key as blue.
- */  
-public void showBass()
-{
-    int midiValue = findBass();
-    String name = findBassName(midiValue);
-    setBass(name, midiValue);
-}
-
-/**
- * Used if One Note Mode is selected.
- * 
- * @param keyPlayed
- */
-public void pressSingleKey(PianoKey keyPlayed)
-{
-for (int i= A; i<=C_EIGHTH; i++)
-    {
-    PianoKey key = pianoKeys()[i-A];
-    if(!currentVoicing[i] && key.isPressed())
-        {
-        key.setPressed(false);
-        pressKey(key); 
-        }
-    if((key.isPressed() || key.isBass()) && turnOnOffLabels)
-        {
-        labels[key.getMIDI()-21].setForeground(Color.black);
-        }
-    else
-        {
-        labels[key.getMIDI()-21].setForeground(new Color(240,240,240));
-        }
+    /**
+     * Displays the chord root key as blue.
+     */
+    public void showBass() {
+        int midiValue = findBass();
+        String name = findBassName(midiValue);
+        setBass(name, midiValue);
     }
-notate.clearVoicingEntryTF();
-keyPlayed.setPressed(true);
-pressKey(keyPlayed);   
-}
 
-/**
- * pressKey changes the images of the keys based on whether they have been
- * pressed or not.
- * 
- * @param keyPlayed
- */
-public void pressKey(PianoKey keyPlayed)
-{
-    //System.out.println("pressKey " + keyPlayed.getName());
-    JLabel label = keyPlayed.getLabel();
-    int midi = keyPlayed.getMIDI();
-    Icon onIcon = keyPlayed.getOnIcon();
-    Icon offIcon = keyPlayed.getOffIcon();
-    Icon rootIcon = keyPlayed.getBassIcon();
-    Icon rootIconOn = keyPlayed.getBassOnIcon();
+    /**
+     * Used if One Note Mode is selected.
+     *
+     * @param keyPlayed
+     */
+    public void pressSingleKey(PianoKey keyPlayed) {
+        for (int i = A; i <= C_EIGHTH; i++) {
+            PianoKey key = pianoKeys()[i - A];
+            if (!currentVoicing[i] && key.isPressed()) {
+                key.setPressed(false);
+                pressKey(key);
+            }
+            if ((key.isPressed() || key.isBass()) && turnOnOffLabels) {
+                labels[key.getMIDI() - 21].setForeground(Color.black);
+            } else {
+                labels[key.getMIDI() - 21].setForeground(new Color(240, 240, 240));
+            }
+        }
+        notate.clearVoicingEntryTF();
+        keyPlayed.setPressed(true);
+        pressKey(keyPlayed);
+    }
 
-    if( keyPlayed.isPressed() )
-      {
-        if( keyPlayed.isBass() )
-          {
-            label.setIcon(rootIconOn);
-            if( turnOnOffLabels )
-              {
-                labels[midi - 21].setForeground(Color.black);
-              }
-            drawNote(midi, curChordIndex);
-          }
-        else
-          {
-            label.setIcon(onIcon);
-            if( turnOnOffLabels )
-              {
-                labels[midi - 21].setForeground(Color.black);
-              }
-            drawNote(midi, curChordIndex);
-          }
-      }
-    else if( !keyPlayed.isPressed() )
-      {
-        if( keyPlayed.isBass() )
-          {
-            label.setIcon(rootIcon);
-            if( turnOnOffLabels )
-              {
-                labels[midi - 21].setForeground(Color.black);
-              }
-            drawNote(midi, curChordIndex);
-          }
-        else
-          {
-            label.setIcon(offIcon);
-            labels[midi - 21].setForeground(new Color(240, 240, 240));
-            removeNote(midi, curChordIndex);
-          }
-      }
-visichordDialog.repaint();
-forcePaint();
-}
-    
-/**
- * Force painting the window, without waiting for repaint to do it,
- * as repaints may be queued when the calling application sleeps.
- */
+    /**
+     * pressKey changes the images of the keys based on whether they have been
+     * pressed or not.
+     *
+     * @param keyPlayed
+     */
+    public void pressKey(PianoKey keyPlayed) {
+        //System.out.println("pressKey " + keyPlayed.getName());
+        JLabel label = keyPlayed.getLabel();
+        int midi = keyPlayed.getMIDI();
+        Icon onIcon = keyPlayed.getOnIcon();
+        Icon offIcon = keyPlayed.getOffIcon();
+        Icon rootIcon = keyPlayed.getBassIcon();
+        Icon rootIconOn = keyPlayed.getBassOnIcon();
 
-private void forcePaint()
-  {
-  paint(getGraphics());
-  }
+        if (keyPlayed.isPressed()) {
+            if (keyPlayed.isBass()) {
+                label.setIcon(rootIconOn);
+                if (turnOnOffLabels) {
+                    labels[midi - 21].setForeground(Color.black);
+                }
+                drawNote(midi, curChordIndex);
+            } else {
+                label.setIcon(onIcon);
+                if (turnOnOffLabels) {
+                    labels[midi - 21].setForeground(Color.black);
+                }
+                drawNote(midi, curChordIndex);
+            }
+        } else if (!keyPlayed.isPressed()) {
+            if (keyPlayed.isBass()) {
+                label.setIcon(rootIcon);
+                if (turnOnOffLabels) {
+                    labels[midi - 21].setForeground(Color.black);
+                }
+                drawNote(midi, curChordIndex);
+            } else {
+                label.setIcon(offIcon);
+                labels[midi - 21].setForeground(new Color(240, 240, 240));
+                removeNote(midi, curChordIndex);
+            }
+        }
+        visichordDialog.repaint();
+        forcePaint();
+    }
+
+    /**
+     * Force painting the window, without waiting for repaint to do it,
+     * as repaints may be queued when the calling application sleeps.
+     */
+
+    private void forcePaint() {
+        paint(getGraphics());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel A0;
@@ -4555,290 +4361,284 @@ private void forcePaint()
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
-/**
- * the array of PianoKeys for this Keyboard
- */
-    
-public PianoKey[] pkeys;
+    /**
+     * the array of PianoKeys for this Keyboard
+     */
 
-/**
- *  the array of PianoKeyLabels for this Keyboard
- */
-public JLabel[] labels;
+    public PianoKey[] pkeys;
 
-public JPanel notePane[];
+    /**
+     *  the array of PianoKeyLabels for this Keyboard
+     */
+    public JLabel[] labels;
 
-/**
- * Initialize all keys.
- */
+    public JPanel notePane[];
 
-private void initKeys()
-{
-    pkeys = new PianoKey[88];
-    
-    labels = new JLabel[88]; 
-    
-    notePane = new JPanel[numStaffs]; 
-    
-    // 0th octave keys
-    pkeys[0] = new PianoKey(21, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA0);
-    pkeys[1] = new PianoKey(22, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb0);
-    pkeys[2] = new PianoKey(23, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB0);
-    
-    // 1st octave keys
-    pkeys[3] = new PianoKey(24, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC1);
-    pkeys[4] = new PianoKey(25, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp1);
-    pkeys[5] = new PianoKey(26, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD1);
-    pkeys[6] = new PianoKey(27, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb1);
-    pkeys[7] = new PianoKey(28, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE1);
-    pkeys[8] = new PianoKey(29, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF1);
-    pkeys[9] = new PianoKey(30, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp1);
-    pkeys[10] = new PianoKey(31, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG1);
-    pkeys[11] = new PianoKey(32, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp1);
-    pkeys[12] = new PianoKey(33, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA1);
-    pkeys[13] = new PianoKey(34, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb1);
-    pkeys[14] = new PianoKey(35, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB1);
-    
-    // 2nd octave keys
-    pkeys[15] = new PianoKey(36, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC2);
-    pkeys[16] = new PianoKey(37, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp2);
-    pkeys[17] = new PianoKey(38, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD2);
-    pkeys[18] = new PianoKey(39, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb2);
-    pkeys[19] = new PianoKey(40, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE2);
-    pkeys[20] = new PianoKey(41, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF2);
-    pkeys[21] = new PianoKey(42, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp2);
-    pkeys[22] = new PianoKey(43, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG2);
-    pkeys[23] = new PianoKey(44, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp2);
-    pkeys[24] = new PianoKey(45, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA2);
-    pkeys[25] = new PianoKey(46, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb2);
-    pkeys[26] = new PianoKey(47, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB2);
-    
-    // 3rd octave keys
-    pkeys[27] = new PianoKey(48, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC3);
-    pkeys[28] = new PianoKey(49, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp3);
-    pkeys[29] = new PianoKey(50, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD3);
-    pkeys[30] = new PianoKey(51, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb3);
-    pkeys[31] = new PianoKey(52, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE3);
-    pkeys[32] = new PianoKey(53, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF3);
-    pkeys[33] = new PianoKey(54, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp3);
-    pkeys[34] = new PianoKey(55, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG3);
-    pkeys[35] = new PianoKey(56, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp3);
-    pkeys[36] = new PianoKey(57, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA3);
-    pkeys[37] = new PianoKey(58, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb3);
-    pkeys[38] = new PianoKey(59, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB3);
-    
-    // 4th octave keys
-    pkeys[39] = new PianoKey(60, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC4);
-    pkeys[40] = new PianoKey(61, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp4);
-    pkeys[41] = new PianoKey(62, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD4);
-    pkeys[42] = new PianoKey(63, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb4);
-    pkeys[43] = new PianoKey(64, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE4);
-    pkeys[44] = new PianoKey(65, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF4);
-    pkeys[45] = new PianoKey(66, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp4);
-    pkeys[46] = new PianoKey(67, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG4);
-    pkeys[47] = new PianoKey(68, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp4);
-    pkeys[48] = new PianoKey(69, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA4);
-    pkeys[49] = new PianoKey(70, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb4);
-    pkeys[50] = new PianoKey(71, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB4);
-    
-    // 5th octave keys
-    pkeys[51] = new PianoKey(72, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC5);
-    pkeys[52] = new PianoKey(73, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp5);
-    pkeys[53] = new PianoKey(74, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD5);
-    pkeys[54] = new PianoKey(75, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb5);
-    pkeys[55] = new PianoKey(76, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE5);
-    pkeys[56] = new PianoKey(77, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF5);
-    pkeys[57] = new PianoKey(78, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp5);
-    pkeys[58] = new PianoKey(79, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG5);
-    pkeys[59] = new PianoKey(80, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp5);
-    pkeys[60] = new PianoKey(81, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA5);
-    pkeys[61] = new PianoKey(82, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb5);
-    pkeys[62] = new PianoKey(83, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB5);
-    
-    // 6th octave keys
-    pkeys[63] = new PianoKey(84, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC6);
-    pkeys[64] = new PianoKey(85, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp6);
-    pkeys[65] = new PianoKey(86, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD6);
-    pkeys[66] = new PianoKey(87, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb6);
-    pkeys[67] = new PianoKey(88, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE6);
-    pkeys[68] = new PianoKey(89, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF6);
-    pkeys[69] = new PianoKey(90, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp6);
-    pkeys[70] = new PianoKey(91, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG6);
-    pkeys[71] = new PianoKey(92, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp6);
-    pkeys[72] = new PianoKey(93, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA6);
-    pkeys[73] = new PianoKey(94, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb6);
-    pkeys[74] = new PianoKey(95, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB6);
-    
-    // 7th octave keys
-    pkeys[75] = new PianoKey(96, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC7);
-    pkeys[76] = new PianoKey(97, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp7);
-    pkeys[77] = new PianoKey(98, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD7);
-    pkeys[78] = new PianoKey(99, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb7);
-    pkeys[79] = new PianoKey(100, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE7);
-    pkeys[80] = new PianoKey(101, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF7);
-    pkeys[81] = new PianoKey(102, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp7);
-    pkeys[82] = new PianoKey(103, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG7);
-    pkeys[83] = new PianoKey(104, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp7);
-    pkeys[84] = new PianoKey(105, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA7);
-    pkeys[85] = new PianoKey(106, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb7);
-    pkeys[86] = new PianoKey(107, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB7);
-    
-    // 8th octave keys
-    pkeys[87] = new PianoKey(108, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC8);
-    
-    // 0th octave keys
-    labels[0] = A0;
-    labels[1] = Bb0;
-    labels[2] = B0;
-    
-    // 1st octave labels
-    labels[3] = C1;
-    labels[4] = Csharp1;
-    labels[5] = D1;
-    labels[6] = Eb1;
-    labels[7] = E1;
-    labels[8] = F1;
-    labels[9] = Fsharp1;
-    labels[10] = G1;
-    labels[11] = Gsharp1;
-    labels[12] = A1;
-    labels[13] = Bb1;
-    labels[14] = B1;
-    
-    // 2nd octave labels
-    labels[15] = C2;
-    labels[16] = Csharp2;
-    labels[17] = D2;
-    labels[18] = Eb2;
-    labels[19] = E2;
-    labels[20] = F2;
-    labels[21] = Fsharp2;
-    labels[22] = G2;
-    labels[23] = Gsharp2;
-    labels[24] = A2;
-    labels[25] = Bb2;
-    labels[26] = B2;
-    
-    // 3rd octave labels
-    labels[27] = C3;
-    labels[28] = Csharp3;
-    labels[29] = D3;
-    labels[30] = Eb3;
-    labels[31] = E3;
-    labels[32] = F3;
-    labels[33] = Fsharp3;
-    labels[34] = G3;
-    labels[35] = Gsharp3;
-    labels[36] = A3;
-    labels[37] = Bb3;
-    labels[38] = B3;
-    
-    // 4th octave labels
-    labels[39] = C4;
-    labels[40] = Csharp4;
-    labels[41] = D4;
-    labels[42] = Eb4;
-    labels[43] = E4;
-    labels[44] = F4;
-    labels[45] = Fsharp4;
-    labels[46] = G4;
-    labels[47] = Gsharp4;
-    labels[48] = A4;
-    labels[49] = Bb4;
-    labels[50] = B4;
-    
-    // 5th octave labels
-    labels[51] = C5;
-    labels[52] = Csharp5;
-    labels[53] = D5;
-    labels[54] = Eb5;
-    labels[55] = E5;
-    labels[56] = F5;
-    labels[57] = Fsharp5;
-    labels[58] = G5;
-    labels[59] = Gsharp5;
-    labels[60] = A5;
-    labels[61] = Bb5;
-    labels[62] = B5;
-    
-    // 6th octave labels
-    labels[63] = C6;
-    labels[64] = Csharp6;
-    labels[65] = D6; 
-    labels[66] = Eb6;
-    labels[67] = E6;
-    labels[68] = F6;
-    labels[69] = Fsharp6;
-    labels[70] = G6;
-    labels[71] = Gsharp6;
-    labels[72] = A6;
-    labels[73] = Bb6;
-    labels[74] = B6;
-    
-    // 7th octave labels
-    labels[75] = C7;
-    labels[76] = Csharp7;
-    labels[77] = D7;
-    labels[78] = Eb7;
-    labels[79] = E7;
-    labels[80] = F7;
-    labels[81] = Fsharp7;
-    labels[82] = G7;
-    labels[83] = Gsharp7;
-    labels[84] = A7;
-    labels[85] = Bb7;
-    labels[86] = B7; 
-    
-    // 8th octave labels
-    labels[87] = C8;
- 
-    // Set up NotePanes for chords
-    
-    int numberOfPanes = 6;
-    
-    int paneBase = 100;
-    int paneDisplacement = 160;
-    
-    savedPanes = new ArrayList();
-    staffDisplay = new javax.swing.JLabel[numberOfPanes];
-    displayPane = new ChordPane[numberOfPanes];
-    for( int i = 0; i < numberOfPanes; i++ ) 
-      {
-      staffDisplay[i] = new javax.swing.JLabel(staffIcon); 
-      staffDisplay[i].setOpaque(false);
-      staffDisplay[i].setBackground(Color.white);
-      staffDisplay[i].setFocusable(false);
-      staffDisplay[i].setBounds(paneBase + i*paneDisplacement, 25, 162, 370);
-      voicingStaffPanel.add(staffDisplay[i]);
-      
-      displayPane[i] = new ChordPane(""); //currentChordName);
-      displayPane[i].setBounds(paneBase + i*paneDisplacement, 10, 162, 370);
-      voicingStaffPanel.add(displayPane[i]);
-      }  
-}
-       
-/**
- * sets all the labels to the same color as the background
- */
-public void setInvisible()
-{
-    for(int r = 0; r<88; r++)
-    {
-        labels[r].setForeground(new Color(240,240,240));
+    /**
+     * Initialize all keys.
+     */
+
+    private void initKeys() {
+        pkeys = new PianoKey[88];
+
+        labels = new JLabel[88];
+
+        notePane = new JPanel[numStaffs];
+
+        // 0th octave keys
+        pkeys[0] = new PianoKey(21, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA0);
+        pkeys[1] = new PianoKey(22, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb0);
+        pkeys[2] = new PianoKey(23, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB0);
+
+        // 1st octave keys
+        pkeys[3] = new PianoKey(24, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC1);
+        pkeys[4] = new PianoKey(25, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp1);
+        pkeys[5] = new PianoKey(26, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD1);
+        pkeys[6] = new PianoKey(27, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb1);
+        pkeys[7] = new PianoKey(28, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE1);
+        pkeys[8] = new PianoKey(29, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF1);
+        pkeys[9] = new PianoKey(30, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp1);
+        pkeys[10] = new PianoKey(31, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG1);
+        pkeys[11] = new PianoKey(32, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp1);
+        pkeys[12] = new PianoKey(33, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA1);
+        pkeys[13] = new PianoKey(34, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb1);
+        pkeys[14] = new PianoKey(35, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB1);
+
+        // 2nd octave keys
+        pkeys[15] = new PianoKey(36, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC2);
+        pkeys[16] = new PianoKey(37, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp2);
+        pkeys[17] = new PianoKey(38, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD2);
+        pkeys[18] = new PianoKey(39, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb2);
+        pkeys[19] = new PianoKey(40, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE2);
+        pkeys[20] = new PianoKey(41, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF2);
+        pkeys[21] = new PianoKey(42, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp2);
+        pkeys[22] = new PianoKey(43, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG2);
+        pkeys[23] = new PianoKey(44, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp2);
+        pkeys[24] = new PianoKey(45, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA2);
+        pkeys[25] = new PianoKey(46, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb2);
+        pkeys[26] = new PianoKey(47, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB2);
+
+        // 3rd octave keys
+        pkeys[27] = new PianoKey(48, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC3);
+        pkeys[28] = new PianoKey(49, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp3);
+        pkeys[29] = new PianoKey(50, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD3);
+        pkeys[30] = new PianoKey(51, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb3);
+        pkeys[31] = new PianoKey(52, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE3);
+        pkeys[32] = new PianoKey(53, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF3);
+        pkeys[33] = new PianoKey(54, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp3);
+        pkeys[34] = new PianoKey(55, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG3);
+        pkeys[35] = new PianoKey(56, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp3);
+        pkeys[36] = new PianoKey(57, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA3);
+        pkeys[37] = new PianoKey(58, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb3);
+        pkeys[38] = new PianoKey(59, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB3);
+
+        // 4th octave keys
+        pkeys[39] = new PianoKey(60, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC4);
+        pkeys[40] = new PianoKey(61, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp4);
+        pkeys[41] = new PianoKey(62, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD4);
+        pkeys[42] = new PianoKey(63, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb4);
+        pkeys[43] = new PianoKey(64, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE4);
+        pkeys[44] = new PianoKey(65, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF4);
+        pkeys[45] = new PianoKey(66, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp4);
+        pkeys[46] = new PianoKey(67, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG4);
+        pkeys[47] = new PianoKey(68, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp4);
+        pkeys[48] = new PianoKey(69, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA4);
+        pkeys[49] = new PianoKey(70, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb4);
+        pkeys[50] = new PianoKey(71, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB4);
+
+        // 5th octave keys
+        pkeys[51] = new PianoKey(72, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC5);
+        pkeys[52] = new PianoKey(73, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp5);
+        pkeys[53] = new PianoKey(74, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD5);
+        pkeys[54] = new PianoKey(75, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb5);
+        pkeys[55] = new PianoKey(76, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE5);
+        pkeys[56] = new PianoKey(77, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF5);
+        pkeys[57] = new PianoKey(78, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp5);
+        pkeys[58] = new PianoKey(79, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG5);
+        pkeys[59] = new PianoKey(80, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp5);
+        pkeys[60] = new PianoKey(81, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA5);
+        pkeys[61] = new PianoKey(82, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb5);
+        pkeys[62] = new PianoKey(83, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB5);
+
+        // 6th octave keys
+        pkeys[63] = new PianoKey(84, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC6);
+        pkeys[64] = new PianoKey(85, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp6);
+        pkeys[65] = new PianoKey(86, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD6);
+        pkeys[66] = new PianoKey(87, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb6);
+        pkeys[67] = new PianoKey(88, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE6);
+        pkeys[68] = new PianoKey(89, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF6);
+        pkeys[69] = new PianoKey(90, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp6);
+        pkeys[70] = new PianoKey(91, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG6);
+        pkeys[71] = new PianoKey(92, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp6);
+        pkeys[72] = new PianoKey(93, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA6);
+        pkeys[73] = new PianoKey(94, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb6);
+        pkeys[74] = new PianoKey(95, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB6);
+
+        // 7th octave keys
+        pkeys[75] = new PianoKey(96, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC7);
+        pkeys[76] = new PianoKey(97, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyCsharp7);
+        pkeys[77] = new PianoKey(98, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyD7);
+        pkeys[78] = new PianoKey(99, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyEb7);
+        pkeys[79] = new PianoKey(100, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyE7);
+        pkeys[80] = new PianoKey(101, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyF7);
+        pkeys[81] = new PianoKey(102, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyFsharp7);
+        pkeys[82] = new PianoKey(103, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyG7);
+        pkeys[83] = new PianoKey(104, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyGsharp7);
+        pkeys[84] = new PianoKey(105, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA7);
+        pkeys[85] = new PianoKey(106, blackKeyPressed, blackKey, blackBassKey, blackBassKeyPressed, keyBb7);
+        pkeys[86] = new PianoKey(107, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyB7);
+
+        // 8th octave keys
+        pkeys[87] = new PianoKey(108, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC8);
+
+        // 0th octave keys
+        labels[0] = A0;
+        labels[1] = Bb0;
+        labels[2] = B0;
+
+        // 1st octave labels
+        labels[3] = C1;
+        labels[4] = Csharp1;
+        labels[5] = D1;
+        labels[6] = Eb1;
+        labels[7] = E1;
+        labels[8] = F1;
+        labels[9] = Fsharp1;
+        labels[10] = G1;
+        labels[11] = Gsharp1;
+        labels[12] = A1;
+        labels[13] = Bb1;
+        labels[14] = B1;
+
+        // 2nd octave labels
+        labels[15] = C2;
+        labels[16] = Csharp2;
+        labels[17] = D2;
+        labels[18] = Eb2;
+        labels[19] = E2;
+        labels[20] = F2;
+        labels[21] = Fsharp2;
+        labels[22] = G2;
+        labels[23] = Gsharp2;
+        labels[24] = A2;
+        labels[25] = Bb2;
+        labels[26] = B2;
+
+        // 3rd octave labels
+        labels[27] = C3;
+        labels[28] = Csharp3;
+        labels[29] = D3;
+        labels[30] = Eb3;
+        labels[31] = E3;
+        labels[32] = F3;
+        labels[33] = Fsharp3;
+        labels[34] = G3;
+        labels[35] = Gsharp3;
+        labels[36] = A3;
+        labels[37] = Bb3;
+        labels[38] = B3;
+
+        // 4th octave labels
+        labels[39] = C4;
+        labels[40] = Csharp4;
+        labels[41] = D4;
+        labels[42] = Eb4;
+        labels[43] = E4;
+        labels[44] = F4;
+        labels[45] = Fsharp4;
+        labels[46] = G4;
+        labels[47] = Gsharp4;
+        labels[48] = A4;
+        labels[49] = Bb4;
+        labels[50] = B4;
+
+        // 5th octave labels
+        labels[51] = C5;
+        labels[52] = Csharp5;
+        labels[53] = D5;
+        labels[54] = Eb5;
+        labels[55] = E5;
+        labels[56] = F5;
+        labels[57] = Fsharp5;
+        labels[58] = G5;
+        labels[59] = Gsharp5;
+        labels[60] = A5;
+        labels[61] = Bb5;
+        labels[62] = B5;
+
+        // 6th octave labels
+        labels[63] = C6;
+        labels[64] = Csharp6;
+        labels[65] = D6;
+        labels[66] = Eb6;
+        labels[67] = E6;
+        labels[68] = F6;
+        labels[69] = Fsharp6;
+        labels[70] = G6;
+        labels[71] = Gsharp6;
+        labels[72] = A6;
+        labels[73] = Bb6;
+        labels[74] = B6;
+
+        // 7th octave labels
+        labels[75] = C7;
+        labels[76] = Csharp7;
+        labels[77] = D7;
+        labels[78] = Eb7;
+        labels[79] = E7;
+        labels[80] = F7;
+        labels[81] = Fsharp7;
+        labels[82] = G7;
+        labels[83] = Gsharp7;
+        labels[84] = A7;
+        labels[85] = Bb7;
+        labels[86] = B7;
+
+        // 8th octave labels
+        labels[87] = C8;
+
+        // Set up NotePanes for chords
+
+        int numberOfPanes = 6;
+
+        int paneBase = 100;
+        int paneDisplacement = 160;
+
+        savedPanes = new ArrayList();
+        staffDisplay = new javax.swing.JLabel[numberOfPanes];
+        displayPane = new ChordPane[numberOfPanes];
+        for (int i = 0; i < numberOfPanes; i++) {
+            staffDisplay[i] = new javax.swing.JLabel(staffIcon);
+            staffDisplay[i].setOpaque(false);
+            staffDisplay[i].setBackground(Color.white);
+            staffDisplay[i].setFocusable(false);
+            staffDisplay[i].setBounds(paneBase + i * paneDisplacement, 25, 162, 370);
+            voicingStaffPanel.add(staffDisplay[i]);
+
+            displayPane[i] = new ChordPane(""); //currentChordName);
+            displayPane[i].setBounds(paneBase + i * paneDisplacement, 10, 162, 370);
+            voicingStaffPanel.add(displayPane[i]);
+        }
     }
-}
 
-public PianoKey[] pianoKeys() 
-    {
+    /**
+     * sets all the labels to the same color as the background
+     */
+    public void setInvisible() {
+        for (int r = 0; r < 88; r++) {
+            labels[r].setForeground(new Color(240, 240, 240));
+        }
+    }
+
+    public PianoKey[] pianoKeys() {
         return pkeys;
     }
-    
-public void closeWindow()
-  {
-    setVisible(false);
-    notate.closeKeyboard();
-    WindowRegistry.unregisterWindow(this);
-  }    
+
+    public void closeWindow() {
+        setVisible(false);
+        notate.closeKeyboard();
+        WindowRegistry.unregisterWindow(this);
+    }
 
 
 }

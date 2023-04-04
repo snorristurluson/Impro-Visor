@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -27,12 +27,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
+
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import mikera.matrixx.AMatrix;
 import mikera.matrixx.Matrix;
 import imp.lstm.utilities.ReadWriteUtilities;
@@ -44,7 +47,7 @@ import imp.lstm.utilities.ReadWriteUtilities;
  * Wow. Thats the fancy definition. Really what this means is that unlike a neural queue, which pushes and pops portions of vectors over the entire queue,
  * this fragmented queue design, on dequeue, combines vectors from the front of the queue until the total strength is 1.0, and then pops off only the first vector.
  * It makes for a very fun interpolation between recognized features, and allows for decoding to start before an entire dataset is encoded.
- * 
+ *
  * @author Nicholas Weintraut
  */
 public class FragmentedNeuralQueue {
@@ -52,40 +55,36 @@ public class FragmentedNeuralQueue {
     private LinkedList<Double> strengthList; //[index]
     private double fragmentStrength;
     private Double totalStrength;
-    
+
     /**
      * Initializes FragmentedNeuralQueue instance with the given input vector size and a fragment strength of 1.
      */
-    public FragmentedNeuralQueue()
-    {
+    public FragmentedNeuralQueue() {
         this(1);
     }
-   
+
     /**
      * Initializes FragmentedNeuralQueue instance with the given input vector size and fragment strength
-     * @param fragmentStrength 
+     * @param fragmentStrength
      */
-    public FragmentedNeuralQueue(double fragmentStrength)
-    {
-        vectorList = new LinkedList<AVector>(); 
+    public FragmentedNeuralQueue(double fragmentStrength) {
+        vectorList = new LinkedList<AVector>();
         strengthList = new LinkedList<Double>();
         this.fragmentStrength = fragmentStrength;
         totalStrength = 0.0;
     }
-    
-    public boolean isEmpty()
-    {
+
+    public boolean isEmpty() {
         return vectorList.isEmpty();
     }
-    
+
     /**
      * Perform the next timeStep iteration of the neural queue without dequeueing
      * @param inputVector
      * @param enqueueSignal
 
      */
-    public void enqueueStep(AVector inputVector, double enqueueSignal)
-    {
+    public void enqueueStep(AVector inputVector, double enqueueSignal) {
         //System.out.println("are we gonna do it");
         //add inputVector to valueMatrix
         //System.out.println(inputVector == null);
@@ -93,34 +92,29 @@ public class FragmentedNeuralQueue {
         //System.out.println("hurr");
         //System.out.println("we added column vector, now lets add an enqueueSignal");
         //we won't update our strengthVector other than adding enqueueSignal
-       // System.out.println(strengthList == null);
-        
+        // System.out.println(strengthList == null);
+
         strengthList.add(enqueueSignal);
-        
+
         totalStrength += enqueueSignal;
     }
-    
-    public void shuffleVectors()
-    {
+
+    public void shuffleVectors() {
         Collections.shuffle(vectorList);
     }
-    
-    public void halfAndHalfQueue()
-    {
-        for(int i = 0; i < strengthList.size()/2; i++)
-        {
+
+    public void halfAndHalfQueue() {
+        for (int i = 0; i < strengthList.size() / 2; i++) {
             strengthList.offer(strengthList.poll());
             vectorList.offer(vectorList.poll());
         }
     }
-    
-    public void shuffleQueue()
-    {
+
+    public void shuffleQueue() {
         Random rand = new Random();
         List<Double> strengths = (List<Double>) strengthList;
         List<AVector> vectors = (List<AVector>) vectorList;
-        for(int i = 0; i < strengths.size(); i++)
-        {
+        for (int i = 0; i < strengths.size(); i++) {
             int sourceIndex = rand.nextInt(strengths.size());
             int destIndex = rand.nextInt(strengths.size());
             AVector tempVector = vectors.get(destIndex);
@@ -131,30 +125,27 @@ public class FragmentedNeuralQueue {
             vectors.set(sourceIndex, tempVector);
         }
     }
-    
-    
-    
+
+
     /**
      * Based on vector strengths, returns lists of contiguous vectors that represent musical "features" as recognized by the encoder.
      * @return List of lists of indexes that point to paired vectors and strengths in the queue
      */
-    public List<List<Integer>> findFeatureGroups()
-    {
+    public List<List<Integer>> findFeatureGroups() {
         double threshold = 0.6;
         List<List<Integer>> featureGroups = new ArrayList<>();
         featureGroups.add(new ArrayList<>());
         Iterator<Double> strengthIterator = strengthList.iterator();
         boolean filledGroup = false;
         int strengthIndex = 0;
-        while(strengthIterator.hasNext()) {
+        while (strengthIterator.hasNext()) {
             Double strength = strengthIterator.next();
-            if(filledGroup && strength < threshold)
-            {
+            if (filledGroup && strength < threshold) {
                 featureGroups.add(new ArrayList<>());
-                filledGroup = false; 
+                filledGroup = false;
             }
             featureGroups.get(featureGroups.size() - 1).add(strengthIndex);
-            if(strength >= threshold) {
+            if (strength >= threshold) {
                 filledGroup = true;
             }
             strengthIndex++;
@@ -163,14 +154,13 @@ public class FragmentedNeuralQueue {
         System.out.println((strengthList.size() / featureGroups.size()) + " timeSteps per feature group(rounded down)");
         return featureGroups;
     }
-    
-    public void printFeatureGroups()
-    {
-        for(List<Integer> group : findFeatureGroups()) {
+
+    public void printFeatureGroups() {
+        for (List<Integer> group : findFeatureGroups()) {
             double maxStrength = 0;
             int maxIndex = 0;
-            for(int i = 0; i < group.size(); i++) {
-                if(strengthList.get(group.get(i)) > maxStrength) {
+            for (int i = 0; i < group.size(); i++) {
+                if (strengthList.get(group.get(i)) > maxStrength) {
                     maxStrength = strengthList.get(group.get(i));
                     maxIndex = group.get(i);
                 }
@@ -178,25 +168,20 @@ public class FragmentedNeuralQueue {
             System.out.println(vectorList.get(maxIndex) + " with strength " + maxStrength + " at timeStep " + maxIndex);
         }
     }
-    
-    public void testFill()
-    {
+
+    public void testFill() {
         int size = strengthList.size();
         int vectorSize = vectorList.get(0).length();
         strengthList.clear();
         vectorList.clear();
         int bitIndex = 0;
-        for(int i = 0; i < size - 1; i++)
-        {
-            if(i % 48 == 0)
-            {
+        for (int i = 0; i < size - 1; i++) {
+            if (i % 48 == 0) {
                 AVector v = Vector.createLength(vectorSize);
                 v.set(bitIndex++ % v.length(), 1.0);
                 vectorList.add(v);
                 strengthList.add(1.0);
-            }
-            else
-            {
+            } else {
                 vectorList.add(Vector.createLength(vectorSize));
                 strengthList.add(0.0);
             }
@@ -206,16 +191,15 @@ public class FragmentedNeuralQueue {
         vectorList.add(v);
         strengthList.add(1.0);
     }
-    
-    
-    public void shuffleFeatures(boolean shouldPermutate, boolean favorRecognition)
-    {
+
+
+    public void shuffleFeatures(boolean shouldPermutate, boolean favorRecognition) {
         List<List<Integer>> featureGroups = findFeatureGroups();
         List<List<Integer>> shuffledGroups = new ArrayList<>();
         LinkedList<Double> newStrengths = new LinkedList<>();
         LinkedList<AVector> newVectors = new LinkedList<>();
         Random rand = new Random();
-        if(shouldPermutate) {
+        if (shouldPermutate) {
             shuffledGroups.addAll(featureGroups);
             Collections.shuffle(shuffledGroups);
         }
@@ -247,13 +231,13 @@ public class FragmentedNeuralQueue {
             }
         }*/
         else {
-            for(int i = 0; i < featureGroups.size(); i++) {
+            for (int i = 0; i < featureGroups.size(); i++) {
                 shuffledGroups.add(featureGroups.get(rand.nextInt(featureGroups.size())));
             }
         }
-        
-        for(List<Integer> group : shuffledGroups) {
-            for(Integer index : group) {
+
+        for (List<Integer> group : shuffledGroups) {
+            for (Integer index : group) {
                 newStrengths.add(strengthList.get(index));
                 newVectors.add(vectorList.get(index).copy());
             }
@@ -261,95 +245,87 @@ public class FragmentedNeuralQueue {
         strengthList = newStrengths;
         vectorList = newVectors;
     }
-    
-    public void shuffleStrengths()
-    {
+
+    public void shuffleStrengths() {
         Collections.shuffle(strengthList);
     }
-    
+
     /**
-     * 
+     *
      * @return Does the queue have 
      */
-    public boolean hasFullBuffer()
-    {
+    public boolean hasFullBuffer() {
         return totalStrength >= fragmentStrength;
     }
-    
-    public String toString()
-    {
+
+    public String toString() {
         return strengthList.size() + " " + vectorList.size();
     }
-    
+
     /**
      * Read vectors scaled by their strengths until we fill the fragment, then return the fragment.
      * A vector is scaled by a portion of their strength if their strength would overfill the fragment.
      * @return The sampled vector
      */
-    public AVector peek()
-    {
-        if(!vectorList.isEmpty())
-        {
-        //lets start generating the readVector
-        AVector readVector = Vector.createLength(vectorList.peek().length());
-        
-        double strengthSum = 0.0;
-        
-        Iterator<AVector> vectorIterator = vectorList.iterator();
-        Iterator<Double> strengthIterator = strengthList.iterator();
-        //while we have not reached the strength limit for our fragment
-        while(strengthSum < fragmentStrength && vectorIterator.hasNext())
-        {
-            AVector currVector = vectorIterator.next();
-            //System.out.println(currVector.length());
-            double currStrength = strengthIterator.next();
-            //if our strengthSum would exceed our fragment strength, only take the portion needed to fill it
-            if(strengthSum + currStrength > fragmentStrength)
-            {
-                AVector currVectorCopy = currVector.copy();
-                currVectorCopy.multiply(fragmentStrength - strengthSum);
-                readVector.add(currVectorCopy);
-                strengthSum = fragmentStrength;
+    public AVector peek() {
+        if (!vectorList.isEmpty()) {
+            //lets start generating the readVector
+            AVector readVector = Vector.createLength(vectorList.peek().length());
+
+            double strengthSum = 0.0;
+
+            Iterator<AVector> vectorIterator = vectorList.iterator();
+            Iterator<Double> strengthIterator = strengthList.iterator();
+            //while we have not reached the strength limit for our fragment
+            while (strengthSum < fragmentStrength && vectorIterator.hasNext()) {
+                AVector currVector = vectorIterator.next();
+                //System.out.println(currVector.length());
+                double currStrength = strengthIterator.next();
+                //if our strengthSum would exceed our fragment strength, only take the portion needed to fill it
+                if (strengthSum + currStrength > fragmentStrength) {
+                    AVector currVectorCopy = currVector.copy();
+                    currVectorCopy.multiply(fragmentStrength - strengthSum);
+                    readVector.add(currVectorCopy);
+                    strengthSum = fragmentStrength;
+                }
+                //if we have space left, we'll simply multiply the current vector by it's scale and add it.
+                else {
+                    AVector currVectorCopy = currVector.copy();
+                    currVectorCopy.multiply(currStrength);
+                    readVector.add(currVectorCopy);
+                    strengthSum += currStrength;
+                }
             }
-            //if we have space left, we'll simply multiply the current vector by it's scale and add it.
-            else
-            {
-                AVector currVectorCopy = currVector.copy();
-                currVectorCopy.multiply(currStrength);
-                readVector.add(currVectorCopy);
-                strengthSum += currStrength;
-            }
-        }
             return readVector;
         }
         throw new RuntimeException("The neural queue is empty!!");
     }
-    
-    public FragmentedNeuralQueue copy()
-    {
+
+    public FragmentedNeuralQueue copy() {
         FragmentedNeuralQueue duplicate = new FragmentedNeuralQueue();
         duplicate.fragmentStrength = this.fragmentStrength;
         duplicate.totalStrength = this.totalStrength;
-        strengthList.forEach((strength) -> {duplicate.strengthList.add(strength);});
-        vectorList.forEach((vector) -> {duplicate.vectorList.add(vector.copy());});
+        strengthList.forEach((strength) -> {
+            duplicate.strengthList.add(strength);
+        });
+        vectorList.forEach((vector) -> {
+            duplicate.vectorList.add(vector.copy());
+        });
         return duplicate;
     }
-    
-    public void basicInterpolate(FragmentedNeuralQueue target, double ipStrength)
-    {
+
+    public void basicInterpolate(FragmentedNeuralQueue target, double ipStrength) {
         ArrayList<Integer> queueIndexes = new ArrayList<>();
         //System.out.println("Starting basic interpolate");
-        for(int i = 0; i < strengthList.size(); i++)
-        {
-            if(strengthList.get(i) > 0.1) {
+        for (int i = 0; i < strengthList.size(); i++) {
+            if (strengthList.get(i) > 0.1) {
                 queueIndexes.add(i);
                 //System.out.println("queue index: " + i);
             }
         }
         ArrayList<Integer> refQueueIndexes = new ArrayList<>();
-        for(int i = 0; i < target.strengthList.size(); i++)
-        {
-            if(target.strengthList.get(i) > 0.1) {
+        for (int i = 0; i < target.strengthList.size(); i++) {
+            if (target.strengthList.get(i) > 0.1) {
                 refQueueIndexes.add(i);
                 //System.out.println("reference index: " + i);
             }
@@ -357,8 +333,7 @@ public class FragmentedNeuralQueue {
         int refFeatureIndex = 0;
         //System.out.println(target.vectorList.size());
         //System.out.println(target.strengthList.size());
-        for(Integer index : queueIndexes)
-        {
+        for (Integer index : queueIndexes) {
             //this vector will become the diff multiplied by the ipStrength
             //System.out.println(refQueueIndexes.get(refFeatureIndex));
             AVector diff = target.vectorList.get(refQueueIndexes.get(refFeatureIndex)).copy();
@@ -370,29 +345,26 @@ public class FragmentedNeuralQueue {
             //System.out.println("new: " + vectorList.get(index));
         }
     }
-    
+
     /**
      * Removes an element of the queue in first-in, first-out order.
      */
-    public AVector dequeueStep()
-    {
+    public AVector dequeueStep() {
         AVector result = this.peek();
         vectorList.remove(0);
         totalStrength -= strengthList.remove(0);
         return result;
     }
-    
-    public void initFromFile(String filePath)
-    {
-        try{
+
+    public void initFromFile(String filePath) {
+        try {
             //System.out.println("starting init");
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             Object[] lines = reader.lines().toArray();
             String contents = "";
-            for(int i = 0; i < lines.length; i++)
-            {
+            for (int i = 0; i < lines.length; i++) {
                 contents += (String) lines[i];
-                if(i < lines.length - 1)
+                if (i < lines.length - 1)
                     contents += "\n";
             }
             String strengthLabel = "(strengths)\n";
@@ -404,16 +376,15 @@ public class FragmentedNeuralQueue {
             String vectorContents = contents.substring(vectorStart);
             AVector strengths = (AVector) ReadWriteUtilities.readNumpyCSVString(strengthContents);
             AMatrix vectors = (AMatrix) ReadWriteUtilities.readNumpyCSVString(vectorContents);
-            
+
             initFromData(strengths, vectors);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    public void writeToFile(String filePath)
-    {
+
+    public void writeToFile(String filePath) {
         try {
             //System.out.println("starting write");
             BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
@@ -428,22 +399,19 @@ public class FragmentedNeuralQueue {
             writer.write(ReadWriteUtilities.getNumpyCSVString(vectorData));
             //System.out.println(" oh nooooooooo");
             writer.close();
-        } catch(IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    
-    
-    public void initFromData(AVector strengths, AMatrix vectors)
-    {
+
+
+    public void initFromData(AVector strengths, AMatrix vectors) {
         //System.out.println("starting init from data");
         strengthList.clear();
         vectorList.clear();
-        for(int i = 0; i < strengths.length(); i++)
+        for (int i = 0; i < strengths.length(); i++)
             strengthList.add(strengths.get(i));
-        for(int i = 0; i < vectors.rowCount(); i++)
+        for (int i = 0; i < vectors.rowCount(); i++)
             vectorList.add(vectors.getRow(i));
     }
 }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2011 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,7 +23,9 @@ package imp.data;
 import imp.data.advice.Advisor;
 import imp.Constants;
 import imp.util.ErrorLog;
+
 import java.io.Serializable;
+
 import polya.Polylist;
 
 /**
@@ -39,7 +41,7 @@ import polya.Polylist;
  * The polychord component, which is another ChordSymbol over which this chord is placed.
  * @see         Chord
  * @see         Form
- * @author      Robert Keller
+ * @author Robert Keller
  */
 public class ChordSymbol implements Constants, Serializable {
 
@@ -88,40 +90,37 @@ public class ChordSymbol implements Constants, Serializable {
     private ChordSymbol polybase = null;
 
 
-    public ChordSymbol() {}
+    public ChordSymbol() {
+    }
 
     /**
      * Use for fabricating ChordSymbol rather than parsing from String.
      */
 
-    public ChordSymbol(PitchClass root, String type, PitchClass bass, ChordSymbol polybase)
-      {
-      this.rootString = capitalize(root.toString());
-      this.type = type;
-      this.root = root;
-      this.bass = bass;
-      this.polybase = polybase;
-      StringBuilder nameBuffer = new StringBuilder();
-      nameBuffer.append(rootString);
-      nameBuffer.append(type);
-      if( polybase != null ) 
-        {
-        nameBuffer.append(BACKSLASH);
-        nameBuffer.append(polybase.toString());
+    public ChordSymbol(PitchClass root, String type, PitchClass bass, ChordSymbol polybase) {
+        this.rootString = capitalize(root.toString());
+        this.type = type;
+        this.root = root;
+        this.bass = bass;
+        this.polybase = polybase;
+        StringBuilder nameBuffer = new StringBuilder();
+        nameBuffer.append(rootString);
+        nameBuffer.append(type);
+        if (polybase != null) {
+            nameBuffer.append(BACKSLASH);
+            nameBuffer.append(polybase.toString());
+        } else if (!bass.equals(root)) {
+            nameBuffer.append(SLASHSTRING);
+            nameBuffer.append(capitalize(bass.toString()));
         }
-      else if( !bass.equals(root) )
-        {
-        nameBuffer.append(SLASHSTRING);
-        nameBuffer.append(capitalize(bass.toString()));
-        }
-      name = nameBuffer.toString();
+        name = nameBuffer.toString();
 
-      // The following call is needed to set the ChordForm component.
-      // Presumably the constructor constructs a syntactically-valid chord,
-      // so the result is not actually used.
+        // The following call is needed to set the ChordForm component.
+        // Presumably the constructor constructs a syntactically-valid chord,
+        // so the result is not actually used.
 
-      checkValidity(Advisor.getAllChords());
-      }
+        checkValidity(Advisor.getAllChords());
+    }
 
     public Polylist getVoicing() {
         return voicing;
@@ -130,7 +129,7 @@ public class ChordSymbol implements Constants, Serializable {
     public void setVoicing(Polylist voicing) {
         this.voicing = voicing;
     }
- 
+
     public Polylist getExtension() {
         return extension;
     }
@@ -138,149 +137,129 @@ public class ChordSymbol implements Constants, Serializable {
     public void setExtension(Polylist extension) {
         this.extension = extension;
     }
- 
-    
+
+
     /**
      * Creates a ChordSymbol with the specified name.
      * @param name          a String containing the chord name
      */
-    public static ChordSymbol makeChordSymbol(String name)
-      {
-      if( name.equals("") )
-	{
-	return null;	// Error indicator
-	}
-
-      ChordSymbol chordSymbol = new ChordSymbol();
-      chordSymbol.name = name;
-
-      if( name.equals(NOCHORD) )
-	{
-        // for uniformity
-        chordSymbol.type = NOCHORD;
-        chordSymbol.root = PitchClass.cClass;
-        chordSymbol.bass = PitchClass.cClass;
-        chordSymbol.rootString = CROOT;
-	return chordSymbol;
-	}
-
-      // Parse the name into components
-
-      // (1) Start by getting the root.
-
-      StringBuilder buffer1 = new StringBuilder();
-
-      buffer1.append(name.charAt(0));
-
-      if( !Key.isValidStem(buffer1.toString()) )  
-	{
-	return null;
-	}
-
-      int len = name.length();
-
-      int index = 1;
-
-      if( index < len )
-	{
-	char c = name.charAt(1);
-	if( c == SHARP || c == FLAT )
-	  {
-	  buffer1.append(c);
-	  index++;
-	  }
-	}
-
-      chordSymbol.rootString = buffer1.toString();
-
-      chordSymbol.root = PitchClass.getPitchClass(chordSymbol.rootString.toLowerCase());
-
-      if( chordSymbol.root == null )
-	{
-	return null;	// root is not known a known pitch class
-	}
-
-      // (2)Get the type of the chord.
-
-      StringBuilder buffer2 = new StringBuilder();
-
-      while( index < len && name.charAt(index) != SLASH && name.charAt(index) != BACKSLASH )
-	{
-	buffer2.append(name.charAt(index));
-	index++;
-	}
-
-      chordSymbol.type = buffer2.toString();
-
-      // (3) handle slash and polychords
-      // as mutually exclusive.
-
-      if( index < len )
-	{
-	// We have a slash chord or poly chord.
-  
-         if( name.charAt(index) == SLASH )
-           {
-           StringBuilder buffer3 = new StringBuilder();
-
-    	   index++;	// skip the slash
-
-	   while( index < len )
-	     {
-	     buffer3.append(name.charAt(index));
-	     index++;
-	     }
-
-      	   String bassString = buffer3.toString().toLowerCase();
-
-           chordSymbol.bass = PitchClass.getPitchClass(bassString);
-
-  	   if( chordSymbol.bass == null )
-    	     {
-	     return null;
-	     }
-	   }
-         else
-           {
-           // we have a polychord
-           index++;
-           chordSymbol.polybase = makeChordSymbol(name.substring(index));
-           chordSymbol.bass = chordSymbol.polybase.getBass();
-           }
-        }
-      else
-        {
-        chordSymbol.bass = chordSymbol.root;
+    public static ChordSymbol makeChordSymbol(String name) {
+        if (name.equals("")) {
+            return null;    // Error indicator
         }
 
-      if( chordSymbol.checkValidity(Advisor.getAllChords()) )
-        {
-        return chordSymbol;
+        ChordSymbol chordSymbol = new ChordSymbol();
+        chordSymbol.name = name;
+
+        if (name.equals(NOCHORD)) {
+            // for uniformity
+            chordSymbol.type = NOCHORD;
+            chordSymbol.root = PitchClass.cClass;
+            chordSymbol.bass = PitchClass.cClass;
+            chordSymbol.rootString = CROOT;
+            return chordSymbol;
         }
 
-      ErrorLog.log(ErrorLog.WARNING, chordSymbol + " is not a recognized chord");
-      return null;
-      }
+        // Parse the name into components
 
-   /**
-    * Check whether chord is known in the list of all chords.  If it is, set the chordForm
-    * for future access.
-    */
+        // (1) Start by getting the root.
 
-   public boolean checkValidity(Polylist chords)
-     {
-     String Cversion = CROOT + type;
-     chordForm = Advisor.getChordForm(Cversion);
-     if( chordForm == null )
-       {
-       return false;
-       }
-     if( polybase != null )
-       {
-       return polybase.checkValidity(chords);
-       }
-     return true;
-     }
+        StringBuilder buffer1 = new StringBuilder();
+
+        buffer1.append(name.charAt(0));
+
+        if (!Key.isValidStem(buffer1.toString())) {
+            return null;
+        }
+
+        int len = name.length();
+
+        int index = 1;
+
+        if (index < len) {
+            char c = name.charAt(1);
+            if (c == SHARP || c == FLAT) {
+                buffer1.append(c);
+                index++;
+            }
+        }
+
+        chordSymbol.rootString = buffer1.toString();
+
+        chordSymbol.root = PitchClass.getPitchClass(chordSymbol.rootString.toLowerCase());
+
+        if (chordSymbol.root == null) {
+            return null;    // root is not known a known pitch class
+        }
+
+        // (2)Get the type of the chord.
+
+        StringBuilder buffer2 = new StringBuilder();
+
+        while (index < len && name.charAt(index) != SLASH && name.charAt(index) != BACKSLASH) {
+            buffer2.append(name.charAt(index));
+            index++;
+        }
+
+        chordSymbol.type = buffer2.toString();
+
+        // (3) handle slash and polychords
+        // as mutually exclusive.
+
+        if (index < len) {
+            // We have a slash chord or poly chord.
+
+            if (name.charAt(index) == SLASH) {
+                StringBuilder buffer3 = new StringBuilder();
+
+                index++;    // skip the slash
+
+                while (index < len) {
+                    buffer3.append(name.charAt(index));
+                    index++;
+                }
+
+                String bassString = buffer3.toString().toLowerCase();
+
+                chordSymbol.bass = PitchClass.getPitchClass(bassString);
+
+                if (chordSymbol.bass == null) {
+                    return null;
+                }
+            } else {
+                // we have a polychord
+                index++;
+                chordSymbol.polybase = makeChordSymbol(name.substring(index));
+                chordSymbol.bass = chordSymbol.polybase.getBass();
+            }
+        } else {
+            chordSymbol.bass = chordSymbol.root;
+        }
+
+        if (chordSymbol.checkValidity(Advisor.getAllChords())) {
+            return chordSymbol;
+        }
+
+        ErrorLog.log(ErrorLog.WARNING, chordSymbol + " is not a recognized chord");
+        return null;
+    }
+
+    /**
+     * Check whether chord is known in the list of all chords.  If it is, set the chordForm
+     * for future access.
+     */
+
+    public boolean checkValidity(Polylist chords) {
+        String Cversion = CROOT + type;
+        chordForm = Advisor.getChordForm(Cversion);
+        if (chordForm == null) {
+            return false;
+        }
+        if (polybase != null) {
+            return polybase.checkValidity(chords);
+        }
+        return true;
+    }
 
     /**
      * Returns the ChordSymbol's name.
@@ -295,10 +274,9 @@ public class ChordSymbol implements Constants, Serializable {
      * @return the ChordSymbol's family.
      */
     public String getFamily() {
-        if( chordForm == null )
-          {
+        if (chordForm == null) {
             return "other";
-          }
+        }
         return chordForm.getFamily();
     }
 
@@ -309,8 +287,8 @@ public class ChordSymbol implements Constants, Serializable {
     public PitchClass getRoot() {
         return root;
     }
-    
-    
+
+
     /**
      * Returns the ChordSymbol's generic quality, accounting for polychords
      * and slash chord
@@ -319,23 +297,22 @@ public class ChordSymbol implements Constants, Serializable {
     public String getQuality() {
         if (this.polybase != null)
             return this.polybase.getQuality();
-        
+
         String quality = this.name;
-        if (quality.length() > 1 && 
+        if (quality.length() > 1 &&
                 (quality.charAt(1) == 'b' || quality.charAt(1) == '#'))
             quality = quality.substring(2);
         else
             quality = quality.substring(1);
-        
-        if (isSlashChord())
-        {
+
+        if (isSlashChord()) {
             String[] qualitySplit = quality.split(SLASHSTRING);
             quality = qualitySplit[0];
         }
 
         return quality;
     }
-    
+
 
     /**
      * Returns the ChordSymbol's root as String
@@ -413,109 +390,93 @@ public class ChordSymbol implements Constants, Serializable {
      * Returns an indication of whether this chord is enharmonically a member of a list of ChordSymbols
      * @return an indication of whether this chord is enharmonically a member of a list of ChordSymbols
      */
-    public boolean enhMember(Polylist chordSymbols)
-      {
-      while( chordSymbols.nonEmpty() )
-         {
-          if( enhChord((ChordSymbol)chordSymbols.first()) )
-            {
-            return true;
+    public boolean enhMember(Polylist chordSymbols) {
+        while (chordSymbols.nonEmpty()) {
+            if (enhChord((ChordSymbol) chordSymbols.first())) {
+                return true;
             }
-         chordSymbols = chordSymbols.rest();
-         }
-      return false;
-      }
+            chordSymbols = chordSymbols.rest();
+        }
+        return false;
+    }
 
     /**
      * Returns an indication of whether two lists of chords are enharmonically the same
      * @return an indication of whether two lists of chords are enharmonically the same
      */
-    public static boolean enhChordSequences(Polylist x, Polylist y)
-      {
-      while( x.nonEmpty() && y.nonEmpty() )
-         {
-         if( ! ((ChordSymbol)x.first()).enhChord((ChordSymbol)y.first()) )
-           {
-           return false;
-           }
-         x = x.rest();
-         y = y.rest();
-         }
-      return x.isEmpty() && y.isEmpty();
-      }
+    public static boolean enhChordSequences(Polylist x, Polylist y) {
+        while (x.nonEmpty() && y.nonEmpty()) {
+            if (!((ChordSymbol) x.first()).enhChord((ChordSymbol) y.first())) {
+                return false;
+            }
+            x = x.rest();
+            y = y.rest();
+        }
+        return x.isEmpty() && y.isEmpty();
+    }
 
     /**
      * Returns a list of ChordSymbols from a list of Strings known to represent chords.
      * @return a list of ChordSymbols from a list of Strings known to represent chords.
      */
-    public static Polylist chordSymbolsFromStrings(Polylist strings)
-      {
-      Polylist result = Polylist.nil;
-      while( strings.nonEmpty() )
-         {
-         result = result.cons(makeChordSymbol((String)strings.first()));
-         strings = strings.rest();
-         }
-      return result.reverse();
-      }
-
-  /** 
-   * Return a new ChordSymbol that is the transpose of this one.
-   */
-
-  public ChordSymbol transpose(int semitones)
-    {
-    if( getName().equals(NOCHORD) )
-        {
-        return this;
+    public static Polylist chordSymbolsFromStrings(Polylist strings) {
+        Polylist result = Polylist.nil;
+        while (strings.nonEmpty()) {
+            result = result.cons(makeChordSymbol((String) strings.first()));
+            strings = strings.rest();
         }
-    return new ChordSymbol(root.transpose(semitones), 
-                           type, 
-                           bass.transpose(semitones), 
-                           polybase == null ? null : polybase.transpose(semitones)
-                           );
+        return result.reverse();
     }
 
-  /** 
-   * Return a list of new ChordSymbols that are the transposes of the argument list.
-   */
+    /**
+     * Return a new ChordSymbol that is the transpose of this one.
+     */
 
-  public static Polylist transpose(Polylist L, int semitones)
-    {
-    Polylist result = Polylist.nil;
-    while( L.nonEmpty() )
-      {
-      result = result.cons(((ChordSymbol)L.first()).transpose(semitones));
-      L = L.rest();
-      }
-    return result.reverse();
+    public ChordSymbol transpose(int semitones) {
+        if (getName().equals(NOCHORD)) {
+            return this;
+        }
+        return new ChordSymbol(root.transpose(semitones),
+                type,
+                bass.transpose(semitones),
+                polybase == null ? null : polybase.transpose(semitones)
+        );
     }
 
-  public static String capitalize(String arg)
-    {
-    if( arg.equals("") )
-      {
-      return arg;
-      }
-    return Character.toUpperCase(arg.charAt(0)) + arg.substring(1);
+    /**
+     * Return a list of new ChordSymbols that are the transposes of the argument list.
+     */
+
+    public static Polylist transpose(Polylist L, int semitones) {
+        Polylist result = Polylist.nil;
+        while (L.nonEmpty()) {
+            result = result.cons(((ChordSymbol) L.first()).transpose(semitones));
+            L = L.rest();
+        }
+        return result.reverse();
+    }
+
+    public static String capitalize(String arg) {
+        if (arg.equals("")) {
+            return arg;
+        }
+        return Character.toUpperCase(arg.charAt(0)) + arg.substring(1);
     }
 
 
-     /**
-      * Return the note type associated with a given note.
-      */
-     
-     public int getTypeIndex(Note note)
-     {
-     if( chordForm == null )
-       {
-       return CHORD_TONE;
-       }
-     
-     // Indicate transposition of the note so as to be relative
-     // to the root of the chord.
- 
-     return chordForm.getTypeIndex(note, -root.getSemitones());
-     }
- 
+    /**
+     * Return the note type associated with a given note.
+     */
+
+    public int getTypeIndex(Note note) {
+        if (chordForm == null) {
+            return CHORD_TONE;
+        }
+
+        // Indicate transposition of the note so as to be relative
+        // to the root of the chord.
+
+        return chordForm.getTypeIndex(note, -root.getSemitones());
+    }
+
 }

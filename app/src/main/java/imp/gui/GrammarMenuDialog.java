@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2005-2018 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -27,63 +27,55 @@ import java.awt.Color;
  * @author Robert Keller
  */
 
-public class GrammarMenuDialog extends javax.swing.JDialog
-  {
-  Notate notate;
-  javax.swing.DefaultListModel grammarListModel = new javax.swing.DefaultListModel();
-  
-  String currentSelection;
-  
-  public static final int CHOSEN = 0;
-  public static final int CYCLE = 1;
-  public static final int SHUFFLE = 2;
-  
-  int mode = CHOSEN;
-  
-  String DEFAULT_GRAMMAR = "chord+approach";
-  
+public class GrammarMenuDialog extends javax.swing.JDialog {
+    Notate notate;
+    javax.swing.DefaultListModel grammarListModel = new javax.swing.DefaultListModel();
+
+    String currentSelection;
+
+    public static final int CHOSEN = 0;
+    public static final int CYCLE = 1;
+    public static final int SHUFFLE = 2;
+
+    int mode = CHOSEN;
+
+    String DEFAULT_GRAMMAR = "chord+approach";
+
     /**
      * Creates new form GrammarMenuDialog
      */
-    public GrammarMenuDialog(Notate notate, boolean modal)
-    {
+    public GrammarMenuDialog(Notate notate, boolean modal) {
         super(notate, modal);
         initComponents();
         this.setTitle("Choose Grammar");
         this.notate = notate;
     }
 
-    public javax.swing.JList getGrammarList()
-    {
+    public javax.swing.JList getGrammarList() {
         return grammarJlist;
     }
-    
-    public javax.swing.DefaultListModel getGrammarListModel()
-    {
+
+    public javax.swing.DefaultListModel getGrammarListModel() {
         return grammarListModel;
     }
-    
-    public void setGrammarName(String grammarName)
-    {
+
+    public void setGrammarName(String grammarName) {
         grammarJlist.setSelectedValue(grammarName, true);
         currentSelection = grammarName;
     }
-    
-    public String getGrammarName()
-    {
+
+    public String getGrammarName() {
         return grammarJlist.getSelectedValue();
     }
-     
-    public int getGrammarIndex()
-    {
-       return grammarJlist.getSelectedIndex();
+
+    public int getGrammarIndex() {
+        return grammarJlist.getSelectedIndex();
     }
-  
-    public int getNextGrammarIndex()
-    {
-       return (1 + getGrammarIndex()) % grammarJlist.getModel().getSize() ;
+
+    public int getNextGrammarIndex() {
+        return (1 + getGrammarIndex()) % grammarJlist.getModel().getSize();
     }
-    
+
 
     /**
      * This method is called from within the constructor to
@@ -93,8 +85,7 @@ public class GrammarMenuDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         grammarButtonGroup = new javax.swing.ButtonGroup();
@@ -116,10 +107,8 @@ public class GrammarMenuDialog extends javax.swing.JDialog
         grammarButtonGroup.add(chosenGrammarButton);
         chosenGrammarButton.setSelected(true);
         chosenGrammarButton.setText("Chosen");
-        chosenGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chosenGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chosenGrammarButtonActionPerformed(evt);
             }
         });
@@ -130,10 +119,8 @@ public class GrammarMenuDialog extends javax.swing.JDialog
 
         grammarButtonGroup.add(cycleGrammarButton);
         cycleGrammarButton.setLabel("Cycle");
-        cycleGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cycleGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cycleGrammarButtonActionPerformed(evt);
             }
         });
@@ -144,10 +131,8 @@ public class GrammarMenuDialog extends javax.swing.JDialog
 
         grammarButtonGroup.add(shuffleGrammarButton);
         shuffleGrammarButton.setLabel("Shuffle");
-        shuffleGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        shuffleGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 shuffleGrammarButtonActionPerformed(evt);
             }
         });
@@ -169,10 +154,8 @@ public class GrammarMenuDialog extends javax.swing.JDialog
         improviseButton.setPreferredSize(new java.awt.Dimension(50, 30));
         improviseButton.setRequestFocusEnabled(false);
         improviseButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        improviseButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        improviseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 improviseButtonActionPerformed(evt);
             }
         });
@@ -200,10 +183,8 @@ public class GrammarMenuDialog extends javax.swing.JDialog
         grammarJlist.setToolTipText("");
         grammarJlist.setBounds(new java.awt.Rectangle(0, 0, 300, 600));
         grammarJlist.setVisibleRowCount(200);
-        grammarJlist.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        grammarJlist.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 grammarJlistMouseClicked(evt);
             }
         });
@@ -226,11 +207,10 @@ public class GrammarMenuDialog extends javax.swing.JDialog
     {//GEN-HEADEREND:event_grammarJlistMouseClicked
         grammarAction();
         notate.maybeEditGrammar(); // only edit grammar if editor already open
-        if( evt.getClickCount() == 2 )
-          {
+        if (evt.getClickCount() == 2) {
             notateImprovisationOff();
             notateImprovisationOn();
-          }
+        }
     }//GEN-LAST:event_grammarJlistMouseClicked
 
     private void shuffleGrammarButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_shuffleGrammarButtonActionPerformed
@@ -253,49 +233,41 @@ public class GrammarMenuDialog extends javax.swing.JDialog
 
     private void improviseButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_improviseButtonActionPerformed
     {//GEN-HEADEREND:event_improviseButtonActionPerformed
-    boolean improvisationOn = improviseButton.isSelected();
-    if( improvisationOn )
-      {
-        notateImprovisationOn();
-     }
-    else
-      {
-        notateImprovisationOff();
-      }        
+        boolean improvisationOn = improviseButton.isSelected();
+        if (improvisationOn) {
+            notateImprovisationOn();
+        } else {
+            notateImprovisationOff();
+        }
     }//GEN-LAST:event_improviseButtonActionPerformed
 
-    public void improvisationOn()
-    {
+    public void improvisationOn() {
         improviseButton.setBackground(new Color(255, 0, 0));
         improviseButton.setText("<html><center>Stop</center></html>");
         improviseButton.setSelected(true);
     }
-    
-    public void improvisationOff()
-    {
+
+    public void improvisationOff() {
         improviseButton.setBackground(new Color(0, 255, 0));
-        improviseButton.setText("<html><center>Improv</center></html>"); 
+        improviseButton.setText("<html><center>Improv</center></html>");
         improviseButton.setSelected(false);
     }
-    
-    private void notateImprovisationOn()
-    {
+
+    private void notateImprovisationOn() {
         improvisationOn();
         notate.improvisationOn();
-        notate.playAll();       
+        notate.playAll();
     }
-    
-    private void notateImprovisationOff()
-    {
+
+    private void notateImprovisationOff() {
         improvisationOff();
         notate.improvisationOff();
-        notate.stopPlaying();     
+        notate.stopPlaying();
     }
-    
-    private void grammarAction()
-    {
+
+    private void grammarAction() {
         currentSelection = grammarJlist.getSelectedValue();
-        notate.grammarSelected(currentSelection, mode);        
+        notate.grammarSelected(currentSelection, mode);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -308,4 +280,4 @@ public class GrammarMenuDialog extends javax.swing.JDialog
     private javax.swing.JToggleButton improviseButton;
     private javax.swing.JRadioButton shuffleGrammarButton;
     // End of variables declaration//GEN-END:variables
-  }
+}

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2005-2019 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -37,6 +37,7 @@ import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.neuralnet.Critic;
 import imp.util.ProfileFilter;
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalButtonUI;
 import javax.swing.table.DefaultTableModel;
+
 import polya.Polylist;
 import polya.Tokenizer;
 import imp.generalCluster.CreateGrammar;
@@ -59,6 +61,7 @@ import imp.generalCluster.metrics.MetricListFactories.MetricListFactory;
 import imp.generalCluster.metrics.MetricListFactories.RhythmMetricListFactory;
 import imp.trading.UserRhythmSelecterDialog;
 import imp.util.Preferences;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -100,7 +103,7 @@ public class LickgenFrame
     private final CommandManager cm;
     private final StringWriter brickProductionsWriter = new StringWriter();
     private final StringWriter windowProductionsWriter = new StringWriter();
-    
+
     private Double gradeFromCritic = null;
 
     /**
@@ -148,7 +151,7 @@ public class LickgenFrame
     /**
      * Create IntervalLearningPanel
      */
-    private IntervalLearningPanel intervalLearningTab;    
+    private IntervalLearningPanel intervalLearningTab;
 
     private DocumentListener windowSlideDocListener;
 
@@ -192,21 +195,18 @@ public class LickgenFrame
         openCWFC.resetChoosableFileFilters();
         openCWFC.addChoosableFileFilter(pFilter);
     }
-    
-private void gradeBadBtnActionPerformed(java.awt.event.ActionEvent evt)
- {
-     grade2BtnActionPerformed(evt);
- }
 
-private void gradeAverageBtnActionPerformed(java.awt.event.ActionEvent evt)
- {
-     grade5BtnActionPerformed(evt);
- }
-  
-private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
- {
-     grade8BtnActionPerformed(evt);
- }
+    private void gradeBadBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        grade2BtnActionPerformed(evt);
+    }
+
+    private void gradeAverageBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        grade5BtnActionPerformed(evt);
+    }
+
+    private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        grade8BtnActionPerformed(evt);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -215,8 +215,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         learningBaseButtonGroup = new javax.swing.ButtonGroup();
@@ -421,10 +420,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         setTitle("Grammar Controls");
         setMinimumSize(new java.awt.Dimension(1000, 850));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
             }
         });
@@ -520,10 +517,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         generateLickButton.setMaximumSize(new java.awt.Dimension(180, 29));
         generateLickButton.setMinimumSize(new java.awt.Dimension(120, 29));
         generateLickButton.setPreferredSize(new java.awt.Dimension(120, 29));
-        generateLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateLickButtonActionPerformed(evt);
             }
         });
@@ -540,10 +535,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         genRhythmButton.setMaximumSize(new java.awt.Dimension(180, 29));
         genRhythmButton.setMinimumSize(new java.awt.Dimension(180, 29));
         genRhythmButton.setPreferredSize(new java.awt.Dimension(180, 29));
-        genRhythmButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        genRhythmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genRhythmButtonActionPerformed(evt);
             }
         });
@@ -559,10 +552,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         fillMelodyButton.setToolTipText("Fill the notes for the given pattern.");
         fillMelodyButton.setMinimumSize(new java.awt.Dimension(120, 29));
         fillMelodyButton.setPreferredSize(new java.awt.Dimension(120, 29));
-        fillMelodyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fillMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fillMelodyButtonActionPerformed(evt);
             }
         });
@@ -578,10 +569,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         fillRelativePitchMelodyButton.setLabel("Fill Relative-Pitch Melody");
         fillRelativePitchMelodyButton.setMinimumSize(new java.awt.Dimension(180, 29));
         fillRelativePitchMelodyButton.setPreferredSize(new java.awt.Dimension(180, 29));
-        fillRelativePitchMelodyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fillRelativePitchMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fillRelativePitchMelodyButtonActionPerformed(evt);
             }
         });
@@ -598,10 +587,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         getAbstractMelodyButton.setMaximumSize(new java.awt.Dimension(500, 29));
         getAbstractMelodyButton.setMinimumSize(new java.awt.Dimension(250, 29));
         getAbstractMelodyButton.setPreferredSize(new java.awt.Dimension(420, 29));
-        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getAbstractMelodyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getAbstractMelodyButtonActionPerformed(evt);
             }
         });
@@ -618,10 +605,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         getSelRhythmButton.setMaximumSize(new java.awt.Dimension(500, 29));
         getSelRhythmButton.setMinimumSize(new java.awt.Dimension(420, 29));
         getSelRhythmButton.setPreferredSize(new java.awt.Dimension(420, 29));
-        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getSelRhythmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getSelRhythmButtonActionPerformed(evt);
             }
         });
@@ -635,10 +620,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         playLickButton.setText("Play");
         playLickButton.setToolTipText("Play the lick again.");
-        playLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playLickButtonActionPerformed(evt);
             }
         });
@@ -651,10 +634,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         stopLickButton.setText("Stop");
         stopLickButton.setToolTipText("Stop playing.");
-        stopLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopLickButtonActionPerformed(evt);
             }
         });
@@ -667,10 +648,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         saveLickButton.setText("Save");
         saveLickButton.setToolTipText("Save the lick in the vocabulary.");
-        saveLickButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveLickButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveLickButtonActionPerformed(evt);
             }
         });
@@ -683,10 +662,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         lickGenerationButtonsPanel.add(saveLickButton, gridBagConstraints);
 
         chooseGrammarButton.setText("Choose Grammar");
-        chooseGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chooseGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseGrammarButtonActionPerformed(evt);
             }
         });
@@ -750,17 +727,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         maxPitchField.setToolTipText("The maximum pitch in a generated lick.");
         maxPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        maxPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxPitchFieldFocusLost(evt);
             }
         });
-        maxPitchField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxPitchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxPitchFieldActionPerformed(evt);
             }
         });
@@ -777,17 +750,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         minPitchField.setToolTipText("The minimum pitch in a generated lick.");
         minPitchField.setMinimumSize(new java.awt.Dimension(60, 24));
         minPitchField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minPitchField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        minPitchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minPitchFieldFocusLost(evt);
             }
         });
-        minPitchField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minPitchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minPitchFieldActionPerformed(evt);
             }
         });
@@ -816,17 +785,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         minIntervalField.setToolTipText("The minimum interval from one note to the next, if not a leap.");
         minIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         minIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        minIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minIntervalFieldFocusLost(evt);
             }
         });
-        minIntervalField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minIntervalField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minIntervalFieldActionPerformed(evt);
             }
         });
@@ -843,17 +808,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         maxIntervalField.setToolTipText("The maximum interval from one note to the next, if not a leap.");
         maxIntervalField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxIntervalField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        maxIntervalField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxIntervalFieldFocusLost(evt);
             }
         });
-        maxIntervalField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxIntervalField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxIntervalFieldActionPerformed(evt);
             }
         });
@@ -883,17 +844,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         minDurationField.setEnabled(false);
         minDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         minDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        minDurationField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        minDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 minDurationFieldFocusLost(evt);
             }
         });
-        minDurationField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        minDurationField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 minDurationFieldActionPerformed(evt);
             }
         });
@@ -911,24 +868,18 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         maxDurationField.setEnabled(false);
         maxDurationField.setMinimumSize(new java.awt.Dimension(60, 24));
         maxDurationField.setPreferredSize(new java.awt.Dimension(60, 24));
-        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        maxDurationField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 maxDurationFieldFocusLost(evt);
             }
         });
-        maxDurationField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        maxDurationField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 maxDurationFieldActionPerformed(evt);
             }
         });
-        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        maxDurationField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 maxDurationFieldenterLickKeyPressed(evt);
             }
         });
@@ -944,28 +895,22 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         totalBeatsField.setToolTipText("The number of beats in the lick.");
         totalBeatsField.setMinimumSize(new java.awt.Dimension(60, 24));
         totalBeatsField.setPreferredSize(new java.awt.Dimension(60, 24));
-        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        totalBeatsField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 totalBeatsFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 totalBeatsFieldFocusLost(evt);
             }
         });
-        totalBeatsField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        totalBeatsField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 totalBeatsFieldActionPerformed(evt);
             }
         });
-        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        totalBeatsField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 totalBeatsFieldenterLickKeyPressed(evt);
             }
         });
@@ -1012,28 +957,22 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         restProbField.setEnabled(false);
         restProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         restProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        restProbField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        restProbField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 restProbFieldActionPerformed(evt);
             }
         });
-        restProbField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        restProbField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 restProbFieldGetsFocus(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 restProbFieldFocusLost(evt);
             }
         });
-        restProbField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        restProbField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 restProbFieldenterLickKeyPressed(evt);
             }
         });
@@ -1061,17 +1000,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         leapProbField.setMaximumSize(new java.awt.Dimension(60, 2147483647));
         leapProbField.setMinimumSize(new java.awt.Dimension(60, 24));
         leapProbField.setPreferredSize(new java.awt.Dimension(60, 24));
-        leapProbField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        leapProbField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leapProbFieldActionPerformed(evt);
             }
         });
-        leapProbField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        leapProbField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 leapProbFieldFocusLost(evt);
             }
         });
@@ -1088,10 +1023,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         avoidRepeatsCheckbox.setMaximumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setMinimumSize(new java.awt.Dimension(220, 22));
         avoidRepeatsCheckbox.setPreferredSize(new java.awt.Dimension(220, 22));
-        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        avoidRepeatsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 avoidRepeatsCheckboxActionPerformed(evt);
             }
         });
@@ -1102,10 +1035,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         recurrentCheckbox.setMaximumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setMinimumSize(new java.awt.Dimension(150, 23));
         recurrentCheckbox.setPreferredSize(new java.awt.Dimension(150, 23));
-        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        recurrentCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recurrentCheckboxActionPerformed(evt);
             }
         });
@@ -1142,10 +1073,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gapField.setMaximumSize(new java.awt.Dimension(45, 24));
         gapField.setMinimumSize(new java.awt.Dimension(45, 24));
         gapField.setPreferredSize(new java.awt.Dimension(45, 24));
-        gapField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gapField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gapFieldActionPerformed(evt);
             }
         });
@@ -1161,10 +1090,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useSoloistCheckBox.setMaximumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setMinimumSize(new java.awt.Dimension(150, 23));
         useSoloistCheckBox.setPreferredSize(new java.awt.Dimension(150, 23));
-        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useSoloistCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useSoloistCheckBoxActionPerformed(evt);
             }
         });
@@ -1189,10 +1116,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         regenerateHeadDataBtn.setMaximumSize(new java.awt.Dimension(200, 29));
         regenerateHeadDataBtn.setMinimumSize(new java.awt.Dimension(200, 29));
         regenerateHeadDataBtn.setPreferredSize(new java.awt.Dimension(200, 29));
-        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        regenerateHeadDataBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenerateHeadDataBtnActionPerformed(evt);
             }
         });
@@ -1206,10 +1131,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         generationSelectionButton.setText("Size of Selection");
         generationSelectionButton.setToolTipText("Lock the selection for lick generation.");
-        generationSelectionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generationSelectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generationSelectionButtonActionPerformed(evt);
             }
         });
@@ -1238,10 +1161,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         rectifyCheckBox.setMaximumSize(new java.awt.Dimension(200, 25));
         rectifyCheckBox.setMinimumSize(new java.awt.Dimension(90, 25));
         rectifyCheckBox.setPreferredSize(new java.awt.Dimension(90, 25));
-        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rectifyCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rectifyCheckBoxActionPerformed(evt);
             }
         });
@@ -1302,10 +1223,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         motifnessGenerationSlider.setToolTipText("Amount of motifs to incorporate into solo");
         motifnessGenerationSlider.setMinimumSize(new java.awt.Dimension(150, 48));
-        motifnessGenerationSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        motifnessGenerationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 motifnessGenerationSliderStateChanged(evt);
             }
         });
@@ -1350,13 +1269,11 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         scaleChoicePanel.add(typeLabel, gridBagConstraints);
 
-        scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Use_First_Scale" }));
+        scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Use_First_Scale"}));
         scaleComboBox.setSelectedIndex(0);
         scaleComboBox.setToolTipText("The type of scale to use in scale tones. The default is the first scale associated with the chord.\n");
-        scaleComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleComboBoxActionPerformed(evt);
             }
         });
@@ -1376,11 +1293,9 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         scaleChoicePanel.add(rootLabel, gridBagConstraints);
 
-        rootComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#", "Gb", "G", "G#/Ab", "A", "A#/Bb", "B" }));
-        rootComboBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rootComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"C", "C#/Db", "D", "D#/Eb", "E", "F", "F#", "Gb", "G", "G#/Ab", "A", "A#/Bb", "B"}));
+        rootComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rootComboBoxActionPerformed(evt);
             }
         });
@@ -1445,17 +1360,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         chordToneWeightField.setToolTipText("The amount of weight to give to chord tones (vs. scale or color tones).");
         chordToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordToneWeightFieldActionPerformed(evt);
             }
         });
-        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        chordToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 chordToneWeightFieldFocusLost(evt);
             }
         });
@@ -1468,17 +1379,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         colorToneWeightField.setToolTipText("The amount of weight to give to color tones (vs. chord or scale tones).");
         colorToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         colorToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        colorToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        colorToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorToneWeightFieldActionPerformed(evt);
             }
         });
-        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        colorToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 colorToneWeightFieldFocusLost(evt);
             }
         });
@@ -1491,17 +1398,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         scaleToneWeightField.setToolTipText("The amount of weight to give to scale tones (vs. chord or color tones).");
         scaleToneWeightField.setMinimumSize(new java.awt.Dimension(40, 24));
         scaleToneWeightField.setPreferredSize(new java.awt.Dimension(40, 24));
-        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        scaleToneWeightField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 scaleToneWeightFieldActionPerformed(evt);
             }
         });
-        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        scaleToneWeightField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 scaleToneWeightFieldFocusLost(evt);
             }
         });
@@ -1514,17 +1417,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         chordToneDecayField.setToolTipText("Decrease chord tone probability by this amount for each tone.");
         chordToneDecayField.setMinimumSize(new java.awt.Dimension(40, 24));
         chordToneDecayField.setPreferredSize(new java.awt.Dimension(40, 24));
-        chordToneDecayField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        chordToneDecayField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chordToneDecayFieldActionPerformed(evt);
             }
         });
-        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+        chordToneDecayField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 chordToneDecayFieldFocusLost(evt);
             }
         });
@@ -1596,10 +1495,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade1Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade1Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade1Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade1Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade1Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade1BtnActionPerformed(evt);
             }
         });
@@ -1613,10 +1510,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade2Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade2Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade2Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade2Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade2Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade2BtnActionPerformed(evt);
             }
         });
@@ -1629,10 +1524,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade3Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade3Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade3Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade3Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade3Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade3BtnActionPerformed(evt);
             }
         });
@@ -1646,10 +1539,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade4Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade4Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade4Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade4Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade4Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade4BtnActionPerformed(evt);
             }
         });
@@ -1662,10 +1553,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade5Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade5Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade5Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade5Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade5Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade5BtnActionPerformed(evt);
             }
         });
@@ -1678,10 +1567,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade6Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade6Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade6Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade6Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade6Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade6BtnActionPerformed(evt);
             }
         });
@@ -1694,10 +1581,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade7Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade7Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade7Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade7Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade7Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade7BtnActionPerformed(evt);
             }
         });
@@ -1711,10 +1596,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade8Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade8Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade8Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade8Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade8Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade8BtnActionPerformed(evt);
             }
         });
@@ -1727,10 +1610,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade9Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade9Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade9Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade9Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade9Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade9BtnActionPerformed(evt);
             }
         });
@@ -1743,10 +1624,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         grade10Btn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         grade10Btn.setMargin(new java.awt.Insets(2, 2, 2, 2));
         grade10Btn.setPreferredSize(new java.awt.Dimension(23, 21));
-        grade10Btn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grade10Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grade10BtnActionPerformed(evt);
             }
         });
@@ -1762,10 +1641,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gradeBadBtn.setMinimumSize(new java.awt.Dimension(70, 29));
         gradeBadBtn.setPreferredSize(new java.awt.Dimension(70, 29));
         gradeBadBtn.setVisible(false);
-        gradeBadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeBadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeBadBtnActionPerformed(evt);
             }
         });
@@ -1780,10 +1657,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gradeAverageBtn.setText("Average");
         gradeAverageBtn.setToolTipText("Grade for an average jazz lick.");
         gradeAverageBtn.setVisible(false);
-        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeAverageBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeAverageBtnActionPerformed(evt);
             }
         });
@@ -1798,10 +1673,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gradeGoodBtn.setText("Good");
         gradeGoodBtn.setToolTipText("Grade for a good jazz lick.");
         gradeGoodBtn.setVisible(false);
-        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeGoodBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeGoodBtnActionPerformed(evt);
             }
         });
@@ -1819,10 +1692,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         continuallyGenerateCheckBox.setMaximumSize(new java.awt.Dimension(170, 23));
         continuallyGenerateCheckBox.setMinimumSize(new java.awt.Dimension(170, 23));
         continuallyGenerateCheckBox.setPreferredSize(new java.awt.Dimension(170, 23));
-        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        continuallyGenerateCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 continuallyGenerateCheckBoxActionPerformed(evt);
             }
         });
@@ -1839,10 +1710,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         styleRecognitionButton.setMaximumSize(new java.awt.Dimension(150, 29));
         styleRecognitionButton.setMinimumSize(new java.awt.Dimension(150, 29));
         styleRecognitionButton.setPreferredSize(new java.awt.Dimension(150, 29));
-        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        styleRecognitionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 styleRecognitionButtonActionPerformed(evt);
             }
         });
@@ -1871,10 +1740,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         clearProbsButton.setToolTipText("Clear all pitch probabilities.");
         clearProbsButton.setLabel("Clear All Probabilities");
-        clearProbsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearProbsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearProbsButtonActionPerformed(evt);
             }
         });
@@ -1889,10 +1756,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         FillProbsButton.setText("Fill");
         FillProbsButton.setToolTipText("Fill pitch probabilities from chords.\n");
-        FillProbsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        FillProbsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FillProbsButtonActionPerformed(evt);
             }
         });
@@ -1908,10 +1773,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         autoFillCheckBox.setText("Auto-Fill");
         autoFillCheckBox.setMinimumSize(new java.awt.Dimension(89, 100));
         autoFillCheckBox.setPreferredSize(new java.awt.Dimension(89, 100));
-        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        autoFillCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 autoFillCheckBoxActionPerformed(evt);
             }
         });
@@ -1937,10 +1800,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         offsetByMeasureGradeSoloButton.setText("Offset By Measure");
         offsetByMeasureGradeSoloButton.setToolTipText("Moves the selection one measure forward. To be used with automated correction if there is an odd number of measures.");
-        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        offsetByMeasureGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 offsetByMeasureGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1952,10 +1813,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         forwardGradeSoloButton.setText("Step Forward");
         forwardGradeSoloButton.setToolTipText("Move the selection two measures forward.");
-        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        forwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1967,10 +1826,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         backwardGradeSoloButton.setText("Step Backward");
         backwardGradeSoloButton.setToolTipText("Move the selection two measures back.");
-        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        backwardGradeSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backwardGradeSoloButtonActionPerformed(evt);
             }
         });
@@ -1982,10 +1839,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         resetSelectionButton.setText("Reset Selection");
         resetSelectionButton.setToolTipText("Undo a change.");
-        resetSelectionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetSelectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetSelectionButtonActionPerformed(evt);
             }
         });
@@ -2000,10 +1855,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gradeAllMeasuresButton.setMaximumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setMinimumSize(new java.awt.Dimension(117, 29));
         gradeAllMeasuresButton.setPreferredSize(new java.awt.Dimension(117, 29));
-        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeAllMeasuresButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeAllMeasuresButtonActionPerformed(evt);
             }
         });
@@ -2015,10 +1868,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         regenerateLickForSoloButton.setText("Generate Better Lick");
         regenerateLickForSoloButton.setToolTipText("Generate a lick that passes through the filter, with a grade that is high enough..");
-        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        regenerateLickForSoloButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenerateLickForSoloButtonActionPerformed(evt);
             }
         });
@@ -2030,10 +1881,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         gradeLickFromStaveButton.setText("Grade Selected Lick");
         gradeLickFromStaveButton.setToolTipText("Use the critic to grade the current two measure selection.");
-        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gradeLickFromStaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gradeLickFromStaveButtonActionPerformed(evt);
             }
         });
@@ -2060,10 +1909,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useCriticCheckBox.setMaximumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setMinimumSize(new java.awt.Dimension(110, 23));
         useCriticCheckBox.setPreferredSize(new java.awt.Dimension(110, 23));
-        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        useCriticCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 useCriticCheckBoxMouseClicked(evt);
             }
         });
@@ -2080,14 +1927,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         criticGradeTextField.setEnabled(false);
         criticGradeTextField.setMinimumSize(new java.awt.Dimension(60, 24));
         criticGradeTextField.setPreferredSize(new java.awt.Dimension(60, 24));
-        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter()
-        {
-            public void focusGained(java.awt.event.FocusEvent evt)
-            {
+        criticGradeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
                 criticGradeTextFieldFocusGained(evt);
             }
-            public void focusLost(java.awt.event.FocusEvent evt)
-            {
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
                 criticGradeTextFieldFocusLost(evt);
             }
         });
@@ -2133,10 +1978,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         loadRandomGrammarButton.setText("Load Random");
         loadRandomGrammarButton.setToolTipText("Loads the random grammar for lick generation.");
-        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadRandomGrammarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadRandomGrammarButtonActionPerformed(evt);
             }
         });
@@ -2319,10 +2162,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         windowSizeField.setMaximumSize(null);
         windowSizeField.setMinimumSize(new java.awt.Dimension(90, 30));
         windowSizeField.setPreferredSize(new java.awt.Dimension(90, 30));
-        windowSizeField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        windowSizeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 windowSizeFieldActionPerformed(evt);
             }
         });
@@ -2340,10 +2181,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         windowSlideField.setMaximumSize(null);
         windowSlideField.setMinimumSize(new java.awt.Dimension(90, 30));
         windowSlideField.setPreferredSize(new java.awt.Dimension(90, 30));
-        windowSlideField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        windowSlideField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 windowSlideFieldActionPerformed(evt);
             }
         });
@@ -2362,10 +2201,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useRelativeWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useRelativeWindowsCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useRelativeWindowsCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useRelativeWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useRelativeWindowsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useRelativeWindowsCheckboxActionPerformed(evt);
             }
         });
@@ -2384,10 +2221,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useBricksCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
         useBricksCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
-        useBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2436,10 +2271,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         MarkovLengthField.setMaximumSize(new java.awt.Dimension(9999, 9999));
         MarkovLengthField.setMinimumSize(new java.awt.Dimension(100, 30));
         MarkovLengthField.setPreferredSize(new java.awt.Dimension(60, 30));
-        MarkovLengthField.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        MarkovLengthField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MarkovLengthFieldActionPerformed(evt);
             }
         });
@@ -2472,10 +2305,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useWindowsCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useWindowsCheckbox.setMinimumSize(new java.awt.Dimension(150, 30));
         useWindowsCheckbox.setPreferredSize(new java.awt.Dimension(150, 30));
-        useWindowsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useWindowsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useWindowsCheckboxActionPerformed(evt);
             }
         });
@@ -2495,10 +2326,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useRelativeBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useRelativeBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useRelativeBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useRelativeBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useRelativeBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useRelativeBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2517,10 +2346,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useAbstractBricksCheckbox.setMaximumSize(new java.awt.Dimension(9999, 9999));
         useAbstractBricksCheckbox.setMinimumSize(new java.awt.Dimension(350, 30));
         useAbstractBricksCheckbox.setPreferredSize(new java.awt.Dimension(400, 30));
-        useAbstractBricksCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useAbstractBricksCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useAbstractBricksCheckboxActionPerformed(evt);
             }
         });
@@ -2550,10 +2377,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         userRhythmCheckBox.setText("Use Saved Melodies");
         userRhythmCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         userRhythmCheckBox.setPreferredSize(new java.awt.Dimension(400, 30));
-        userRhythmCheckBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        userRhythmCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userRhythmCheckBoxActionPerformed(evt);
             }
         });
@@ -2567,10 +2392,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         rhythmClusterCheckbox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         rhythmClusterCheckbox.setText("Generate Rhythm Cluster");
         rhythmClusterCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        rhythmClusterCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rhythmClusterCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rhythmClusterCheckboxActionPerformed(evt);
             }
         });
@@ -2588,10 +2411,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useMotifsCheckbox.setSelected(true);
         useMotifsCheckbox.setText("Use Motifs");
         useMotifsCheckbox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        useMotifsCheckbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useMotifsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useMotifsCheckboxActionPerformed(evt);
             }
         });
@@ -2606,20 +2427,16 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         motifnessSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         motifnessSlider.setMinimumSize(new java.awt.Dimension(100, 48));
-        motifnessSlider.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        motifnessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 motifnessSliderStateChanged(evt);
             }
         });
-        motifnessSlider.addInputMethodListener(new java.awt.event.InputMethodListener()
-        {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt)
-            {
+        motifnessSlider.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt)
-            {
+
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 motifnessSliderCaretPositionChanged(evt);
             }
         });
@@ -2653,10 +2470,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         saveGrammarAsButton.setMaximumSize(new java.awt.Dimension(9999, 9999));
         saveGrammarAsButton.setOpaque(true);
         saveGrammarAsButton.setPreferredSize(new java.awt.Dimension(173, 60));
-        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveGrammarAsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveGrammarAsButtonActionPerformed(evt);
             }
         });
@@ -2680,10 +2495,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         openCorpusBtn.setMinimumSize(new java.awt.Dimension(240, 120));
         openCorpusBtn.setOpaque(true);
         openCorpusBtn.setPreferredSize(new java.awt.Dimension(240, 120));
-        openCorpusBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openCorpusBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openCorpusBtnActionPerformed(evt);
             }
         });
@@ -2705,10 +2518,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         toGrammarBtn.setMinimumSize(new java.awt.Dimension(240, 100));
         toGrammarBtn.setOpaque(true);
         toGrammarBtn.setPreferredSize(new java.awt.Dimension(240, 100));
-        toGrammarBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        toGrammarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toGrammarBtnActionPerformed(evt);
             }
         });
@@ -2732,10 +2543,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         testGeneration.setMinimumSize(new java.awt.Dimension(240, 50));
         testGeneration.setOpaque(true);
         testGeneration.setPreferredSize(new java.awt.Dimension(240, 50));
-        testGeneration.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        testGeneration.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testGenerationActionPerformed(evt);
             }
         });
@@ -2789,49 +2598,43 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         layerInfoScrollPane.setMinimumSize(new java.awt.Dimension(469, 402));
 
         layerDataTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
-                { new Integer(1),  new Integer(64), "Logsig"},
-                { new Integer(2),  new Integer(1), "Logsig"}
-            },
-            new String []
-            {
-                "Layer Index", "Layer Size", "Layer Type"
-            }
-        )
-        {
-            Class[] types = new Class []
-            {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean []
-            {
-                false, true, true
-            };
+                new Object[][]
+                        {
+                                {new Integer(1), new Integer(64), "Logsig"},
+                                {new Integer(2), new Integer(1), "Logsig"}
+                        },
+                new String[]
+                        {
+                                "Layer Index", "Layer Size", "Layer Type"
+                        }
+        ) {
+            Class[] types = new Class[]
+                    {
+                            java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class
+                    };
+            boolean[] canEdit = new boolean[]
+                    {
+                            false, true, true
+                    };
 
-            public Class getColumnClass(int columnIndex)
-            {
-                return types [columnIndex];
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
             }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex)
-            {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
                 if (columnIndex == 1
-                    && rowIndex == layerDataTable.getRowCount() - 1)
-                {
+                        && rowIndex == layerDataTable.getRowCount() - 1) {
                     return false;
                 }
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         layerDataTable.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         layerDataTable.setMinimumSize(new java.awt.Dimension(150, 900));
         layerDataTable.setPreferredSize(new java.awt.Dimension(150, 900));
         layerDataTable.getTableHeader().setReorderingAllowed(false);
-        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        layerDataTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 layerDataTableMouseClicked(evt);
             }
         });
@@ -2876,10 +2679,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         generateWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         generateWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         generateWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2894,10 +2695,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         getNetworkStatsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         getNetworkStatsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        getNetworkStatsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 getNetworkStatsButtonActionPerformed(evt);
             }
         });
@@ -2912,10 +2711,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         clearWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         clearWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2930,10 +2727,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         loadWeightFileButton.setMaximumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setMinimumSize(new java.awt.Dimension(300, 29));
         loadWeightFileButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadWeightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadWeightFileButtonActionPerformed(evt);
             }
         });
@@ -2948,10 +2743,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         resetNnetInstructionsButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNnetInstructionsButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetNnetInstructionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetNnetInstructionsButtonActionPerformed(evt);
             }
         });
@@ -2966,10 +2759,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         resetDefaultValuesButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetDefaultValuesButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetDefaultValuesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDefaultValuesButtonActionPerformed(evt);
             }
         });
@@ -2984,10 +2775,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         resetNetworkButton.setMaximumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setMinimumSize(new java.awt.Dimension(300, 29));
         resetNetworkButton.setPreferredSize(new java.awt.Dimension(300, 29));
-        resetNetworkButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        resetNetworkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetNetworkButtonActionPerformed(evt);
             }
         });
@@ -3012,10 +2801,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         trainingFileButton.setText("Training File");
         trainingFileButton.setToolTipText("Select the training file for the network.");
-        trainingFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        trainingFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trainingFileButtonActionPerformed(evt);
             }
         });
@@ -3115,7 +2902,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         gridBagConstraints.insets = new java.awt.Insets(5, 3, 5, 0);
         nnetParametersPanel.add(modeLabel, gridBagConstraints);
 
-        modeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "On-Line", "Batch", "RProp" }));
+        modeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"On-Line", "Batch", "RProp"}));
         modeComboBox.setSelectedIndex(2);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -3163,10 +2950,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         addLayerToTableButton.setText("Add Layer");
         addLayerToTableButton.setToolTipText("Add a layer to the end of the network. If a layer is selected, add it below that one.");
-        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addLayerToTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addLayerToTableButtonActionPerformed(evt);
             }
         });
@@ -3181,10 +2966,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         removeLayerFromTableButton.setText("Remove Layer");
         removeLayerFromTableButton.setToolTipText("Delete the selected layer.");
-        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeLayerFromTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeLayerFromTableButtonActionPerformed(evt);
             }
         });
@@ -3201,10 +2984,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         moveLayerUpTableButton.setMaximumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setMinimumSize(new java.awt.Dimension(100, 29));
         moveLayerUpTableButton.setPreferredSize(new java.awt.Dimension(100, 29));
-        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        moveLayerUpTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moveLayerUpTableButtonActionPerformed(evt);
             }
         });
@@ -3222,10 +3003,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         moveLayerDownTableButton.setMaximumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setMinimumSize(new java.awt.Dimension(120, 29));
         moveLayerDownTableButton.setPreferredSize(new java.awt.Dimension(120, 29));
-        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        moveLayerDownTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moveLayerDownTableButtonActionPerformed(evt);
             }
         });
@@ -3239,10 +3018,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         weightFileButton.setText("Weight File");
         weightFileButton.setToolTipText("Name automatically set from Training File. If you are only loading weights into the critic, use this.");
-        weightFileButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        weightFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 weightFileButtonActionPerformed(evt);
             }
         });
@@ -3279,30 +3056,24 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         grammarMenu1.setText("Grammar Options");
         grammarMenu1.setToolTipText("Edit or change the current grammar file.");
-        grammarMenu1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grammarMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grammarMenu1ActionPerformed(evt);
             }
         });
 
         openGrammarMI1.setText("Load Grammar");
         openGrammarMI1.setToolTipText("Selects which grammar file to used.");
-        openGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openGrammarMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(openGrammarMI1);
 
         showLogMI1.setText("Show Log");
-        showLogMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showLogMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showLogMI1ActionPerformed(evt);
             }
         });
@@ -3310,10 +3081,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         saveGrammarMI1.setText("Save Grammar As ...");
         saveGrammarMI1.setToolTipText("Saves the grammar file under a specified name.");
-        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3321,10 +3090,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         editGrammarMI1.setText("Edit Grammar");
         editGrammarMI1.setToolTipText("Edit the current grammar using a text editor.");
-        editGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3332,10 +3099,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         reloadGrammarMI1.setText("Reload Grammar");
         reloadGrammarMI1.setToolTipText("Reloads the grammar file.");
-        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reloadGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reloadGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3343,20 +3108,16 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         toCriticMI1.setText("Send Licks to Critic");
         toCriticMI1.setToolTipText("Copies licks in a special format for learning by critic (a separate tool).");
-        toCriticMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        toCriticMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toCriticMI1ActionPerformed(evt);
             }
         });
         grammarMenu1.add(toCriticMI1);
 
         showCriticMI1.setText("Show Critic Exporter");
-        showCriticMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        showCriticMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showCriticMI1ActionPerformed(evt);
             }
         });
@@ -3365,10 +3126,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         useGrammarMI1.setSelected(true);
         useGrammarMI1.setText("Use Grammar");
         useGrammarMI1.setToolTipText("Indicates whether or not a grammar should be used in lick generation. Without this, generation will be governed only by probabilities set in the fields below.");
-        useGrammarMI1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useGrammarMI1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useGrammarMI1ActionPerformed(evt);
             }
         });
@@ -3377,27 +3136,23 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         generatorMenuBar1.add(grammarMenu1);
 
         generatorWindowMenu1.setLabel("Window");
-        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
+
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
+
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
         closeWindowMI2.setMnemonic('C');
         closeWindowMI2.setText("Close Window");
         closeWindowMI2.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMI2ActionPerformed(evt);
             }
         });
@@ -3405,10 +3160,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         cascadeMI2.setMnemonic('A');
         cascadeMI2.setText("Cascade Windows");
-        cascadeMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMI2ActionPerformed(evt);
             }
         });
@@ -3465,7 +3218,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
      * chord progression we're examining.
      */
     public void redrawTriage() {
-        
+
         chordProbPanel.removeAll();
 
         GridBagLayout gbl = new GridBagLayout();
@@ -3557,7 +3310,6 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 panel.add(label, labelConstraints);
 
 
-
                 // Create a new array of text boxes and note labels
 
                 JTextField[] prefs = new JTextField[12];
@@ -3589,7 +3341,6 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     lbc.weightx = 1.0;
 
 
-
                     JLabel l = new JLabel(notes[j], JLabel.CENTER);
 
                     panel.add(l, lbc);
@@ -3609,7 +3360,6 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     }
 
                     prefs[j].setCaretPosition(0);
-
 
 
                     // Add event listeners to watch this field's input; we
@@ -3697,12 +3447,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         abstractMelodyField.setCaretPosition(0);
         abstractMelodyScrollPane.getViewport().setViewPosition(new Point(0, 0));
     }
-    
+
     public void setRelativeFieldText(String string) {
         relativeField.setText(string);
         relativeField.setCaretPosition(0);
         relativeScrollPane.getViewport().setViewPosition(new Point(0, 0));
-    }  
+    }
 
     /**
      * Interface to fillMelody in LickGen
@@ -3710,13 +3460,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
      * @param rhythmString
      * @param chordProg
      * @param start
-     * @return 
+     * @return
      */
     public MelodyPart fillMelody(int beatValue,
                                  Polylist rhythmString,
                                  ChordPart chordProg,
-                                 int start) 
-      {
+                                 int start) {
         MelodyPart result = lickgen.fillMelody(minPitch,
                 maxPitch,
                 minInterval,
@@ -3739,11 +3488,11 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         notate.stopPlaying();
     }
 
-    private void verifyAndSaveTriageFields()
-    {
+    private void verifyAndSaveTriageFields() {
         verifyTriageFields();
         notate.saveGrammar();  // Save when field changed!
     }
+
     /**
      * Make sure the user has entered acceptable values for each of the other
      * fields in the triage frame.
@@ -3790,12 +3539,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         chordToneDecayRate = Notate.doubleFromTextField(chordToneDecayField, 0.0,
                 Double.POSITIVE_INFINITY,
                 chordToneDecayRate);
-        
+
         saveTriageParameters();
-        
+
         totalBeats = Notate.doubleFromTextField(totalBeatsField, 0.0,
                 Double.POSITIVE_INFINITY, 0.0);
-   
+
         totalBeats = Math.round(totalBeats);
 
         totalSlots = (int) (BEAT * totalBeats);
@@ -3886,14 +3635,15 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 scaleComboBox.setSelectedIndex(scaleIndex);
 
                 lickgen.setPreferredScale(lickgen.getParameter(LickGen.SCALE_ROOT),
-                                          lickgen.getParameter(LickGen.SCALE_TYPE));
+                        lickgen.getParameter(LickGen.SCALE_TYPE));
             }
         } catch (Exception e) {
         }
     }
- /**@TODO figure out how to make the notes stop merging*/
 
-    public void uncheckAvoidNotes(){
+    /**@TODO figure out how to make the notes stop merging*/
+
+    public void uncheckAvoidNotes() {
 //        System.out.println("avoid repeats before update: "+avoidRepeats);
 //        avoidRepeatsCheckbox.setSelected(false);
 //        saveTriageParameters();
@@ -3973,52 +3723,52 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
             generateLickButtonActionPerformed(null);
         }
     }
-    
-    private void editGrammar()
-    {
+
+    private void editGrammar() {
         notate.editGrammar();
     }
-    
-                        private void openGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openGrammarMI1ActionPerformed
-                            notate.openGrammar();
-                        }//GEN-LAST:event_openGrammarMI1ActionPerformed
 
-                        private void showLogMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogMI1ActionPerformed
-                            openLog();
-                        }//GEN-LAST:event_showLogMI1ActionPerformed
+    private void openGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openGrammarMI1ActionPerformed
+        notate.openGrammar();
+    }//GEN-LAST:event_openGrammarMI1ActionPerformed
 
-                        private void saveGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGrammarMI1ActionPerformed
-                            notate.saveGrammarAs();
-                        }//GEN-LAST:event_saveGrammarMI1ActionPerformed
+    private void showLogMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLogMI1ActionPerformed
+        openLog();
+    }//GEN-LAST:event_showLogMI1ActionPerformed
 
-                        private void editGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGrammarMI1ActionPerformed
-                            editGrammar();
-                        }//GEN-LAST:event_editGrammarMI1ActionPerformed
+    private void saveGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGrammarMI1ActionPerformed
+        notate.saveGrammarAs();
+    }//GEN-LAST:event_saveGrammarMI1ActionPerformed
 
-                        private void reloadGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadGrammarMI1ActionPerformed
-                            notate.loadGrammar();
-                            updateUseSoloist();
-                        }//GEN-LAST:event_reloadGrammarMI1ActionPerformed
+    private void editGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGrammarMI1ActionPerformed
+        editGrammar();
+    }//GEN-LAST:event_editGrammarMI1ActionPerformed
 
-                        private void toCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMI1ActionPerformed
-                            notate.toCritic();
-                        }//GEN-LAST:event_toCriticMI1ActionPerformed
+    private void reloadGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadGrammarMI1ActionPerformed
+        notate.loadGrammar();
+        updateUseSoloist();
+    }//GEN-LAST:event_reloadGrammarMI1ActionPerformed
 
-                        private void showCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMI1ActionPerformed
-                            notate.showCritic();
-                        }//GEN-LAST:event_showCriticMI1ActionPerformed
+    private void toCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toCriticMI1ActionPerformed
+        notate.toCritic();
+    }//GEN-LAST:event_toCriticMI1ActionPerformed
 
-                        private void useGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useGrammarMI1ActionPerformed
-                            useGrammarAction();
-                        }//GEN-LAST:event_useGrammarMI1ActionPerformed
+    private void showCriticMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCriticMI1ActionPerformed
+        notate.showCritic();
+    }//GEN-LAST:event_showCriticMI1ActionPerformed
 
-                        private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed
-                            // TODO add your handling code here:
-                        }//GEN-LAST:event_grammarMenu1ActionPerformed
+    private void useGrammarMI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useGrammarMI1ActionPerformed
+        useGrammarAction();
+    }//GEN-LAST:event_useGrammarMI1ActionPerformed
 
-                        private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindowMI2ActionPerformed
+    private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grammarMenu1ActionPerformed
+
+    private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMI2ActionPerformed
+
     public void closeWindow() {
         this.setVisible(false);
 
@@ -4051,32 +3801,32 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         return useGrammar;
     }
 
-                        private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
-                            WindowRegistry.cascadeWindows(this);
-                        }//GEN-LAST:event_cascadeMI2ActionPerformed
+    private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMI2ActionPerformed
 
-                        private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
+    private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
 
-                            generatorWindowMenu1.removeAll();
+        generatorWindowMenu1.removeAll();
 
-                            generatorWindowMenu1.add(closeWindowMI2);
+        generatorWindowMenu1.add(closeWindowMI2);
 
-                            generatorWindowMenu1.add(cascadeMI2);
+        generatorWindowMenu1.add(cascadeMI2);
 
-                            generatorWindowMenu1.add(windowMenuSeparator2);
+        generatorWindowMenu1.add(windowMenuSeparator2);
 
-                            for (WindowMenuItem w : WindowRegistry.getWindows()) {
+        for (WindowMenuItem w : WindowRegistry.getWindows()) {
 
-                                generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-                            }
+            generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
 
-                            generatorWindowMenu1.repaint();
+        generatorWindowMenu1.repaint();
 
-                        }//GEN-LAST:event_generatorWindowMenu1MenuSelected
+    }//GEN-LAST:event_generatorWindowMenu1MenuSelected
 
-                        private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindow
+    private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
+        closeWindow();
+    }//GEN-LAST:event_closeWindow
 
     private void weightFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_weightFileButtonActionPerformed
     {//GEN-HEADEREND:event_weightFileButtonActionPerformed
@@ -4085,8 +3835,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
-        {
+        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION) {
             return;
         }
 
@@ -4098,26 +3847,24 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-HEADEREND:event_moveLayerDownTableButtonActionPerformed
         int row = layerDataTable.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
-        if (row != layerDataTable.getRowCount() - 1 && row != - 1
-            && row != layerDataTable.getRowCount() - 2)
-            {
-                model.moveRow(row, row, row + 1);
+        if (row != layerDataTable.getRowCount() - 1 && row != -1
+                && row != layerDataTable.getRowCount() - 2) {
+            model.moveRow(row, row, row + 1);
 
-                // Update index values
-                resetIndexColumn(model);
+            // Update index values
+            resetIndexColumn(model);
 
-                model.fireTableDataChanged();
+            model.fireTableDataChanged();
 
-                layerDataTable.getSelectionModel().setSelectionInterval(row + 1, row + 1);
-            }
+            layerDataTable.getSelectionModel().setSelectionInterval(row + 1, row + 1);
+        }
     }//GEN-LAST:event_moveLayerDownTableButtonActionPerformed
 
     private void moveLayerUpTableButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_moveLayerUpTableButtonActionPerformed
     {//GEN-HEADEREND:event_moveLayerUpTableButtonActionPerformed
         int row = layerDataTable.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
-        if (row != 0 && row != - 1 && row != layerDataTable.getRowCount() - 1)
-        {
+        if (row != 0 && row != -1 && row != layerDataTable.getRowCount() - 1) {
             model.moveRow(row, row, row - 1);
 
             // Update index values
@@ -4131,31 +3878,25 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void removeLayerFromTableButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_removeLayerFromTableButtonActionPerformed
     {//GEN-HEADEREND:event_removeLayerFromTableButtonActionPerformed
-        if (layerDataTable.getRowCount() <= 2)
-        {
+        if (layerDataTable.getRowCount() <= 2) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Must have at least two layers for network."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        } else
-        {
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Must have at least two layers for network."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
             int[] indices = layerDataTable.getSelectedRows();
             int lastIndex = layerDataTable.getRowCount() - 1;
-            if (indices.length > layerDataTable.getRowCount() - 2)
-            {
+            if (indices.length > layerDataTable.getRowCount() - 2) {
                 JOptionPane.showMessageDialog(null,
-                    new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Selected too many layers for deletion,<br/>"
-                        + "must have at least two layers for network."),
-                    "Alert", JOptionPane.PLAIN_MESSAGE);
-            } else if (indices.length != 0)
-            {
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                                + "Selected too many layers for deletion,<br/>"
+                                + "must have at least two layers for network."),
+                        "Alert", JOptionPane.PLAIN_MESSAGE);
+            } else if (indices.length != 0) {
                 DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
-                for (int i = indices.length - 1; i >= 0; i--)
-                {
+                for (int i = indices.length - 1; i >= 0; i--) {
                     int index = indices[i];
-                    if (index != lastIndex)
-                    {
+                    if (index != lastIndex) {
                         model.removeRow(index);
                     }
                     model.fireTableRowsDeleted(index, index);
@@ -4184,8 +3925,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         numberOfLayersTextField.setText(String.valueOf(layerDataTable.getRowCount()));
 
         // Move row up to insert it below currently selected.
-        if (index != -1 && index != layerDataTable.getRowCount() - 2)
-        {
+        if (index != -1 && index != layerDataTable.getRowCount() - 2) {
             model.moveRow(nextIndex - 1, nextIndex - 1, index + 1);
 
             // Update index values
@@ -4204,8 +3944,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         openDialog.setFileFilter(filter);
         openDialog.setDialogType(JFileChooser.OPEN_DIALOG);
 
-        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION)
-        {
+        if (openDialog.showDialog(this, "Open") != JFileChooser.APPROVE_OPTION) {
             return;
         }
 
@@ -4213,8 +3952,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         trainingFileTextField.setText(file.getAbsolutePath());
         String fileName = file.getName();
         int pos = fileName.lastIndexOf(".training.data");
-        if (pos > 0)
-        {
+        if (pos > 0) {
             fileName = fileName.substring(0, pos);
         }
         weightFileTextField.setText(fileName + ".weights.save");
@@ -4250,89 +3988,83 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         nnetOutputTextField.setCaretPosition(0);
         nnetScrollPane.getVerticalScrollBar().setValue(0);
         nnetOutputTextField.setText("To generate a weight file:\n"
-            + "-Select training file (File name will end with \".training.data\")\n"
-            + "-Weight file name with automatically be set\n"
-            + "--Weight file will save to personal settings folder, in vocab\n"
-            + "-Change the epoch limit if desired\n"
-            + "-Change the default learning rate if desired\n"
-            + "-Change the default MSE goal if desired\n"
-            + "-Change the default mode if desired\n"
-            + "-In the table to the right:\n"
-            + "--Set the layer size for each layer\n"
-            + "---Input (first) layer size determinted at runtime from input size\n"
-            + "---The last layer, for output, should be of size 1\n"
-            + "--Set the function for each layer\n"
-            + "--Reorder rows as desired. Empty rows will be ignored.\n"
-            + "-Press \"Generate Weight File\"\n\nTo load network:\n"
-            + "-Select the weight file, from the vocab folder, under \"Weight File\"\n"
-            + "-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\n"
-            + "To clear a weight file:\n-Select the weight file, from the vocab folder, "
-            + "under \"Weight File\"\n-Press \"Clear Weight File\""
-            + "\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n"
-            + "   for general use. The licks used to create it were subjectively graded,\n"
-            + "   and therefore may not reflect the preferences of the user.");
+                + "-Select training file (File name will end with \".training.data\")\n"
+                + "-Weight file name with automatically be set\n"
+                + "--Weight file will save to personal settings folder, in vocab\n"
+                + "-Change the epoch limit if desired\n"
+                + "-Change the default learning rate if desired\n"
+                + "-Change the default MSE goal if desired\n"
+                + "-Change the default mode if desired\n"
+                + "-In the table to the right:\n"
+                + "--Set the layer size for each layer\n"
+                + "---Input (first) layer size determinted at runtime from input size\n"
+                + "---The last layer, for output, should be of size 1\n"
+                + "--Set the function for each layer\n"
+                + "--Reorder rows as desired. Empty rows will be ignored.\n"
+                + "-Press \"Generate Weight File\"\n\nTo load network:\n"
+                + "-Select the weight file, from the vocab folder, under \"Weight File\"\n"
+                + "-Press \"Load Weight\"\n-Network will be initialized per leadsheet\n\n"
+                + "To clear a weight file:\n-Select the weight file, from the vocab folder, "
+                + "under \"Weight File\"\n-Press \"Clear Weight File\""
+                + "\n\n***There is a sample weight file in impro-visor-version-X.xx-files/vocab\n"
+                + "   for general use. The licks used to create it were subjectively graded,\n"
+                + "   and therefore may not reflect the preferences of the user.");
     }//GEN-LAST:event_resetNnetInstructionsButtonActionPerformed
 
     private void loadWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_loadWeightFileButtonActionPerformed
     {//GEN-HEADEREND:event_loadWeightFileButtonActionPerformed
         // Attempt to initialize the network if it hasn't been initialize
-        if (critic.getNetwork() == null)
-        {
-            try
-            {
+        if (critic.getNetwork() == null) {
+            try {
                 String filePath = weightFileTextField.getText();
-                if(filePath.equals("")){
+                if (filePath.equals("")) {
                     JOptionPane.showMessageDialog(null,
-                    new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Missing the weight file, <br/>"
-                        + "need to train the network offline first<br/>"
-                        + "and generate a weight file.<br/>"
-                        + "Then enter the name of the file <br/>"
-                        + "in the \"Weight File\" text field."),
-                    "Alert", JOptionPane.PLAIN_MESSAGE);
-                }else{
+                            new JLabel("<html><div style=\"text-align: center;\">"
+                                    + "Missing the weight file, <br/>"
+                                    + "need to train the network offline first<br/>"
+                                    + "and generate a weight file.<br/>"
+                                    + "Then enter the name of the file <br/>"
+                                    + "in the \"Weight File\" text field."),
+                            "Alert", JOptionPane.PLAIN_MESSAGE);
+                } else {
                     StringBuilder weightOutput =
-                    critic.prepareNetwork(filePath);
+                            critic.prepareNetwork(filePath);
 
                     nnetOutputTextField.setText(weightOutput.toString());
                     nnetOutputTextField.setCaretPosition(0);
                     nnetScrollPane.getVerticalScrollBar().setValue(0);
                 }
-            } catch (IllegalArgumentException e)
-            {
+            } catch (IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(null,
-                    new JLabel("<html><div style=\"text-align: center;\">"
-                        + "File in the \"Weight File\" text field is invalid.<br/>"
-                        + "Make sure the file you selected is a <br/>"
-                        + ".weights.save file generated by Impro-Visor."),
-                    "Alert", JOptionPane.PLAIN_MESSAGE);
-            } catch (IOException e){
+                        new JLabel("<html><div style=\"text-align: center;\">"
+                                + "File in the \"Weight File\" text field is invalid.<br/>"
+                                + "Make sure the file you selected is a <br/>"
+                                + ".weights.save file generated by Impro-Visor."),
+                        "Alert", JOptionPane.PLAIN_MESSAGE);
+            } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,
-                    new JLabel(e.getMessage()), "Alert", JOptionPane.PLAIN_MESSAGE);
+                        new JLabel(e.getMessage()), "Alert", JOptionPane.PLAIN_MESSAGE);
             }
         }
 
-        if (critic.getNetwork() != null && soloCorrectionPanel.isVisible())
-        {
+        if (critic.getNetwork() != null && soloCorrectionPanel.isVisible()) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Network already initialized.<br/>"
-                    + "Reset the network to load a new weight file."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Network already initialized.<br/>"
+                            + "Reset the network to load a new weight file."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
 
         // If the network has been initialized, allow for critic use
-        if (critic.getNetwork() != null)
-        {
+        if (critic.getNetwork() != null) {
             soloCorrectionPanel.setVisible(true);
         }
     }//GEN-LAST:event_loadWeightFileButtonActionPerformed
 
     private void clearWeightFileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearWeightFileButtonActionPerformed
     {//GEN-HEADEREND:event_clearWeightFileButtonActionPerformed
-        if (!weightFileTextField.getText().isEmpty())
-        {
-            
+        if (!weightFileTextField.getText().isEmpty()) {
+
             String text = weightFileTextField.getText();
             if (text.endsWith(".weights.save")) {
                 File file = new File(text);
@@ -4347,21 +4079,19 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                                 + "that is not a weight file."),
                         "Alert", JOptionPane.PLAIN_MESSAGE);
             }
-            
+
         }
     }//GEN-LAST:event_clearWeightFileButtonActionPerformed
 
     private void getNetworkStatsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_getNetworkStatsButtonActionPerformed
     {//GEN-HEADEREND:event_getNetworkStatsButtonActionPerformed
-        if (critic.getNetwork() == null)
-        {
+        if (critic.getNetwork() == null) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Network not initialized,<br/>"
-                    + "need to load the weights file."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        } else
-        {
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Network not initialized,<br/>"
+                            + "need to load the weights file."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
             StringBuilder statOutput = critic.getNetwork().getStatistics();
             nnetOutputTextField.setCaretPosition(0);
             nnetScrollPane.getVerticalScrollBar().setValue(0);
@@ -4376,10 +4106,8 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         ArrayList<Object[]> data = new ArrayList<Object[]>();
         boolean incompleteRows = false;
 
-        for (int i = 0; i < numRows; i++)
-        {
-            try
-            {
+        for (int i = 0; i < numRows; i++) {
+            try {
                 int size = (Integer) layerDataTable.getValueAt(i, 1);
                 String type = (String) layerDataTable.getValueAt(i, 2);
                 Object[] items = new Object[2];
@@ -4387,74 +4115,61 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 items[1] = type;
                 data.add(items);
                 count++;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 incompleteRows = true;
             }
         }
 
         boolean badTextField = false;
-        try
-        {
+        try {
             int i = Integer.parseInt(epochLimitTextField.getText());
             double j = Double.parseDouble(learningRateTextField.getText());
             double k = Double.parseDouble(mseGoalTextField.getText());
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             badTextField = true;
         }
 
         if (trainingFileTextField.getText().isEmpty()
-            || epochLimitTextField.getText().isEmpty()
-            || learningRateTextField.getText().isEmpty()
-            || mseGoalTextField.getText().isEmpty()
-            || weightFileTextField.getText().isEmpty()
-            || data.size() < 2
-            || incompleteRows
-            || badTextField)
-            {
-                StringBuilder output = new StringBuilder();
-                if (trainingFileTextField.getText().isEmpty())
-                {
-                    output.append("    ").append("Training File").append("<br/>");
-                }
-                if (epochLimitTextField.getText().isEmpty())
-                {
-                    output.append("    ").append("Epoch Limit").append("<br/>");
-                }
-                if (learningRateTextField.getText().isEmpty())
-                {
-                    output.append("    ").append("Learning Rate").append("<br/>");
-                }
-                if (mseGoalTextField.getText().isEmpty())
-                {
-                    output.append("    ").append("MSE Goal").append("<br/>");
-                }
-                if (weightFileTextField.getText().isEmpty())
-                {
-                    output.append("    ").append("Weight File").append("<br/>");
-                }
-                if (data.size() < 2)
-                {
-                    output.append("    ").append("Too Few Layers").append("<br/>");
-                }
-                if (incompleteRows)
-                {
-                    output.append("    ").append("Incomplete layer, delete or complete").append("<br/>");
-                }
-                if (badTextField)
-                {
-                    output.append("    ").append("Incorrect value(s) for numeric field(s)").append("<br/>");
-                }
+                || epochLimitTextField.getText().isEmpty()
+                || learningRateTextField.getText().isEmpty()
+                || mseGoalTextField.getText().isEmpty()
+                || weightFileTextField.getText().isEmpty()
+                || data.size() < 2
+                || incompleteRows
+                || badTextField) {
+            StringBuilder output = new StringBuilder();
+            if (trainingFileTextField.getText().isEmpty()) {
+                output.append("    ").append("Training File").append("<br/>");
+            }
+            if (epochLimitTextField.getText().isEmpty()) {
+                output.append("    ").append("Epoch Limit").append("<br/>");
+            }
+            if (learningRateTextField.getText().isEmpty()) {
+                output.append("    ").append("Learning Rate").append("<br/>");
+            }
+            if (mseGoalTextField.getText().isEmpty()) {
+                output.append("    ").append("MSE Goal").append("<br/>");
+            }
+            if (weightFileTextField.getText().isEmpty()) {
+                output.append("    ").append("Weight File").append("<br/>");
+            }
+            if (data.size() < 2) {
+                output.append("    ").append("Too Few Layers").append("<br/>");
+            }
+            if (incompleteRows) {
+                output.append("    ").append("Incomplete layer, delete or complete").append("<br/>");
+            }
+            if (badTextField) {
+                output.append("    ").append("Incorrect value(s) for numeric field(s)").append("<br/>");
+            }
 
-                JOptionPane.showMessageDialog(null,
+            JOptionPane.showMessageDialog(null,
                     new JLabel("<html><div style=\"text-align: center;\">"
-                        + "Missing the following needed values:<br/>"
-                        + output.toString()),
+                            + "Missing the following needed values:<br/>"
+                            + output.toString()),
                     "Alert", JOptionPane.PLAIN_MESSAGE);
-            } else
-            {
-                critic.trainNetwork(trainingFileTextField.getText(),
+        } else {
+            critic.trainNetwork(trainingFileTextField.getText(),
                     epochLimitTextField.getText(),
                     learningRateTextField.getText(),
                     mseGoalTextField.getText(),
@@ -4462,7 +4177,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     weightFileTextField.getText(),
                     count,
                     data);
-            }
+        }
     }//GEN-LAST:event_generateWeightFileButtonActionPerformed
 
     private void layerDataTableMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_layerDataTableMouseClicked
@@ -4470,8 +4185,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         int row = layerDataTable.rowAtPoint(evt.getPoint());
         int column = layerDataTable.columnAtPoint(evt.getPoint());
 
-        if (row == -1 || column == -1)
-        {
+        if (row == -1 || column == -1) {
             ListSelectionModel model = layerDataTable.getSelectionModel();
             model.removeSelectionInterval(0, layerDataTable.getRowCount());
             model.removeSelectionInterval(0, layerDataTable.getColumnCount());
@@ -4486,15 +4200,15 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void toGrammarBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_toGrammarBtnActionPerformed
     {//GEN-HEADEREND:event_toGrammarBtnActionPerformed
         toGrammar();
-        
-        if(rhythmClusterCheckbox.isSelected()){
-              setRhythmClusterFilenameInPreferences(CreateGrammar.getClusterOutputFile(notate.getGrammarFileName()));
-         }
+
+        if (rhythmClusterCheckbox.isSelected()) {
+            setRhythmClusterFilenameInPreferences(CreateGrammar.getClusterOutputFile(notate.getGrammarFileName()));
+        }
     }//GEN-LAST:event_toGrammarBtnActionPerformed
 
     private void openCorpusBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openCorpusBtnActionPerformed
     {//GEN-HEADEREND:event_openCorpusBtnActionPerformed
-        if(rhythmClusterCheckbox.isSelected()){
+        if (rhythmClusterCheckbox.isSelected()) {
             windowSlideField.setText(windowSizeField.getText());
         }
         notate.openCorpus();
@@ -4503,7 +4217,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void saveGrammarAsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveGrammarAsButtonActionPerformed
     {//GEN-HEADEREND:event_saveGrammarAsButtonActionPerformed
-       initializeGrammarLearning();
+        initializeGrammarLearning();
     }//GEN-LAST:event_saveGrammarAsButtonActionPerformed
 
     private void useAbstractBricksCheckboxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_useAbstractBricksCheckboxActionPerformed
@@ -4539,7 +4253,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void windowSizeFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_windowSizeFieldActionPerformed
     {//GEN-HEADEREND:event_windowSizeFieldActionPerformed
         CreateGrammar.setMotifWindowSizeAndSlide(Integer.parseInt(windowSizeField.getText()));
-        if(rhythmClusterCheckbox.isSelected()){
+        if (rhythmClusterCheckbox.isSelected()) {
             windowSlideField.setText(windowSizeField.getText());
             windowParametersPanel.invalidate();
             windowParametersPanel.validate();
@@ -4557,32 +4271,25 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-HEADEREND:event_criticGradeTextFieldFocusLost
         // Set lower limit for criticGrade filter
         String gradeField = criticGradeTextField.getText();
-        if (!gradeField.equals(""))
-        {
-            try
-            {
+        if (!gradeField.equals("")) {
+            try {
                 int grade = Integer.parseInt(gradeField);
                 // Boundary cases for lick filter
-                if (grade < 1)
-                {
+                if (grade < 1) {
                     criticGradeThreshold = 1;
                     criticGradeTextField.setText(String.valueOf(criticGradeThreshold));
-                } else if (grade > 9)
-                {
+                } else if (grade > 9) {
                     criticGradeThreshold = 9;
                     criticGradeTextField.setText(String.valueOf(criticGradeThreshold));
-                } else
-                {
+                } else {
                     criticGradeThreshold = grade;
                 }
             } // Reset if the entry isn't an integer value
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 criticGradeTextField.setText("Grade");
             }
         } // Reset if empty entry
-        else
-        {
+        else {
             criticGradeThreshold = DEFAULT_GRADE;
             criticGradeTextField.setText("Grade");
         }
@@ -4599,8 +4306,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         criticGradeTextField.setEnabled(useCritic);
         counterForCriticTextField.setEnabled(useCritic);
         // Reset all text fields
-        if (!useCritic)
-        {
+        if (!useCritic) {
             gradeFromCritic = null;
             criticGradeTextField.setText("Grade");
             counterForCriticTextField.setText("Counter");
@@ -4612,14 +4318,14 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-HEADEREND:event_gradeLickFromStaveButtonActionPerformed
         int start = notate.getCurrentStave().getSelectionStart();
         int end = notate.getCurrentStave().getSelectionEnd();
-        
-        if(end - start <= BEAT * 7){
+
+        if (end - start <= BEAT * 7) {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Selection is too short, critic<br/>"
-                    + "needs to see at least 8 beats."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
-        }else{
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Selection is too short, critic<br/>"
+                            + "needs to see at least 8 beats."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
+        } else {
 
             ArrayList<Note> noteList = new ArrayList<Note>();
             ArrayList<Chord> chordList = new ArrayList<Chord>();
@@ -4629,12 +4335,10 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
             // Grade the lick, passing it through the critic filter
             gradeFromCritic = critic.gradeFromCritic(noteList, chordList);
-            if (gradeFromCritic != null)
-            {
+            if (gradeFromCritic != null) {
                 String formattedGrade = String.format("%.3f", gradeFromCritic);
                 lickFromStaveGradeTextField.setText(formattedGrade);
-            } else
-            {
+            } else {
                 lickFromStaveGradeTextField.setText("Error");
             }
         }
@@ -4643,8 +4347,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void regenerateLickForSoloButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_regenerateLickForSoloButtonActionPerformed
     {//GEN-HEADEREND:event_regenerateLickForSoloButtonActionPerformed
         gradeLickFromStaveButtonActionPerformed(null);
-        if (gradeFromCritic != null && gradeFromCritic < criticGradeThreshold)
-        {
+        if (gradeFromCritic != null && gradeFromCritic < criticGradeThreshold) {
             generateLickButtonActionPerformed(null);
         }
     }//GEN-LAST:event_regenerateLickForSoloButtonActionPerformed
@@ -4652,20 +4355,17 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void gradeAllMeasuresButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_gradeAllMeasuresButtonActionPerformed
     {//GEN-HEADEREND:event_gradeAllMeasuresButtonActionPerformed
         final int totalMeasures = notate.getCurrentStave().getNumMeasures();
-        if (totalMeasures % 2 == 1)
-        {
+        if (totalMeasures % 2 == 1) {
             offsetByMeasureGradeSoloButtonActionPerformed(null);
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Odd number of measures,<br/>"
-                    + "offsetting grading by one measure."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Odd number of measures,<br/>"
+                            + "offsetting grading by one measure."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
 
-        new Thread(new Runnable()
-        {
-            public void run()
-            {
+        new Thread(new Runnable() {
+            public void run() {
 
                 // Mute since putlick() will play what it places on the leadsheet
                 int volume = notate.getScore().getMasterVolume();
@@ -4680,8 +4380,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 int numSlotsSelected = notate.getCurrentStave().roundToMultiple(end - start, WHOLE);
 
                 // Iterate through all two measure selections
-                while (start < thisTotalSlots && end < thisTotalSlots)
-                {
+                while (start < thisTotalSlots && end < thisTotalSlots) {
                     ArrayList<Note> noteList = new ArrayList<Note>();
                     ArrayList<Chord> chordList = new ArrayList<Chord>();
 
@@ -4694,13 +4393,11 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     // Default grade guarentees generating a new lick if there
                     // if an error
                     double grade = 0;
-                    if (gradeFromFilter != null)
-                    {
+                    if (gradeFromFilter != null) {
                         grade = gradeFromFilter;
                     }
 
-                    if (grade < criticGradeThreshold)
-                    {
+                    if (grade < criticGradeThreshold) {
                         generateLickButtonActionPerformed(null);
                     }
 
@@ -4737,8 +4434,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         start -= numSlotsSelected;
         end -= numSlotsSelected;
 
-        if (start >= 0)
-        {
+        if (start >= 0) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4756,8 +4452,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         end += numSlotsSelected;
         int thisTotalSlots = notate.getCurrentStave().getNumMeasures() * WHOLE;
 
-        if (start < thisTotalSlots && end < thisTotalSlots)
-        {
+        if (start < thisTotalSlots && end < thisTotalSlots) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4773,8 +4468,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
         end += 8 * EIGHTH;
         int totalSlotsOffset = (notate.getCurrentStave().getNumMeasures() * WHOLE) - WHOLE;
 
-        if (start < totalSlotsOffset)
-        {
+        if (start < totalSlotsOffset) {
             notate.getCurrentStave().setSelection(start, end);
             notate.getCurrentStave().repaint();
         }
@@ -4784,18 +4478,16 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-HEADEREND:event_autoFillCheckBoxActionPerformed
         autoFill = autoFillCheckBox.isSelected();
 
-        if (autoFill)
-        {
+        if (autoFill) {
             redrawTriage();
         }
     }//GEN-LAST:event_autoFillCheckBoxActionPerformed
 
     private void FillProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_FillProbsButtonActionPerformed
     {//GEN-HEADEREND:event_FillProbsButtonActionPerformed
-        if( notate.getCurrentSelectionStart() == -1 )
-          {
+        if (notate.getCurrentSelectionStart() == -1) {
             return;
-          }
+        }
 
         ArrayList<double[]> probs = lickgen.fillProbs(
                 notate.getChordProg(),
@@ -4806,26 +4498,22 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 notate.getCurrentSelectionStart(),
                 notate.getTotalSlots());
 
-        for( int i = 0; i < Math.min(probs.size(), lickPrefs.size()); ++i )
-          {
+        for (int i = 0; i < Math.min(probs.size(), lickPrefs.size()); ++i) {
             double[] pArray = probs.get(i);
             JTextField[] tfArray = lickPrefs.get(i);
-            for( int j = 0; j < Math.max(pArray.length, tfArray.length); ++j )
-              {
+            for (int j = 0; j < Math.max(pArray.length, tfArray.length); ++j) {
                 String p = ((Double) pArray[j]).toString();
                 JTextField field = tfArray[j];
                 field.setText(p);   //.substring(0, Math.min(p.length(), 5)));
                 field.setCaretPosition(0);
-              }
-          }
+            }
+        }
     }//GEN-LAST:event_FillProbsButtonActionPerformed
 
     private void clearProbsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearProbsButtonActionPerformed
     {//GEN-HEADEREND:event_clearProbsButtonActionPerformed
-        for (int i = 0; i < lickPrefs.size(); ++i)
-        {
-            for (int j = 0; j < 12; ++j)
-            {
+        for (int i = 0; i < lickPrefs.size(); ++i) {
+            for (int j = 0; j < 12; ++j) {
                 lickPrefs.get(i)[j].setText("0");
             }
         }
@@ -4896,29 +4584,24 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         String type = (String) scaleComboBox.getSelectedItem();
 
-        if( root == null || type == null )
-          {
+        if (root == null || type == null) {
             return;
-          }
+        }
 
-        if( type.equals("None") || type.equals(FIRST_SCALE) )
-          {
+        if (type.equals("None") || type.equals(FIRST_SCALE)) {
             rootComboBox.setEnabled(false);
-          }
-        else
-          {
+        } else {
             rootComboBox.setEnabled(true);
-          }
+        }
 
         lickgen.setPreferredScale((String) rootComboBox.getSelectedItem(),
-                                  (String) scaleComboBox.getSelectedItem());
+                (String) scaleComboBox.getSelectedItem());
 
         redrawTriage();
 
-        if( autoFill )
-          {
+        if (autoFill) {
             FillProbsButtonActionPerformed(null);
-          }
+        }
     }//GEN-LAST:event_scaleComboBoxActionPerformed
 
     private void chordToneDecayFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_chordToneDecayFieldFocusLost
@@ -4964,13 +4647,10 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void styleRecognitionButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleRecognitionButtonActionPerformed
     {//GEN-HEADEREND:event_styleRecognitionButtonActionPerformed
         // First prepare critics for usage
-        if (styleRecognitionButton.getText().equals("Prepare Critics"))
-        {
+        if (styleRecognitionButton.getText().equals("Prepare Critics")) {
 
-            new Thread(new Runnable()
-            {
-                public void run()
-                {
+            new Thread(new Runnable() {
+                public void run() {
 
                     // Create list of critics for grading, paired with a musician's name
                     critics = new TreeMap<String, Critic>();
@@ -4978,14 +4658,11 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     // Iterate through every weight file
                     File folder = ImproVisor.getStyleRecognitionDirectory();
                     File[] files = folder.listFiles();
-                    if( files == null )
-                      {
+                    if (files == null) {
                         return;
-                      }
-                    Arrays.sort(files, new Comparator<File>()
-                    {
-                        public int compare(File f1, File f2)
-                        {
+                    }
+                    Arrays.sort(files, new Comparator<File>() {
+                        public int compare(File f1, File f2) {
                             return f1.getName().compareTo(f2.getName());
                         }
                     });
@@ -4993,24 +4670,19 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     setAbstractMelodyField("Preparing critics for grading...");
 
                     // Prepare all critics, and pair them with a file name
-                    for (File f : files)
-                    {
-                        if (f.getName().endsWith(".weights.save"))
-                        {
-                            try
-                            {
+                    for (File f : files) {
+                        if (f.getName().endsWith(".weights.save")) {
+                            try {
                                 Critic currCritic = new Critic();
                                 currCritic.prepareNetworkFromFile(f);
 
                                 String fileName = f.getName();
                                 int pos = fileName.lastIndexOf(".weights.save");
-                                if (pos > 0)
-                                {
+                                if (pos > 0) {
                                     fileName = fileName.substring(0, pos);
                                 }
                                 critics.put(fileName, currCritic);
-                            } catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 System.out.println("Problem with one file: " + f.getName());
                             }
                         }
@@ -5018,14 +4690,13 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
                     setAbstractMelodyField("");
 
-                    if (critics.size() != numCritics)
-                    {
+                    if (critics.size() != numCritics) {
                         JOptionPane.showMessageDialog(null,
-                            new JLabel("<html><div style=\"text-align: center;\">"
-                                + "This feature works best with the full set of critics.<br/>"
-                                + "You have " + critics.size() + " out of the total " + numCritics + " critics.<br/>"
-                                + "Please download the rest of the critics."),
-                            "Using Critics", JOptionPane.PLAIN_MESSAGE);
+                                new JLabel("<html><div style=\"text-align: center;\">"
+                                        + "This feature works best with the full set of critics.<br/>"
+                                        + "You have " + critics.size() + " out of the total " + numCritics + " critics.<br/>"
+                                        + "Please download the rest of the critics."),
+                                "Using Critics", JOptionPane.PLAIN_MESSAGE);
                     }
 
                     styleRecognitionButton.setText("Guess Musician");
@@ -5033,19 +4704,15 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                 } // End of Runnable
             }).start(); // End of Thread
         } // Do only if there is some selection
-        else if (notate.getCurrentStave().getSelectionLength() != 0)
-        {
+        else if (notate.getCurrentStave().getSelectionLength() != 0) {
 
-            new Thread(new Runnable()
-            {
-                public void run()
-                {
+            new Thread(new Runnable() {
+                public void run() {
 
                     TreeMap<String, Double> grades = new TreeMap<String, Double>();
 
                     // Use all critics to get all grades for each network
-                    for (String name : critics.keySet())
-                    {
+                    for (String name : critics.keySet()) {
                         Critic thisCritic = critics.get(name);
                         int start = notate.getCurrentStave().getSelectionStart();
                         int end = notate.getCurrentStave().getSelectionEnd();
@@ -5058,11 +4725,9 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
                         // Grade the lick, passing it through the critic filter
                         Double gradeFromFilter = thisCritic.gradeFromCritic(noteList, chordList);
-                        if (gradeFromFilter != null)
-                        {
+                        if (gradeFromFilter != null) {
                             grades.put(name, gradeFromFilter);
-                        } else
-                        {
+                        } else {
                             System.out.println("Error from grading.");
                         }
                     }
@@ -5073,14 +4738,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     // Guess on stylistic similarity based on highest grade
                     double highestGrade = 0.0;
                     String likelyName = "";
-                    for (String name : grades.keySet())
-                    {
+                    for (String name : grades.keySet()) {
                         double currGrade = grades.get(name);
 
                         criticsOutput.append(fixName(name)).append(": ").append(String.format("%.3f", currGrade)).append("\n\n");
 
-                        if (currGrade > highestGrade)
-                        {
+                        if (currGrade > highestGrade) {
                             highestGrade = currGrade;
                             likelyName = name;
                         }
@@ -5093,29 +4756,26 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
                     setNetworkOutputTextField(criticsOutput.toString());
 
                     Object[] options = {"Yes, to Neural Network tab",
-                        "Cancel"};
+                            "Cancel"};
                     String label = "<html><div style=\"text-align: center;\">"
-                    + "The musician whose style is most similar: <br/>"
-                    + cleanName + "<br/><br/>"
-                    + "Grade: " + cleanGrade + "<br/><br/>"
-                    + "Choose \"Yes\" if you want to see more output";
+                            + "The musician whose style is most similar: <br/>"
+                            + cleanName + "<br/><br/>"
+                            + "Grade: " + cleanGrade + "<br/><br/>"
+                            + "Choose \"Yes\" if you want to see more output";
                     int n = JOptionPane.showOptionDialog(null,
-                        label,
-                        "Style Recogntion",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[1]);
+                            label,
+                            "Style Recogntion",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[1]);
 
-                    if (n == 0)
-                    {
+                    if (n == 0) {
                         // Avoids using a specific index for setting the tab
                         int index = 0;
-                        for (int i = 0; i < generatorPane.getTabCount(); i++)
-                        {
-                            if (generatorPane.getTitleAt(i).contains("Network"))
-                            {
+                        for (int i = 0; i < generatorPane.getTabCount(); i++) {
+                            if (generatorPane.getTitleAt(i).contains("Network")) {
                                 index = i;
                             }
                         }
@@ -5124,31 +4784,26 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
                 } // End of Runnable
             }).start(); // End of Thread
-        } else
-        {
+        } else {
             JOptionPane.showMessageDialog(null,
-                new JLabel("<html><div style=\"text-align: center;\">"
-                    + "Choose a selection of measures before guessing."),
-                "Alert", JOptionPane.PLAIN_MESSAGE);
+                    new JLabel("<html><div style=\"text-align: center;\">"
+                            + "Choose a selection of measures before guessing."),
+                    "Alert", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_styleRecognitionButtonActionPerformed
 
     private void generationSelectionButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generationSelectionButtonActionPerformed
     {//GEN-HEADEREND:event_generationSelectionButtonActionPerformed
-        if (notate.getCurrentStave().getLockSelectionWidth() == -1)
-        {
+        if (notate.getCurrentStave().getLockSelectionWidth() == -1) {
             String s = JOptionPane.showInputDialog("Select the number of measures\n"
-                + "for the graded licks", 2);
+                    + "for the graded licks", 2);
 
-            if (s != null && s.length() > 0)
-            {
+            if (s != null && s.length() > 0) {
                 int measureNum;
 
-                try
-                {
+                try {
                     measureNum = Integer.parseInt(s);
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     measureNum = 2;
                 }
 
@@ -5158,8 +4813,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
                 generationSelectionButton.setText("Unlock selection");
             }
-        } else
-        {
+        } else {
             notate.getCurrentStave().unlockSelectionWidth();
 
             generationSelectionButton.setText("Size of Selection");
@@ -5206,12 +4860,12 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void leapProbFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_leapProbFieldFocusLost
     {//GEN-HEADEREND:event_leapProbFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_leapProbFieldFocusLost
 
     private void leapProbFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_leapProbFieldActionPerformed
     {//GEN-HEADEREND:event_leapProbFieldActionPerformed
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_leapProbFieldActionPerformed
 
     private void restProbFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_restProbFieldenterLickKeyPressed
@@ -5221,7 +4875,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void restProbFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_restProbFieldFocusLost
     {//GEN-HEADEREND:event_restProbFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_restProbFieldFocusLost
 
     private void restProbFieldGetsFocus(java.awt.event.FocusEvent evt)//GEN-FIRST:event_restProbFieldGetsFocus
@@ -5231,7 +4885,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void restProbFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_restProbFieldActionPerformed
     {//GEN-HEADEREND:event_restProbFieldActionPerformed
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_restProbFieldActionPerformed
 
     private void totalBeatsFieldenterLickKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_totalBeatsFieldenterLickKeyPressed
@@ -5257,7 +4911,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void totalBeatsFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_totalBeatsFieldActionPerformed
     {//GEN-HEADEREND:event_totalBeatsFieldActionPerformed
         notate.setCurrentSelectionEnd(
-        notate.getCurrentSelectionStart() + totalSlots - 1);
+                notate.getCurrentSelectionStart() + totalSlots - 1);
 
         redrawTriage();
 
@@ -5271,17 +4925,17 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void maxDurationFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxDurationFieldFocusLost
     {//GEN-HEADEREND:event_maxDurationFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_maxDurationFieldFocusLost
 
     private void maxDurationFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxDurationFieldActionPerformed
     {//GEN-HEADEREND:event_maxDurationFieldActionPerformed
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_maxDurationFieldActionPerformed
 
     private void minDurationFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minDurationFieldFocusLost
     {//GEN-HEADEREND:event_minDurationFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_minDurationFieldFocusLost
 
     private void minDurationFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minDurationFieldActionPerformed
@@ -5291,7 +4945,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void maxIntervalFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_maxIntervalFieldFocusLost
     {//GEN-HEADEREND:event_maxIntervalFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_maxIntervalFieldFocusLost
 
     private void maxIntervalFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxIntervalFieldActionPerformed
@@ -5301,17 +4955,17 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void minIntervalFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minIntervalFieldFocusLost
     {//GEN-HEADEREND:event_minIntervalFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_minIntervalFieldFocusLost
 
     private void minIntervalFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minIntervalFieldActionPerformed
     {//GEN-HEADEREND:event_minIntervalFieldActionPerformed
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_minIntervalFieldActionPerformed
 
     private void minPitchFieldFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_minPitchFieldFocusLost
     {//GEN-HEADEREND:event_minPitchFieldFocusLost
-       verifyAndSaveTriageFields();
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_minPitchFieldFocusLost
 
     private void minPitchFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_minPitchFieldActionPerformed
@@ -5326,7 +4980,7 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
     private void maxPitchFieldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_maxPitchFieldActionPerformed
     {//GEN-HEADEREND:event_maxPitchFieldActionPerformed
-       verifyAndSaveTriageFields(); 
+        verifyAndSaveTriageFields();
     }//GEN-LAST:event_maxPitchFieldActionPerformed
 
     private void saveLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveLickButtonActionPerformed
@@ -5356,24 +5010,20 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
 
         Polylist rhythmString = new Polylist();
 
-        while( current <= selEnd )
-          {
+        while (current <= selEnd) {
             StringBuilder sb = new StringBuilder();
 
             int value = Note.getDurationString(sb, part.getNote(current).getRhythmValue());
 
             int rhythm = 0;
 
-            if( part.getNote(current).isRest() )
-              {
+            if (part.getNote(current).isRest()) {
                 rhythmString = rhythmString.cons("R" + sb.substring(1));
-              }
-            else
-              {
+            } else {
                 rhythmString = rhythmString.cons("X" + sb.substring(1));
-              }
+            }
             current += part.getNote(current).getRhythmValue();
-          }
+        }
 
         rhythmString = rhythmString.reverse();
 
@@ -5383,39 +5033,198 @@ private void gradeGoodBtnActionPerformed(java.awt.event.ActionEvent evt)
     private void getAbstractMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_getAbstractMelodyButtonActionPerformed
     {//GEN-HEADEREND:event_getAbstractMelodyButtonActionPerformed
 
-    extractAbstractMelody();
+        extractAbstractMelody();
 
-  }
-public boolean getAvoidRepeats(){
-    return avoidRepeats;
-}
-public void getAbstractMelody()
-  {
-    //create a file
-    File f = new File(notate.getGrammarFileName());
-    String dir = f.getParentFile().getPath();
+    }
 
-    if( useBricksCheckbox.isSelected() )
-      {
-        imp.generalCluster.CreateBrickGrammar.processByBrick(notate, notate.getSelectedIndex(), this);
-      }
-    if( useWindowsCheckbox.isSelected() )
-      {
-        if( !allMeasures )
-          {
+    public boolean getAvoidRepeats() {
+        return avoidRepeats;
+    }
+
+    public void getAbstractMelody() {
+        //create a file
+        File f = new File(notate.getGrammarFileName());
+        String dir = f.getParentFile().getPath();
+
+        if (useBricksCheckbox.isSelected()) {
+            imp.generalCluster.CreateBrickGrammar.processByBrick(notate, notate.getSelectedIndex(), this);
+        }
+        if (useWindowsCheckbox.isSelected()) {
+            if (!allMeasures) {
+                melodyData = notate.getMelodyData(notate.getSelectedIndex());
+            }
+
+            int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
+            int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
+
+            int beatsToSlide = Integer.parseInt(windowSlideField.getText());
+
+            int selStart = notate.getCurrentSelectionStart();
+
+            int selEnd = notate.getCurrentSelectionEnd();
+            for (int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++) {
+
+                int slotsPerMeasure = BEAT;
+
+                int slotsPerSection = slotsPerMeasure * measureWindow;
+
+                int start = selStart - (selStart % slotsPerMeasure);
+
+                int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
+
+                int numMeasures = (end + 1 - start) / slotsPerSection;
+
+                //writeBeatsToSlide(beatsToSlide);
+                //loop through places to start the measure window
+
+                for (int window = 0; window < measureWindow; window += beatsToSlide) {
+                    //extract all sections of size measureWindow
+                    for (int i = 0;
+                         (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
+                         i++) {
+                        String production = addMeasureToAbstractMelody(
+                                start + (i * slotsPerSection) + (window * BEAT),
+                                measureWindow,
+                                i == 0,
+                                true);
+                        if (production != null) {
+                            writeProduction(production,
+                                    measureWindow,
+                                    (i * slotsPerSection) + (window * BEAT),
+                                    true,
+                                    null,
+                                    -1);
+                        }
+                    }
+                }
+            }
+
+            lickgen.loadGrammar(notate.getGrammarFileName());
+            updateUseSoloist();
+            Grammar g = lickgen.getGrammar();
+            Polylist rules = g.getRules();
+
+            ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
+            for (Polylist L = rules; L.nonEmpty(); L = L.rest()) {
+                ruleList.add((Polylist) L.first());
+            }
+            Collections.sort(ruleList, new PolylistComparer());
+
+            ArrayList<Polylist> newRules = new ArrayList<Polylist>();
+
+            Polylist previous = Polylist.nil;
+            float accumulatedProbability = 0;
+
+            for (Iterator<Polylist> e = ruleList.iterator(); e.hasNext(); ) {
+                Polylist current = e.next();
+                Object last = current.last();
+                if (current.first().equals("rule") || current.first().equals("base")) {
+
+                    if ((!previous.equals(Polylist.nil))
+                            && current.allButLast().equals(previous.allButLast())) {
+                        accumulatedProbability += ((Number) current.last()).floatValue();
+                        int round = (int) (accumulatedProbability * 100);
+                        accumulatedProbability = (float) (round / 100.0);
+                    } else {
+                        if (previous.nonEmpty()) {
+                            newRules.add(Polylist.list(previous.first(),
+                                    previous.second(),
+                                    previous.third(),
+                                    accumulatedProbability));
+                        }
+
+
+                        accumulatedProbability = ((Number) last).floatValue();
+
+                        previous = current;
+                    }
+                } else {
+                    newRules.add(current);
+                }
+            }
+            if (previous.nonEmpty()) {
+                newRules.add(Polylist.list(previous.first(),
+                        previous.second(),
+                        previous.third(),
+                        accumulatedProbability));
+            }
+
+            try {
+                File f1 = new File(notate.getGrammarFileName());
+                if (f1.exists()) {
+                    System.gc();
+                    boolean deleted = f1.delete();
+                    while (!deleted) {
+                        deleted = f1.delete();
+                    }
+                }
+
+                File f_out = new File(notate.getGrammarFileName());
+                FileWriter out = new FileWriter(f_out, true);
+
+                setLickGenStatus(
+                        "Writing " + newRules.size() + " grammar rules to " + notate.getGrammarFileName());
+
+                for (int i = 0; i < newRules.size(); i++) {
+                    out.write(newRules.get(i).toString() + "\n");
+                }
+                out.close();
+
+                notate.refreshGrammarEditor();
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            //Enter the whole selection into the window
+            int slotsPerMeasure = BEAT;
+            int start = selStart - (selStart % slotsPerMeasure);
+            int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
+            int measureWindow = (end - start) / BEAT;
+
+            String production = addMeasureToAbstractMelody(start,
+                    measureWindow,
+                    false,
+                    true);
+
+            if (production != null) {
+                if (production.contains("STARTER")) {
+                    production = production.replace("STARTER", "");
+                }
+                if (production.contains("ENDTIED")) {
+                    production = production.replace("ENDTIED ", "");
+                }
+                if (production.contains("STARTTIED")) {
+                    production = production.replace("STARTTIED ", "");
+                }
+                if (production.contains("CHORDS")) {
+                    production = production.substring(0, production.indexOf("CHORDS"));
+                }
+                setAbstractMelodyField(production);
+            }
+        }
+    }
+
+    /**
+     * Extract melody for purpose of display only, not creating productions. This
+     * code was adapted from getAbstractMelody()
+     */
+    public void extractAbstractMelody() {
+        if (!allMeasures) {
             melodyData = notate.getMelodyData(notate.getSelectedIndex());
-          }
+        }
 
         int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
         int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
-
         int beatsToSlide = Integer.parseInt(windowSlideField.getText());
 
         int selStart = notate.getCurrentSelectionStart();
 
         int selEnd = notate.getCurrentSelectionEnd();
-        for( int measureWindow = minMeasureWindow; measureWindow <= maxMeasureWindow; measureWindow++ )
-          {
+
+        for (int measureWindow = minMeasureWindow;
+             measureWindow <= maxMeasureWindow;
+             measureWindow++) {
+            //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
 
             int slotsPerMeasure = BEAT;
 
@@ -5427,1075 +5236,750 @@ public void getAbstractMelody()
 
             int numMeasures = (end + 1 - start) / slotsPerSection;
 
-            //writeBeatsToSlide(beatsToSlide);
             //loop through places to start the measure window
-
-            for( int window = 0; window < measureWindow; window += beatsToSlide )
-              {
+            for (int window = 0; window < measureWindow; window += beatsToSlide) {
                 //extract all sections of size measureWindow
-                for( int i = 0;
-                        (i * slotsPerSection) + (window * BEAT) + slotsPerSection <= (numMeasures) * slotsPerSection;
-                        i++ )
-                  {
+                for (int i = 0;
+                     (i * slotsPerSection) + (window * BEAT) + slotsPerSection
+                             <= (numMeasures) * slotsPerSection;
+                     i++) {
                     String production = addMeasureToAbstractMelody(
                             start + (i * slotsPerSection) + (window * BEAT),
                             measureWindow,
                             i == 0,
-                            true);
-                    if( production != null )
-                      {
-                        writeProduction(production,
-                                        measureWindow,
-                                        (i * slotsPerSection) + (window * BEAT),
-                                        true,
-                                        null,
-                                        -1);
-                      }
-                  }
-              }
-          }
+                            false);
+                }
+            }
+        }
 
-        lickgen.loadGrammar(notate.getGrammarFileName());
-        updateUseSoloist();
-        Grammar g = lickgen.getGrammar();
-        Polylist rules = g.getRules();
-
-        ArrayList<Polylist> ruleList = new ArrayList<Polylist>();
-        for( Polylist L = rules; L.nonEmpty(); L = L.rest() )
-          {
-            ruleList.add((Polylist) L.first());
-          }
-        Collections.sort(ruleList, new PolylistComparer());
-
-        ArrayList<Polylist> newRules = new ArrayList<Polylist>();
-
-        Polylist previous = Polylist.nil;
-        float accumulatedProbability = 0;
-
-        for( Iterator<Polylist> e = ruleList.iterator(); e.hasNext(); )
-          {
-            Polylist current = e.next();
-            Object last = current.last();
-            if( current.first().equals("rule") || current.first().equals("base") )
-              {
-
-                  if( (!previous.equals(Polylist.nil))
-                        && current.allButLast().equals(previous.allButLast()) )
-                  {
-                    accumulatedProbability += ((Number) current.last()).floatValue();
-                    int round = (int) (accumulatedProbability * 100);
-                    accumulatedProbability = (float) (round / 100.0);
-                  }
-                else
-                  {
-                    if( previous.nonEmpty() )
-                      {
-                        newRules.add(Polylist.list(previous.first(),
-                                                   previous.second(),
-                                                   previous.third(),
-                                                   accumulatedProbability));
-                      }
-                    
-
-                    accumulatedProbability = ((Number) last).floatValue();
-
-                    previous = current;
-                  }
-              }
-            else
-              {
-                newRules.add(current);
-              }
-          }
-        if( previous.nonEmpty() )
-          {
-            newRules.add(Polylist.list(previous.first(),
-                                       previous.second(),
-                                       previous.third(),
-                                       accumulatedProbability));
-          }
-
-        try
-          {
-            File f1 = new File(notate.getGrammarFileName());
-            if( f1.exists() )
-              {
-                System.gc();
-                boolean deleted = f1.delete();
-                while( !deleted )
-                  {
-                    deleted = f1.delete();
-                  }
-              }
-
-            File f_out = new File(notate.getGrammarFileName());
-            FileWriter out = new FileWriter(f_out, true);
-
-            setLickGenStatus(
-                    "Writing " + newRules.size() + " grammar rules to " + notate.getGrammarFileName());
-
-            for( int i = 0; i < newRules.size(); i++ )
-              {
-                out.write(newRules.get(i).toString() + "\n");
-              }
-            out.close();
-
-            notate.refreshGrammarEditor();
-
-          }
-        catch( Exception e )
-          {
-            System.out.println(e.getMessage());
-          }
         //Enter the whole selection into the window
         int slotsPerMeasure = BEAT;
         int start = selStart - (selStart % slotsPerMeasure);
         int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
         int measureWindow = (end - start) / BEAT;
 
-        String production = addMeasureToAbstractMelody(start,
-                                                       measureWindow,
-                                                       false,
-                                                       true);
+        String production = addMeasureToAbstractMelody(start, measureWindow, false, false);
 
-        if( production != null )
-          {
-            if( production.contains("STARTER") )
-              {
-                production = production.replace("STARTER", "");
-              }
-            if( production.contains("ENDTIED") )
-              {
-                production = production.replace("ENDTIED ", "");
-              }
-            if( production.contains("STARTTIED") )
-              {
-                production = production.replace("STARTTIED ", "");
-              }
-            if( production.contains("CHORDS") )
-              {
-                production = production.substring(0, production.indexOf("CHORDS"));
-              }
+        if (production != null) {
             setAbstractMelodyField(production);
-          }
-      }
-  }
+        }
 
-/**
- * Extract melody for purpose of display only, not creating productions. This
- * code was adapted from getAbstractMelody()
- */
-public void extractAbstractMelody()
-  {
-    if( !allMeasures )
-      {
-        melodyData = notate.getMelodyData(notate.getSelectedIndex());
-      }
-
-    int minMeasureWindow = Integer.parseInt(windowSizeField.getText());
-    int maxMeasureWindow = Integer.parseInt(windowSizeField.getText());
-    int beatsToSlide = Integer.parseInt(windowSlideField.getText());
-
-    int selStart = notate.getCurrentSelectionStart();
-
-    int selEnd = notate.getCurrentSelectionEnd();
-
-    for( int measureWindow = minMeasureWindow;
-            measureWindow <= maxMeasureWindow;
-            measureWindow++ )
-      {
-        //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
-
-        int slotsPerMeasure = BEAT;
-
-        int slotsPerSection = slotsPerMeasure * measureWindow;
-
-        int start = selStart - (selStart % slotsPerMeasure);
-
-        int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure - 1;
-
-        int numMeasures = (end + 1 - start) / slotsPerSection;
-
-        //loop through places to start the measure window
-        for( int window = 0; window < measureWindow; window += beatsToSlide )
-          {
-            //extract all sections of size measureWindow
-            for( int i = 0;
-                    (i * slotsPerSection) + (window * BEAT) + slotsPerSection
-                    <= (numMeasures) * slotsPerSection;
-                    i++ )
-              {
-                String production = addMeasureToAbstractMelody(
-                        start + (i * slotsPerSection) + (window * BEAT),
-                        measureWindow,
-                        i == 0,
-                        false);
-              }
-          }
-      }
-
-    //Enter the whole selection into the window
-    int slotsPerMeasure = BEAT;
-    int start = selStart - (selStart % slotsPerMeasure);
-    int end = selEnd - (selEnd % slotsPerMeasure) + slotsPerMeasure;
-    int measureWindow = (end - start) / BEAT;
-
-    String production = addMeasureToAbstractMelody(start, measureWindow, false, false);
-
-    if( production != null )
-      {
-        setAbstractMelodyField(production);
-      }
-    
-    MelodyPart segment = notate.getCurrentMelodyPart().extract(selStart, selEnd);
-    ChordPart chords = notate.getChordProg().extract(selStart, selEnd);
-    Polylist relativePitchMelody = NoteConverter.melodyPart2Relative(segment, chords, selStart);
-    setRelativeFieldText(relativePitchMelody.toString());
-  }
-
-/**
- * add the production to file
- */
-public String writeProduction(String production,
-                            int measureWindow,
-                            int location,
-                            boolean writeExactMelody,
-                            String brickType,
-                            int chorus)
-  {
-    String finalProduction = null;
-
-    
-    if( chorus == -1 )
-      { //didn't provide any information about what chorus we're on
-        chorus = notate.getSelectedIndex();
-      }
-
-    if( !allMeasures )
-      {
-        melodyData = notate.getMelodyData(chorus);
-      }
-
-    if( production == null )
-      {
-        return finalProduction;
-      }
-    String chords = "";
-
-    if( production.contains("CHORDS") )
-      {
-        chords = production.substring(production.indexOf("CHORDS"));
-        production = production.substring(0, production.indexOf("CHORDS"));
-      }
-
-    try
-      {
-        BufferedWriter out;
-        if( brickType != null )
-          {
-            out = new BufferedWriter(brickProductionsWriter);
-          }
-        else
-          {
-            out = new BufferedWriter(windowProductionsWriter);
-          }
-
-        if( !writeExactMelody )
-          {
-            out.write("(rule (Seg"
-                    + measureWindow
-                    + ") "
-                    + production
-                    + " ) "
-                    + chords
-                    + "\n");
-          }
-        else
-          {
-            //check that index of exact melody matches index of abstract melody
-            //then concatenate the two and write them to the file
-            int slotsPerSection = measureWindow * BEAT;
-            String melodyToWrite;
-            String relativePitchMelody;
-            String exactMelody = production;
-            String[] splitMel;
-            boolean foundMatch = false;
-
-            for( int i = 0; i < melodyData.size(); i++ )
-              {
-                splitMel = melodyData.get(i).split(" ");
-                if( splitMel[0].equals(Integer.toString(location)) )
-                  { //we've located our production's data in our melody data
-                    exactMelody = melodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
-                    int j = i; //starting at this strip, we'll see if we need to add more strips
-                    //(to match the length of our production)
-                    int exactMelodyLength = 0;
-                    if( j < melodyData.size() - 1 )
-                      {
-                        String[] splitNextMel = melodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        exactMelodyLength = nextSlot - location;
-                      }
-                    int thisSlot = location; //starting slot of the most recently examined strip of data
-                    //while the total amount of melody data we've gone through is less than the amount of data in our production
-                    while( j < melodyData.size() - 1 && exactMelodyLength < slotsPerSection )
-                      {
-                        String[] splitNextMel = melodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
-                        for( int k = 1; k < splitNextMel.length; k++ )
-                          { //tack on the melody data for the next measure-length strip to exact melody
-                            exactMelody = exactMelody.concat(splitNextMel[k] + " ");
-                          }
-                        thisSlot = nextSlot;
-                        j++;
-                      }
-                    foundMatch = true;
-                    break;
-                  }
-              }
-            if( foundMatch == false )
-              {
-                System.out.println("Weird. This shouldn't happen: " + location);
-                System.out.println("Melody data: " + melodyData);
-              }
-
-            if( notate.getSelectedIndex() == 0 ) /*head*/
-
-              {
-                melodyToWrite = "Head " + exactMelody;
-              }
-            else
-              {
-                melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
-              }
-
-            ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
-            relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
-            finalProduction = "(rule (Seg"
-                    + measureWindow
-                    + ") "
-                    + production
-                    + " ) "
-                    + "(Xnotation "
-                    + relativePitchMelody
-                    + ") "
-                    + "(Brick-type "
-                    + brickType
-                    + ") "
-                    + melodyToWrite
-                    + " "
-                    + chords
-                    + "\n";
-            out.write(finalProduction);
-
-
-
-          }
-        out.close();
-      }
-    catch( IOException e )
-      {
-        System.out.println("IO EXCEPTION! " + e.toString());
-      }        
-    
-    return finalProduction;
- 
-  }
-
-public String writeProductionForBricks(String production,
-                            int measureWindow,
-                            int location,
-                            boolean writeExactMelody,
-                            String brickType,
-                            int chorus)
-  {
-    String finalProduction = null;
- 
-   
-    if( chorus == -1 )
-      { //didn't provide any information about what chorus we're on
-        chorus = notate.getSelectedIndex();
-      }
-    ArrayList<String> oneMeasureMelodyData = melodyData;
-    if( !allMeasures )
-      {
-        oneMeasureMelodyData = notate.getOneMeasureMelodyData(chorus);
-      }
- 
-    if( production == null )
-      {
-        return finalProduction;
-      }
-    String chords = "";
- 
-    if( production.contains("CHORDS") )
-      {
-        chords = production.substring(production.indexOf("CHORDS"));
-        production = production.substring(0, production.indexOf("CHORDS"));
-      }
- 
-    try
-      {
-        BufferedWriter out;
-        if( brickType != null )
-          {
-            out = new BufferedWriter(brickProductionsWriter);
-          }
-        else
-          {
-            out = new BufferedWriter(windowProductionsWriter);
-          }
- 
-        if( !writeExactMelody )
-          {
-            out.write("(rule (Seg"
-                    + measureWindow
-                    + ") "
-                    + production
-                    + " ) "
-                    + chords
-                    + "\n");
-          }
-        else
-          {
-            //check that index of exact melody matches index of abstract melody
-            //then concatenate the two and write them to the file
-            int slotsPerSection = measureWindow * BEAT;
-            String melodyToWrite;
-            String relativePitchMelody;
-            String exactMelody = production;
-            String[] splitMel;
-            boolean foundMatch = false;
- 
-            for( int i = 0; i < oneMeasureMelodyData.size(); i++ )
-              {
-                splitMel = oneMeasureMelodyData.get(i).split(" ");
-                if( splitMel[0].equals(Integer.toString(location)) )
-                  { //we've located our production's data in our melody data
-                    exactMelody = oneMeasureMelodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
-                    int j = i; //starting at this strip, we'll see if we need to add more strips
-                    //(to match the length of our production)
-                    int exactMelodyLength = 0;
-                    if( j < oneMeasureMelodyData.size() - 1 )
-                      {
-                        String[] splitNextMel = oneMeasureMelodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        //System.out.println("nextSlot (is it 960?): "+nextSlot);
-                        //System.out.println("location (is it 0?): "+nextSlot);
-                        exactMelodyLength = nextSlot - location;
-                        //System.out.println("exactMelodyLength: "+exactMelodyLength);
-                      }
-                    int thisSlot = location; //starting slot of the most recently examined strip of data
-                    //while the total amount of melody data we've gone through is less than the amount of data in our production
-                    while( j < oneMeasureMelodyData.size() - 1 && exactMelodyLength < slotsPerSection )
-                      {
-                        String[] splitNextMel = oneMeasureMelodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
-                        for( int k = 1; k < splitNextMel.length; k++ )
-                          { //tack on the melody data for the next measure-length strip to exact melody
-                            exactMelody = exactMelody.concat(splitNextMel[k] + " ");
-                          }
-                        thisSlot = nextSlot;
-                        j++;
-                      }
-                    foundMatch = true;
-                    break;
-                  }
-              }
-            if( foundMatch == false )
-              {
-                System.out.println("Weird. This shouldn't happen: " + location);
-                System.out.println("Melody data: " + oneMeasureMelodyData);
-              }
- 
-            if( notate.getSelectedIndex() == 0 ) /*head*/
- 
-              {
-                melodyToWrite = "Head " + exactMelody;
-              }
-            else
-              {
-                melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
-              }
- 
-            ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
-            relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
-            finalProduction = "(rule (Seg"
-                    + measureWindow
-                    + ") "
-                    + production
-                    + " ) "
-                    + "(Xnotation "
-                    + relativePitchMelody
-                    + ") "
-                    + "(Brick-type "
-                    + brickType
-                    + ") "
-                    + melodyToWrite
-                    + " "
-                    + chords
-                    + "\n";
-            out.write(finalProduction);
- 
- 
- 
-          }
-        out.close();
-      }
-    catch( IOException e )
-      {
-        System.out.println("IO EXCEPTION! " + e.toString());
-      }        
-   
-    return finalProduction;
- 
-  }
-
-/**Method to write the user's data (stored in the My.rhythms file) to the outWriter,
- * which is used to create the grammar and clusters. Basically what makes us learn
- * a grammar with user data.
- * 
- * @throws IOException 
- */
-private void writeUserRuleStrings() throws IOException{
-    BufferedWriter out = new BufferedWriter(windowProductionsWriter);
-    String userRhythmsFileName = Preferences.getPreference(Preferences.MY_RHYTHMS_FILE);
-    String userRhythmsFilePath = ImproVisor.getRhythmClusterDirectory().toString() + "/" + userRhythmsFileName;
-    ArrayList<Polylist> userRuleStringPL = UserRhythmSelecterDialog.readInRuleStringsFromFile(userRhythmsFilePath);
-    for(int i = 0; i < userRuleStringPL.size(); i++){
-        Polylist ruleStringPL = userRuleStringPL.get(i);
-        //skip userRuleString tag
-        ruleStringPL = (Polylist) ruleStringPL.rest();
-        String ruleString = ruleStringPL.toStringSansParens();//add newline
-        out.write(ruleString + "\n");
+        MelodyPart segment = notate.getCurrentMelodyPart().extract(selStart, selEnd);
+        ChordPart chords = notate.getChordProg().extract(selStart, selEnd);
+        Polylist relativePitchMelody = NoteConverter.melodyPart2Relative(segment, chords, selStart);
+        setRelativeFieldText(relativePitchMelody.toString());
     }
-    
-    out.close();
-    
-}
 
-/**Method to take get the exact melody String from a User Melody
- * used to create ruleString so that we can make a dataPoint for the user 
- * 
- * @param measureWindow - length of a measure in terms of beats
- * @param production - abstract Melody represented as string
- * @param location - start index of user's melody part in notate's leadsheet
- * @return the exactMelody String as represented in a ruleString
- */
-public String getExactMelody(int measureWindow, String production, int location){
-    int slotsPerSection = measureWindow * BEAT;
-            //System.out.println("measureWindow: " + measureWindow + " Beat: " + BEAT + " slotsPerSection: " + slotsPerSection);
-                   
-            
-            String melodyToWrite;
-            String relativePitchMelody;
-            String exactMelody = production;
-            String[] splitMel;
-            boolean foundMatch = false;
+    /**
+     * add the production to file
+     */
+    public String writeProduction(String production,
+                                  int measureWindow,
+                                  int location,
+                                  boolean writeExactMelody,
+                                  String brickType,
+                                  int chorus) {
+        String finalProduction = null;
 
-            
-            melodyData = notate.getMelodyData(notate.getSelectedIndex());//melody data is all of the data for the ENTIRE leadsheet
-            //We later find the melody data section corresponding to location
 
-            for( int i = 0; i < melodyData.size(); i++ )
-              {
-                splitMel = melodyData.get(i).split(" ");
-                
-                
-                if( splitMel[0].equals(Integer.toString(location)) )
-                  { //we've located our production's data in our melody data
-                    exactMelody = melodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
-                    int j = i; //starting at this strip, we'll see if we need to add more strips
-                    //(to match the length of our production)
-                    int exactMelodyLength = 0;
-                    if( j < melodyData.size() - 1 )
-                      {
-                        String[] splitNextMel = melodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        exactMelodyLength = nextSlot - location;
-                      }
-                    int thisSlot = location; //starting slot of the most recently examined strip of data
-                    
-                    //while the total amount of melody data we've gone through is less than the amount of data in our production
-                    while( j < melodyData.size() - 1 && exactMelodyLength < slotsPerSection )
-                      {
-                        String[] splitNextMel = melodyData.get(j + 1).split(" ");
-                        int nextSlot = Integer.parseInt(splitNextMel[0]);
-                        exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
-                        for( int k = 1; k < splitNextMel.length; k++ )
-                          { //tack on the melody data for the next measure-length strip to exact melody
-                            exactMelody = exactMelody.concat(splitNextMel[k] + " ");
-                          }
-                        thisSlot = nextSlot;
-                        j++;
-                      }
-                    foundMatch = true;
-                    break;
-                  }
-              }
-            
-            return exactMelody;
-}
+        if (chorus == -1) { //didn't provide any information about what chorus we're on
+            chorus = notate.getSelectedIndex();
+        }
 
-//add the production to the grammar file
-public void addProduction(String production, int measureWindow, double prob) //formerly private
-  {
-    try
-      {
-        BufferedWriter out = new BufferedWriter(new FileWriter(
-                notate.getGrammarFileName(), true));
-        out.write(
-                "(rule (Seg"
-                + measureWindow
-                + ") "
-                + production
-                + " "
-                + prob
-                + ") \n");
-        out.close();
-      }
-    catch( IOException e )
-      {
-        System.out.println("IO EXCEPTION!" + e.toString());
-      }
-  }
+        if (!allMeasures) {
+            melodyData = notate.getMelodyData(chorus);
+        }
 
- public String addMeasureToAbstractMelody(int selStart,
-                                         int measureWindow,
-                                         boolean isSongStart,
-                                         boolean writeChords)
-  {
-    //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
-    int slotsPerSection = BEAT * measureWindow;
-    //boolean isSongStart = (selStart == 0);
-    int selEnd = selStart + slotsPerSection;
-    MelodyPart part = notate.getCurrentMelodyPart().copy();
+        if (production == null) {
+            return finalProduction;
+        }
+        String chords = "";
 
-    if( part.melodyIsEmpty(selStart, slotsPerSection) )
-      {
-        //if this is empty, the last measure is empty,
-        //and the rest of the chorus is empty, return null
-        if( part.getFreeSlotsFromEnd() >= (part.size() - selEnd)
-                && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection) )
-          {
-            return null;
-          } //otherwise return a section of rests
-        else
-          {
-            StringBuilder sb = new StringBuilder();
-            Note n = new Note(72, 1);
-            n.getDurationString(sb, slotsPerSection);
-            String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
-            if( isSongStart )
-              {
-                returnString = returnString.concat("STARTER");
-              }
-            return returnString;
-          }
-      }
+        if (production.contains("CHORDS")) {
+            chords = production.substring(production.indexOf("CHORDS"));
+            production = production.substring(0, production.indexOf("CHORDS"));
+        }
 
-    int current = selStart;
-
-    Polylist rhythmString = new Polylist();
-
-    //pitches of notes in measure not including rests
-    ArrayList<Integer> notes = new ArrayList<Integer>();
-
-    boolean tiedAtStart = false, tiedAtEnd = false;
-
-    //untie first note if it is tied from last measure
-    if( part.getPrevNote(current) != null
-            && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(current) )
-      {
-
-        tiedAtStart = true;
-
-        //untie and set the previous note
-        Note untiedNote = part.getPrevNote(current).copy();
-        int originalRhythmVal = untiedNote.getRhythmValue();
-        int rhythmVal = slotsPerSection - part.getPrevIndex(current) % slotsPerSection;
-        untiedNote.setRhythmValue(rhythmVal);
-        part.setNote(part.getPrevIndex(current), untiedNote);
-
-        //set the current note
-        rhythmVal = originalRhythmVal - rhythmVal;
-        Note currNote = part.getPrevNote(current).copy();
-        currNote.setRhythmValue(rhythmVal);
-        part.setNote(current, currNote);
-      }
-
-    if( part.getPrevNote(selEnd) != null )
-      {
-        //untie notes at end of measure and beginning of next measure
-        if( part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
-                selEnd) )
-          {
-            tiedAtEnd = true;
-            int tracker = part.getPrevIndex(selEnd);
-            Note untiedNote = part.getNote(tracker).copy();
-            int originalRhythmVal = untiedNote.getRhythmValue();
-            int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
-            untiedNote.setRhythmValue(rhythmVal);
-            part.setNote(tracker, untiedNote);
-            int secondRhythmVal = originalRhythmVal - rhythmVal;
-            untiedNote = part.getNote(tracker).copy();
-            untiedNote.setRhythmValue(secondRhythmVal);
-            part.setNote(selEnd, untiedNote);
-          }
-      }
-
-    if( part.getPrevNote(selStart + 1) != null )
-      {
-        if( (part.getPrevIndex(selStart + 1) != selStart)
-                && !(part.getPrevNote(selStart + 1).isRest()) )
-          {
-            return null;
-          }
-      }
-
-    while( current < selEnd )
-      {
-
-        //if the current note is a null note, make it a rest
-        if( part.getNote(current) == null )
-          {
-            int next = part.getNextIndex(current);
-            Note n = Note.makeRest(next - current);
-            part.setNote(current, n);
-          }
-
-        StringBuilder sb = new StringBuilder();
-
-        //FIX: Suspicious that value is not used.
-        int value = part.getNote(current).getDurationString(sb, part.getNote(
-                current).getRhythmValue());
-
-        int pitch = part.getNote(current).getPitch();
-
-        if( part.getNote(current).isRest() )
-          {
-            rhythmString = rhythmString.cons("R" + sb.substring(1));
-          }
-        else
-          {
-
-            //add pitch to notes
-            notes.add(pitch);
-            //get note type
-            char notetype;
-            int[] notetone = lickgen.getNoteTypes(current, pitch, pitch,
-                                                  notate.getChordProg());
-            switch( notetone[0] )
-              {
-                case LickGen.CHORD:
-                    notetype = 'C';
-                    break;
-                case LickGen.COLOR:
-                    notetype = 'L';
-                    break;
-                default:
-                    notetype = 'X';
-                    break;
-              }
-            if( notetype == 'X' && part.getNextNote(current) != null )
-              {
-
-                int nextPitch = part.getNextNote(current).getPitch();
-                int nextIndex = part.getNextIndex(current);
-                if( nextIndex <= selEnd )
-                  {
-                    int pitchdiff = nextPitch - pitch;
-                    if( Math.abs(pitchdiff) == 1 )
-                      {
-                        notetype = 'A';
-                      }
-                  }
-              }
-            rhythmString = rhythmString.cons(notetype + sb.substring(1));
-          }
-
-        current = part.getNextIndex(current);
-
-      }
-
-    rhythmString = rhythmString.reverse();
-
-    //add in goal notes to the rhythmString
-
-    //process intervals
-    ArrayList<Integer> intervals = new ArrayList<Integer>();
-    intervals.add(0);
-    for( int i = 1; i < notes.size(); i++ )
-      {
-        intervals.add(notes.get(i) - notes.get(i - 1));
-      }
-
-    //process slopes
-    ArrayList<int[]> slopes = new ArrayList<int[]>();
-    int[] slope = new int[3];
-    int tracker = 0;
-
-    //get the slope from the note before this section to the first note in the measure
-    int prevIndex = part.getPrevIndex(selStart);
-    Note lastNote = part.getNote(prevIndex);
-    while( lastNote != null && lastNote.isRest() )
-      {
-        prevIndex = part.getPrevIndex(prevIndex);
-        lastNote = part.getNote(prevIndex);
-      }
-    int lastpitch = 0;
-    if( lastNote != null && !lastNote.isRest() )
-      {
-        lastpitch = lastNote.getPitch();
-      }
-    int pitch = notes.get(0);
-    int pitchChange;
-    if( lastpitch == 0 )
-      {
-        pitchChange = 0;
-      }
-    else
-      {
-        pitchChange = pitch - lastpitch;
-      }
-    int minPitchChange = 0, maxPitchChange = 0;
-    //avoid random notes and repeated notes
-    if( pitchChange != 0 )
-      {
-        if( pitchChange == 1 )
-          {
-            minPitchChange = 1;
-            maxPitchChange = 2;
-          }
-        else if( pitchChange == -1 )
-          {
-            minPitchChange = -2;
-            maxPitchChange = -1;
-          }
-        else
-          {
-            minPitchChange = pitchChange - 1;
-            maxPitchChange = pitchChange + 1;
-          }
-      }
-
-    //if there is only 1 note, return it with its slope
-    if( intervals.size() <= 1 )
-      {
-
-        String rhythm = rhythmString.toString();
-        rhythm = rhythm.substring(1, rhythm.length() - 1);
-
-        //handle case of only 1 note
-        if( rhythm.equals("") )
-          {
-            char thisPitch = lickgen.getNoteType(selStart, notes.get(0), notes.get(
-                    0), notate.getChordProg());
-            String len = Note.getDurationString(slotsPerSection);
-            rhythm = thisPitch + len;
-          }
-        String returnString = "((slope "
-                + minPitchChange + " "
-                + maxPitchChange + " "
-                + rhythm + "))";
-        if( isSongStart )
-          {
-            returnString = returnString.concat("STARTER");
-          }
-        if( tiedAtEnd )
-          {
-            returnString = returnString.concat(" ENDTIED");
-          }
-        if( tiedAtStart )
-          {
-            returnString = returnString.concat(" STARTTIED");
-          }
-        return returnString;
-      }
-
-    for( int i = 0; i < intervals.size(); i++ )
-      {
-        tracker = i;
-        if( intervals.get(i) != 0 )
-          {
-            i = intervals.size();
-          }
-      }
-
-    //direction is -1 if slope is going down, 0 for repeated note, 1 for up
-    int direction = 0;
-    if( intervals.get(tracker) > 0 )
-      {
-        direction = 1;
-      }
-    else if( intervals.get(tracker) < 0 )
-      {
-        direction = -1;
-      }
-    //initialize stuff - first note is in its own slope
-    slope[0] = minPitchChange;
-    slope[1] = maxPitchChange;
-    slope[2] = 1;
-    slopes.add(slope.clone());
-
-    slope[0] = intervals.get(1);
-    slope[1] = intervals.get(1);
-    slope[2] = 0;
-    for( int i = 1; i < intervals.size(); i++ )
-      {
-        //slope was going up but not any more
-        if( direction == 1 && intervals.get(i) <= 0 )
-          {
-            if( intervals.get(i) == 0 )
-              {
-                direction = 0;
-              }
-            else
-              {
-                direction = -1;
-              }
-            if( slope[2] != 0 )
-              {
-                slopes.add(slope.clone());
-              }
-
-            slope[0] = intervals.get(i);
-            slope[1] = intervals.get(i);
-            slope[2] = 1;
-            //slope was going down but not any more
-          }
-        else if( direction == -1 && intervals.get(i) >= 0 )
-          {
-            if( intervals.get(i) == 0 )
-              {
-                direction = 0;
-              }
-            else
-              {
-                direction = 1;
-              }
-            if( slope[2] != 0 )
-              {
-                slopes.add(slope.clone());
-              }
-            slope[0] = intervals.get(i);
-            slope[1] = intervals.get(i);
-            slope[2] = 1;
-            //slope was 0 but not any more
-          }
-        else if( direction == 0 && intervals.get(i) != 0 )
-          {
-            if( intervals.get(i) > 0 )
-              {
-                direction = 1;
-              }
-            else
-              {
-                direction = -1;
-              }
-            if( slope[2] != 0 )
-              {
-                slopes.add(slope.clone());
-              }
-            slope[0] = intervals.get(i);
-            slope[1] = intervals.get(i);
-            slope[2] = 1;
-          }
-        else
-          {
-            slope[2]++;
-            if( intervals.get(i) > slope[1] )
-              {
-                slope[1] = intervals.get(i);
-              }
-            if( intervals.get(i) < slope[0] )
-              {
-                slope[0] = intervals.get(i);
-              }
-          }
-
-        if( i == intervals.size() - 1 )
-          {
-            if( slope[2] != 0 )
-              {
-                slopes.add(slope.clone());
-              }
-          }
-      }
-
-    //add in slopes
-    StringBuilder strbuf = new StringBuilder();
-    strbuf.append("(");
-    Polylist tempString = rhythmString;
-    for( int i = 0; i < slopes.size(); i++ )
-      {
-        slope = slopes.get(i);
-        strbuf.append("(slope ");
-        strbuf.append(slope[0]);
-        strbuf.append(" ");
-        strbuf.append(slope[1]);
-        strbuf.append(" ");
-
-        int j = 0;
-        //get all of notes if last slope
-        if( i == slopes.size() - 1 )
-          {
-            while( tempString.nonEmpty() )
-              {
-                strbuf.append(tempString.first().toString());
-                strbuf.append(" ");
-                tempString = tempString.rest();
-              }
-          }
-        else
-          {
-            while( j < slope[2] )
-              {
-                String temp = tempString.first().toString();
-                strbuf.append(temp);
-                strbuf.append(" ");
-                tempString = tempString.rest();
-                if( temp.charAt(0) != 'R' )
-                  {
-                    j++;
-                  }
-              }
-          }
-        strbuf.deleteCharAt(strbuf.length() - 1);
-        strbuf.append(")");
-      }
-    strbuf.append(")");
-      //if we are writing to file, write the chords, start data, and tie data
-      {
-
-        //Mark measure as 'songStarter' if it is the first of a song
-        if( isSongStart )
-          {
-            strbuf.append("STARTER");
-          }
-        if( writeChords )
-          {
-            strbuf.append("CHORDS ");
-
-            ChordPart chords = notate.getChordProg()
-                    .extract(selStart,
-                             selStart + slotsPerSection - 1);
-            ArrayList<Unit> chordList = chords.getUnitList();
-            if( chordList.isEmpty() )
-              {
-                System.out.println("No chords");
-              }
-            for (Unit chordList1 : chordList) {
-                String nextChord = ((Chord) chordList1).toLeadsheet();
-                strbuf.append(nextChord);
-                strbuf.append(" ");
+        try {
+            BufferedWriter out;
+            if (brickType != null) {
+                out = new BufferedWriter(brickProductionsWriter);
+            } else {
+                out = new BufferedWriter(windowProductionsWriter);
             }
-          }
-      }
 
-    return strbuf.toString();
+            if (!writeExactMelody) {
+                out.write("(rule (Seg"
+                        + measureWindow
+                        + ") "
+                        + production
+                        + " ) "
+                        + chords
+                        + "\n");
+            } else {
+                //check that index of exact melody matches index of abstract melody
+                //then concatenate the two and write them to the file
+                int slotsPerSection = measureWindow * BEAT;
+                String melodyToWrite;
+                String relativePitchMelody;
+                String exactMelody = production;
+                String[] splitMel;
+                boolean foundMatch = false;
+
+                for (int i = 0; i < melodyData.size(); i++) {
+                    splitMel = melodyData.get(i).split(" ");
+                    if (splitMel[0].equals(Integer.toString(location))) { //we've located our production's data in our melody data
+                        exactMelody = melodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
+                        int j = i; //starting at this strip, we'll see if we need to add more strips
+                        //(to match the length of our production)
+                        int exactMelodyLength = 0;
+                        if (j < melodyData.size() - 1) {
+                            String[] splitNextMel = melodyData.get(j + 1).split(" ");
+                            int nextSlot = Integer.parseInt(splitNextMel[0]);
+                            exactMelodyLength = nextSlot - location;
+                        }
+                        int thisSlot = location; //starting slot of the most recently examined strip of data
+                        //while the total amount of melody data we've gone through is less than the amount of data in our production
+                        while (j < melodyData.size() - 1 && exactMelodyLength < slotsPerSection) {
+                            String[] splitNextMel = melodyData.get(j + 1).split(" ");
+                            int nextSlot = Integer.parseInt(splitNextMel[0]);
+                            exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
+                            for (int k = 1; k < splitNextMel.length; k++) { //tack on the melody data for the next measure-length strip to exact melody
+                                exactMelody = exactMelody.concat(splitNextMel[k] + " ");
+                            }
+                            thisSlot = nextSlot;
+                            j++;
+                        }
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (foundMatch == false) {
+                    System.out.println("Weird. This shouldn't happen: " + location);
+                    System.out.println("Melody data: " + melodyData);
+                }
+
+                if (notate.getSelectedIndex() == 0) /*head*/ {
+                    melodyToWrite = "Head " + exactMelody;
+                } else {
+                    melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
+                }
+
+                ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
+                relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
+                finalProduction = "(rule (Seg"
+                        + measureWindow
+                        + ") "
+                        + production
+                        + " ) "
+                        + "(Xnotation "
+                        + relativePitchMelody
+                        + ") "
+                        + "(Brick-type "
+                        + brickType
+                        + ") "
+                        + melodyToWrite
+                        + " "
+                        + chords
+                        + "\n";
+                out.write(finalProduction);
+
+
+            }
+            out.close();
+        } catch (IOException e) {
+            System.out.println("IO EXCEPTION! " + e.toString());
+        }
+
+        return finalProduction;
+
+    }
+
+    public String writeProductionForBricks(String production,
+                                           int measureWindow,
+                                           int location,
+                                           boolean writeExactMelody,
+                                           String brickType,
+                                           int chorus) {
+        String finalProduction = null;
+
+
+        if (chorus == -1) { //didn't provide any information about what chorus we're on
+            chorus = notate.getSelectedIndex();
+        }
+        ArrayList<String> oneMeasureMelodyData = melodyData;
+        if (!allMeasures) {
+            oneMeasureMelodyData = notate.getOneMeasureMelodyData(chorus);
+        }
+
+        if (production == null) {
+            return finalProduction;
+        }
+        String chords = "";
+
+        if (production.contains("CHORDS")) {
+            chords = production.substring(production.indexOf("CHORDS"));
+            production = production.substring(0, production.indexOf("CHORDS"));
+        }
+
+        try {
+            BufferedWriter out;
+            if (brickType != null) {
+                out = new BufferedWriter(brickProductionsWriter);
+            } else {
+                out = new BufferedWriter(windowProductionsWriter);
+            }
+
+            if (!writeExactMelody) {
+                out.write("(rule (Seg"
+                        + measureWindow
+                        + ") "
+                        + production
+                        + " ) "
+                        + chords
+                        + "\n");
+            } else {
+                //check that index of exact melody matches index of abstract melody
+                //then concatenate the two and write them to the file
+                int slotsPerSection = measureWindow * BEAT;
+                String melodyToWrite;
+                String relativePitchMelody;
+                String exactMelody = production;
+                String[] splitMel;
+                boolean foundMatch = false;
+
+                for (int i = 0; i < oneMeasureMelodyData.size(); i++) {
+                    splitMel = oneMeasureMelodyData.get(i).split(" ");
+                    if (splitMel[0].equals(Integer.toString(location))) { //we've located our production's data in our melody data
+                        exactMelody = oneMeasureMelodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
+                        int j = i; //starting at this strip, we'll see if we need to add more strips
+                        //(to match the length of our production)
+                        int exactMelodyLength = 0;
+                        if (j < oneMeasureMelodyData.size() - 1) {
+                            String[] splitNextMel = oneMeasureMelodyData.get(j + 1).split(" ");
+                            int nextSlot = Integer.parseInt(splitNextMel[0]);
+                            //System.out.println("nextSlot (is it 960?): "+nextSlot);
+                            //System.out.println("location (is it 0?): "+nextSlot);
+                            exactMelodyLength = nextSlot - location;
+                            //System.out.println("exactMelodyLength: "+exactMelodyLength);
+                        }
+                        int thisSlot = location; //starting slot of the most recently examined strip of data
+                        //while the total amount of melody data we've gone through is less than the amount of data in our production
+                        while (j < oneMeasureMelodyData.size() - 1 && exactMelodyLength < slotsPerSection) {
+                            String[] splitNextMel = oneMeasureMelodyData.get(j + 1).split(" ");
+                            int nextSlot = Integer.parseInt(splitNextMel[0]);
+                            exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
+                            for (int k = 1; k < splitNextMel.length; k++) { //tack on the melody data for the next measure-length strip to exact melody
+                                exactMelody = exactMelody.concat(splitNextMel[k] + " ");
+                            }
+                            thisSlot = nextSlot;
+                            j++;
+                        }
+                        foundMatch = true;
+                        break;
+                    }
+                }
+                if (foundMatch == false) {
+                    System.out.println("Weird. This shouldn't happen: " + location);
+                    System.out.println("Melody data: " + oneMeasureMelodyData);
+                }
+
+                if (notate.getSelectedIndex() == 0) /*head*/ {
+                    melodyToWrite = "Head " + exactMelody;
+                } else {
+                    melodyToWrite = "Chorus" + (notate.getSelectedIndex() + 1) + " " + exactMelody;
+                }
+
+                ChordPart chordProg = notate.getChordProg().extract(location, location + slotsPerSection - 1);
+                relativePitchMelody = NoteConverter.melStringToRelativePitch(slotsPerSection, chordProg, exactMelody);
+                finalProduction = "(rule (Seg"
+                        + measureWindow
+                        + ") "
+                        + production
+                        + " ) "
+                        + "(Xnotation "
+                        + relativePitchMelody
+                        + ") "
+                        + "(Brick-type "
+                        + brickType
+                        + ") "
+                        + melodyToWrite
+                        + " "
+                        + chords
+                        + "\n";
+                out.write(finalProduction);
+
+
+            }
+            out.close();
+        } catch (IOException e) {
+            System.out.println("IO EXCEPTION! " + e.toString());
+        }
+
+        return finalProduction;
+
+    }
+
+    /**Method to write the user's data (stored in the My.rhythms file) to the outWriter,
+     * which is used to create the grammar and clusters. Basically what makes us learn
+     * a grammar with user data.
+     *
+     * @throws IOException
+     */
+    private void writeUserRuleStrings() throws IOException {
+        BufferedWriter out = new BufferedWriter(windowProductionsWriter);
+        String userRhythmsFileName = Preferences.getPreference(Preferences.MY_RHYTHMS_FILE);
+        String userRhythmsFilePath = ImproVisor.getRhythmClusterDirectory().toString() + "/" + userRhythmsFileName;
+        ArrayList<Polylist> userRuleStringPL = UserRhythmSelecterDialog.readInRuleStringsFromFile(userRhythmsFilePath);
+        for (int i = 0; i < userRuleStringPL.size(); i++) {
+            Polylist ruleStringPL = userRuleStringPL.get(i);
+            //skip userRuleString tag
+            ruleStringPL = (Polylist) ruleStringPL.rest();
+            String ruleString = ruleStringPL.toStringSansParens();//add newline
+            out.write(ruleString + "\n");
+        }
+
+        out.close();
+
+    }
+
+    /**Method to take get the exact melody String from a User Melody
+     * used to create ruleString so that we can make a dataPoint for the user
+     *
+     * @param measureWindow - length of a measure in terms of beats
+     * @param production - abstract Melody represented as string
+     * @param location - start index of user's melody part in notate's leadsheet
+     * @return the exactMelody String as represented in a ruleString
+     */
+    public String getExactMelody(int measureWindow, String production, int location) {
+        int slotsPerSection = measureWindow * BEAT;
+        //System.out.println("measureWindow: " + measureWindow + " Beat: " + BEAT + " slotsPerSection: " + slotsPerSection);
+
+
+        String melodyToWrite;
+        String relativePitchMelody;
+        String exactMelody = production;
+        String[] splitMel;
+        boolean foundMatch = false;
+
+
+        melodyData = notate.getMelodyData(notate.getSelectedIndex());//melody data is all of the data for the ENTIRE leadsheet
+        //We later find the melody data section corresponding to location
+
+        for (int i = 0; i < melodyData.size(); i++) {
+            splitMel = melodyData.get(i).split(" ");
+
+
+            if (splitMel[0].equals(Integer.toString(location))) { //we've located our production's data in our melody data
+                exactMelody = melodyData.get(i); //the melody data is in small (1 measure) fixed-length strips
+                int j = i; //starting at this strip, we'll see if we need to add more strips
+                //(to match the length of our production)
+                int exactMelodyLength = 0;
+                if (j < melodyData.size() - 1) {
+                    String[] splitNextMel = melodyData.get(j + 1).split(" ");
+                    int nextSlot = Integer.parseInt(splitNextMel[0]);
+                    exactMelodyLength = nextSlot - location;
+                }
+                int thisSlot = location; //starting slot of the most recently examined strip of data
+
+                //while the total amount of melody data we've gone through is less than the amount of data in our production
+                while (j < melodyData.size() - 1 && exactMelodyLength < slotsPerSection) {
+                    String[] splitNextMel = melodyData.get(j + 1).split(" ");
+                    int nextSlot = Integer.parseInt(splitNextMel[0]);
+                    exactMelodyLength += nextSlot - thisSlot; //we're adding another measure's worth of data onto our exact melody
+                    for (int k = 1; k < splitNextMel.length; k++) { //tack on the melody data for the next measure-length strip to exact melody
+                        exactMelody = exactMelody.concat(splitNextMel[k] + " ");
+                    }
+                    thisSlot = nextSlot;
+                    j++;
+                }
+                foundMatch = true;
+                break;
+            }
+        }
+
+        return exactMelody;
+    }
+
+    //add the production to the grammar file
+    public void addProduction(String production, int measureWindow, double prob) //formerly private
+    {
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(
+                    notate.getGrammarFileName(), true));
+            out.write(
+                    "(rule (Seg"
+                            + measureWindow
+                            + ") "
+                            + production
+                            + " "
+                            + prob
+                            + ") \n");
+            out.close();
+        } catch (IOException e) {
+            System.out.println("IO EXCEPTION!" + e.toString());
+        }
+    }
+
+    public String addMeasureToAbstractMelody(int selStart,
+                                             int measureWindow,
+                                             boolean isSongStart,
+                                             boolean writeChords) {
+        //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
+        int slotsPerSection = BEAT * measureWindow;
+        //boolean isSongStart = (selStart == 0);
+        int selEnd = selStart + slotsPerSection;
+        MelodyPart part = notate.getCurrentMelodyPart().copy();
+
+        if (part.melodyIsEmpty(selStart, slotsPerSection)) {
+            //if this is empty, the last measure is empty,
+            //and the rest of the chorus is empty, return null
+            if (part.getFreeSlotsFromEnd() >= (part.size() - selEnd)
+                    && part.melodyIsEmpty(selStart - slotsPerSection, slotsPerSection)) {
+                return null;
+            } //otherwise return a section of rests
+            else {
+                StringBuilder sb = new StringBuilder();
+                Note n = new Note(72, 1);
+                n.getDurationString(sb, slotsPerSection);
+                String returnString = "((slope 0 0 R" + sb.substring(1) + "))";
+                if (isSongStart) {
+                    returnString = returnString.concat("STARTER");
+                }
+                return returnString;
+            }
+        }
+
+        int current = selStart;
+
+        Polylist rhythmString = new Polylist();
+
+        //pitches of notes in measure not including rests
+        ArrayList<Integer> notes = new ArrayList<Integer>();
+
+        boolean tiedAtStart = false, tiedAtEnd = false;
+
+        //untie first note if it is tied from last measure
+        if (part.getPrevNote(current) != null
+                && part.getPrevNote(current).getRhythmValue() > current - part.getPrevIndex(current)) {
+
+            tiedAtStart = true;
+
+            //untie and set the previous note
+            Note untiedNote = part.getPrevNote(current).copy();
+            int originalRhythmVal = untiedNote.getRhythmValue();
+            int rhythmVal = slotsPerSection - part.getPrevIndex(current) % slotsPerSection;
+            untiedNote.setRhythmValue(rhythmVal);
+            part.setNote(part.getPrevIndex(current), untiedNote);
+
+            //set the current note
+            rhythmVal = originalRhythmVal - rhythmVal;
+            Note currNote = part.getPrevNote(current).copy();
+            currNote.setRhythmValue(rhythmVal);
+            part.setNote(current, currNote);
+        }
+
+        if (part.getPrevNote(selEnd) != null) {
+            //untie notes at end of measure and beginning of next measure
+            if (part.getPrevNote(selEnd).getRhythmValue() > selEnd - part.getPrevIndex(
+                    selEnd)) {
+                tiedAtEnd = true;
+                int tracker = part.getPrevIndex(selEnd);
+                Note untiedNote = part.getNote(tracker).copy();
+                int originalRhythmVal = untiedNote.getRhythmValue();
+                int rhythmVal = slotsPerSection - (tracker % slotsPerSection);
+                untiedNote.setRhythmValue(rhythmVal);
+                part.setNote(tracker, untiedNote);
+                int secondRhythmVal = originalRhythmVal - rhythmVal;
+                untiedNote = part.getNote(tracker).copy();
+                untiedNote.setRhythmValue(secondRhythmVal);
+                part.setNote(selEnd, untiedNote);
+            }
+        }
+
+        if (part.getPrevNote(selStart + 1) != null) {
+            if ((part.getPrevIndex(selStart + 1) != selStart)
+                    && !(part.getPrevNote(selStart + 1).isRest())) {
+                return null;
+            }
+        }
+
+        while (current < selEnd) {
+
+            //if the current note is a null note, make it a rest
+            if (part.getNote(current) == null) {
+                int next = part.getNextIndex(current);
+                Note n = Note.makeRest(next - current);
+                part.setNote(current, n);
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            //FIX: Suspicious that value is not used.
+            int value = part.getNote(current).getDurationString(sb, part.getNote(
+                    current).getRhythmValue());
+
+            int pitch = part.getNote(current).getPitch();
+
+            if (part.getNote(current).isRest()) {
+                rhythmString = rhythmString.cons("R" + sb.substring(1));
+            } else {
+
+                //add pitch to notes
+                notes.add(pitch);
+                //get note type
+                char notetype;
+                int[] notetone = lickgen.getNoteTypes(current, pitch, pitch,
+                        notate.getChordProg());
+                switch (notetone[0]) {
+                    case LickGen.CHORD:
+                        notetype = 'C';
+                        break;
+                    case LickGen.COLOR:
+                        notetype = 'L';
+                        break;
+                    default:
+                        notetype = 'X';
+                        break;
+                }
+                if (notetype == 'X' && part.getNextNote(current) != null) {
+
+                    int nextPitch = part.getNextNote(current).getPitch();
+                    int nextIndex = part.getNextIndex(current);
+                    if (nextIndex <= selEnd) {
+                        int pitchdiff = nextPitch - pitch;
+                        if (Math.abs(pitchdiff) == 1) {
+                            notetype = 'A';
+                        }
+                    }
+                }
+                rhythmString = rhythmString.cons(notetype + sb.substring(1));
+            }
+
+            current = part.getNextIndex(current);
+
+        }
+
+        rhythmString = rhythmString.reverse();
+
+        //add in goal notes to the rhythmString
+
+        //process intervals
+        ArrayList<Integer> intervals = new ArrayList<Integer>();
+        intervals.add(0);
+        for (int i = 1; i < notes.size(); i++) {
+            intervals.add(notes.get(i) - notes.get(i - 1));
+        }
+
+        //process slopes
+        ArrayList<int[]> slopes = new ArrayList<int[]>();
+        int[] slope = new int[3];
+        int tracker = 0;
+
+        //get the slope from the note before this section to the first note in the measure
+        int prevIndex = part.getPrevIndex(selStart);
+        Note lastNote = part.getNote(prevIndex);
+        while (lastNote != null && lastNote.isRest()) {
+            prevIndex = part.getPrevIndex(prevIndex);
+            lastNote = part.getNote(prevIndex);
+        }
+        int lastpitch = 0;
+        if (lastNote != null && !lastNote.isRest()) {
+            lastpitch = lastNote.getPitch();
+        }
+        int pitch = notes.get(0);
+        int pitchChange;
+        if (lastpitch == 0) {
+            pitchChange = 0;
+        } else {
+            pitchChange = pitch - lastpitch;
+        }
+        int minPitchChange = 0, maxPitchChange = 0;
+        //avoid random notes and repeated notes
+        if (pitchChange != 0) {
+            if (pitchChange == 1) {
+                minPitchChange = 1;
+                maxPitchChange = 2;
+            } else if (pitchChange == -1) {
+                minPitchChange = -2;
+                maxPitchChange = -1;
+            } else {
+                minPitchChange = pitchChange - 1;
+                maxPitchChange = pitchChange + 1;
+            }
+        }
+
+        //if there is only 1 note, return it with its slope
+        if (intervals.size() <= 1) {
+
+            String rhythm = rhythmString.toString();
+            rhythm = rhythm.substring(1, rhythm.length() - 1);
+
+            //handle case of only 1 note
+            if (rhythm.equals("")) {
+                char thisPitch = lickgen.getNoteType(selStart, notes.get(0), notes.get(
+                        0), notate.getChordProg());
+                String len = Note.getDurationString(slotsPerSection);
+                rhythm = thisPitch + len;
+            }
+            String returnString = "((slope "
+                    + minPitchChange + " "
+                    + maxPitchChange + " "
+                    + rhythm + "))";
+            if (isSongStart) {
+                returnString = returnString.concat("STARTER");
+            }
+            if (tiedAtEnd) {
+                returnString = returnString.concat(" ENDTIED");
+            }
+            if (tiedAtStart) {
+                returnString = returnString.concat(" STARTTIED");
+            }
+            return returnString;
+        }
+
+        for (int i = 0; i < intervals.size(); i++) {
+            tracker = i;
+            if (intervals.get(i) != 0) {
+                i = intervals.size();
+            }
+        }
+
+        //direction is -1 if slope is going down, 0 for repeated note, 1 for up
+        int direction = 0;
+        if (intervals.get(tracker) > 0) {
+            direction = 1;
+        } else if (intervals.get(tracker) < 0) {
+            direction = -1;
+        }
+        //initialize stuff - first note is in its own slope
+        slope[0] = minPitchChange;
+        slope[1] = maxPitchChange;
+        slope[2] = 1;
+        slopes.add(slope.clone());
+
+        slope[0] = intervals.get(1);
+        slope[1] = intervals.get(1);
+        slope[2] = 0;
+        for (int i = 1; i < intervals.size(); i++) {
+            //slope was going up but not any more
+            if (direction == 1 && intervals.get(i) <= 0) {
+                if (intervals.get(i) == 0) {
+                    direction = 0;
+                } else {
+                    direction = -1;
+                }
+                if (slope[2] != 0) {
+                    slopes.add(slope.clone());
+                }
+
+                slope[0] = intervals.get(i);
+                slope[1] = intervals.get(i);
+                slope[2] = 1;
+                //slope was going down but not any more
+            } else if (direction == -1 && intervals.get(i) >= 0) {
+                if (intervals.get(i) == 0) {
+                    direction = 0;
+                } else {
+                    direction = 1;
+                }
+                if (slope[2] != 0) {
+                    slopes.add(slope.clone());
+                }
+                slope[0] = intervals.get(i);
+                slope[1] = intervals.get(i);
+                slope[2] = 1;
+                //slope was 0 but not any more
+            } else if (direction == 0 && intervals.get(i) != 0) {
+                if (intervals.get(i) > 0) {
+                    direction = 1;
+                } else {
+                    direction = -1;
+                }
+                if (slope[2] != 0) {
+                    slopes.add(slope.clone());
+                }
+                slope[0] = intervals.get(i);
+                slope[1] = intervals.get(i);
+                slope[2] = 1;
+            } else {
+                slope[2]++;
+                if (intervals.get(i) > slope[1]) {
+                    slope[1] = intervals.get(i);
+                }
+                if (intervals.get(i) < slope[0]) {
+                    slope[0] = intervals.get(i);
+                }
+            }
+
+            if (i == intervals.size() - 1) {
+                if (slope[2] != 0) {
+                    slopes.add(slope.clone());
+                }
+            }
+        }
+
+        //add in slopes
+        StringBuilder strbuf = new StringBuilder();
+        strbuf.append("(");
+        Polylist tempString = rhythmString;
+        for (int i = 0; i < slopes.size(); i++) {
+            slope = slopes.get(i);
+            strbuf.append("(slope ");
+            strbuf.append(slope[0]);
+            strbuf.append(" ");
+            strbuf.append(slope[1]);
+            strbuf.append(" ");
+
+            int j = 0;
+            //get all of notes if last slope
+            if (i == slopes.size() - 1) {
+                while (tempString.nonEmpty()) {
+                    strbuf.append(tempString.first().toString());
+                    strbuf.append(" ");
+                    tempString = tempString.rest();
+                }
+            } else {
+                while (j < slope[2]) {
+                    String temp = tempString.first().toString();
+                    strbuf.append(temp);
+                    strbuf.append(" ");
+                    tempString = tempString.rest();
+                    if (temp.charAt(0) != 'R') {
+                        j++;
+                    }
+                }
+            }
+            strbuf.deleteCharAt(strbuf.length() - 1);
+            strbuf.append(")");
+        }
+        strbuf.append(")");
+        //if we are writing to file, write the chords, start data, and tie data
+        {
+
+            //Mark measure as 'songStarter' if it is the first of a song
+            if (isSongStart) {
+                strbuf.append("STARTER");
+            }
+            if (writeChords) {
+                strbuf.append("CHORDS ");
+
+                ChordPart chords = notate.getChordProg()
+                        .extract(selStart,
+                                selStart + slotsPerSection - 1);
+                ArrayList<Unit> chordList = chords.getUnitList();
+                if (chordList.isEmpty()) {
+                    System.out.println("No chords");
+                }
+                for (Unit chordList1 : chordList) {
+                    String nextChord = ((Chord) chordList1).toLeadsheet();
+                    strbuf.append(nextChord);
+                    strbuf.append(" ");
+                }
+            }
+        }
+
+        return strbuf.toString();
     }//GEN-LAST:event_getAbstractMelodyButtonActionPerformed
 
     private void fillMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillMelodyButtonActionPerformed
@@ -6503,102 +5987,87 @@ public void addProduction(String production, int measureWindow, double prob) //f
         fillMelodyFromText(abstractMelodyField.getText());
     }//GEN-LAST:event_fillMelodyButtonActionPerformed
 
-/**
- * Fill an abstract or relative-pitch melody from text, such as acquired from
- * either abstract melody or relative pitch melody field.
- * If the text is not already a Polylist, this will first make a Polylist
- * out of it.
- *
- * @param r
- */
-public void fillMelodyFromText(String r)
-  {
-    r = r.trim();
-    if( r.equals("") )
-      {
-        return; // no text specified
-      }
-    if( r.charAt(0) != '(' )
-      {
-        r = "(".concat(r);
-      }
+    /**
+     * Fill an abstract or relative-pitch melody from text, such as acquired from
+     * either abstract melody or relative pitch melody field.
+     * If the text is not already a Polylist, this will first make a Polylist
+     * out of it.
+     *
+     * @param r
+     */
+    public void fillMelodyFromText(String r) {
+        r = r.trim();
+        if (r.equals("")) {
+            return; // no text specified
+        }
+        if (r.charAt(0) != '(') {
+            r = "(".concat(r);
+        }
 
-    if( r.charAt(r.length() - 1) != ')' )
-      {
-        r = r.concat(")");
-      }
+        if (r.charAt(r.length() - 1) != ')') {
+            r = r.concat(")");
+        }
 
-    setAbstractMelodyField(r);
+        setAbstractMelodyField(r);
 
-    Polylist rhythm = new Polylist();
-    StringReader rhythmReader = new StringReader(r);
-    Tokenizer in = new Tokenizer(rhythmReader);
-    Object ob;
+        Polylist rhythm = new Polylist();
+        StringReader rhythmReader = new StringReader(r);
+        Tokenizer in = new Tokenizer(rhythmReader);
+        Object ob;
 
-    while( (ob = in.nextSexp()) != Tokenizer.eof )
-      {
-        if( ob instanceof Polylist )
-          {
-            rhythm = (Polylist) ob;
-          }
-      }
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob instanceof Polylist) {
+                rhythm = (Polylist) ob;
+            }
+        }
 
-    notate.generateAndPutLick(rhythm);
-  }
+        notate.generateAndPutLick(rhythm);
+    }
 
-public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
-  {
-    r = r.trim();
-    if( r.equals("") )
-      {
-        return new MelodyPart(); // no text specified
-      }
-    if( r.charAt(0) != '(' )
-      {
-        r = "(".concat(r);
-      }
+    public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart) {
+        r = r.trim();
+        if (r.equals("")) {
+            return new MelodyPart(); // no text specified
+        }
+        if (r.charAt(0) != '(') {
+            r = "(".concat(r);
+        }
 
-    if( r.charAt(r.length() - 1) != ')' )
-      {
-        r = r.concat(")");
-      }
+        if (r.charAt(r.length() - 1) != ')') {
+            r = r.concat(")");
+        }
 
-    setAbstractMelodyField(r);
+        setAbstractMelodyField(r);
 
-    Polylist rhythm = new Polylist();
-    StringReader rhythmReader = new StringReader(r);
-    Tokenizer in = new Tokenizer(rhythmReader);
-    Object ob;
+        Polylist rhythm = new Polylist();
+        StringReader rhythmReader = new StringReader(r);
+        Tokenizer in = new Tokenizer(rhythmReader);
+        Object ob;
 
-    while( (ob = in.nextSexp()) != Tokenizer.eof )
-      {
-        if( ob instanceof Polylist )
-          {
-            rhythm = (Polylist) ob;
-          }
-      }
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob instanceof Polylist) {
+                rhythm = (Polylist) ob;
+            }
+        }
 
-    return notate.generateLick(rhythm, chordPart);
-  }
+        return notate.generateLick(rhythm, chordPart);
+    }
 
     private void genRhythmButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_genRhythmButtonActionPerformed
     {//GEN-HEADEREND:event_genRhythmButtonActionPerformed
         verifyTriageFields();
 
-        if( useGrammar )
-          {
+        if (useGrammar) {
             setAbstractMelodyField(
                     lickgen.generateRhythmFromGrammar(0, notate.getTotalSlots()).toString());
-          }
-        else
-          {
+        } else {
             setAbstractMelodyField(lickgen.generateRandomRhythm(totalSlots,
-                                                            minDuration,
-                                                            maxDuration,
-                                                             restProb).toString());
-          }
-        
-        
+                    minDuration,
+                    maxDuration,
+                    restProb).toString());
+        }
+
+
     }//GEN-LAST:event_genRhythmButtonActionPerformed
 
     private void generateLickButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generateLickButtonActionPerformed
@@ -6608,7 +6077,7 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
 
     private void fillRelativePitchMelodyButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_fillRelativePitchMelodyButtonActionPerformed
     {//GEN-HEADEREND:event_fillRelativePitchMelodyButtonActionPerformed
-       fillMelodyFromText(relativeField.getText());
+        fillMelodyFromText(relativeField.getText());
     }//GEN-LAST:event_fillRelativePitchMelodyButtonActionPerformed
 
     private void chooseGrammarButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_chooseGrammarButtonActionPerformed
@@ -6629,7 +6098,7 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
 
     private void motifnessSliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_motifnessSliderCaretPositionChanged
         // TODO add your handling code here:
-    
+
     }//GEN-LAST:event_motifnessSliderCaretPositionChanged
 
     private void motifnessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_motifnessSliderStateChanged
@@ -6642,7 +6111,7 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
     }//GEN-LAST:event_userRhythmCheckBoxActionPerformed
 
     private void rhythmClusterCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhythmClusterCheckboxActionPerformed
-        if (rhythmClusterCheckbox.isSelected()){
+        if (rhythmClusterCheckbox.isSelected()) {
             windowSizeField.setText("16");
             windowSlideField.setText("16");
             useBricksCheckbox.setSelected(false);
@@ -6657,7 +6126,7 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
             windowSizeField.getDocument().addDocumentListener(windowSlideDocListener);
 
             //userRhythmCheckBox.setVisible(true);
-        }else{
+        } else {
             useBricksCheckbox.setSelected(true);
             useBricksCheckbox.setEnabled(true);
             useRelativeBricksCheckbox.setSelected(true);
@@ -6673,70 +6142,65 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
     }//GEN-LAST:event_rhythmClusterCheckboxActionPerformed
 
     private void motifnessGenerationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_motifnessGenerationSliderStateChanged
-        
-        double motifProbability     = motifnessGenerationSlider.getValue() / 100.0;
-        double notMotifProbability  = 1.0 - motifProbability;
-        
+
+        double motifProbability = motifnessGenerationSlider.getValue() / 100.0;
+        double notMotifProbability = 1.0 - motifProbability;
+
 //        System.err.println("Motif Probability: " + Y);
-        
-        
+
+
         String useMotifs = "UseMotif";
-        
+
 //        System.out.println("Grammar File Name: " + notate.getGrammarFileName());
-        
+
         Grammar g = new Grammar(notate.getGrammarFileName());
-        
+
 //        System.out.println("About to load grammar");
         g.loadGrammar(notate.getGrammarFileName());
-        
+
 //        System.out.println(g.getRules());
 //        System.out.println("loaded grammar");
         Polylist rules = g.getRules();
         Polylist finalRules = Polylist.nil;
-        
-        for(Polylist R = rules; R.nonEmpty(); R = R.rest()){
+
+        for (Polylist R = rules; R.nonEmpty(); R = R.rest()) {
 //            System.out.println(R.flatten());
-            if(((Polylist) R.first()).member(Polylist.list("P_motif")) && ((Polylist) R.first()).flatten().member(useMotifs)){
+            if (((Polylist) R.first()).member(Polylist.list("P_motif")) && ((Polylist) R.first()).flatten().member(useMotifs)) {
 //                System.out.println("Changed motif probability...");
                 R.setFirst(((Polylist) R.first()).replaceLast(motifProbability));
             } else if (((Polylist) R.first()).member(Polylist.list("P_motif")) && ((Polylist) R.first()).flatten().member("P")) {
 //                System.out.println("Changed normal grammar probability...");
                 R.setFirst(((Polylist) R.first()).replaceLast(notMotifProbability));
             }
-            
+
             finalRules.addToEnd(R.first());
-            
+
         }
-        
+
         g.saveGrammar(notate.getGrammarFileName());
 //        System.out.println("saved grammar");
         notate.setGrammar(notate.getGrammarName());
 //        System.out.println("reloaded grammar");
 
     }//GEN-LAST:event_motifnessGenerationSliderStateChanged
-                                             
-    private void setRhythmClusterFilenameInPreferences(String rhythmClusterFilename){
+
+    private void setRhythmClusterFilenameInPreferences(String rhythmClusterFilename) {
         Preferences.setPreference(Preferences.CLUSTER_FILENAME, rhythmClusterFilename);
     }
 
-    
-public void setGrammarName(String grammarName)
-{
-    currentGrammarLabel.setText("Grammar: " + grammarName);
-}
 
-private void updateUseSoloist()
-  {
-    if( useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded() )
-      {
-        setLickGenStatus("Using Soloist file");
-      }
-    else
-      {
-        useSoloistCheckBox.setSelected(false);
-        setLickGenStatus("Non-Matching Soloist file or No Soloist file exists");
-      }
-  }
+    public void setGrammarName(String grammarName) {
+        currentGrammarLabel.setText("Grammar: " + grammarName);
+    }
+
+    private void updateUseSoloist() {
+        if (useSoloistCheckBox.isSelected() && lickgen.soloistIsLoaded()) {
+            setLickGenStatus("Using Soloist file");
+        } else {
+            useSoloistCheckBox.setSelected(false);
+            setLickGenStatus("Non-Matching Soloist file or No Soloist file exists");
+        }
+    }
 
     // Return min duration text field
     public int getMinDuration() {
@@ -6834,6 +6298,7 @@ private void updateUseSoloist()
         totalSlots = (int) (BEAT * totalBeats);
         notate.getCurrentStave().repaint();
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton FillProbsButton;
     private javax.swing.JTextField MarkovLengthField;
@@ -7045,25 +6510,25 @@ private void updateUseSoloist()
         String b = Integer.toString((int) beats);
 
     }
-    
+
     public void setUseRelative(boolean value) {
         useRelativeWindowsCheckbox.setSelected(value);
     }
-    
+
     public void setUseBricks(boolean value) {
         useBricksCheckbox.setSelected(value);
     }
-    
+
     public void setUseMarkov(boolean value) {
         useMarkovCheckbox.setSelected(value);
     }
-    
-    public void setUseWindows(boolean value ) {
+
+    public void setUseWindows(boolean value) {
         //useWindowsCheckbox.setSelected(value);
         useWindowsCheckbox.setSelected(value);
     }
-    
-    public void setUseMotifs(boolean value){
+
+    public void setUseMotifs(boolean value) {
         useMotifsCheckbox.setSelected(value);
     }
 
@@ -7078,13 +6543,13 @@ private void updateUseSoloist()
     public boolean rectifySelected() {
         return rectifyCheckBox.isSelected();
     }
-    
-    public boolean [] getRectifyOptions(){
-        boolean [] options = 
-          {chordBox.isSelected(), 
-           colorBox.isSelected(), 
-           approachBox.isSelected(),
-           avoidRepeatsCheckbox.isSelected()};
+
+    public boolean[] getRectifyOptions() {
+        boolean[] options =
+                {chordBox.isSelected(),
+                        colorBox.isSelected(),
+                        approachBox.isSelected(),
+                        avoidRepeatsCheckbox.isSelected()};
         return options;
     }
 
@@ -7108,15 +6573,15 @@ private void updateUseSoloist()
     public void setGap(double value) {
         gapField.setText("" + value);
     }
-    
+
     public StringWriter getBrickProductionsWriter() {
         return brickProductionsWriter;
     }
-    
+
     public StringWriter getWindowProductionsWriter() {
         return windowProductionsWriter;
     }
-    
+
     public boolean getUseWindows() {
         return useWindowsCheckbox.isSelected();
     }
@@ -7140,52 +6605,50 @@ private void updateUseSoloist()
     public boolean getUseRelativeWindows() {
         return useRelativeWindowsCheckbox.isSelected();
     }
-    
+
     public boolean getUseAbstractWindows() {
         return useAbstractWindowsCheckbox.isSelected();
     }
-    
+
     public boolean getUseMarkov() {
         return useMarkovCheckbox.isSelected();
     }
-    
+
     public boolean getUseBricks() {
-        if(rhythmClusterCheckbox.isSelected()){
+        if (rhythmClusterCheckbox.isSelected()) {
             return false;
         }
         return useBricksCheckbox.isSelected();
     }
-    
+
     public boolean getUseRelativeBricks() {
         return useRelativeBricksCheckbox.isSelected();
     }
-    
+
     public boolean getUseAbstractBricks() {
         return useAbstractBricksCheckbox.isSelected();
     }
-   
 
-public void redoScales()
-  {
-    DefaultComboBoxModel dcbm = (DefaultComboBoxModel) scaleComboBox.getModel();
 
-    dcbm.removeAllElements();
+    public void redoScales() {
+        DefaultComboBoxModel dcbm = (DefaultComboBoxModel) scaleComboBox.getModel();
 
-    Polylist scales = Advisor.getAllScales();
+        dcbm.removeAllElements();
 
-    dcbm.addElement("None");
+        Polylist scales = Advisor.getAllScales();
 
-    dcbm.addElement(FIRST_SCALE);
+        dcbm.addElement("None");
 
-    while( scales.nonEmpty() )
-      {
-        Polylist scale = (Polylist) scales.first();
+        dcbm.addElement(FIRST_SCALE);
 
-        dcbm.addElement(scale.first());
+        while (scales.nonEmpty()) {
+            Polylist scale = (Polylist) scales.first();
 
-        scales = scales.rest();
-      }
-  }
+            dcbm.addElement(scale.first());
+
+            scales = scales.rest();
+        }
+    }
 
 
     public void toGrammar() {
@@ -7194,12 +6657,12 @@ public void redoScales()
         File f = new File(outFile);
         MetricListFactory metricListFactory;
         setLickGenStatus("Writing productions to grammar file: " + outFile);
-        if(rhythmClusterCheckbox.isSelected()){
+        if (rhythmClusterCheckbox.isSelected()) {
             metricListFactory = new RhythmMetricListFactory();
-        }else{
+        } else {
             metricListFactory = new DefaultMetricListFactory();
         }
-        
+
         if (getUseBricks()) {
             imp.generalCluster.CreateBrickGrammar.create(notate.getChordProg(),
                     //inFile,
@@ -7211,41 +6674,39 @@ public void redoScales()
                     notate,
                     metricListFactory);
             brickProductionsWriter.getBuffer().setLength(0); //reset for next usage
-        } 
+        }
         if (getUseWindows()) {
             try {
-                
-               if(rhythmClusterCheckbox.isSelected()){
-                   imp.generalCluster.CreateGrammar.setCreateClusterFileFlag(true);
-                   imp.generalCluster.CreateGrammar.setClusterWindowSize(getWindowSize());
-               }else{
-                   imp.generalCluster.CreateGrammar.setCreateClusterFileFlag(false);
-               }
-               
-                           
-                    
-        
-                if(userRhythmCheckBox.isSelected()){
+
+                if (rhythmClusterCheckbox.isSelected()) {
+                    imp.generalCluster.CreateGrammar.setCreateClusterFileFlag(true);
+                    imp.generalCluster.CreateGrammar.setClusterWindowSize(getWindowSize());
+                } else {
+                    imp.generalCluster.CreateGrammar.setCreateClusterFileFlag(false);
+                }
+
+
+                if (userRhythmCheckBox.isSelected()) {
                     try {
                         writeUserRuleStrings();
-         
+
                     } catch (IOException ex) {
                         Logger.getLogger(LickgenFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
-                
+
                 imp.generalCluster.CreateGrammar.create(notate.getChordProg(),
-                    //inFile,
-                    windowProductionsWriter,
-                    outFile,
-                    getNumClusterReps(),
-                    getUseMarkov(),
-                    getMarkovFieldLength(),
-                    getUseRelativeWindows(),
-                    getUseAbstractWindows(),
-                    notate,
-                    metricListFactory);
+                        //inFile,
+                        windowProductionsWriter,
+                        outFile,
+                        getNumClusterReps(),
+                        getUseMarkov(),
+                        getMarkovFieldLength(),
+                        getUseRelativeWindows(),
+                        getUseAbstractWindows(),
+                        notate,
+                        metricListFactory);
             } catch (IOException ex) {
                 Logger.getLogger(LickgenFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -7256,73 +6717,61 @@ public void redoScales()
 
         notate.refreshGrammarEditor();
     }
-    
-private static final LogDialog logDialog = new LogDialog(false);
 
-public void openLog()
-  {
-    logDialog.setVisible(true);
-  }
+    private static final LogDialog logDialog = new LogDialog(false);
 
-public void setLickGenStatus(String string)
-  {
-    if( logDialog != null )
-      {
-        logDialog.append(string + "\n");
-      }
-  }
-
-public void openGrammar(String fileName)
-  {
-    File directory = ImproVisor.getGrammarDirectory();
-    
-    File grammarFile = new File(directory, fileName);
-
-    lickgen.loadGrammar(grammarFile.getAbsolutePath());
-  }
-
-private void initializeGrammarLearning()
-{
-    if( emptyBaseLearningButton.isSelected() )
-    {
-        openGrammar("_empty.grammar");
+    public void openLog() {
+        logDialog.setVisible(true);
     }
-    else if ( emptyMotifBaseLearningButton.isSelected() )
-    {
-        openGrammar("_emptyMotif.grammar");
-    }
-    else
-    {
-        notate.openGrammar();
-    }
-  notate.saveGrammarAs();
-}
 
-/**
- * Document Listener for changes to window size, used to change window slide property
- * so that slide and size are always the same for cluster generation
- */
+    public void setLickGenStatus(String string) {
+        if (logDialog != null) {
+            logDialog.append(string + "\n");
+        }
+    }
+
+    public void openGrammar(String fileName) {
+        File directory = ImproVisor.getGrammarDirectory();
+
+        File grammarFile = new File(directory, fileName);
+
+        lickgen.loadGrammar(grammarFile.getAbsolutePath());
+    }
+
+    private void initializeGrammarLearning() {
+        if (emptyBaseLearningButton.isSelected()) {
+            openGrammar("_empty.grammar");
+        } else if (emptyMotifBaseLearningButton.isSelected()) {
+            openGrammar("_emptyMotif.grammar");
+        } else {
+            notate.openGrammar();
+        }
+        notate.saveGrammarAs();
+    }
+
+    /**
+     * Document Listener for changes to window size, used to change window slide property
+     * so that slide and size are always the same for cluster generation
+     */
     private void setUpWindowSlideDocListener() {
-        windowSlideDocListener = new DocumentListener(){
-                  @Override
-                  public void insertUpdate(DocumentEvent e) {
-                      windowSlideField.setText(windowSizeField.getText());
-                    }
+        windowSlideDocListener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                windowSlideField.setText(windowSizeField.getText());
+            }
 
-                  @Override
-                  public void removeUpdate(DocumentEvent e) {
-                      windowSlideField.setText(windowSizeField.getText());                  
-                  }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                windowSlideField.setText(windowSizeField.getText());
+            }
 
-                  @Override
-                  public void changedUpdate(DocumentEvent e) {
-                      windowSlideField.setText(windowSizeField.getText());
-                  }
-                    
-               };
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                windowSlideField.setText(windowSizeField.getText());
+            }
+
+        };
     }
-
-
 
 
 }

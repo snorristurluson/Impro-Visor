@@ -22,70 +22,58 @@ package imp.style.pianoroll;
 import imp.style.stylePatterns.ChordPatternElement;
 
 /**
- *
  * @author Carli Lessard
  */
-public class PianoRollChordBar extends PianoRollBar
-{
-    
+public class PianoRollChordBar extends PianoRollBar {
+
     private ChordPatternElement element;
-    
-    public PianoRollChordBar(int startSlot, ChordPatternElement element, int volume, 
-            boolean volumeImplied, PianoRoll pianoRoll)
-    {
+
+    public PianoRollChordBar(int startSlot, ChordPatternElement element, int volume,
+                             boolean volumeImplied, PianoRoll pianoRoll) {
         super(PianoRoll.CHORD_ROW, startSlot, element.getSlots(), PianoRoll.CHORDCOLOR,
                 PianoRoll.BARBORDERCOLOR, volume, volumeImplied, pianoRoll.getGrid(), pianoRoll);
         this.element = element;
     }
-    
-    public PianoRollChordBar(PianoRollChordBar bar)
-    {
+
+    public PianoRollChordBar(PianoRollChordBar bar) {
         this(bar.startSlot, bar.element, bar.volume, bar.volumeImplied, bar.pianoRoll);
     }
-    
+
     @Override
-    public PianoRollChordBar copy()
-    {
+    public PianoRollChordBar copy() {
         return new PianoRollChordBar(this);
     }
-    
-    public void setChordParameters(ChordPatternElement.ChordNoteType noteType, int duration, int degree)
-    {
+
+    public void setChordParameters(ChordPatternElement.ChordNoteType noteType, int duration, int degree) {
         element.setNoteType(noteType);
         element.setDegree(degree);
         setNumSlots(duration);
     }
-    
+
     @Override
-    public void setNumSlots(int slots)
-    {
+    public void setNumSlots(int slots) {
         super.setNumSlots(slots);
         element.setDuration(slots);
     }
-    
-    public ChordPatternElement.ChordNoteType getNoteType()
-    {
+
+    public ChordPatternElement.ChordNoteType getNoteType() {
         return element.getNoteType();
     }
-    
-    public int getDegree()
-    {
+
+    public int getDegree() {
         return element.getDegree();
     }
-    
+
     @Override
-    public Object getText()
-    {
+    public Object getText() {
         return element.getText();
     }
-    
-    public int getSlots()
-    {
+
+    public int getSlots() {
         return element.getSlots();
     }
-    
-    public ChordPatternElement getElementCopy()
-    {
+
+    public ChordPatternElement getElementCopy() {
         return element.getCopy();
     }
 }

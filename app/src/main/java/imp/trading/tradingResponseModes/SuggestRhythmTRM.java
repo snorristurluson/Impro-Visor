@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,34 +29,34 @@ import polya.Polylist;
  *
  * @author cssummer17
  */
-public class SuggestRhythmTRM extends RhythmHelperTRM{
+public class SuggestRhythmTRM extends RhythmHelperTRM {
     //private int tradeCounter;
-    
-    
+
+
     public SuggestRhythmTRM(String message) {
         super(message);
         //System.out.println("creating a suggestRhythmTRM......");
     }
 
-    
+
     @Override
-    public MelodyPart generateResponse(){
+    public MelodyPart generateResponse() {
         tradeCounter++;
         //System.out.println("\n\n\nin generateResponse for suggest rhythm");
-        
+
         MelodyPart response = getTradingResponse();
-        
-        if(tradeCounter % 5==0){
+
+        if (tradeCounter % 5 == 0) {
             adjustClusters(tradeCounter);
         }
         return response;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return "Rhythm Helper";
     }
 
-//    @Override
+    //    @Override
     protected Polylist getRhythmFromCluster(RhythmCluster closestCluster, DataPoint d) {
         return closestCluster.getRandomRhythm();
     }
@@ -64,7 +64,7 @@ public class SuggestRhythmTRM extends RhythmHelperTRM{
     @Override
     protected Polylist getRhythmPolylist(RhythmCluster closestCluster, DataPoint d) {
         return getRhythmFromCluster(closestCluster, d);
-}
+    }
 
     @Override
     protected MelodyPart createResponseFromRhythmTemplate(MelodyPart rhythmTemplate) {
@@ -76,14 +76,14 @@ public class SuggestRhythmTRM extends RhythmHelperTRM{
     @Override
     protected MelodyPart getRhythmTemplate(String rhythmString, RhythmCluster bestFit) {
         MelodyPart rhythmTemplate = new MelodyPart(rhythmString);
-        if(rhythmTemplate.getEndTime() < tradeLengthInSlots){
-           rhythmTemplate = extendRhythmTemplate(rhythmTemplate, bestFit);
+        if (rhythmTemplate.getEndTime() < tradeLengthInSlots) {
+            rhythmTemplate = extendRhythmTemplate(rhythmTemplate, bestFit);
         }
 
-        if(rhythmTemplate.getEndTime() > tradeLengthInSlots){
+        if (rhythmTemplate.getEndTime() > tradeLengthInSlots) {
             rhythmTemplate = truncateRhythmTemplate(rhythmTemplate);
         }
-        
+
         return rhythmTemplate;
     }
 }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -30,7 +30,7 @@ import imp.util.Trace;
  * @see         CommandManager
  * @see         Chord
  * @see         ChordPart
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class SetChordCommand implements Command, Constants {
 
@@ -48,7 +48,7 @@ public class SetChordCommand implements Command, Constants {
      * the index at which to place the Chord
      */
     private int slotIndex;
-    
+
     /**
      * true since this Command can be undone
      */
@@ -58,7 +58,7 @@ public class SetChordCommand implements Command, Constants {
      * the Chord that used to be at the specified position
      */
     private Chord oldChord;
-    
+
     /**
      * Creates a new Command that can set the Chord in a ChordPart at the
      * specified indices.

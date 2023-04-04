@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -37,22 +37,22 @@ public class RectifyPostprocessor implements ProbabilityPostprocessor {
     private int position;
     private boolean useColor;
     private int offset;
-    
-    public RectifyPostprocessor(){
+
+    public RectifyPostprocessor() {
         this(0);
     }
-    
-    public RectifyPostprocessor(int lowBound){
+
+    public RectifyPostprocessor(int lowBound) {
         offset = lowBound;
     }
-    
-    
-    public void start(ChordPart c, boolean colorTones){
+
+
+    public void start(ChordPart c, boolean colorTones) {
         chords = c;
         position = 0;
         useColor = colorTones;
     }
-    
+
     @Override
     public AVector postprocess(AVector probabilities) {
         Chord curChord = chords.getCurrentChord(position);
@@ -60,21 +60,21 @@ public class RectifyPostprocessor implements ProbabilityPostprocessor {
         String root = curChord.getRoot();
 
         Polylist usableTones = form.getSpell(root);
-        if(useColor)
+        if (useColor)
             usableTones = usableTones.append(form.getColor(root));
 
-        for(int i=0; i<12; i++){
-            NoteSymbol sym = NoteSymbol.makeNoteSymbol((i+offset)%12);
+        for (int i = 0; i < 12; i++) {
+            NoteSymbol sym = NoteSymbol.makeNoteSymbol((i + offset) % 12);
             boolean allowed = sym.enhMember(usableTones);
-            if(!allowed){
-                for(int pidx=2+i; pidx<probabilities.length(); pidx+=12){
+            if (!allowed) {
+                for (int pidx = 2 + i; pidx < probabilities.length(); pidx += 12) {
                     probabilities.set(pidx, 0.0);
                 }
             }
         }
-        
+
         position += Constants.RESOLUTION_SCALAR;
-        
+
         return probabilities;
     }
 }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,6 +23,7 @@ package imp.com;
 import imp.RecentFiles;
 import imp.data.Leadsheet;
 import imp.data.Score;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -31,7 +32,7 @@ import java.io.FileWriter;
  * A Command that saves a Score into a File.
  */
 public class SaveLeadsheetCommand implements Command {
-    
+
     /**
      * reference to Command Manager
      */
@@ -56,9 +57,9 @@ public class SaveLeadsheetCommand implements Command {
      * stores error if exception during save
      */
     Exception error = null;
-    
+
     private boolean saveRoadMap;
-    
+
     /**
      * Creates a new Command that can save a Score to a File.
      * @param file      the File to save to
@@ -74,7 +75,7 @@ public class SaveLeadsheetCommand implements Command {
     public SaveLeadsheetCommand(File file, Score score, boolean saveRoadMap) {
         this(file, score, null, saveRoadMap);
     }
-    
+
     /**
      * Saves the Score to the File.
      */
@@ -86,15 +87,15 @@ public class SaveLeadsheetCommand implements Command {
             RecentFiles recent = new RecentFiles(file.getAbsolutePath());
             recent.writeNewFile();
 //            ProgramStatus.setStatus("Lead sheet saved.");
-            if(cm != null)
+            if (cm != null)
                 cm.changedSinceLastSave(false);
-        } catch(Exception e) {
+        } catch (Exception e) {
             error = e;
-            
+
             e.printStackTrace();
         }
     }
-    
+
     public Exception getError() {
         return error;
     }
@@ -103,8 +104,8 @@ public class SaveLeadsheetCommand implements Command {
      * Undo unsupported for SaveLeadsheetCommand.
      */
     public void undo() {
-        throw new 
-            UnsupportedOperationException("Undo unsupported for SaveLeadsheet.");
+        throw new
+                UnsupportedOperationException("Undo unsupported for SaveLeadsheet.");
     }
 
     /**
@@ -112,9 +113,9 @@ public class SaveLeadsheetCommand implements Command {
      */
     public void redo() {
         throw new
-            UnsupportedOperationException("Redo unsupported for SaveLeadsheet.");
+                UnsupportedOperationException("Redo unsupported for SaveLeadsheet.");
     }
-    
+
     public boolean isUndoable() {
         return undoable;
     }

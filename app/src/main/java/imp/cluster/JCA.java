@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -25,14 +25,13 @@ import java.util.Vector;
 
 /**
 
-This class is the entry point for constructing Cluster Analysis objects.
-Each instance of JCA object is associated with one or more clusters,
-and a Vector of DataPoint objects. The JCA and DataPoint classes are
-the only classes available from other packages.
-@see DataPoint
-
+ This class is the entry point for constructing Cluster Analysis objects.
+ Each instance of JCA object is associated with one or more clusters,
+ and a Vector of DataPoint objects. The JCA and DataPoint classes are
+ the only classes available from other packages.
+ @see DataPoint
  **/
-public class JCA implements Serializable{
+public class JCA implements Serializable {
 
     private Cluster[] clusters;
     private int miter;
@@ -44,7 +43,7 @@ public class JCA implements Serializable{
         for (int i = 0; i < k; i++) {
             clusters[i] = new Cluster("Cluster" + i);
         }
-        this.miter = iter/5;
+        this.miter = iter / 5;
         this.mDataPoints = dataPoints;
     }
 
@@ -103,7 +102,7 @@ public class JCA implements Serializable{
                             tempCluster = clusters[l];
                             matchFoundFlag = true;
                         }
-                    //if statement - Check whether the Last EuDt is > Present EuDt
+                        //if statement - Check whether the Last EuDt is > Present EuDt
 
                     }
                     //for variable 'l' - Looping between different Clusters for matching a Data Point.
@@ -121,9 +120,9 @@ public class JCA implements Serializable{
                         calcSWCSS();
                     }
 
-                //if statement - A Data Point is eligible for transfer between Clusters.
+                    //if statement - A Data Point is eligible for transfer between Clusters.
                 }
-            //for variable 'k' - Looping through all Data Points of the current Cluster.
+                //for variable 'k' - Looping through all Data Points of the current Cluster.
             }   //for variable 'j' - Looping through all the Clusters.
 
         }//for variable 'i' - Number of iterations.
@@ -135,10 +134,10 @@ public class JCA implements Serializable{
     }
 
     private void setInitialCentroids() {
-        if(this.getKValue() == 2) {
+        if (this.getKValue() == 2) {
             //this case handles splitting into two clusters, each a standard dev from the mean
             double tMean = 0, uMean = 0, vMean = 0, wMean = 0, xMean = 0, yMean = 0, zMean = 0;
-            for(int i = 0; i < mDataPoints.size(); i++) {
+            for (int i = 0; i < mDataPoints.size(); i++) {
                 DataPoint d = mDataPoints.get(i);
                 tMean += d.getT();
                 uMean += d.getU();
@@ -156,7 +155,7 @@ public class JCA implements Serializable{
             yMean /= mDataPoints.size();
             zMean /= mDataPoints.size();
             double tVar = 0, uVar = 0, vVar = 0, wVar = 0, xVar = 0, yVar = 0, zVar = 0;
-            for(int i = 0; i < mDataPoints.size(); i++) {
+            for (int i = 0; i < mDataPoints.size(); i++) {
                 DataPoint d = mDataPoints.get(i);
                 tVar += Math.pow(d.getT() - tMean, 2);
                 uVar += Math.pow(d.getU() - uMean, 2);
@@ -175,9 +174,9 @@ public class JCA implements Serializable{
             zVar /= mDataPoints.size();
             double tDev = Math.sqrt(tVar);
             double uDev = Math.sqrt(uVar);
-            double vDev = Math.sqrt(vVar); 
+            double vDev = Math.sqrt(vVar);
             double wDev = Math.sqrt(wVar);
-            double xDev = Math.sqrt(xVar); 
+            double xDev = Math.sqrt(xVar);
             double yDev = Math.sqrt(yVar);
             double zDev = Math.sqrt(zVar);
             double t1 = tMean + tDev, t2 = tMean - tDev;
@@ -187,7 +186,7 @@ public class JCA implements Serializable{
             double x1 = xMean + xDev, x2 = xMean - xDev;
             double y1 = yMean + yDev, y2 = yMean - yDev;
             double z1 = zMean + zDev, z2 = zMean - zDev;
-            Centroid c1 = new Centroid (t1, u1, v1, w1, x1, y1, z1);
+            Centroid c1 = new Centroid(t1, u1, v1, w1, x1, y1, z1);
             /*
             System.out.println("Centroid 1: " + " V: " + v1 + " W: " + w1 +
                     " X: " + x1 + " Y: " + y1 + " Z: " + z1);
@@ -196,32 +195,30 @@ public class JCA implements Serializable{
              */
             clusters[0].setCentroid(c1);
             c1.setCluster(clusters[0]);
-            Centroid c2 = new Centroid (t2, u2, v2, w2, x2, y2, z2);
+            Centroid c2 = new Centroid(t2, u2, v2, w2, x2, y2, z2);
             clusters[1].setCentroid(c2);
             c2.setCluster(clusters[1]);
             return;
-        }
-        
-        else {
-        //kn = (round((max-min)/k)*n)+min where n is from 0 to (k-1).
-        double ct = 0, cu = 0, cv = 0, cw = 0, cx = 0, cy = 0, cz = 0;
-        for (int n = 1; n <= clusters.length; n++) {
-            ct = (((getMaxTValue() - getMinTValue()) / (clusters.length + 1)) * n) + getMinTValue();
-            cu = (((getMaxUValue() - getMinUValue()) / (clusters.length + 1)) * n) + getMinUValue();
-            cv = (((getMaxVValue() - getMinVValue()) / (clusters.length + 1)) * n) + getMinVValue();
-            cw = (((getMaxWValue() - getMinWValue()) / (clusters.length + 1)) * n) + getMinWValue();
-            cx = (((getMaxXValue() - getMinXValue()) / (clusters.length + 1)) * n) + getMinXValue();
-            cy = (((getMaxYValue() - getMinYValue()) / (clusters.length + 1)) * n) + getMinYValue();
-            cz = (((getMaxZValue() - getMinZValue()) / (clusters.length + 1)) * n) + getMinZValue();
-            Centroid c1 = new Centroid(ct, cu, cv, cw, cx, cy, cz);
-            //System.out.println("Centroid " + n + ": V: " + cv + " W: " + cw +
-            //        " X: " + cx + " Y: " + cy + " Z: " + cz);
-            clusters[n - 1].setCentroid(c1);
-            c1.setCluster(clusters[n - 1]);
-        }
+        } else {
+            //kn = (round((max-min)/k)*n)+min where n is from 0 to (k-1).
+            double ct = 0, cu = 0, cv = 0, cw = 0, cx = 0, cy = 0, cz = 0;
+            for (int n = 1; n <= clusters.length; n++) {
+                ct = (((getMaxTValue() - getMinTValue()) / (clusters.length + 1)) * n) + getMinTValue();
+                cu = (((getMaxUValue() - getMinUValue()) / (clusters.length + 1)) * n) + getMinUValue();
+                cv = (((getMaxVValue() - getMinVValue()) / (clusters.length + 1)) * n) + getMinVValue();
+                cw = (((getMaxWValue() - getMinWValue()) / (clusters.length + 1)) * n) + getMinWValue();
+                cx = (((getMaxXValue() - getMinXValue()) / (clusters.length + 1)) * n) + getMinXValue();
+                cy = (((getMaxYValue() - getMinYValue()) / (clusters.length + 1)) * n) + getMinYValue();
+                cz = (((getMaxZValue() - getMinZValue()) / (clusters.length + 1)) * n) + getMinZValue();
+                Centroid c1 = new Centroid(ct, cu, cv, cw, cx, cy, cz);
+                //System.out.println("Centroid " + n + ": V: " + cv + " W: " + cw +
+                //        " X: " + cx + " Y: " + cy + " Z: " + cz);
+                clusters[n - 1].setCentroid(c1);
+                c1.setCluster(clusters[n - 1]);
+            }
         }
     }
-    
+
     private double getMaxTValue() {
         double temp;
         temp = ((DataPoint) mDataPoints.elementAt(0)).getT();
@@ -241,7 +238,7 @@ public class JCA implements Serializable{
         }
         return temp;
     }
-    
+
     private double getMaxUValue() {
         double temp;
         temp = ((DataPoint) mDataPoints.elementAt(0)).getU();
@@ -260,8 +257,8 @@ public class JCA implements Serializable{
             temp = (dp.getU() < temp) ? dp.getU() : temp;
         }
         return temp;
-    }    
-    
+    }
+
     private double getMaxVValue() {
         double temp;
         temp = ((DataPoint) mDataPoints.elementAt(0)).getV();
@@ -281,7 +278,7 @@ public class JCA implements Serializable{
         }
         return temp;
     }
-    
+
     private double getMaxWValue() {
         double temp;
         temp = ((DataPoint) mDataPoints.elementAt(0)).getW();

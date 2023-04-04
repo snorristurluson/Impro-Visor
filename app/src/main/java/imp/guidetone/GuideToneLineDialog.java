@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2016 Robert Keller and Harvey Mudd College XML export code
  * is also Copyright (C) 2009-2010 Nicolas Froment (aka Lasconic).
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -34,20 +34,24 @@ import imp.data.MelodyPart;
 import imp.data.Note;
 import imp.data.NoteSymbol;
 import imp.gui.Notate;
+
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
+
 import imp.gui.Notate.Mode;
 import imp.gui.RangeChooser;
 import imp.gui.Stave;
 import imp.lickgen.transformations.Transform;
 import imp.util.Preferences;
 import imp.util.TransformFilter;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 import javax.swing.JPanel;
+
 import polya.Polylist;
 
 /**
@@ -61,26 +65,27 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private final TransformPanel transformationPanel;
     private Transform transform;
     private Fractal divider;
-    
+
     //the default keys that are initially clicked
     //only used once, in the constructor
     //after that, previous limits passed to range chooser
-    private static final int [] bassDefaults = {G2, C4};
-    private static final int [] trebleDefaults = {C4, G5};
-    private static final int [] grandDefaults = {G2, G5};
-    
+    private static final int[] bassDefaults = {G2, C4};
+    private static final int[] trebleDefaults = {C4, G5};
+    private static final int[] grandDefaults = {G2, G5};
+
     //range of keys which are clickable
-    private static final int [] bassLimits = {C1, E5};
-    private static final int [] trebleLimits = {A2, C7};
-    private static final int [] grandLimits = {C1, C7};
-    
+    private static final int[] bassLimits = {C1, E5};
+    private static final int[] trebleLimits = {A2, C7};
+    private static final int[] grandLimits = {C1, C7};
+
     //range limits
-    private int [] range;
+    private int[] range;
     private static final int LOW = 0;
     private static final int HIGH = 1;
     private Object Improvisor;
-    
+
     MelodyPart guideToneLine;
+
     /**
      * Creates new form GuideToneLineDialog
      * @param parent Frame that spawned this dialog box
@@ -90,24 +95,24 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         super(parent, modal);
         this.setTitle("Generate Guide Tone Line");
         this.setResizable(true);
-        notate = (Notate)this.getParent();
+        notate = (Notate) this.getParent();
         transformationPanel = new TransformPanel(notate);
         initComponents();
 
         //updates scale Degree buttons based on first chord of leadsheet
         //and whether or not allow color tones is checked
-        updateButtons(); 
-        
+        updateButtons();
+
         //make the transform buttons whatever they are in the transform panel
         updateTransformButtons();
-        
+
         updateRange();
-        
+
         divider = new Fractal(ImproVisor.getFractalFile());
-        
-        String musician = (String)musicianChooser.getSelectedItem();
+
+        String musician = (String) musicianChooser.getSelectedItem();
         File dir = ImproVisor.getTransformDirectory();
-        File file = new File(dir, musician+TransformFilter.EXTENSION);
+        File file = new File(dir, musician + TransformFilter.EXTENSION);
         transform = new Transform(file);
         guideToneLine = new MelodyPart();
     }
@@ -119,8 +124,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         directionButtons = new javax.swing.ButtonGroup();
@@ -190,10 +194,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         numberOfLinesButtons.add(oneLine);
         oneLine.setSelected(true);
         oneLine.setText("One Line");
-        oneLine.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        oneLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 oneLineActionPerformed(evt);
             }
         });
@@ -204,10 +206,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         numberOfLinesButtons.add(twoLines);
         twoLines.setText("Two Lines");
-        twoLines.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        twoLines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 twoLinesActionPerformed(evt);
             }
         });
@@ -267,10 +267,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         buttonPanel.setLayout(new java.awt.GridBagLayout());
 
         generateLine.setText("Generate Guide Tone Line");
-        generateLine.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        generateLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateLineActionPerformed(evt);
             }
         });
@@ -287,20 +285,16 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         transformPanel.setLayout(new java.awt.GridBagLayout());
 
         transformLine.setText("Generate Solo Over Line");
-        transformLine.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        transformLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 transformLineActionPerformed(evt);
             }
         });
         transformPanel.add(transformLine, new java.awt.GridBagConstraints());
 
         divideLine.setText("Divide Line");
-        divideLine.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        divideLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 divideLineActionPerformed(evt);
             }
         });
@@ -341,10 +335,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         maxDurationButtons.add(half);
         half.setSelected(true);
         half.setText("Half");
-        half.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        half.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 halfActionPerformed(evt);
             }
         });
@@ -373,10 +365,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         playBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        playBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBtnActionPerformed(evt);
             }
         });
@@ -389,10 +379,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        pauseBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pauseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseBtnActionPerformed(evt);
             }
         });
@@ -405,10 +393,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stopBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         stopBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        stopBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopBtnActionPerformed(evt);
             }
         });
@@ -423,10 +409,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         allowColorBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         allowColorBox.setText("Allow Color Tones");
-        allowColorBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        allowColorBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 allowColorBoxActionPerformed(evt);
             }
         });
@@ -440,10 +424,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         rangeChooserPanel.setLayout(new java.awt.GridBagLayout());
 
         rangeChooserButton.setText("Choose Range");
-        rangeChooserButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rangeChooserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rangeChooserButtonActionPerformed(evt);
             }
         });
@@ -459,10 +441,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         revertLine.setText("Restore Guide Tone Line");
         revertLine.setToolTipText("");
         revertLine.setEnabled(false);
-        revertLine.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        revertLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 revertLineActionPerformed(evt);
             }
         });
@@ -470,10 +450,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         reapplyTransform.setText("Try Again");
         reapplyTransform.setEnabled(false);
-        reapplyTransform.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        reapplyTransform.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reapplyTransformActionPerformed(evt);
             }
         });
@@ -592,10 +570,8 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         getContentPane().add(jLabel1, gridBagConstraints);
 
         populateMusicianList();
-        musicianChooser.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        musicianChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 musicianChooserActionPerformed(evt);
             }
         });
@@ -608,67 +584,62 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    private void populateMusicianList()
-  {
-    File directory = ImproVisor.getTransformDirectory();
-    //System.out.println("populating from " + directory);
-    if( directory.isDirectory() )
-      {
-        String fileName[] = directory.list();
 
-        // 6-25-13 Hayden Blauzvern
-        // Fix for Linux, where the file list is not in alphabetic order
-        Arrays.sort(fileName, new Comparator<String>()
-        {
-        public int compare(String s1, String s2)
-          {
-            return s1.toUpperCase().compareTo(s2.toUpperCase());
-          }
+    private void populateMusicianList() {
+        File directory = ImproVisor.getTransformDirectory();
+        //System.out.println("populating from " + directory);
+        if (directory.isDirectory()) {
+            String fileName[] = directory.list();
 
-        });
-       
-        // Add names of grammar files
-        for (String name : fileName) {
-            if( name.endsWith(TransformFilter.EXTENSION) )
-            {
-                int len = name.length();
-                String stem = name.substring(0, len - TransformFilter.EXTENSION.length());
-                musicianChooser.addItem(stem);
+            // 6-25-13 Hayden Blauzvern
+            // Fix for Linux, where the file list is not in alphabetic order
+            Arrays.sort(fileName, new Comparator<String>() {
+                public int compare(String s1, String s2) {
+                    return s1.toUpperCase().compareTo(s2.toUpperCase());
+                }
+
+            });
+
+            // Add names of grammar files
+            for (String name : fileName) {
+                if (name.endsWith(TransformFilter.EXTENSION)) {
+                    int len = name.length();
+                    String stem = name.substring(0, len - TransformFilter.EXTENSION.length());
+                    musicianChooser.addItem(stem);
+                }
             }
         }
-      }
-  }
-    
+    }
+
     private void generateLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateLineActionPerformed
         generateLine();
         putLineInNewChorus();
     }//GEN-LAST:event_generateLineActionPerformed
 
-    private void generateLine(){
+    private void generateLine() {
         //Get which options are selected
         JRadioButton direction = getSelected(directionButtons);
         JRadioButton scaleDeg = getSelected(scaleDegreeButtons);
         JRadioButton scaleDeg2 = getSelected(scaleDegree2Buttons);
         JRadioButton maxDur = getSelected(maxDurationButtons);
         //JRadioButton lineTypeButton = getSelected(lineTypeButtons);
-        
+
         //Get paramaters to pass into constructor
         //notate = (Notate)this.getParent();
         String scaleDegString;
-        if(scaleDeg!=null){
-           scaleDegString = scaleDeg.getText(); 
-        }else{
+        if (scaleDeg != null) {
+            scaleDegString = scaleDeg.getText();
+        } else {
             scaleDegString = "NOCHORD";
         }
-        
+
         String scaleDegString2;
-        if(scaleDeg2!=null){
-           scaleDegString2 = scaleDeg2.getText(); 
-        }else{
+        if (scaleDeg2 != null) {
+            scaleDegString2 = scaleDeg2.getText();
+        } else {
             scaleDegString2 = "NOCHORD";
         }
-        
+
         boolean alternating = true;
         int duration = buttonToDuration(maxDur);
         //int lineType = buttonToLineType(lineTypeButton);
@@ -678,147 +649,147 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
 
         //construct a guide tone line generator, make a guide tone line (melody part), then add it as a new chorus
         guideToneLine = new MelodyPart();
-        if(!notate.getChordProg().getChords().isEmpty()){
-            GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(), 
-                                                              buttonToDirection(direction), 
-                                                              scaleDegString,
-                                                              scaleDegString2,
-                                                              alternating, 
-                                                              range[LOW], range[HIGH], 
-                                                              duration,
-                                                              mix,
-                                                              allowColor);
+        if (!notate.getChordProg().getChords().isEmpty()) {
+            GuideLineGenerator guideLine = new GuideLineGenerator(notate.getChordProg(),
+                    buttonToDirection(direction),
+                    scaleDegString,
+                    scaleDegString2,
+                    alternating,
+                    range[LOW], range[HIGH],
+                    duration,
+                    mix,
+                    allowColor);
             guideToneLine = guideLine.makeGuideLine();
         }
-        
+
         updatePlayButtons();
     }
-    
-    private void putLineInNewChorus(){
-        if(guideToneLine != null && guideToneLine.getSize() != 0){
+
+    private void putLineInNewChorus() {
+        if (guideToneLine != null && guideToneLine.getSize() != 0) {
             notate.addChorus(guideToneLine);
         }
     }
-    
-    private void putLineInCurrentChorus(){
-        if(guideToneLine != null && guideToneLine.getSize() != 0){
+
+    private void putLineInCurrentChorus() {
+        if (guideToneLine != null && guideToneLine.getSize() != 0) {
             notate.getCurrentMelodyPart().newPasteOver(guideToneLine, 0);
         }
     }
-    
+
     //used in trading
-    public void generatePastePlay(){
+    public void generatePastePlay() {
         generateLine();
         putLineInCurrentChorus();
         play();
     }
-    
+
     //used in trading w transform / fractal division
-    public void generatePaste(){
+    public void generatePaste() {
         generateLine();
         putLineInCurrentChorus();
     }
-    
-     /**
+
+    /**
      * play
      * play the melody in the current chorus
      */
-    private void play(){
+    private void play() {
         notate.selectAll();
-        notate.playCurrentSelection(true, 
-                                        0, 
-                                        PlayScoreCommand.USEDRUMS, 
-                                        "guide tone line");
+        notate.playCurrentSelection(true,
+                0,
+                PlayScoreCommand.USEDRUMS,
+                "guide tone line");
         ImproVisor.setPlayEntrySounds(true);
     }
-    
-    private int buttonToDuration(JRadioButton b){
-        if(b.equals(noPref)){
+
+    private int buttonToDuration(JRadioButton b) {
+        if (b.equals(noPref)) {
             return 0;
-        }else if(b.equals(whole)){
+        } else if (b.equals(whole)) {
             return WHOLE;
-        }else if(b.equals(half)){
+        } else if (b.equals(half)) {
             return HALF;
-        }else if(b.equals(quarter)){
+        } else if (b.equals(quarter)) {
             return QUARTER;
-        }else{
+        } else {
             //shouldn't happen
             return 0;
         }
     }
-    
-    
-    public void updateButtons(){
+
+
+    public void updateButtons() {
         setButtonText(scaleDegreeButtons, scaleDegPanel);
         setButtonText(scaleDegree2Buttons, scaleDeg2Panel);
         enableButtons(scaleDegree2Buttons, twoLines.isSelected());
         setVisible(isVisible());
     }
-    
+
     //called from notate when stave type is changed
-    public void updateRange(){
-        
-        
-        int [] limits, defaultRange;
+    public void updateRange() {
+
+
+        int[] limits, defaultRange;
         StaveType stave = Preferences.getStaveTypeFromPreferences();
-        
-        if(stave==StaveType.TREBLE){
+
+        if (stave == StaveType.TREBLE) {
             limits = trebleLimits;
             defaultRange = trebleDefaults;
-        }else if(stave==StaveType.BASS){
+        } else if (stave == StaveType.BASS) {
             limits = bassLimits;
             defaultRange = bassDefaults;
-        }else{
+        } else {
             limits = grandLimits;
             defaultRange = grandDefaults;
         }
-        
+
         //if the range needs to be changed, change it.
-        if(range==null||!inRange(range[LOW], limits[LOW], limits[HIGH])||!inRange(range[HIGH], limits[LOW], limits[HIGH])){
+        if (range == null || !inRange(range[LOW], limits[LOW], limits[HIGH]) || !inRange(range[HIGH], limits[LOW], limits[HIGH])) {
             range = defaultRange;
         }
     }
-    
-    private boolean inRange(int n, int low, int high){
-        return n>=low&&n<=high;
+
+    private boolean inRange(int n, int low, int high) {
+        return n >= low && n <= high;
     }
-    
-    private void setButtonText(ButtonGroup group, JPanel panel){
+
+    private void setButtonText(ButtonGroup group, JPanel panel) {
         panel.removeAll();
-        if(panel.equals(scaleDegPanel)){
+        if (panel.equals(scaleDegPanel)) {
             panel.add(scaleDegLabel);
-        }else if(panel.equals(scaleDeg2Panel)){
+        } else if (panel.equals(scaleDeg2Panel)) {
             panel.add(scaleDeg2Label);
         }
-        
+
         removeAll(group);
         Chord firstChord = notate.getChordProg().getChord(0);
-        if(firstChord==null){
+        if (firstChord == null) {
             return;
         }
         Polylist chordSpell = firstChord.getSpell();
-        if(chordSpell==null){
+        if (chordSpell == null) {
             return;
         }
-        while(!chordSpell.isEmpty()){
-            Note nextNote = ((NoteSymbol)chordSpell.first()).toNote();
+        while (!chordSpell.isEmpty()) {
+            Note nextNote = ((NoteSymbol) chordSpell.first()).toNote();
             Polylist relPitch = nextNote.toRelativePitch(firstChord);
-            String degree = (String)relPitch.second();
+            String degree = (String) relPitch.second();
             chordSpell = chordSpell.rest();
             JRadioButton b = new JRadioButton(degree);
             panel.add(b);
             group.add(b);
             b.setSelected(true);
         }
-        if(allowColorBox.isSelected()){
+        if (allowColorBox.isSelected()) {
             Polylist chordColor = firstChord.getColor();
-            if(chordColor==null){
+            if (chordColor == null) {
                 return;
             }
-            while(!chordColor.isEmpty()){
-                Note nextNote = ((NoteSymbol)chordColor.first()).toNote();
+            while (!chordColor.isEmpty()) {
+                Note nextNote = ((NoteSymbol) chordColor.first()).toNote();
                 Polylist relPitch = nextNote.toRelativePitch(firstChord);
-                String degree = (String)relPitch.second();
+                String degree = (String) relPitch.second();
                 chordColor = chordColor.rest();
                 JRadioButton b = new JRadioButton(degree);
                 panel.add(b);
@@ -826,41 +797,41 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
                 b.setSelected(true);
             }
         }
-        if(panel.getComponents().length>1){
-            JRadioButton first = (JRadioButton)panel.getComponent(1);
+        if (panel.getComponents().length > 1) {
+            JRadioButton first = (JRadioButton) panel.getComponent(1);
             first.setSelected(true);
         }
-        
-        
+
+
     }
-    
+
     private void twoLinesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoLinesActionPerformed
         enableButtons(scaleDegree2Buttons, true);
     }//GEN-LAST:event_twoLinesActionPerformed
 
     /**
-     * 
+     *
      * @param group ButtonGroup to enable/disable
      * @param enabled true to enable, false to disable
      */
-    private void enableButtons(ButtonGroup group, boolean enabled){
-        for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+    private void enableButtons(ButtonGroup group, boolean enabled) {
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton b = buttons.nextElement();
             b.setEnabled(enabled);
         }
     }
-    
+
     /**
      * Removes all buttons from a button group
-     * @param group 
+     * @param group
      */
-    private void removeAll(ButtonGroup group){
-        for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+    private void removeAll(ButtonGroup group) {
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton b = buttons.nextElement();
             group.remove(b);
         }
     }
-    
+
     private void oneLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneLineActionPerformed
         enableButtons(scaleDegree2Buttons, false);
     }//GEN-LAST:event_oneLineActionPerformed
@@ -868,92 +839,86 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     private void transformLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transformLineActionPerformed
 
         applySubstitutions();
-        
-      //  transformationPanel.applySubstitutions();
-        
-      //  updateTransformButtons();
-        
+
+        //  transformationPanel.applySubstitutions();
+
+        //  updateTransformButtons();
+
         updatePlayButtons();
-        
+
     }//GEN-LAST:event_transformLineActionPerformed
 
     private void revertLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertLineActionPerformed
-        
+
         revertSubs();
-        
+
         //updateTransformButtons();
-        
+
         updatePlayButtons();
 
     }//GEN-LAST:event_revertLineActionPerformed
-    
+
     private void allowColorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allowColorBoxActionPerformed
         this.setVisible(false);
         updateButtons();
         this.setVisible(true);
     }//GEN-LAST:event_allowColorBoxActionPerformed
 
-    public void updateTransformButtons(){
-    if( transformationPanel == null )
-      {
-        return;
-      }
+    public void updateTransformButtons() {
+        if (transformationPanel == null) {
+            return;
+        }
         revertLine.setEnabled(transformationPanel.getRevertEnabled());
         reapplyTransform.setEnabled(transformationPanel.getReapplyEnabled());
     }
-    
+
     private void reapplyTransformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reapplyTransformActionPerformed
-        
+
         revertSubs();
         applySubstitutions();
-        
+
         //updateTransformButtons();
-        
+
         updatePlayButtons();
-        
+
     }//GEN-LAST:event_reapplyTransformActionPerformed
 
-    public void updatePlayButtons(){
+    public void updatePlayButtons() {
         playBtn.setEnabled(notate.getPlayEnabled());
         pauseBtn.setEnabled(notate.getPauseEnabled());
         stopBtn.setEnabled(notate.getStopEnabled());
-        
+
         playBtn.setSelected(notate.getPlaySelected());
         pauseBtn.setSelected(notate.getPauseSelected());
         stopBtn.setSelected(notate.getStopSelected());
     }
-    
-    
+
+
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
         notate.improvisationOff();
         notate.playAll();
-        
+
         updatePlayButtons();
     }//GEN-LAST:event_playBtnActionPerformed
 
     private void stopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBtnActionPerformed
         notate.stopButtonPressed();
-        
+
         updatePlayButtons();
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void pauseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseBtnActionPerformed
-        if( notate.getMode() == Mode.PLAYING_PAUSED )
-        {
+        if (notate.getMode() == Mode.PLAYING_PAUSED) {
             notate.setMode(Mode.PLAYING);
-        }
-        else
-        {
+        } else {
             notate.setMode(Mode.PLAYING_PAUSED);
         }
         notate.pauseScore();
-        if( notate.getKeyboard() != null )
-        {
+        if (notate.getKeyboard() != null) {
             String v = notate.getKeyboard().voicingFromKeyboard();
             String currentChord = notate.getKeyboard().getPresentChordDisplayText();
 
-            if( notate.getVoicingTestDialog() != null && notate.getVoicingTestDialog().isVisible() )
-            {
+            if (notate.getVoicingTestDialog() != null && notate.getVoicingTestDialog().isVisible()) {
                 notate.selectVoicing(v, currentChord);
             }
         }
@@ -967,23 +932,23 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     }//GEN-LAST:event_rangeChooserButtonActionPerformed
 
     private void divideLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divideLineActionPerformed
-        
+
         MelodyPart fractalSolo = divider.fractalImprovise(notate.getCurrentMelodyPart(), 1);
         notate.cm.execute(new RectifyPitchesCommand(fractalSolo,
-                                                    0,
-                                                    fractalSolo.getSize() - 1,
-                                                    notate.getChordProg(),
-                                                    false,
-                                                    false,
-                                                    true,
-                                                    true,
-                                                    true,
-                                                    true));
-        notate.addChorus(fractalSolo); 
-        notate.playCurrentSelection(true, 
-                                    0, 
-                                    true, 
-                                    "Playing divided guide tone line");
+                0,
+                fractalSolo.getSize() - 1,
+                notate.getChordProg(),
+                false,
+                false,
+                true,
+                true,
+                true,
+                true));
+        notate.addChorus(fractalSolo);
+        notate.playCurrentSelection(true,
+                0,
+                true,
+                "Playing divided guide tone line");
         updatePlayButtons();
     }//GEN-LAST:event_divideLineActionPerformed
 
@@ -1000,29 +965,29 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
      * @param group the ButtonGroup from which you want to return the selected button
      * @return the JRadioButton that is selected
      */
-    private JRadioButton getSelected(ButtonGroup group){
-        for(Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();){
+    private JRadioButton getSelected(ButtonGroup group) {
+        for (Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements(); ) {
             AbstractButton b = buttons.nextElement();
-            if(b.isSelected()){
-                return (JRadioButton)b;
+            if (b.isSelected()) {
+                return (JRadioButton) b;
             }
         }
         return null;
     }
-    
+
     /**
      * returns the direction associated with the given button
      * @param b a JRadioButton
      * @return the direction associated with that button (1 for up, 0 for same, -1 for down)
      */
-    private int buttonToDirection(JRadioButton b){
-        if(b.equals(ascending)){
+    private int buttonToDirection(JRadioButton b) {
+        if (b.equals(ascending)) {
             return 1;
-        }else if(b.equals(descending)){
+        } else if (b.equals(descending)) {
             return -1;
-        }else if(b.equals(noPreference)){
+        } else if (b.equals(noPreference)) {
             return 0;
-        }else{
+        } else {
             //shouldn't happen
             return 0;
         }
@@ -1089,7 +1054,7 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
     // End of variables declaration//GEN-END:variables
 
     private void applySubstitutions() {
-        if(notate.getChordProg().getChords().isEmpty()){
+        if (notate.getChordProg().getChords().isEmpty()) {
             return;
         }
         notate.stopPlaying();
@@ -1097,41 +1062,40 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         int start = notate.getCurrentSelectionStart();
         int stop = notate.getCurrentSelectionEnd();
         MelodyPart melody = notate.getCurrentMelodyPart().extract(start,
-                                                                  stop,
-                                                                  false);
+                stop,
+                false);
         ChordPart chords = notate.getChordProg().extract(start, stop);
         applySubstitutionsToPart(melody, chords);
     }
 
     private void applySubstitutionsToPart(MelodyPart melody, ChordPart chords) {
-        String musician = (String)musicianChooser.getSelectedItem();
+        String musician = (String) musicianChooser.getSelectedItem();
         File directory = ImproVisor.getTransformDirectory();
-        File file = new File(directory, musician+TransformFilter.EXTENSION);
+        File file = new File(directory, musician + TransformFilter.EXTENSION);
         //String dir = System.getProperty("user.dir");
         //File file = new File(dir + "/transforms/"+musician+".transform");
         transform = new Transform(file);
-        if(transform != null)
-        {
+        if (transform != null) {
             Stave stave = notate.getCurrentStave();
             int start = notate.getCurrentSelectionStart();
             int stop = notate.getCurrentSelectionEnd();
             notate.getCurrentMelodyPart().pushOriginalVersion(new MelodyInContext(melody.copy(), stave, start, stop));
 
             MelodyPart transformedPart = transform.applySubstitutionsToMelodyPart(melody,
-                                                                                  chords,
-                                                                                  true);
-            
-            pasteOver(notate.getMelodyPart(stave), transformedPart, start);
-            
-            //always rectify
-            notate.rectifySelection(stave,start,stop);
+                    chords,
+                    true);
 
-            notate.playCurrentSelection(false, 
-                                        0, 
-                                        PlayScoreCommand.USEDRUMS, 
-                                        "putLick " + start + " - " + stop);
+            pasteOver(notate.getMelodyPart(stave), transformedPart, start);
+
+            //always rectify
+            notate.rectifySelection(stave, start, stop);
+
+            notate.playCurrentSelection(false,
+                    0,
+                    PlayScoreCommand.USEDRUMS,
+                    "putLick " + start + " - " + stop);
             ImproVisor.setPlayEntrySounds(true);
-            
+
             //Current MelodyPart was just transformed - set enabled to true
             revertLine.setEnabled(true);
             reapplyTransform.setEnabled(true);
@@ -1143,20 +1107,19 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
      * PasteCommand so that undo and redo can be used in notate. 
      * @param dest
      * @param source
-     * @param startingSlot 
+     * @param startingSlot
      */
-    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot)
-    {
-        PasteCommand paste = new PasteCommand(source,dest,startingSlot,false);
+    public void pasteOver(MelodyPart dest, MelodyPart source, int startingSlot) {
+        PasteCommand paste = new PasteCommand(source, dest, startingSlot, false);
         notate.cm.execute(paste);
     }
 
     private void revertSubs() {
         MelodyPart currentPart = notate.getCurrentMelodyPart();
         MelodyInContext originalPart = currentPart.getRecentVersion();
-        
+
         //prevent null pointer exception, don't try to revert an original melody
-        if(originalPart==null){
+        if (originalPart == null) {
             return;
         }
         //MelodyInContext originalPart = savedMelodies.pop();
@@ -1164,14 +1127,14 @@ public class GuideToneLineDialog extends javax.swing.JDialog implements Constant
         Stave stave = originalPart.getStave();
         int start = originalPart.getStart();
         int stop = originalPart.getStop();
-        
+
         stave.setSelection(start, stop);
         pasteOver(notate.getMelodyPart(stave), originalPart.getMelody(), start);
-        
+
         //if the stack is empty
-        if(currentPart.isOriginal()){
-           revertLine.setEnabled(false);
-           reapplyTransform.setEnabled(false); 
+        if (currentPart.isOriginal()) {
+            revertLine.setEnabled(false);
+            reapplyTransform.setEnabled(false);
         }
     }
 

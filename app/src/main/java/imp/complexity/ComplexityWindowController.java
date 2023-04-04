@@ -24,36 +24,53 @@ import polya.*;
  */
 public class ComplexityWindowController {
 
-    /** Graph panels controlled by this controller. */
+    /**
+     * Graph panels controlled by this controller.
+     */
     ComplexityPanel overallComplexityPanel, densityPanel, varietyPanel,
             syncopationPanel, consonancePanel, leapSizePanel, directionChangePanel;
-    /** An ArrayList of those graph panels. */
+    /**
+     * An ArrayList of those graph panels.
+     */
     private ArrayList<ComplexityPanel> complexityPanels;
-    /** Denotes the number of attributes that need to be factored into the computation of complexity */
+    /**
+     * Denotes the number of attributes that need to be factored into the computation of complexity
+     */
     private int numValidAttrs;
-    /** Number of beats per measure, basically the time signature of the piece. */
+    /**
+     * Number of beats per measure, basically the time signature of the piece.
+     */
     private int beatsPerBar;
-    /** Total number of beats currently selected over which the complexity curve should apply. */
+    /**
+     * Total number of beats currently selected over which the complexity curve should apply.
+     */
     private int totalNumBeats;
-    /** Granularity of the attributes. */
+    /**
+     * Granularity of the attributes.
+     */
     private int attrGranularity;
-    /** Width of the graphs at any given time. */
+    /**
+     * Width of the graphs at any given time.
+     */
     private int totalWidth;
-    /** Check box that toggles which graphs are enabled: overall complexity or the specific attributes. */
+    /**
+     * Check box that toggles which graphs are enabled: overall complexity or the specific attributes.
+     */
     public JCheckBox manageSpecific;
-    /** Controls what granularity the graphs are displayed with. */
+    /**
+     * Controls what granularity the graphs are displayed with.
+     */
     public JComboBox granBox;
     private boolean updatingGran; //hack to not have the gran box adjustment trigger the action listener
 
 
-    /** 
+    /**
      * Complexity Window Controller constructor, the array panels will always be of length seven.
      */
     public ComplexityWindowController(int beats, int gran, ComplexityPanel... panels) {
         if (panels.length != 7) {
             System.out.println("Incorrect number of panels passed to complexity window constructor!");
-        }
-        else {
+        } else {
             overallComplexityPanel = panels[0];
             densityPanel = panels[1];
             varietyPanel = panels[2];
@@ -80,9 +97,10 @@ public class ComplexityWindowController {
     /**
      * Initializes which panels are enabled in the beginning and adds listeners for manage specific toggling and
      * the granularity drop-down menu.
-     * @param time the number of beats per measure
+     *
+     * @param time     the number of beats per measure
      * @param specific the checkbox to toggle which attributes are being managed: overall or specific
-     * @param gran the current granularity
+     * @param gran     the current granularity
      */
     public void initController(int time, JCheckBox specific, JComboBox gran) {
         beatsPerBar = time;
@@ -148,7 +166,7 @@ public class ComplexityWindowController {
         initBuffers();
     }
 
-    /** 
+    /**
      * Initializes the off-screen buffers and colors of the graphs.
      */
     public void initBuffers() {
@@ -169,18 +187,20 @@ public class ComplexityWindowController {
     public ArrayList<ComplexityPanel> getPanels() {
         return complexityPanels;
     }
+
     /**
      * @return the number of attributes that are set to be computed
      */
     public int getNumValidAttrs() {
         return numValidAttrs;
     }
+
     public void setNumValidAttrs(int attrs) {
         numValidAttrs = attrs;
     }
 
     public void setVisible(boolean vis) {
-        for (int i = 0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             complexityPanels.get(i).setVisible(vis);
         }
     }
@@ -191,13 +211,14 @@ public class ComplexityWindowController {
 
 ////////////////////////////////////////// Granularity and Selection Changes ///////////////////////////////////////////////////
 
-    /** 
+    /**
      * Takes a new number of beats and redraws the graphs.
      */
     public void updateBeats(int beats) {
         //System.out.println("beats: "+beats);
-        if (totalNumBeats == beats) { return; }
-        else if(beats > 0) {
+        if (totalNumBeats == beats) {
+            return;
+        } else if (beats > 0) {
             totalNumBeats = beats;
             //System.out.println("gran before update gran: "+attrGranularity);
             updateGranBox();
@@ -206,25 +227,26 @@ public class ComplexityWindowController {
                 complexityPanels.get(i).redrawBeats(totalNumBeats);
             }
             totalWidth = overallComplexityPanel.getWidth();
-        }
-        else {
+        } else {
             totalNumBeats = 0;
             updateGranBox();
         }
     }
-    /** 
+
+    /**
      * Takes a new granularity and redraws the graphs.
      */
     public int updateGran(int gran) {
         //System.out.println("in update gran, gran is: "+gran);
         //if (attrGranularity == gran) { return totalWidth; }
         attrGranularity = gran;
-        for(int i = 0; i<complexityPanels.size(); i++) {
+        for (int i = 0; i < complexityPanels.size(); i++) {
             complexityPanels.get(i).redrawGran(attrGranularity);
         }
         totalWidth = overallComplexityPanel.getWidth();
         return totalWidth;
     }
+
     /**
      * Updates the granularity combo box depending on certain characteristics of the leadsheet
      */
@@ -238,7 +260,7 @@ public class ComplexityWindowController {
         //granBox.removeAllItems();
         if (granBox.getItemCount() > 1) {
             int count = granBox.getItemCount();
-            for (int i=count-1; i>0; i--) {
+            for (int i = count - 1; i > 0; i--) {
                 //System.out.println("item at index: "+i+" is: "+granBox.getItemAt(i));
                 updatingGran = true;
                 granBox.removeItemAt(i);
@@ -253,21 +275,22 @@ public class ComplexityWindowController {
             updatingGran = false;
             return;
         }
-        
-        if (totalNumBeats == 1) {} // only one item in the combo box
-        else if(beatsPerBar % 2 == 0 && totalNumBeats % 2 == 0) { //meters of 2 or 4
+
+        if (totalNumBeats == 1) {
+        } // only one item in the combo box
+        else if (beatsPerBar % 2 == 0 && totalNumBeats % 2 == 0) { //meters of 2 or 4
             granBox.addItem(new Integer(2));
-            if (beatsPerBar % 4 == 0 && totalNumBeats % 4 == 0 && totalNumBeats >=4) {
+            if (beatsPerBar % 4 == 0 && totalNumBeats % 4 == 0 && totalNumBeats >= 4) {
                 granBox.addItem(new Integer(4));
             }
         }//meters of 3
-        else if (beatsPerBar % 3 == 0 && totalNumBeats % 3 == 0 && totalNumBeats >=3) {
+        else if (beatsPerBar % 3 == 0 && totalNumBeats % 3 == 0 && totalNumBeats >= 3) {
             granBox.addItem(new Integer(3));
-            if (beatsPerBar % 6 == 0 && totalNumBeats % 6 == 0 && totalNumBeats >=6) {
+            if (beatsPerBar % 6 == 0 && totalNumBeats % 6 == 0 && totalNumBeats >= 6) {
                 granBox.addItem(new Integer(6));
             }
         }//meters of 5
-        else if (beatsPerBar % 5 == 0 && totalNumBeats % 5 == 0 && totalNumBeats >=5) {
+        else if (beatsPerBar % 5 == 0 && totalNumBeats % 5 == 0 && totalNumBeats >= 5) {
             granBox.addItem(new Integer(5));
         }
 
@@ -294,13 +317,14 @@ public class ComplexityWindowController {
         Double toAdd;
         int dif = totalWidth - evt.getX();
 
-        if (totalNumBeats <= 0) { return; } //don't register any mouse clicks
+        if (totalNumBeats <= 0) {
+            return;
+        } //don't register any mouse clicks
 
         if (dif <= 0) { //if x is outside the bounds of the graph, translate the point
-            evt.translatePoint((dif-1), 0);
-        }
-        else if (dif > totalWidth) { //x is negative or 0
-            evt.translatePoint((0-evt.getX()), 0);
+            evt.translatePoint((dif - 1), 0);
+        } else if (dif > totalWidth) { //x is negative or 0
+            evt.translatePoint((0 - evt.getX()), 0);
         }
 
         //If the action originated in the overall complexity panel
@@ -355,7 +379,7 @@ public class ComplexityWindowController {
      * Resets the curves and all text fields to their default settings.
      */
     public void reset() {
-        for (int i = 0; i<complexityPanels.size(); i++) {
+        for (int i = 0; i < complexityPanels.size(); i++) {
             complexityPanels.get(i).instantiateBars(totalNumBeats); //set all bars to flat
             complexityPanels.get(i).setMinLower(175);
             complexityPanels.get(i).setMaxUpper(25);
@@ -364,7 +388,7 @@ public class ComplexityWindowController {
         }
     }
 
-    /** 
+    /**
      * Creates a file with the specified name and returns it, .soloProfile is the extension
      */
     public File saveComplexityWindow(String pathname) throws FileNotFoundException, IOException {
@@ -377,7 +401,7 @@ public class ComplexityWindowController {
     }
 
     /**
-     *  Loads the file denoted by pathname to instantiate a saved complexity window.
+     * Loads the file denoted by pathname to instantiate a saved complexity window.
      */
     public void loadComplexityWindow(String pathname) throws FileNotFoundException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(pathname));
@@ -388,8 +412,8 @@ public class ComplexityWindowController {
 
     /**
      * Converts essential info about the window into a String for saving.
-     *  What needs to be saved: total width, numBars, granularity, individual curve values,
-     *  values of each min and max range text field, whether or not a curve is to be computed
+     * What needs to be saved: total width, numBars, granularity, individual curve values,
+     * values of each min and max range text field, whether or not a curve is to be computed
      */
     private String convertComplexityWindowToString() {
         Polylist info = new Polylist();
@@ -409,14 +433,14 @@ public class ComplexityWindowController {
         Polylist back = new Polylist();
         Polylist inner = new Polylist(); // individual attribute graph info
 
-        for (int i = complexityPanels.size()-1; i>=0; i--) {
-           inner = Polylist.list(complexityPanels.get(i).getName(),
-                   Polylist.list("minLower", complexityPanels.get(i).getMinLower()),
-                   Polylist.list("maxUpper", complexityPanels.get(i).getMaxUpper()),
-                   Polylist.list("compute", complexityPanels.get(i).toCompute()),
-                   Polylist.list("lowerBounds", Polylist.PolylistFromArray(complexityPanels.get(i).lowerBounds())),
-                   Polylist.list("upperBounds", Polylist.PolylistFromArray(complexityPanels.get(i).upperBounds())));
-           back = Polylist.cons(inner, back);
+        for (int i = complexityPanels.size() - 1; i >= 0; i--) {
+            inner = Polylist.list(complexityPanels.get(i).getName(),
+                    Polylist.list("minLower", complexityPanels.get(i).getMinLower()),
+                    Polylist.list("maxUpper", complexityPanels.get(i).getMaxUpper()),
+                    Polylist.list("compute", complexityPanels.get(i).toCompute()),
+                    Polylist.list("lowerBounds", Polylist.PolylistFromArray(complexityPanels.get(i).lowerBounds())),
+                    Polylist.list("upperBounds", Polylist.PolylistFromArray(complexityPanels.get(i).upperBounds())));
+            back = Polylist.cons(inner, back);
         }
         back = Polylist.cons("specificAttrs", back);
         info = Polylist.cons(front, back);
@@ -440,38 +464,33 @@ public class ComplexityWindowController {
 
         //iterate over the first polylist--the global info
         //System.out.println("info.first(): "+ info.first().toString());
-        itr = new PolylistEnum((Polylist)info.first()); //grabs the entire list
+        itr = new PolylistEnum((Polylist) info.first()); //grabs the entire list
         next = itr.nextElement(); //first half of the list--globals
-        itrGlobal = new PolylistEnum((Polylist)next);
+        itrGlobal = new PolylistEnum((Polylist) next);
         nextGlobal = itrGlobal.nextElement();
         //System.out.println("first next: "+nextGlobal.toString());
-        if (nextGlobal instanceof String && ((String)nextGlobal).equals("globalInfo")) {
+        if (nextGlobal instanceof String && ((String) nextGlobal).equals("globalInfo")) {
             while (itrGlobal.hasMoreElements()) {
                 //System.out.println("\n\n******parsing globals******\n\n");
                 nextGlobal = itrGlobal.nextElement();
                 if (nextGlobal instanceof Polylist) {
-                    if (((Polylist)nextGlobal).first() instanceof String) {
-                        if (((String)((Polylist)nextGlobal).first()).equals("numValidAttrs")) {
-                            numValidAttrs = ((Long)((Polylist)nextGlobal).last()).intValue();
+                    if (((Polylist) nextGlobal).first() instanceof String) {
+                        if (((String) ((Polylist) nextGlobal).first()).equals("numValidAttrs")) {
+                            numValidAttrs = ((Long) ((Polylist) nextGlobal).last()).intValue();
                             //System.out.println("num valid attrs: "+numValidAttrs);
-                        }
-                        else if(((String) ((Polylist) nextGlobal).first()).equals("beatsPerBar")) {
-                            beatsPerBar = ((Long)((Polylist)nextGlobal).last()).intValue();
+                        } else if (((String) ((Polylist) nextGlobal).first()).equals("beatsPerBar")) {
+                            beatsPerBar = ((Long) ((Polylist) nextGlobal).last()).intValue();
                             //System.out.println("beats per bar: "+beatsPerBar);
-                        }
-                        else if(((String) ((Polylist) nextGlobal).first()).equals("totalNumBeats")) {
-                            oldTotalBeats = ((Long)((Polylist)nextGlobal).last()).intValue();
+                        } else if (((String) ((Polylist) nextGlobal).first()).equals("totalNumBeats")) {
+                            oldTotalBeats = ((Long) ((Polylist) nextGlobal).last()).intValue();
                             //System.out.println("oldTotalBeats: "+oldTotalBeats);
-                        }
-                        else if(((String) ((Polylist) nextGlobal).first()).equals("granularity")) {
-                            attrGranularity = ((Long)((Polylist)nextGlobal).last()).intValue();
+                        } else if (((String) ((Polylist) nextGlobal).first()).equals("granularity")) {
+                            attrGranularity = ((Long) ((Polylist) nextGlobal).last()).intValue();
                             //System.out.println("gran: "+attrGranularity);
-                        }
-                        else if(((String) ((Polylist) nextGlobal).first()).equals("width")) {
-                            oldWidth = ((Long)((Polylist)nextGlobal).last()).intValue();
+                        } else if (((String) ((Polylist) nextGlobal).first()).equals("width")) {
+                            oldWidth = ((Long) ((Polylist) nextGlobal).last()).intValue();
                             //System.out.println("width: "+oldWidth);
-                        }
-                        else {
+                        } else {
                             //System.out.println("Error: poorly formed soloProfile file");
                         }
                     }
@@ -480,53 +499,48 @@ public class ComplexityWindowController {
         }
         //itr = new PolylistEnum((Polylist)info.rest()); //second half of the list, contains specific attr info
         next = itr.nextElement();
-        if (next instanceof String && ((String)next).equals("specificAttrs")) {
-            for (int i = 0; i<complexityPanels.size(); i++) { //traverse each panel
+        if (next instanceof String && ((String) next).equals("specificAttrs")) {
+            for (int i = 0; i < complexityPanels.size(); i++) { //traverse each panel
                 int[] lowers = new int[1]; //lower and upper bounds for each panel
                 int[] uppers = new int[1]; //init to size 1 to appease the compiler
                 next = itr.nextElement(); //list of specific panel attributes
-                itr2 = new PolylistEnum((Polylist)next); //iterator for internal lists
+                itr2 = new PolylistEnum((Polylist) next); //iterator for internal lists
                 next2 = itr2.nextElement(); //name of the panel
                 while (itr2.hasMoreElements()) {
                     next2 = itr2.nextElement(); //first variable pair
                     if (next2 instanceof Polylist) {
-                        if (((Polylist)next2).first() instanceof String){
-                            if (((String)((Polylist)next2).first()).equals("minLower")) {
+                        if (((Polylist) next2).first() instanceof String) {
+                            if (((String) ((Polylist) next2).first()).equals("minLower")) {
                                 //System.out.println("minlower"+((Long)((Polylist)next2).last()).intValue());
-                                complexityPanels.get(i).setMinLower(((Long)((Polylist)next2).last()).intValue());
-                            }
-                            else if(((String) ((Polylist) next2).first()).equals("maxUpper")) {
-                                complexityPanels.get(i).setMaxUpper(((Long)((Polylist)next2).last()).intValue());
+                                complexityPanels.get(i).setMinLower(((Long) ((Polylist) next2).last()).intValue());
+                            } else if (((String) ((Polylist) next2).first()).equals("maxUpper")) {
+                                complexityPanels.get(i).setMaxUpper(((Long) ((Polylist) next2).last()).intValue());
                                 //System.out.println("maxUpper"+((Long)((Polylist)next2).last()).intValue());
-                            }
-                            else if(((String) ((Polylist) next2).first()).equals("compute")) {
+                            } else if (((String) ((Polylist) next2).first()).equals("compute")) {
                                 //System.out.println("compute: "+(String)((Polylist)next2).last());
                                 // Do not compute box was checked, check it again
-                                if(!Boolean.valueOf((String)((Polylist)next2).last())) {
+                                if (!Boolean.valueOf((String) ((Polylist) next2).last())) {
                                     complexityPanels.get(i).noComputeBox.setSelected(true);
                                 }
-                            }
-                            else if(((String) ((Polylist) next2).first()).equals("lowerBounds")) {
+                            } else if (((String) ((Polylist) next2).first()).equals("lowerBounds")) {
                                 //TODO: turn list into array, then at end of this method, redraw the graphs
-                                itr3 = new PolylistEnum((Polylist)((Polylist)next2).last());
-                                lowers = new int[((Polylist)((Polylist)next2).last()).length()];
+                                itr3 = new PolylistEnum((Polylist) ((Polylist) next2).last());
+                                lowers = new int[((Polylist) ((Polylist) next2).last()).length()];
                                 int j = 0;
-                                while(itr3.hasMoreElements()) {
-                                    lowers[j] = ((Long)itr3.nextElement()).intValue();
+                                while (itr3.hasMoreElements()) {
+                                    lowers[j] = ((Long) itr3.nextElement()).intValue();
                                     j++;
                                 }
-                            }
-                            else if(((String) ((Polylist) next2).first()).equals("upperBounds")) {
+                            } else if (((String) ((Polylist) next2).first()).equals("upperBounds")) {
                                 //TODO: turn list into array, then at end of this method, redraw the graphs
-                                itr3 = new PolylistEnum((Polylist)((Polylist)next2).last());
-                                uppers = new int[((Polylist)((Polylist)next2).last()).length()];
+                                itr3 = new PolylistEnum((Polylist) ((Polylist) next2).last());
+                                uppers = new int[((Polylist) ((Polylist) next2).last()).length()];
                                 int j = 0;
-                                while(itr3.hasMoreElements()) {
-                                    uppers[j] = ((Long)itr3.nextElement()).intValue();
+                                while (itr3.hasMoreElements()) {
+                                    uppers[j] = ((Long) itr3.nextElement()).intValue();
                                     j++;
                                 }
-                            }
-                            else {
+                            } else {
 
                             }
                         }
@@ -557,6 +571,7 @@ public class ComplexityWindowController {
 
     /**
      * Computes exponents for each valid attribute, excluding overall complexity.
+     *
      * @return a list of exponents for each attribute
      */
     public ArrayList<ArrayList<Double>> exponents() {
@@ -574,6 +589,7 @@ public class ComplexityWindowController {
     /**
      * Computes averages for each valid attribute, excluding overall complexity.
      * Averages are between 0 and 1.
+     *
      * @return a list of averages for each attribute
      */
     public ArrayList<ArrayList<Double>> averages() {

@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,6 +22,7 @@
 package imp.style.stylePatterns;
 
 import imp.style.StyleTableModel;
+
 import java.util.ArrayList;
 import javax.swing.JTable;
 
@@ -33,65 +34,58 @@ import javax.swing.JTable;
  * @author keller
  */
 public class PatternSet
-        extends ArrayList<PatternDisplay>
-{
-  protected String setTitle;
+        extends ArrayList<PatternDisplay> {
+    protected String setTitle;
 
-  public static String[] rowHeadSegment =
-    {
-    "Use",
-    "Weight",
-    "Beats"
-    };
+    public static String[] rowHeadSegment =
+            {
+                    "Use",
+                    "Weight",
+                    "Beats"
+            };
 
-  JTable styleTable;
+    JTable styleTable;
 
-  int nextPatternIndex;
-  int lastPatternColumnUsed;
+    int nextPatternIndex;
+    int lastPatternColumnUsed;
 
-  
-  /**
-   *Constructor for PatternSet
-   @param setTitle
-   @param styleTable
-   */
-  public PatternSet(String setTitle, JTable styleTable)
-    {
-    this.setTitle = setTitle;
-    this.styleTable = styleTable;
-    initialize();
+
+    /**
+     *Constructor for PatternSet
+     @param setTitle
+     @param styleTable
+     */
+    public PatternSet(String setTitle, JTable styleTable) {
+        this.setTitle = setTitle;
+        this.styleTable = styleTable;
+        initialize();
     }
 
-  public void initialize()
-    {
-    // initialExtrColumns is used so that this Vector index is the same as
-    // the corresponding table column index
-    clear();
-    nextPatternIndex =
-         StyleTableModel.initialExtraColumns + StyleTableModel.initialNumberOfPatterns;
+    public void initialize() {
+        // initialExtrColumns is used so that this Vector index is the same as
+        // the corresponding table column index
+        clear();
+        nextPatternIndex =
+                StyleTableModel.initialExtraColumns + StyleTableModel.initialNumberOfPatterns;
 
-    lastPatternColumnUsed = StyleTableModel.initialExtraColumns - 1;
-    for( int i = 0; i < nextPatternIndex; i++ )
-      {
-      add(null);
-      }
+        lastPatternColumnUsed = StyleTableModel.initialExtraColumns - 1;
+        for (int i = 0; i < nextPatternIndex; i++) {
+            add(null);
+        }
     }
 
-  public int getLastPatternColumnUsed()
-  {
-    return lastPatternColumnUsed;
-  }
-  
-  public int newPattern()
-  {
-    return ++lastPatternColumnUsed;
-  }
-  
-  public void removePattern(PatternDisplay pattern)
-    {
-    int index = indexOf(pattern);
-    set(index, null);
-    //System.out.println("removing pattern: " + pattern + " at index " + index);
+    public int getLastPatternColumnUsed() {
+        return lastPatternColumnUsed;
+    }
+
+    public int newPattern() {
+        return ++lastPatternColumnUsed;
+    }
+
+    public void removePattern(PatternDisplay pattern) {
+        int index = indexOf(pattern);
+        set(index, null);
+        //System.out.println("removing pattern: " + pattern + " at index " + index);
     }
 }
 

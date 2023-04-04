@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,24 +22,22 @@ package imp.gui;
 
 /**
  *
- * @author  Robert Keller
+ * @author Robert Keller
  */
 
 @SuppressWarnings("serial")
 
-public class FirstTimeDialog extends javax.swing.JDialog
-{
-Notate notate;
+public class FirstTimeDialog extends javax.swing.JDialog {
+    Notate notate;
 
-/**
- * Creates new form AboutDialog
- */
-public FirstTimeDialog(Notate notate, boolean modal)
-  {
-    super(notate, modal);
-    this.notate = notate;
-    initComponents();
-  }
+    /**
+     * Creates new form AboutDialog
+     */
+    public FirstTimeDialog(Notate notate, boolean modal) {
+        super(notate, modal);
+        this.notate = notate;
+        initComponents();
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -48,8 +46,7 @@ public FirstTimeDialog(Notate notate, boolean modal)
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         menuBar1 = new java.awt.MenuBar();
@@ -122,10 +119,8 @@ public FirstTimeDialog(Notate notate, boolean modal)
         openMidiPrefsBtn.setOpaque(true);
         openMidiPrefsBtn.setPreferredSize(new java.awt.Dimension(300, 30));
         openMidiPrefsBtn.setSelected(true);
-        openMidiPrefsBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openMidiPrefsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMidiPrefsBtnActionPerformed(evt);
             }
         });
@@ -148,10 +143,8 @@ public FirstTimeDialog(Notate notate, boolean modal)
         okAboutBtn.setOpaque(true);
         okAboutBtn.setPreferredSize(new java.awt.Dimension(300, 30));
         okAboutBtn.setSelected(true);
-        okAboutBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okAboutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okAboutBtnActionPerformed(evt);
             }
         });
@@ -174,15 +167,15 @@ public FirstTimeDialog(Notate notate, boolean modal)
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void okAboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAboutBtnActionPerformed
-    dispose();
-}//GEN-LAST:event_okAboutBtnActionPerformed
+    private void okAboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAboutBtnActionPerformed
+        dispose();
+    }//GEN-LAST:event_okAboutBtnActionPerformed
 
-private void openMidiPrefsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openMidiPrefsBtnActionPerformed
-  {//GEN-HEADEREND:event_openMidiPrefsBtnActionPerformed
-    dispose();
-    notate.openMidiPreferences();
-  }//GEN-LAST:event_openMidiPrefsBtnActionPerformed
+    private void openMidiPrefsBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openMidiPrefsBtnActionPerformed
+    {//GEN-HEADEREND:event_openMidiPrefsBtnActionPerformed
+        dispose();
+        notate.openMidiPreferences();
+    }//GEN-LAST:event_openMidiPrefsBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aboutDialogPanel;

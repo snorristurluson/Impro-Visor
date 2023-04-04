@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -24,7 +24,9 @@ import imp.Constants;
 import imp.data.Chord;
 import imp.data.Note;
 import imp.data.NoteSymbol;
+
 import static imp.data.NoteSymbol.makeNoteSymbol;
+
 import imp.data.PitchClass;
 import polya.PolylistEnum;
 
@@ -33,12 +35,12 @@ import polya.PolylistEnum;
  * @author muddCS15
  */
 public class Scorer {
-    
+
     private final double priorityWeight;
     private final double strongBeatWeight;
     private final double durationWeight;
-    private final int [] metre;
-    
+    private final int[] metre;
+
     /**
      * Scorer
      * scores a note chord pair based on weights passed in
@@ -47,13 +49,13 @@ public class Scorer {
      * @param durationWeight weight of the how much of the trend's duration the note takes up
      * @param metre time signature (used to determine strong beat weight)
      */
-    public Scorer(double priorityWeight, double strongBeatWeight, double durationWeight, int [] metre){
+    public Scorer(double priorityWeight, double strongBeatWeight, double durationWeight, int[] metre) {
         this.priorityWeight = priorityWeight;
         this.strongBeatWeight = strongBeatWeight;
         this.durationWeight = durationWeight;
         this.metre = metre;
     }
-    
+
     /**
      * score
      * returns an ncp's score
@@ -61,17 +63,17 @@ public class Scorer {
      * @param trend trend ncp is a part of
      * @return score
      */
-    public double score(NoteChordPair ncp, TrendSegment trend){
+    public double score(NoteChordPair ncp, TrendSegment trend) {
         int score = 0;
 
-        score += priorityWeight*priorityScore(ncp);
-        score += strongBeatWeight*strongBeatScore(ncp);
-        score += durationWeight*durationScore(ncp, trend);
-        
-        
+        score += priorityWeight * priorityScore(ncp);
+        score += strongBeatWeight * strongBeatScore(ncp);
+        score += durationWeight * durationScore(ncp, trend);
+
+
         return score;
     }
-    
+
     /**
      * priorityScore
      * Returns a score based on a note's priority in the chord
@@ -82,16 +84,16 @@ public class Scorer {
      * i.e. if the note is a color tone. This means that all color tones have
      * the same (bad) priority.
      */
-    private double priorityScore(NoteChordPair ncp){
+    private double priorityScore(NoteChordPair ncp) {
         Note note = ncp.getNote();
         Chord chord = ncp.getChord();
         PolylistEnum priorityList = chord.getPriority().elements();
         double maxScore = chord.getPriority().length();
         double priority = maxScore;
         PitchClass nextPc = makeNoteSymbol(note).getPitchClass();
-        while(priorityList.hasMoreElements()){
-            NoteSymbol ns = ((NoteSymbol)priorityList.nextElement());
-            if(ns.getPitchClass().enharmonic(nextPc)){
+        while (priorityList.hasMoreElements()) {
+            NoteSymbol ns = ((NoteSymbol) priorityList.nextElement());
+            if (ns.getPitchClass().enharmonic(nextPc)) {
                 break;
             }
             priority--;
@@ -100,7 +102,7 @@ public class Scorer {
         //return 0
         return normalize(priority, maxScore);
     }
-    
+
     /**
      * normalize
      * normalizes score from 0 to 1 based on max score
@@ -109,10 +111,10 @@ public class Scorer {
      * @param maxScore maximum score possible
      * @return normalized score
      */
-    public double normalize(double score, double maxScore){
+    public double normalize(double score, double maxScore) {
         return score / maxScore;
     }
-    
+
     /**
      * durationScore
      * returns a score between 0 and 1 
@@ -122,25 +124,25 @@ public class Scorer {
      * @param trend
      * @return score from 0 to 1
      */
-    private double durationScore(NoteChordPair ncp, TrendSegment trend){
-        
+    private double durationScore(NoteChordPair ncp, TrendSegment trend) {
+
         double totalDuration = trend.getTotalDuration();
         Note note = ncp.getNote();
         double duration = 0;
-        
+
         NCPIterator i = trend.makeIterator();
-        
-        
-        while(i.hasNext()){
+
+
+        while (i.hasNext()) {
             Note compare = i.nextNCP().getNote();
-            if(note.samePitch(compare)){
+            if (note.samePitch(compare)) {
                 duration += compare.getRhythmValue();
             }
         }
 
         return normalize(duration, totalDuration);
     }
-    
+
     /**
      * strongBeatScore
      * scores an ncp based on what beat it falls on
@@ -150,41 +152,40 @@ public class Scorer {
      * @param ncp note chord pair to be scored
      * @return score
      */
-    private double strongBeatScore(NoteChordPair ncp){
+    private double strongBeatScore(NoteChordPair ncp) {
         int slot = ncp.getSlot();
         double maxScore = 3;
         double score;
-        
-        if(slot % measureLength() == 0){
+
+        if (slot % measureLength() == 0) {
             score = 3;
-        }
-        else if(slot % timeBetweenStrongBeats() == 0){
+        } else if (slot % timeBetweenStrongBeats() == 0) {
             score = 2;
-        }else if(slot % beatLength() == 0){
+        } else if (slot % beatLength() == 0) {
             score = 1;
-        }else{
+        } else {
             score = 0;
         }
-        
+
         return normalize(score, maxScore);
     }
-    
+
     /**
      * beatsPerMeasure
      * @return number of beats in a measure
      */
-    private int beatsPerMeasure(){
+    private int beatsPerMeasure() {
         return metre[0];
     }
-     
+
     /**
      * beatLength
      * @return length in slots of a single beat
      */
-    private int beatLength(){
-        return Constants.WHOLE/metre[1];
+    private int beatLength() {
+        return Constants.WHOLE / metre[1];
     }
-    
+
     /**
      * strongBeatsPerMeasure
      * Determines number of strong beats per measure based on the top
@@ -194,20 +195,20 @@ public class Scorer {
      * it default to a two feel
      * @return number of strong beats per measure
      */
-    private int strongBeatsPerMeasure(){
+    private int strongBeatsPerMeasure() {
         int beatsPerMeasure = beatsPerMeasure();
         int strongBeats;
-   
-        if(beatsPerMeasure <= 3){               //  2/4, 3/4, ...
+
+        if (beatsPerMeasure <= 3) {               //  2/4, 3/4, ...
             strongBeats = 1;
-        }else if(beatsPerMeasure % 2 == 0){     //  4/4, 6/8, 12/8, ...
+        } else if (beatsPerMeasure % 2 == 0) {     //  4/4, 6/8, 12/8, ...
             strongBeats = 2;
-        }else if(beatsPerMeasure % 3 == 0){     //  9/8, ...
+        } else if (beatsPerMeasure % 3 == 0) {     //  9/8, ...
             strongBeats = 3;
-        }else{                                  //  7/8, ...
+        } else {                                  //  7/8, ...
             strongBeats = 1;
         }
-        
+
         return strongBeats;
     }
 
@@ -215,16 +216,16 @@ public class Scorer {
      * measureLength
      * @return length of a measure in slots
      */
-    private int measureLength(){
-        return beatLength()*beatsPerMeasure();
+    private int measureLength() {
+        return beatLength() * beatsPerMeasure();
     }
-    
+
     /**
      * timeBetweenStrongBeats
      * @return length in slots between one strong beat and the next
      */
-    private int timeBetweenStrongBeats(){
+    private int timeBetweenStrongBeats() {
         return measureLength() / strongBeatsPerMeasure();
     }
-    
+
 }

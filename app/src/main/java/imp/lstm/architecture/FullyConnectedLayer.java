@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -32,35 +32,35 @@ import mikera.matrixx.AMatrix;
  * @author Nicholas Weintraut
  */
 public class FullyConnectedLayer implements Loadable {
-    
+
     private AMatrix weights;
     private AVector biases;
     private Operations type;
-    
+
     private AVector multResult;
-    
-    public FullyConnectedLayer (Operations type)
-    {
+
+    public FullyConnectedLayer(Operations type) {
         this.type = type;
     }
-    
-    public AVector forward (AVector input)
-    {
-            
-            multResult = weights.innerProduct(input);
-            multResult.add(biases);
-            return type.operate(multResult);
+
+    public AVector forward(AVector input) {
+
+        multResult = weights.innerProduct(input);
+        multResult.add(biases);
+        return type.operate(multResult);
     }
 
     @Override
     public boolean load(INDArray data, String loadPath) {
-        switch(loadPath)
-        {
-            case "b":   this.biases = (AVector) data;
-                        return true;
-            case "w":   this.weights = (AMatrix) data;
-                        return true;
-            default:    return false;
+        switch (loadPath) {
+            case "b":
+                this.biases = (AVector) data;
+                return true;
+            case "w":
+                this.weights = (AMatrix) data;
+                return true;
+            default:
+                return false;
         }
     }
 }

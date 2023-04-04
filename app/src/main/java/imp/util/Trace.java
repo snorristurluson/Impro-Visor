@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,9 +33,9 @@ package imp.util;
 
 public class Trace {
 
-    /** 
-      * The current level of trace (can be changed by the developer).
-      */
+    /**
+     * The current level of trace (can be changed by the developer).
+     */
 
     public static int currentLevel = 0;
 
@@ -50,33 +50,29 @@ public class Trace {
      * Call to trace a message
      */
 
-    public static void log(int level, String message)
-      {
-      if( atLevel(level) )
-        {
-        System.out.println(tag + message);
+    public static void log(int level, String message) {
+        if (atLevel(level)) {
+            System.out.println(tag + message);
         }
-      }
+    }
 
 
     /**
      * Call to set trace level
      */
 
-    public static void setLevel(int level)
-      {
-      currentLevel = level;
-      }
+    public static void setLevel(int level) {
+        currentLevel = level;
+    }
 
 
     /**
      * Tell whether trace is at or above a specified level
      */
 
-    public static boolean atLevel(int level)
-      {
-      return currentLevel >= level;
-      }
+    public static boolean atLevel(int level) {
+        return currentLevel >= level;
+    }
 }
 
 

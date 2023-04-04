@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +31,7 @@ import imp.util.Trace;
  * @see         Part
  * @see         CopyCommand
  * @see         CutCommand
- * @author      Amelia Sheppard
+ * @author Amelia Sheppard
  */
 public class SideSlipCommand implements Command, Constants {
 
@@ -49,8 +49,8 @@ public class SideSlipCommand implements Command, Constants {
      * the original melody part
      */
     protected MelodyPart original;
-    
-    
+
+
     /**
      * true since the pasting can be undone
      */
@@ -60,23 +60,23 @@ public class SideSlipCommand implements Command, Constants {
      * the direction in which the sideslip will occur
      */
     protected String direction;
-    
+
     /**
      * the number of steps (distance) that the part will be transposed
      */
     protected int distance;
-    
-    
+
+
     /**
      * the key signature 
      */
     protected int keySig;
-    
+
     /**
      * the command manager
      */
     protected CommandManager cm;
-   
+
     /**
      * Creates a new Command that can bar line shift a melody part.
      * @param source            the Part to paste
@@ -87,7 +87,7 @@ public class SideSlipCommand implements Command, Constants {
      * @param keySig            the key signature that the solo is being played in
      * @param cm                the command manager used
      */
-    public SideSlipCommand(MelodyPart source,String direction, int distance, int keySig, CommandManager cm) {
+    public SideSlipCommand(MelodyPart source, String direction, int distance, int keySig, CommandManager cm) {
         this.source = source;
         this.dest = source.copy();
         this.original = source.copy();
@@ -105,8 +105,8 @@ public class SideSlipCommand implements Command, Constants {
      * @param startSlot         the slot to start pasting over in the dest
      * @param undoable          the boolean to see if the action is undoable
      */
-    public SideSlipCommand(MelodyPart source, boolean undoable, String direction, 
-                                     int distance, int keySig, CommandManager cm) {
+    public SideSlipCommand(MelodyPart source, boolean undoable, String direction,
+                           int distance, int keySig, CommandManager cm) {
         this(source, direction, distance, keySig, cm);
         this.undoable = undoable;
         Trace.log(2, "creating SideSlipCommand");
@@ -117,22 +117,19 @@ public class SideSlipCommand implements Command, Constants {
      */
     public void execute() {
         Trace.log(2, "executing SideSlipCommand");
-      
+
         int start = original.getSize();
-       
-        if (direction.equals("up"))
-        {//slide up
-            cm.execute(new ShiftPitchesCommand(distance, dest, 
-                            0, start, 0, 128, keySig));
-        }
-        else if (direction.equals("down"))
-        {//slide down
-            cm.execute(new ShiftPitchesCommand(-1*distance, dest, 
-                            0, start, 0, 128, keySig));
+
+        if (direction.equals("up")) {//slide up
+            cm.execute(new ShiftPitchesCommand(distance, dest,
+                    0, start, 0, 128, keySig));
+        } else if (direction.equals("down")) {//slide down
+            cm.execute(new ShiftPitchesCommand(-1 * distance, dest,
+                    0, start, 0, 128, keySig));
         }
 
         //add two of the same melodies with one transposed
-        source.setSize(dest.getSize()*2);
+        source.setSize(dest.getSize() * 2);
         source.pasteOver(dest, start);
     }
 
@@ -140,21 +137,19 @@ public class SideSlipCommand implements Command, Constants {
      * Undoes the side slip.
      */
     public void undo() {
-        if( source != null && dest != null )
-          {
-	  dest = original;
-          }
+        if (source != null && dest != null) {
+            dest = original;
+        }
     }
 
     /**
      * Redoes the side slip.
      */
     public void redo() {
-        if( source != null && dest != null )
-          {
-	  dest.pasteOver(source, source.getSize());
+        if (source != null && dest != null) {
+            dest.pasteOver(source, source.getSize());
 
-          }
+        }
 
     }
 

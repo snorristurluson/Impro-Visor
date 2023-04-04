@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +31,7 @@ import imp.util.Trace;
  * @see         CommandManager
  * @see         Note
  * @see         ChordPart
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class ShiftChordsCommand implements Command, Constants {
 
@@ -64,13 +64,13 @@ public class ShiftChordsCommand implements Command, Constants {
      * true since this Command can be undone
      */
     boolean undoable = true;
-    
+
     /**
      * Creates a new Command that can shift chords of a set of Notes.
      */
-    public ShiftChordsCommand(int shift, ChordPart part, int startIndex, 
-                               int stopIndex, 
-                               Key key) {
+    public ShiftChordsCommand(int shift, ChordPart part, int startIndex,
+                              int stopIndex,
+                              Key key) {
         this.startIndex = startIndex;
         this.part = part;
         this.stopIndex = stopIndex;
@@ -83,12 +83,12 @@ public class ShiftChordsCommand implements Command, Constants {
      */
     public void execute() {
         Trace.log(2, "executing ShiftChordsCommand");
-        for(int i = startIndex; i <= stopIndex; i++) {
+        for (int i = startIndex; i <= stopIndex; i++) {
             Chord chord = part.getChord(i);
-            if(chord != null && !chord.getName().equals(NOCHORD))
+            if (chord != null && !chord.getName().equals(NOCHORD))
                 chord.transpose(shift);
 //                chord.setName(Key.transposeChord(chord.getName(), shift, key));
-                }
+        }
     }
 
     /**

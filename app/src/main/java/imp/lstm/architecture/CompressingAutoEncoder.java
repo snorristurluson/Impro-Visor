@@ -1,28 +1,31 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 package imp.lstm.architecture;
+
 import imp.lstm.filters.Operations;
 import imp.lstm.filters.GroupedSoftMaxSampler;
 import imp.lstm.filters.NoteEncodingCleanFilter;
+
 import java.util.Queue;
+
 import imp.lstm.filters.DataFilter;
 import imp.lstm.encoding.EncodingParameters;
 
@@ -49,7 +52,7 @@ public class CompressingAutoEncoder implements Loadable {
     private DataFilter finalSampler;
     private DataFilter outputCleaner;
     private AutoencoderInputManager inputManager;
-    
+
     /**
      * Initializes an instance of CompressingAutoEncoder without initializing component weights and biases. Weights and biases should be loaded using AutoEncoderMeatPacker
      * @see AutoEncoderMeatPacker
@@ -68,18 +71,19 @@ public class CompressingAutoEncoder implements Loadable {
         decoder2 = new LSTM();
         //op type is none because we will feed its result through a one hot softmax sampler
         fullLayer2 = new FullyConnectedLayer(Operations.None);
-        
+
         finalSampler = new GroupedSoftMaxSampler(EncodingParameters.noteEncoder.getGroups());
         outputCleaner = new NoteEncodingCleanFilter();
     }
-    
+
     public boolean hasDataStepsLeft() {
         return !queue.isEmpty();
     }
+
     private int timeStep = 0;
+
     public void encodeStep(AVector input) {
-        if(input.length() == inputSize)
-        {
+        if (input.length() == inputSize) {
             //for(int i = 0; i < input.length(); i++)
             //    System.out.print(input.getDouble(i) + " ");
             //System.out.println("<- networkInput at timeStep " + timeStep++);
@@ -100,29 +104,28 @@ public class CompressingAutoEncoder implements Loadable {
             AVector outputVector = vectorEncoding.subVector(1, featureVectorSize);
 
             queue.enqueueStep(outputVector, vectorEncoding.get(0));
-            
-        }
-        else
-        {
+
+        } else {
             throw new RuntimeException("Your input had a different size than this network is configured for!");
         }
     }
-    
+
     public boolean canDecode() {
         return queue.hasFullBuffer();
     }
-    public void perturbQueue(){
+
+    public void perturbQueue() {
         queue.shuffleFeatures(true, false);
     }
-    
-    public void testQueue(){
+
+    public void testQueue() {
         queue.testFill();
     }
-    
-    public void printFeatureGroups(){
+
+    public void printFeatureGroups() {
         queue.printFeatureGroups();
     }
-    
+
     public AVector decodeStep() {
         //current output at very beginning should be a rest
         AVector decoding1 = decoder1.step(inputManager.retrieveDecoderInput(queue.dequeueStep(), currOutput));
@@ -145,68 +148,69 @@ public class CompressingAutoEncoder implements Loadable {
         currOutput = outputCleaner.filter(finalSampler.filter(decoding3));
         return currOutput;
     }
-    
-    public LSTM getEncoderLSTM1()
-    {
+
+    public LSTM getEncoderLSTM1() {
         return encoder1;
     }
-    public LSTM getEncoderLSTM2()
-    {
+
+    public LSTM getEncoderLSTM2() {
         return encoder2;
     }
-    public FullyConnectedLayer getEncoderFullLayer()
-    {
+
+    public FullyConnectedLayer getEncoderFullLayer() {
         return fullLayer1;
     }
-    public LSTM getDecoderLSTM1()
-    {
+
+    public LSTM getDecoderLSTM1() {
         return decoder1;
     }
-    public LSTM getDecoderLSTM2()
-    {
+
+    public LSTM getDecoderLSTM2() {
         return decoder2;
     }
-    public FullyConnectedLayer getDecoderFullLayer()
-    {
+
+    public FullyConnectedLayer getDecoderFullLayer() {
         return fullLayer2;
     }
-    
+
     public void setCurrOutput(int outputSize) {
         currOutput = Vector.createLength(outputSize);
     }
-    
+
     @Override
     public boolean load(INDArray data, String loadPath) {
         String car = pathCar(loadPath);
         String cdr = pathCdr(loadPath);
         //System.out.println(car);
-        if(car.equals("enc"))
-        {
+        if (car.equals("enc")) {
             car = pathCar(cdr);
             //System.out.println("\t " + car);
             cdr = pathCdr(cdr);
-            switch(car)
-            {
-                case "full": return fullLayer1.load(data, cdr);
-                case "lstm1": return encoder1.load(data, cdr);
-                case "lstm2": return encoder2.load(data, cdr);
-                default: return false;
+            switch (car) {
+                case "full":
+                    return fullLayer1.load(data, cdr);
+                case "lstm1":
+                    return encoder1.load(data, cdr);
+                case "lstm2":
+                    return encoder2.load(data, cdr);
+                default:
+                    return false;
             }
-        }
-        else if(car.equals("dec"))
-        {
+        } else if (car.equals("dec")) {
             car = pathCar(cdr);
             //System.out.println("\t " + car);
             cdr = pathCdr(cdr);
-            switch(car)
-            {
-                case "full": return fullLayer2.load(data, cdr);
-                case "lstm1": return decoder1.load(data, cdr);
-                case "lstm2": return decoder2.load(data, cdr);
-                default: return false;
+            switch (car) {
+                case "full":
+                    return fullLayer2.load(data, cdr);
+                case "lstm1":
+                    return decoder1.load(data, cdr);
+                case "lstm2":
+                    return decoder2.load(data, cdr);
+                default:
+                    return false;
             }
-        }
-        else
+        } else
             return false;
     }
 }

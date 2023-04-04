@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2016-2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,14 +23,13 @@ package imp.gui;
 /**
  * @author keller
  */
-public class QuantizationDialog extends javax.swing.JDialog
-  {
-  Notate notate;
+public class QuantizationDialog extends javax.swing.JDialog {
+    Notate notate;
+
     /**
      * Creates new form QuantizationDialog
      */
-    public QuantizationDialog(Notate notate, boolean modal)
-    {
+    public QuantizationDialog(Notate notate, boolean modal) {
         super(notate, modal);
         this.notate = notate;
         initComponents();
@@ -46,8 +45,7 @@ public class QuantizationDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         eighthNoteSwingBox = new javax.swing.JCheckBox();
@@ -72,10 +70,8 @@ public class QuantizationDialog extends javax.swing.JDialog
         eighthNoteSwingBox.setMaximumSize(new java.awt.Dimension(158, 50));
         eighthNoteSwingBox.setMinimumSize(new java.awt.Dimension(158, 50));
         eighthNoteSwingBox.setPreferredSize(new java.awt.Dimension(158, 50));
-        eighthNoteSwingBox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        eighthNoteSwingBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eighthNoteSwingBoxActionPerformed(evt);
             }
         });
@@ -96,10 +92,8 @@ public class QuantizationDialog extends javax.swing.JDialog
         quantizeButton.setMinimumSize(new java.awt.Dimension(210, 45));
         quantizeButton.setOpaque(true);
         quantizeButton.setPreferredSize(new java.awt.Dimension(210, 45));
-        quantizeButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        quantizeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quantizeButtonActionPerformed(evt);
             }
         });
@@ -110,7 +104,7 @@ public class QuantizationDialog extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(quantizeButton, gridBagConstraints);
 
-        quantizationSpinner.setModel(new javax.swing.SpinnerListModel(new String[] {"Item 0", "Item 1", "Item 2", "Item 3"}));
+        quantizationSpinner.setModel(new javax.swing.SpinnerListModel(new String[]{"Item 0", "Item 1", "Item 2", "Item 3"}));
         quantizationSpinner.setBorder(javax.swing.BorderFactory.createTitledBorder("Quantization Level"));
         quantizationSpinner.setMinimumSize(new java.awt.Dimension(250, 50));
         quantizationSpinner.setOpaque(true);
@@ -131,10 +125,8 @@ public class QuantizationDialog extends javax.swing.JDialog
         playBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         playBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         playBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        playBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        playBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playBtnActionPerformed(evt);
             }
         });
@@ -146,10 +138,8 @@ public class QuantizationDialog extends javax.swing.JDialog
         pauseBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         pauseBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        pauseBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pauseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pauseBtnActionPerformed(evt);
             }
         });
@@ -161,10 +151,8 @@ public class QuantizationDialog extends javax.swing.JDialog
         stopBtn.setMaximumSize(new java.awt.Dimension(30, 30));
         stopBtn.setMinimumSize(new java.awt.Dimension(30, 30));
         stopBtn.setPreferredSize(new java.awt.Dimension(30, 30));
-        stopBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        stopBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopBtnActionPerformed(evt);
             }
         });
@@ -179,55 +167,49 @@ public class QuantizationDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-   static int quantum[] = {20, 30, 40, 60, 120, 180, 240, 360, 480};
-    
-    static String quantumString[] =             
-      {
-          "sixteenth note triplet",
-          "sixteenth note",
-          "eighth note triplet",
-          "eighth note",
-          "quarternote ",
-          "dotted quarter note",
-          "half note",
-          "dotted half note",
-          "whole note"          
-      };
-    
+
+    static int quantum[] = {20, 30, 40, 60, 120, 180, 240, 360, 480};
+
+    static String quantumString[] =
+            {
+                    "sixteenth note triplet",
+                    "sixteenth note",
+                    "eighth note triplet",
+                    "eighth note",
+                    "quarternote ",
+                    "dotted quarter note",
+                    "half note",
+                    "dotted half note",
+                    "whole note"
+            };
+
     static String intialQuantumString = "eighth note";
-    
-    public boolean getSwing()
-    {
+
+    public boolean getSwing() {
         return eighthNoteSwingBox.isSelected();
     }
 
-    public void hideQuantizeButton()
-    {
+    public void hideQuantizeButton() {
         quantizeButton.setVisible(false);
     }
-    
 
-int getSelectedQuantumIndex()
-    {
+
+    int getSelectedQuantumIndex() {
         return notate.getQuantumIndex(getSelectedQuantumString());
-    }      
+    }
 
-int getSelectedQuantumValue()
-{
-    return quantum[getSelectedQuantumIndex()];
-}
-    
-  public String getSelectedQuantumString()
-  {
-      return (String)quantizationSpinner.getValue();
-  }
-  
-  public String[] getQuantumString()
-    {
+    int getSelectedQuantumValue() {
+        return quantum[getSelectedQuantumIndex()];
+    }
+
+    public String getSelectedQuantumString() {
+        return (String) quantizationSpinner.getValue();
+    }
+
+    public String[] getQuantumString() {
         return quantumString;
     }
-    
+
     private void eighthNoteSwingBoxActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_eighthNoteSwingBoxActionPerformed
     {//GEN-HEADEREND:event_eighthNoteSwingBoxActionPerformed
         // TODO add your handling code here:
@@ -235,7 +217,7 @@ int getSelectedQuantumValue()
 
     private void quantizeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_quantizeButtonActionPerformed
     {//GEN-HEADEREND:event_quantizeButtonActionPerformed
-         notate.quantizeCurrentMelody(getSelectedQuantumIndex(), eighthNoteSwingBox.isSelected());
+        notate.quantizeCurrentMelody(getSelectedQuantumIndex(), eighthNoteSwingBox.isSelected());
     }//GEN-LAST:event_quantizeButtonActionPerformed
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playBtnActionPerformed
@@ -262,4 +244,4 @@ int getSelectedQuantumValue()
     private javax.swing.JButton quantizeButton;
     private javax.swing.JButton stopBtn;
     // End of variables declaration//GEN-END:variables
-  }
+}

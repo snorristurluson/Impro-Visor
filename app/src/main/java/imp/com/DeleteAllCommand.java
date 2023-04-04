@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,6 +23,7 @@ package imp.com;
 import imp.data.*;
 import imp.util.Trace;
 import imp.gui.Notate;
+
 import java.util.*;
 
 /**
@@ -37,7 +38,7 @@ import java.util.*;
  * @see         CommandManager
  * @see         Part
  * @see         DeleteUnitsCommand
- * @author      Nathan Kim
+ * @author Nathan Kim
  */
 public class DeleteAllCommand implements Command {
     /**
@@ -75,7 +76,7 @@ public class DeleteAllCommand implements Command {
      * @param undoable          a boolean saying if this can be undone
      */
     public DeleteAllCommand(int repeats, Notate not,
-                                                        boolean undoable) {
+                            boolean undoable) {
         this(repeats, not);
         this.undoable = undoable;
     }
@@ -87,22 +88,21 @@ public class DeleteAllCommand implements Command {
     public void execute() {
         Trace.log(2, "executing DeleteAllCommand");
 
-        for (int x=0; x<reps; x++)
-        {
+        for (int x = 0; x < reps; x++) {
 
             //stave.setSelection(0, stave.getMelodyPart().size() - 1);
-            not.getStaveAtTab(x).setSelection(0, not.getStaveAtTab(x).getMelodyPart().size()-1);
+            not.getStaveAtTab(x).setSelection(0, not.getStaveAtTab(x).getMelodyPart().size() - 1);
 
             //not.redoAdvice();
 
             not.staveRequestFocus();
-    
+
             deleteCommand.add(new DeleteUnitsCommand(not.getStaveAtTab(x).getMelodyPart(),
-                                  not.getStaveAtTab(x).getSelectionStart(),
-                                  not.getStaveAtTab(x).getSelectionEnd()));
+                    not.getStaveAtTab(x).getSelectionStart(),
+                    not.getStaveAtTab(x).getSelectionEnd()));
             deleteCommand.get(x).execute();
-            
-            if(!deleteCommand.get(x).isUndoable()){
+
+            if (!deleteCommand.get(x).isUndoable()) {
                 undoable = false;
             }
         }
@@ -113,7 +113,7 @@ public class DeleteAllCommand implements Command {
      * Undoes the entire deleting.
      */
     public void undo() {
-        for (int x=reps-1; x>=0; x--){
+        for (int x = reps - 1; x >= 0; x--) {
             deleteCommand.get(x).undo();
         }
     }
@@ -122,7 +122,7 @@ public class DeleteAllCommand implements Command {
      * Redoes the entire deleting.
      */
     public void redo() {
-        for (int x=reps-1; x>=0; x--){
+        for (int x = reps - 1; x >= 0; x--) {
             deleteCommand.get(x).redo();
         }
     }

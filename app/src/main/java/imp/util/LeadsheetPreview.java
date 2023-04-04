@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -30,6 +30,7 @@ import imp.ImproVisor;
 import imp.com.OpenLeadsheetCommand;
 import imp.com.PlayScoreCommand;
 import imp.data.*;
+
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,7 @@ import javax.swing.table.TableColumn;
 
 /**
  *
- * @author  Martin Hunt
+ * @author Martin Hunt
  */
 
 public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChangeListener, MidiPlayListener, ActionListener, Constants {
@@ -56,30 +57,30 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     JFileChooser parent;
     PreviewTableModel previewTableModel;
     PlaybackSliderManager playbackManager;
-    
-    private void ensureMidiSynth()
-    {
-        if(midiSynth == null) {
+
+    private void ensureMidiSynth() {
+        if (midiSynth == null) {
             midiSynth = new MidiSynth(ImproVisor.getMidiManager());
-        }      
+        }
     }
+
     /** Creates new form LeadsheetPreview */
     public LeadsheetPreview(JFileChooser chooser) {
         parent = chooser;
         parent.addPropertyChangeListener(this);
         parent.addActionListener(this);
-        
+
         ensureMidiSynth();
 
         initComponents();
-        
+
         playbackManager = new PlaybackSliderManager(midiSynth, timeLabel, totalTimeLabel, locSlider);
         previewTableModel.update();
-        
+
         TableColumn c0 = previewTable.getColumnModel().getColumn(0);
         c0.setCellRenderer(new RightAlignRenderer());
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -279,7 +280,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     }//GEN-LAST:event_stopBtnActionPerformed
 
     private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playBtnActionPerformed
-        if(status != MidiPlayListener.Status.STOPPED) {
+        if (status != MidiPlayListener.Status.STOPPED) {
             midiSynth.togglePause();
         } else {
             playLeadsheet(Transposition.none);
@@ -287,56 +288,55 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     }//GEN-LAST:event_playBtnActionPerformed
 
     public void loadLeadsheet() {
-        if(file == null || !file.exists() || file.isDirectory()) {
-            for(int i = 0; i < previewTable.getRowCount(); i++)
+        if (file == null || !file.exists() || file.isDirectory()) {
+            for (int i = 0; i < previewTable.getRowCount(); i++)
                 previewTable.setValueAt("", i, 1);
         } else {
             boolean wasPlaying = (getPlaying() == MidiPlayListener.Status.PLAYING);
             midiSynth.stop("load leadsheet");
-            
+
             previewTableModel.loadScore(file);
-            
+
             playbackManager.setTotalTimeSeconds(previewTableModel.score.getTotalTime());
             //previewTableModel.score.setVolumes(midiSynth);
-            if( wasPlaying )
-              playLeadsheet(Transposition.none);
+            if (wasPlaying)
+                playLeadsheet(Transposition.none);
         }
     }
-        
+
     public JCheckBox getCheckbox() {
         return checkbox;
     }
-    
+
     public String getTitle() {
         return previewTableModel.score.getTitle();
     }
-    
+
     public void playLeadsheet(Transposition transposition) {
         Score score = previewTableModel.score;
-        if( score == null )
-          {
-          return;
-          }
+        if (score == null) {
+            return;
+        }
         long time = playbackManager.getMicrosecondsFromSlider();
         midiSynth.setTempo((float) score.getTempo());
         new PlayScoreCommand(previewTableModel.score, time, true, midiSynth, this, 0, transposition).execute();
     }
-    
+
     public void propertyChange(PropertyChangeEvent e) {
         boolean update = false;
         String prop = e.getPropertyName();
-        
+
         //If the directory changed, don't show an image.
         if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
             file = null;
             update = true;
 
-        //If a file became selected, find out which one.
+            //If a file became selected, find out which one.
         } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
             file = (File) e.getNewValue();
             update = true;
         }
-        
+
 
         //Update the preview accordingly.
         if (update) {
@@ -349,12 +349,13 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     }
 
     MidiPlayListener.Status status = MidiPlayListener.Status.STOPPED;
+
     public void setPlaying(MidiPlayListener.Status playing, Transposition transposition) {
         playbackManager.setPlaying(playing, transposition);
-        
+
         MidiPlayListener.Status oldStatus = status;
         status = playing;
-        switch(playing) {
+        switch (playing) {
             case PLAYING:
                 playBtn.setIcon(pauseIcon);
                 break;
@@ -384,7 +385,7 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
         midiSynth.stop("quit");
     }
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkbox;
     private javax.swing.JLabel jLabel2;
@@ -404,100 +405,152 @@ public class LeadsheetPreview extends javax.swing.JPanel implements PropertyChan
     private javax.swing.JSlider volSlider;
     private javax.swing.JLabel volumeLabel;
     // End of variables declaration//GEN-END:variables
-    
-    
+
+
     class RightAlignRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
         Font font = null;
+
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             // Get the default rendering for the cell
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
             // Default cell rendering is a JLabel, align that to the right
             ((JLabel) c).setHorizontalAlignment(JLabel.RIGHT);
-            if(font == null) {
+            if (font == null) {
                 font = new Font(((JLabel) c).getFont().getName(), Font.BOLD, ((JLabel) c).getFont().getSize());
             }
             ((JLabel) c).setFont(font);
             return c;
         }
     }
-    
+
     class PreviewTableModel extends AbstractTableModel {
         JTable table;
         public Score score = null;
+
         public void loadScore(File file) {
             score = new Score();
             (new OpenLeadsheetCommand(file, score)).execute();
             update();
         }
+
         public void update() {
-            fireTableDataChanged(); 
+            fireTableDataChanged();
             AutofitTableColumns.autoResizeTable(table, false);
         }
-        public PreviewTableModel(JTable table) { this.table = table; }
-        public int getColumnCount() { return 2; }
-        public String getColumnName(int col) { return ""; }
-        public Class getColumnClass(int col) { return String.class; }
-        public int getRowCount() { return 8; }
-        public boolean isCellEditable(int rowIndex, int columnIndex) { return false; }
+
+        public PreviewTableModel(JTable table) {
+            this.table = table;
+        }
+
+        public int getColumnCount() {
+            return 2;
+        }
+
+        public String getColumnName(int col) {
+            return "";
+        }
+
+        public Class getColumnClass(int col) {
+            return String.class;
+        }
+
+        public int getRowCount() {
+            return 8;
+        }
+
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false;
+        }
+
         public Object getValueAt(int row, int col) {
             String returnValue = "";
-            if(col == 0) {
-                switch(row) {
-                    case 0: returnValue = "Title";  break;
-                    case 1: returnValue = "Composer"; break;
-                    case 2: returnValue = "Style"; break;
-                    case 3: returnValue = "Duration"; break;
-                    case 4: returnValue = "Tempo"; break;
-                    case 5: returnValue = "TimeSig"; break;
-                    case 6: returnValue = "Key"; break;
-                    case 7: returnValue = "Chords"; break;
+            if (col == 0) {
+                switch (row) {
+                    case 0:
+                        returnValue = "Title";
+                        break;
+                    case 1:
+                        returnValue = "Composer";
+                        break;
+                    case 2:
+                        returnValue = "Style";
+                        break;
+                    case 3:
+                        returnValue = "Duration";
+                        break;
+                    case 4:
+                        returnValue = "Tempo";
+                        break;
+                    case 5:
+                        returnValue = "TimeSig";
+                        break;
+                    case 6:
+                        returnValue = "Key";
+                        break;
+                    case 7:
+                        returnValue = "Chords";
+                        break;
                 }
                 returnValue += " ";
             } else {
-                if(score != null) {
+                if (score != null) {
                     int[] metre = score.getMetre();
                     ChordPart chords = score.getChordProg();
-                    switch(row) {
-                        case 0: returnValue = score.getTitle(); break;
-                        case 1: returnValue = score.getComposer(); break;
+                    switch (row) {
+                        case 0:
+                            returnValue = score.getTitle();
+                            break;
+                        case 1:
+                            returnValue = score.getComposer();
+                            break;
                         case 2: {
-                                Style style = score.getChordProg().getStyle();
-                                String styleName = style == null ?
+                            Style style = score.getChordProg().getStyle();
+                            String styleName = style == null ?
                                     "unknown" : style.getName();
-                                returnValue = styleName; break;
-                                }
-                        case 3: returnValue = PlaybackSliderManager.formatSecond(score.getTotalTime()); break;
-                        case 4: returnValue = String.valueOf(score.getTempo()) + " BPM"; break;
-                        case 5: returnValue = metre[0] + "/" + metre[1]; break;
-                        case 6: returnValue = String.valueOf(score.getKeySignature()); break;
+                            returnValue = styleName;
+                            break;
+                        }
+                        case 3:
+                            returnValue = PlaybackSliderManager.formatSecond(score.getTotalTime());
+                            break;
+                        case 4:
+                            returnValue = String.valueOf(score.getTempo()) + " BPM";
+                            break;
+                        case 5:
+                            returnValue = metre[0] + "/" + metre[1];
+                            break;
+                        case 6:
+                            returnValue = String.valueOf(score.getKeySignature());
+                            break;
                         case 7:
                             Chord.initSaveToLeadsheet();
-                            
-                            int beatValue = WHOLE / metre [1];
+
+                            int beatValue = WHOLE / metre[1];
                             int measureLength = metre[0] * beatValue;
-                            
+
                             int startIndex = 0;
                             int stopIndex = measureLength * 4;
-                            
-                           
+
+
                             Writer writer = new StringWriter();
                             BufferedWriter out = new BufferedWriter(writer);
-                            
+
                             try {
-                                for( int index = startIndex; index <= stopIndex; index++ ) {
+                                for (int index = startIndex; index <= stopIndex; index++) {
                                     Unit unit = chords.getUnit(index);
-                                    if( unit != null ) {
+                                    if (unit != null) {
                                         unit.saveLeadsheet(out, metre, false); // false means no linebreaks
                                         out.write(" ");
                                     }
                                 }
                                 out.flush();
                                 writer.flush();
-                            } catch(IOException e) {}
-                            
+                            } catch (IOException e) {
+                            }
+
                             returnValue = writer.toString();
-                            
+
                             break;
                     }
                 }

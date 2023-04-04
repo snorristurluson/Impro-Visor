@@ -8,7 +8,6 @@ package imp.data;
 import java.io.Serializable;
 
 /**
- *
  * @author cssummer17
  */
 public class MelodyRhythmCount implements Serializable {
@@ -17,38 +16,35 @@ public class MelodyRhythmCount implements Serializable {
     private double diversityIndex;
     private double longestNoteLength;
     private double longestRestLength;
-    
-   
-    
-   
-    
-    public MelodyRhythmCount(int[] durationFreq, double mostFrequentDuration, double diversityIndex, double longestRhythm, double longestRestLength){
+
+
+    public MelodyRhythmCount(int[] durationFreq, double mostFrequentDuration, double diversityIndex, double longestRhythm, double longestRestLength) {
         this.durationFrequencies = durationFreq;
         this.mostFreqDuration = mostFrequentDuration;
         this.diversityIndex = diversityIndex;
         this.longestNoteLength = longestRhythm;
         this.longestRestLength = longestRestLength;
     }
-    
-    public int[] getDurationFrequencies(){
+
+    public int[] getDurationFrequencies() {
         return durationFrequencies;
     }
-    
-    public double getMostFrequentDuration(){
+
+    public double getMostFrequentDuration() {
         return mostFreqDuration;
     }
-   
-    public double getDiversityIndex(){
+
+    public double getDiversityIndex() {
         return diversityIndex;
     }
-    
-    public double getLongestNoteLength(){
+
+    public double getLongestNoteLength() {
         return longestNoteLength;
     }
-    
-    public double getLongestRestLength(){
+
+    public double getLongestRestLength() {
         return longestRestLength;
     }
-    
-    
+
+
 }

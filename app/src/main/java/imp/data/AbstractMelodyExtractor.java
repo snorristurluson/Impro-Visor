@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose. See the
  * GNU General Public License for more details.
- *
- *
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -21,18 +21,23 @@
 package imp.data;
 
 import imp.data.advice.Advisor;
+
 import static imp.Constants.BEAT;
 import static imp.Constants.FIRST_SCALE;
 import static imp.Constants.NOCHORD;
 import static imp.Constants.NONE;
+
 import imp.lickgen.LickGen;
+
 import static imp.lickgen.LickGen.BASS;
 import static imp.lickgen.LickGen.CHORD;
 import static imp.lickgen.LickGen.COLOR;
 import static imp.lickgen.LickGen.NOTE;
 import static imp.lickgen.LickGen.RANDOM;
 import static imp.lickgen.LickGen.SCALE;
+
 import java.util.ArrayList;
+
 import polya.Polylist;
 
 /**
@@ -56,7 +61,7 @@ public class AbstractMelodyExtractor {
      * @return
      */
     private static boolean checkNote(int pos, int pitch, String pitchString,
-            ChordPart chordProg, int type) {
+                                     ChordPart chordProg, int type) {
         Chord currentChord = chordProg.getCurrentChord(pos);
         if (currentChord == null
                 || currentChord.getName().equals(NOCHORD)
@@ -192,11 +197,11 @@ public class AbstractMelodyExtractor {
      * @return
      */
     public static String getAbstractMelody(int selStart,
-            int measureWindow,
-            boolean isSongStart,
-            boolean writeChords,
-            MelodyPart part,
-            ChordPart chordPart) {
+                                           int measureWindow,
+                                           boolean isSongStart,
+                                           boolean writeChords,
+                                           MelodyPart part,
+                                           ChordPart chordPart) {
         //int slotsPerMeasure = score.getMetre()[0] * BEAT; //assume something/4 time
         int slotsPerSection = BEAT * measureWindow;
         //boolean isSongStart = (selStart == 0);

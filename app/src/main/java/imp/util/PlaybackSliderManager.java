@@ -1,22 +1,30 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2018 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * <p>
+ * Written by Martin Hunt
+ * <p>
+ * Encapsulates all events of the playback slider and corresponding time labels
+ * To use:
+ * Pass in correct components into the constructor
+ * Call setPlayStatus when the playStatus changes
+ * Call setTotalTime when the score or total time changes
  */
 
 /**
@@ -34,6 +42,7 @@ package imp.util;
 import imp.midi.MidiPlayListener;
 import imp.midi.MidiSynth;
 import imp.data.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -91,84 +100,71 @@ public class PlaybackSliderManager implements MidiPlayListener, ChangeListener, 
         timer = new javax.swing.Timer(timerInterval, this);
     }
 
-     /**
+    /**
      * Called on playback position slider change,
      * since this class implements ChangeListener
      */
 
     public void stateChanged(ChangeEvent evt) {
-        if(ignoreEvent)
+        if (ignoreEvent)
             return;
 
         double fraction = getSliderFraction();
 
         long newValue = (long) (totalTimeMicroseconds * fraction);
 
-        if(!slider.getValueIsAdjusting())
-          {
+        if (!slider.getValueIsAdjusting()) {
             //System.out.println("stateChanged, fraction = " + fraction);
 
-          midiSynth.setFraction(fraction);
-          setCurrentTimeMicroseconds(newValue);
-          }
+            midiSynth.setFraction(fraction);
+            setCurrentTimeMicroseconds(newValue);
+        }
     }
-    
-/**
- * Called on timer firing
- * @param e
- */
 
-@Override
-public void actionPerformed(ActionEvent e)
-  {
-    final ActionEvent evt = e;
+    /**
+     * Called on timer firing
+     * @param e
+     */
 
-    SwingUtilities.invokeLater(new Runnable()
-    {
     @Override
-    public void run()
-      {
-        if( status != MidiPlayListener.Status.STOPPED )
-          {
+    public void actionPerformed(ActionEvent e) {
+        final ActionEvent evt = e;
 
-            if( !slider.getValueIsAdjusting() )
-              {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (status != MidiPlayListener.Status.STOPPED) {
 
-                updateTimeSlider(true);
+                    if (!slider.getValueIsAdjusting()) {
 
-                if( secondaryListener != null )
-                  {
-                    secondaryListener.actionPerformed(evt);
-                  }
-              }
-          }
-        else
-          {
-            timer.stop();
-          }
-      }
-    });
-  }
-    
-    public long getMicrosecondsFromSlider()
-    {
-          return (long)((getSliderFraction())*(midiSynth.getTotalMicroseconds()));
+                        updateTimeSlider(true);
+
+                        if (secondaryListener != null) {
+                            secondaryListener.actionPerformed(evt);
+                        }
+                    }
+                } else {
+                    timer.stop();
+                }
+            }
+        });
     }
 
-    public double getSliderFraction()
-    {
-        double fraction = ((double)slider.getValue())/slider.getMaximum();
+    public long getMicrosecondsFromSlider() {
+        return (long) ((getSliderFraction()) * (midiSynth.getTotalMicroseconds()));
+    }
+
+    public double getSliderFraction() {
+        double fraction = ((double) slider.getValue()) / slider.getMaximum();
         return fraction;
     }
-    
-    public long getTotalTime()
-    {
+
+    public long getTotalTime() {
         return totalTimeMicroseconds;
     }
-    
-    public int getTotalTimeSeconds()
-    {
-        return (int)Math.round((double)totalTimeMicroseconds/million);
+
+    public int getTotalTimeSeconds() {
+        return (int) Math.round((double) totalTimeMicroseconds / million);
     }
 
     /**
@@ -178,12 +174,12 @@ public void actionPerformed(ActionEvent e)
 
     public void setTotalTime(long microseconds) {
         this.totalTimeMicroseconds = microseconds;
-        int seconds = (int)Math.round((double)microseconds/million);
+        int seconds = (int) Math.round((double) microseconds / million);
         setTotalTimeSeconds(seconds);
 
         //System.out.println("totalTime = " + microseconds + ", seconds = " + seconds);
 
-        long currentTime = (long)(getSliderFraction()*microseconds);
+        long currentTime = (long) (getSliderFraction() * microseconds);
 
         setCurrentTimeMicroseconds(currentTime);
     }
@@ -198,13 +194,13 @@ public void actionPerformed(ActionEvent e)
     }
 
 
-   /**
+    /**
      * sets the current time showing on the slider
      * @param microseconds
      */
 
     public void setCurrentTimeMicroseconds(long microseconds) {
-        currentTimeLabel.setText(formatSecond((int)Math.round((double)(microseconds/million))));
+        currentTimeLabel.setText(formatSecond((int) Math.round((double) (microseconds / million))));
     }
 
     /**
@@ -213,34 +209,32 @@ public void actionPerformed(ActionEvent e)
      @param updateSlider
      */
 
-public void updateTimeSlider(boolean updateSlider)
-  {
-    setCurrentTimeMicroseconds(
-        (long) (midiSynth.getFraction() * totalTimeMicroseconds));
+    public void updateTimeSlider(boolean updateSlider) {
+        setCurrentTimeMicroseconds(
+                (long) (midiSynth.getFraction() * totalTimeMicroseconds));
 
-    if( updateSlider && !slider.getValueIsAdjusting() )
-      {
-        ignoreEvent = true;
-        slider.setValue((int) (midiSynth.getFraction() * slider.getMaximum()));
-        ignoreEvent = false;
-      }
-  }
+        if (updateSlider && !slider.getValueIsAdjusting()) {
+            ignoreEvent = true;
+            slider.setValue((int) (midiSynth.getFraction() * slider.getMaximum()));
+            ignoreEvent = false;
+        }
+    }
 
     @Override
-    public void setPlaying(MidiPlayListener.Status playing, 
+    public void setPlaying(MidiPlayListener.Status playing,
                            Transposition transposition) {
         MidiPlayListener.Status oldStatus = status;
         status = playing;
-        switch(playing) {
+        switch (playing) {
             case PLAYING:
                 setTotalTime(midiSynth.getTotalMicroseconds());
                 timer.start();
                 break;
             case STOPPED:
                 timer.stop();
-                if(oldStatus != MidiPlayListener.Status.STOPPED)
+                if (oldStatus != MidiPlayListener.Status.STOPPED)
                     slider.setValue(0);
-                   break;
+                break;
             case PAUSED:
                 timer.start();
                 break;
@@ -251,13 +245,13 @@ public void updateTimeSlider(boolean updateSlider)
     public MidiPlayListener.Status getPlaying() {
         return status;
     }
-    
+
     public static String formatSecond(int seconds) {
         int minutes = seconds / 60;
         seconds %= 60;
         return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
     }
-    
+
     public static String formatMicrosecond(long microseconds) {
         return formatSecond((int) (microseconds / million));
     }

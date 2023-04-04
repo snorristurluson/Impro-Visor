@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -36,6 +36,7 @@ public class HandManager {
     public HandManager() {
         resetHands();
     }
+
     /*
     public HandManager(int leftHandLowerLimit, int rightHandLowerLimit, int leftHandUpperLimit, int rightHandUpperLimit, int leftHandSpread, int rightHandSpread, int leftHandMinNotes, int leftHandMaxNotes, int rightHandMinNotes, int preferredMotion, int preferredMotionRange) {
         this.leftHandLowerLimit = leftHandLowerLimit;
@@ -57,9 +58,8 @@ public class HandManager {
     private int rightHandLowestNote;//used for calculating the limits for current chord
     private int preferredMotion;//set positive for moving up when possible, negative for moving down when possible, zero to keep the hands in the same place
     private int preferredMotionRange;//this is the plus/minus for preferred motion
-    
-    public void getSettings(AutomaticVoicingSettings av)
-    {
+
+    public void getSettings(AutomaticVoicingSettings av) {
         setLeftHandLowerLimit(av.getLeftHandLowerLimit());
         setLeftHandUpperLimit(av.getLeftHandUpperLimit());
         setLeftHandSpread(av.getLeftHandSpread());
@@ -73,28 +73,27 @@ public class HandManager {
         setPreferredMotion(av.getPreferredMotion());
         setPreferredMotionRange(av.getPreferredMotionRange());
     }
-    
+
     /**
      * randomly generates a number of notes for the LH to play within range
      * @return a number of notes
      */
-    public int getNumLeftNotes()
-    {
-        return (int)Math.round(Math.random()*(leftHandMaxNotes-leftHandMinNotes)) + leftHandMinNotes;
+    public int getNumLeftNotes() {
+        return (int) Math.round(Math.random() * (leftHandMaxNotes - leftHandMinNotes)) + leftHandMinNotes;
     }
+
     /**
      * randomly generate a number of notes for the RH to play within range
      * @return a number of notes
      */
-    public int getNumRightNotes()
-    {
-        return (int)Math.round(Math.random()*(rightHandMaxNotes-rightHandMinNotes)) + rightHandMinNotes;
+    public int getNumRightNotes() {
+        return (int) Math.round(Math.random() * (rightHandMaxNotes - rightHandMinNotes)) + rightHandMinNotes;
     }
 
     public int getLeftHandLowerLimit() {
         return leftHandLowerLimit;
     }
-    
+
     public void setLeftHandLowerLimit(int leftHandLowerLimit) {
         this.leftHandLowerLimit = leftHandLowerLimit;
     }
@@ -202,99 +201,93 @@ public class HandManager {
     public void setPreferredMotionRange(int preferredMotionRange) {
         this.preferredMotionRange = preferredMotionRange;
     }
+
     /**
      * moves hands between chords, ensuring that voicings are in ranges.
      */
-    public void repositionHands()
-    {
-      //System.out.println("lll "+this.leftHandLowerLimit+"rll "+this.rightHandLowerLimit);
-      //System.out.println("lul "+this.leftHandUpperLimit+"rul "+this.rightHandUpperLimit);
-      //System.out.println("ll "+this.leftHandLowestNote+"rl "+this.rightHandLowestNote);
-       leftHandLowestNote=(int)Math.round(leftHandLowestNote+((Math.random()*2.0*preferredMotionRange)-preferredMotionRange)+preferredMotion);
-       rightHandLowestNote=(int)Math.round(rightHandLowestNote+((Math.random()*2.0*preferredMotionRange)-preferredMotionRange)+preferredMotion);
-       if(leftHandLowestNote<leftHandLowerLimit)
-           resetLH();
-       if(rightHandLowestNote<rightHandLowerLimit)
-           resetRH();
-       if(leftHandLowestNote+leftHandSpread>leftHandUpperLimit)
-           resetLH();
-       if(rightHandLowestNote+rightHandSpread>rightHandUpperLimit)
-           resetRH();
-       
+    public void repositionHands() {
+        //System.out.println("lll "+this.leftHandLowerLimit+"rll "+this.rightHandLowerLimit);
+        //System.out.println("lul "+this.leftHandUpperLimit+"rul "+this.rightHandUpperLimit);
+        //System.out.println("ll "+this.leftHandLowestNote+"rl "+this.rightHandLowestNote);
+        leftHandLowestNote = (int) Math.round(leftHandLowestNote + ((Math.random() * 2.0 * preferredMotionRange) - preferredMotionRange) + preferredMotion);
+        rightHandLowestNote = (int) Math.round(rightHandLowestNote + ((Math.random() * 2.0 * preferredMotionRange) - preferredMotionRange) + preferredMotion);
+        if (leftHandLowestNote < leftHandLowerLimit)
+            resetLH();
+        if (rightHandLowestNote < rightHandLowerLimit)
+            resetRH();
+        if (leftHandLowestNote + leftHandSpread > leftHandUpperLimit)
+            resetLH();
+        if (rightHandLowestNote + rightHandSpread > rightHandUpperLimit)
+            resetRH();
+
     }
+
     /**
      * sets hands to a starting position based on settings
      */
-    public void resetHands()
-    {
-        if(preferredMotion>0)//to allow motion up
+    public void resetHands() {
+        if (preferredMotion > 0)//to allow motion up
         {
-            leftHandLowestNote=leftHandLowerLimit;
-            rightHandLowestNote=rightHandLowerLimit;
-        }
-        else if(preferredMotion<0)//to allow motion down
+            leftHandLowestNote = leftHandLowerLimit;
+            rightHandLowestNote = rightHandLowerLimit;
+        } else if (preferredMotion < 0)//to allow motion down
         {
-            leftHandLowestNote=leftHandUpperLimit-leftHandSpread;
-            rightHandLowestNote=rightHandUpperLimit-rightHandSpread;
-        }
-        else //start in the middle to be able to go both ways
+            leftHandLowestNote = leftHandUpperLimit - leftHandSpread;
+            rightHandLowestNote = rightHandUpperLimit - rightHandSpread;
+        } else //start in the middle to be able to go both ways
         {
-            leftHandLowestNote=(leftHandUpperLimit-leftHandSpread+leftHandLowerLimit)/2;
-            rightHandLowestNote=(rightHandUpperLimit-rightHandSpread+rightHandLowerLimit)/2;
+            leftHandLowestNote = (leftHandUpperLimit - leftHandSpread + leftHandLowerLimit) / 2;
+            rightHandLowestNote = (rightHandUpperLimit - rightHandSpread + rightHandLowerLimit) / 2;
         }
         VoicingDebug.println("Both Hands Reset");
     }
-    public void resetLH()
-    {
-        if(preferredMotion>0)//to allow motion up
+
+    public void resetLH() {
+        if (preferredMotion > 0)//to allow motion up
         {
-            leftHandLowestNote=leftHandLowerLimit;
+            leftHandLowestNote = leftHandLowerLimit;
             //rightHandLowestNote=rightHandLowerLimit;
-        }
-        else if(preferredMotion<0)//to allow motion down
+        } else if (preferredMotion < 0)//to allow motion down
         {
-            leftHandLowestNote=leftHandUpperLimit-leftHandSpread;
+            leftHandLowestNote = leftHandUpperLimit - leftHandSpread;
             //rightHandLowestNote=rightHandUpperLimit-rightHandSpread;
-        }
-        else //start in the middle to be able to go both ways
+        } else //start in the middle to be able to go both ways
         {
-            leftHandLowestNote=(leftHandUpperLimit-leftHandSpread+leftHandLowerLimit)/2;
+            leftHandLowestNote = (leftHandUpperLimit - leftHandSpread + leftHandLowerLimit) / 2;
             //rightHandLowestNote=(rightHandUpperLimit-rightHandSpread+rightHandLowerLimit)/2;
         }
     }
-    public void resetRH()
-    {
-        if(preferredMotion>0)//to allow motion up
+
+    public void resetRH() {
+        if (preferredMotion > 0)//to allow motion up
         {
             //leftHandLowestNote=leftHandLowerLimit;
-            rightHandLowestNote=rightHandLowerLimit;
-        }
-        else if(preferredMotion<0)//to allow motion down
+            rightHandLowestNote = rightHandLowerLimit;
+        } else if (preferredMotion < 0)//to allow motion down
         {
             //leftHandLowestNote=leftHandUpperLimit-leftHandSpread;
-            rightHandLowestNote=rightHandUpperLimit-rightHandSpread;
-        }
-        else //start in the middle to be able to go both ways
+            rightHandLowestNote = rightHandUpperLimit - rightHandSpread;
+        } else //start in the middle to be able to go both ways
         {
             //leftHandLowestNote=(leftHandUpperLimit-leftHandSpread+leftHandLowerLimit)/2;
-            rightHandLowestNote=(rightHandUpperLimit-rightHandSpread+rightHandLowerLimit)/2;
+            rightHandLowestNote = (rightHandUpperLimit - rightHandSpread + rightHandLowerLimit) / 2;
         }
         VoicingDebug.println("RH Reset");
     }
-    public int getLeftLowerBound()
-    {
+
+    public int getLeftLowerBound() {
         return leftHandLowestNote;
     }
-     public int getLeftUpperBound()
-    {
-        return leftHandLowestNote+leftHandSpread;
+
+    public int getLeftUpperBound() {
+        return leftHandLowestNote + leftHandSpread;
     }
-      public int getRightLowerBound()
-    {
+
+    public int getRightLowerBound() {
         return rightHandLowestNote;
     }
-       public int getRightUpperBound()
-    {
-        return rightHandLowestNote+rightHandSpread;
+
+    public int getRightUpperBound() {
+        return rightHandLowestNote + rightHandSpread;
     }
 }

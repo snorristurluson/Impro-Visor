@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -31,16 +31,18 @@ import imp.gui.Notate;
 import imp.gui.WindowMenuItem;
 import imp.gui.WindowRegistry;
 import imp.lickgen.LickGen;
+
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
 import polya.Polylist;
 import polya.Tokenizer;
 
 /**
  * @author Alex Putman
-  */
+ */
 public class TransformFrame
         extends javax.swing.JDialog
         implements imp.Constants {
@@ -86,9 +88,9 @@ public class TransformFrame
      */
     private int attrGranularity;
     /**
- 
- 
-    /**
+
+
+     /**
      * ArrayList of JTextField arrays, used to display probabilities used in
      * lick generation
      */
@@ -107,7 +109,7 @@ public class TransformFrame
      * Create the panel for flatten
      */
     private TransformLearningPanel transformLearningTab;
-   
+
     /**
      * Creates new LickgenFrame
      */
@@ -124,16 +126,15 @@ public class TransformFrame
 
         transformTab = new TransformPanel(notate);
         transformPanel.add(transformTab, new GridLayout(1, 1, 1, 1));
-        
+
         transformLearningTab = new TransformLearningPanel(notate, transformTab);
         transformLearningPanel.add(transformLearningTab, new GridLayout(1, 1, 1, 1));
-        }
+    }
 
     public void applySubstitutions(MelodyPart melody, ChordPart chords) {
         transformTab.applySubstitutionsToPart(melody, chords);
     }
 
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -142,8 +143,7 @@ public class TransformFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         transformPane = new javax.swing.JTabbedPane();
@@ -163,10 +163,8 @@ public class TransformFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transform Controls");
         setMinimumSize(new java.awt.Dimension(1000, 850));
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosed(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 closeWindow(evt);
             }
         });
@@ -199,49 +197,39 @@ public class TransformFrame
         grammarMenu1.setMnemonic('G');
         grammarMenu1.setText("File");
         grammarMenu1.setToolTipText("Edit or change the current grammar file.");
-        grammarMenu1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        grammarMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 grammarMenu1ActionPerformed(evt);
             }
         });
 
         openMI.setText("Open");
-        openMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        openMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openMIActionPerformed(evt);
             }
         });
         grammarMenu1.add(openMI);
 
         newMI.setText("New");
-        newMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        newMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newMIActionPerformed(evt);
             }
         });
         grammarMenu1.add(newMI);
 
         saveMI.setText("Save");
-        saveMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMIActionPerformed(evt);
             }
         });
         grammarMenu1.add(saveMI);
 
         addFromMI.setText("Add From...");
-        addFromMI.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addFromMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addFromMIActionPerformed(evt);
             }
         });
@@ -250,27 +238,23 @@ public class TransformFrame
         transformMenuBar.add(grammarMenu1);
 
         generatorWindowMenu1.setLabel("Window");
-        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener()
-        {
-            public void menuSelected(javax.swing.event.MenuEvent evt)
-            {
+        generatorWindowMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
             }
-            public void menuDeselected(javax.swing.event.MenuEvent evt)
-            {
+
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
-            public void menuCanceled(javax.swing.event.MenuEvent evt)
-            {
+
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
 
         closeWindowMI2.setMnemonic('C');
         closeWindowMI2.setText("Close Window");
         closeWindowMI2.setToolTipText("Closes the current window (exits program if there are no other windows)");
-        closeWindowMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeWindowMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeWindowMI2ActionPerformed(evt);
             }
         });
@@ -278,10 +262,8 @@ public class TransformFrame
 
         cascadeMI2.setMnemonic('A');
         cascadeMI2.setText("Cascade Windows");
-        cascadeMI2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cascadeMI2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cascadeMI2ActionPerformed(evt);
             }
         });
@@ -302,13 +284,12 @@ public class TransformFrame
      * @param rhythmString
      * @param chordProg
      * @param start
-     * @return 
+     * @return
      */
     public MelodyPart fillMelody(int beatValue,
                                  Polylist rhythmString,
                                  ChordPart chordProg,
-                                 int start) 
-      {
+                                 int start) {
         //debug System.out.println("LickgenFrame: fillMelody");
 
         MelodyPart result = lickgen.fillMelody(minPitch,
@@ -330,13 +311,14 @@ public class TransformFrame
         notate.stopPlaying();
     }
 
-                        private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed
-                            // TODO add your handling code here:
-                        }//GEN-LAST:event_grammarMenu1ActionPerformed
+    private void grammarMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grammarMenu1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_grammarMenu1ActionPerformed
 
-                        private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindowMI2ActionPerformed
+    private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMI2ActionPerformed
+
     public void closeWindow() {
         this.setVisible(false);
 
@@ -344,32 +326,32 @@ public class TransformFrame
     }
 
 
-                        private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
-                            WindowRegistry.cascadeWindows(this);
-                        }//GEN-LAST:event_cascadeMI2ActionPerformed
+    private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMI2ActionPerformed
 
-                        private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
+    private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
 
-                            generatorWindowMenu1.removeAll();
+        generatorWindowMenu1.removeAll();
 
-                            generatorWindowMenu1.add(closeWindowMI2);
+        generatorWindowMenu1.add(closeWindowMI2);
 
-                            generatorWindowMenu1.add(cascadeMI2);
+        generatorWindowMenu1.add(cascadeMI2);
 
-                            generatorWindowMenu1.add(windowMenuSeparator2);
+        generatorWindowMenu1.add(windowMenuSeparator2);
 
-                            for (WindowMenuItem w : WindowRegistry.getWindows()) {
+        for (WindowMenuItem w : WindowRegistry.getWindows()) {
 
-                                generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-                            }
+            generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
 
-                            generatorWindowMenu1.repaint();
+        generatorWindowMenu1.repaint();
 
-                        }//GEN-LAST:event_generatorWindowMenu1MenuSelected
+    }//GEN-LAST:event_generatorWindowMenu1MenuSelected
 
-                        private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindow
+    private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
+        closeWindow();
+    }//GEN-LAST:event_closeWindow
 
     private void openMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMIActionPerformed
         transformTab.open();
@@ -387,86 +369,75 @@ public class TransformFrame
         transformTab.addSubs();
     }//GEN-LAST:event_addFromMIActionPerformed
 
-/**
- * Fill an abstract or relative-pitch melody from text, such as acquired from
- * either abstract melody or relative pitch melody field.
- * If the text is not already a Polylist, this will first make a Polylist
- * out of it.
- *
- * @param r
- */
-public void fillMelodyFromText(String r)
-  {
-    r = r.trim();
-    if( r.equals("") )
-      {
-        return; // no text specified
-      }
-    if( r.charAt(0) != '(' )
-      {
-        r = "(".concat(r);
-      }
+    /**
+     * Fill an abstract or relative-pitch melody from text, such as acquired from
+     * either abstract melody or relative pitch melody field.
+     * If the text is not already a Polylist, this will first make a Polylist
+     * out of it.
+     *
+     * @param r
+     */
+    public void fillMelodyFromText(String r) {
+        r = r.trim();
+        if (r.equals("")) {
+            return; // no text specified
+        }
+        if (r.charAt(0) != '(') {
+            r = "(".concat(r);
+        }
 
-    if( r.charAt(r.length() - 1) != ')' )
-      {
-        r = r.concat(")");
-      }
+        if (r.charAt(r.length() - 1) != ')') {
+            r = r.concat(")");
+        }
 
-    Polylist rhythm = new Polylist();
-    StringReader rhythmReader = new StringReader(r);
-    Tokenizer in = new Tokenizer(rhythmReader);
-    Object ob;
+        Polylist rhythm = new Polylist();
+        StringReader rhythmReader = new StringReader(r);
+        Tokenizer in = new Tokenizer(rhythmReader);
+        Object ob;
 
-    while( (ob = in.nextSexp()) != Tokenizer.eof )
-      {
-        if( ob instanceof Polylist )
-          {
-            rhythm = (Polylist) ob;
-          }
-      }
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob instanceof Polylist) {
+                rhythm = (Polylist) ob;
+            }
+        }
 
-    notate.generateAndPutLick(rhythm);
-  }
+        notate.generateAndPutLick(rhythm);
+    }
 
-public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
-  {
-    r = r.trim();
-    if( r.equals("") )
-      {
-        return new MelodyPart(); // no text specified
-      }
-    if( r.charAt(0) != '(' )
-      {
-        r = "(".concat(r);
-      }
+    public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart) {
+        r = r.trim();
+        if (r.equals("")) {
+            return new MelodyPart(); // no text specified
+        }
+        if (r.charAt(0) != '(') {
+            r = "(".concat(r);
+        }
 
-    if( r.charAt(r.length() - 1) != ')' )
-      {
-        r = r.concat(")");
-      }
+        if (r.charAt(r.length() - 1) != ')') {
+            r = r.concat(")");
+        }
 
-    Polylist rhythm = new Polylist();
-    StringReader rhythmReader = new StringReader(r);
-    Tokenizer in = new Tokenizer(rhythmReader);
-    Object ob;
+        Polylist rhythm = new Polylist();
+        StringReader rhythmReader = new StringReader(r);
+        Tokenizer in = new Tokenizer(rhythmReader);
+        Object ob;
 
-    while( (ob = in.nextSexp()) != Tokenizer.eof )
-      {
-        if( ob instanceof Polylist )
-          {
-            rhythm = (Polylist) ob;
-          }
-      }
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob instanceof Polylist) {
+                rhythm = (Polylist) ob;
+            }
+        }
 
-    return notate.generateLick(rhythm, chordPart);
-  }
+        return notate.generateLick(rhythm, chordPart);
+    }
 
     private boolean saveImp = false;
-    public void setSaveImp(boolean value)
-    {
+
+    public void setSaveImp(boolean value) {
         saveImp = value;
     }
-    public boolean shouldSaveImp(){
+
+    public boolean shouldSaveImp() {
         return saveImp;
     }
 
@@ -498,16 +469,14 @@ public MelodyPart fillAndReturnMelodyFromText(String r, ChordPart chordPart)
     // End of variables declaration//GEN-END:variables
 
 
-
     public void setTotalBeats(double beats) {
         totalBeats = beats;
         String b = Integer.toString((int) beats);
 
     }
-    
-  
-public TransformPanel getTransformPanel()
-{
-    return transformTab;
-}
+
+
+    public TransformPanel getTransformPanel() {
+        return transformTab;
+    }
 }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -24,7 +24,9 @@ import imp.lstm.architecture.DataStep;
 import imp.lstm.architecture.FragmentedNeuralQueue;
 import imp.lstm.architecture.Loadable;
 import imp.lstm.filters.Operations;
+
 import java.util.Random;
+
 import mikera.arrayz.INDArray;
 import mikera.vectorz.AVector;
 import mikera.vectorz.Vector;
@@ -47,17 +49,17 @@ public class ProductCompressingAutoencoder implements Loadable {
     private RelativeNoteEncoding[] encoder_expert_encodings;
     private RelativeNoteEncoding[] decoder_expert_encodings;
     private FragmentedNeuralQueue queue;
-    
+
     private PassthroughInputPart beat_part;
     private PassthroughInputPart feature_part;
     private PassthroughInputPart[] cur_output_parts;
     private PassthroughInputPart[] last_output_parts;
-    
+
     private int num_experts;
-    
+
     private Random rand;
-    
-    public ProductCompressingAutoencoder(int fixedFeatureLength, int lowbound, int highbound, boolean variational){
+
+    public ProductCompressingAutoencoder(int fixedFeatureLength, int lowbound, int highbound, boolean variational) {
         this.fixedFeatureLength = fixedFeatureLength;
         this.low_bound = lowbound;
         this.high_bound = highbound;
@@ -66,14 +68,14 @@ public class ProductCompressingAutoencoder implements Loadable {
         this.currTimeStep = 0;
         this.queue = new FragmentedNeuralQueue();
         this.variational = variational;
-        
+
         this.encoder_experts = new Expert[2];
         this.encoder_experts[0] = new Expert(Operations.None);
         this.encoder_experts[1] = new Expert(Operations.None);
         this.decoder_experts = new Expert[2];
         this.decoder_experts[0] = new Expert(Operations.None);
         this.decoder_experts[1] = new Expert(Operations.None);
-        
+
         this.beat_part = new PassthroughInputPart();
         this.feature_part = new PassthroughInputPart();
         this.cur_output_parts = new PassthroughInputPart[2];
@@ -82,7 +84,7 @@ public class ProductCompressingAutoencoder implements Loadable {
         this.last_output_parts = new PassthroughInputPart[2];
         this.last_output_parts[0] = new PassthroughInputPart();
         this.last_output_parts[1] = new PassthroughInputPart();
-        
+
         this.encoder_inputs = new RelativeInputPart[2][4];
         this.encoder_inputs[0][0] = this.beat_part;
         this.encoder_inputs[0][1] = new PositionInputPart(lowbound, highbound, 2);
@@ -92,7 +94,7 @@ public class ProductCompressingAutoencoder implements Loadable {
         this.encoder_inputs[1][1] = new PositionInputPart(lowbound, highbound, 2);
         this.encoder_inputs[1][2] = new ChordInputPart();
         this.encoder_inputs[1][3] = this.cur_output_parts[1];
-        
+
         this.decoder_inputs = new RelativeInputPart[2][5];
         this.decoder_inputs[0][0] = this.beat_part;
         this.decoder_inputs[0][1] = new PositionInputPart(lowbound, highbound, 2);
@@ -104,159 +106,148 @@ public class ProductCompressingAutoencoder implements Loadable {
         this.decoder_inputs[1][2] = new ChordInputPart();
         this.decoder_inputs[1][3] = this.feature_part;
         this.decoder_inputs[1][4] = this.last_output_parts[1];
-        
+
         this.encoder_expert_encodings = new RelativeNoteEncoding[2];
-        this.encoder_expert_encodings[0] = new IntervalRelativeNoteEncoding(lowbound, highbound,true);
+        this.encoder_expert_encodings[0] = new IntervalRelativeNoteEncoding(lowbound, highbound, true);
         this.encoder_expert_encodings[1] = new ChordRelativeNoteEncoding(true);
         this.decoder_expert_encodings = new RelativeNoteEncoding[2];
-        this.decoder_expert_encodings[0] = new IntervalRelativeNoteEncoding(lowbound, highbound,true);
+        this.decoder_expert_encodings[0] = new IntervalRelativeNoteEncoding(lowbound, highbound, true);
         this.decoder_expert_encodings[1] = new ChordRelativeNoteEncoding(true);
-        
-        for(int i=0; i<this.num_experts; i++) {
+
+        for (int i = 0; i < this.num_experts; i++) {
             this.encoder_expert_encodings[i].reset();
             this.last_output_parts[i].provide(this.decoder_expert_encodings[i].reset());
         }
     }
-    
-    
+
+
     public boolean hasDataStepsLeft() {
         return !queue.isEmpty();
     }
-    
+
     public void encodeStep(DataStep currStep) {
-       
+
         AVector chord = currStep.get("chord");
         AVector beat = currStep.get("beat");
         AVector melody = currStep.get("melody");
         int chord_root = (int) chord.get(0);
         AVector chord_type = chord.subVector(1, 12);
         int midinote = (int) melody.get(0);
-        this.beat_part.provide(beat,this.num_experts);
-        
+        this.beat_part.provide(beat, this.num_experts);
+
         AVector accum_activations = null;
-        for(int i=0; i<this.num_experts; i++) {
+        for (int i = 0; i < this.num_experts; i++) {
             RelativeNoteEncoding enc = this.encoder_expert_encodings[i];
             AVector encval = enc.encode(midinote, chord_root);
             int relpos = enc.get_relative_position(chord_root);
             this.cur_output_parts[i].provide(encval);
-            
+
             AVector full_encoder_input = RelativeInputPart.combine(this.encoder_inputs[i], relpos, chord_root, chord_type);
             AVector activations = this.encoder_experts[i].process(full_encoder_input);
-            
-            if(accum_activations == null)
+
+            if (accum_activations == null)
                 accum_activations = activations;
             else
                 accum_activations.add(activations);
         }
         Operations processOp = variational ? Operations.NormalSample : Operations.Sigmoid;
-        if(fixedFeatureLength > 0)
-        {
+        if (fixedFeatureLength > 0) {
             AVector featureVec = processOp.operate(accum_activations);
-            if((currTimeStep+1) % fixedFeatureLength == 0)
-            {
+            if ((currTimeStep + 1) % fixedFeatureLength == 0) {
                 this.queue.enqueueStep(featureVec, 1.0);
-            }
-            else
-            {
+            } else {
                 this.queue.enqueueStep(featureVec, 0.0);
             }
 
             currTimeStep++;
-        }
-        else if(fixedFeatureLength == 0)
-        {
+        } else if (fixedFeatureLength == 0) {
             AVector strengthPart = accum_activations.subVector(0, 1);
-            AVector activationsPart = accum_activations.subVector(1, accum_activations.length()-1);
+            AVector activationsPart = accum_activations.subVector(1, accum_activations.length() - 1);
             strengthPart = Operations.Sigmoid.operate(strengthPart);
             AVector featureVec = processOp.operate(activationsPart);
             double strength = strengthPart.get(0);
             this.queue.enqueueStep(featureVec, strength);
-        }
-        else
+        } else
             throw new RuntimeException("Set feature size is negative!");
     }
-    
-    public void readInQueue(String inFilePath)
-    {
+
+    public void readInQueue(String inFilePath) {
         queue.initFromFile(inFilePath);
     }
-    
-    public void hotSwapQueue(String inFilePath, String outFilePath)
-    {
+
+    public void hotSwapQueue(String inFilePath, String outFilePath) {
         queue.writeToFile(outFilePath);
         queue.initFromFile(inFilePath);
         System.out.println(queue.toString());
     }
-    
-    public FragmentedNeuralQueue hotSwapQueue(FragmentedNeuralQueue newQueue)
-    {
+
+    public FragmentedNeuralQueue hotSwapQueue(FragmentedNeuralQueue newQueue) {
         FragmentedNeuralQueue oldQueue = this.queue;
         this.queue = newQueue;
         return oldQueue;
     }
-    
-    public FragmentedNeuralQueue getQueue()
-    {
+
+    public FragmentedNeuralQueue getQueue() {
         return this.queue;
     }
-    public void setQueue(FragmentedNeuralQueue newQueue)
-    {
+
+    public void setQueue(FragmentedNeuralQueue newQueue) {
         this.queue = newQueue;
     }
-    
+
     public boolean canDecode() {
         return queue.hasFullBuffer();
     }
-    
-    public void perturbQueue(){
+
+    public void perturbQueue() {
         // don't do anything (for now?)
     }
-    
+
     public AVector decodeStep(DataStep currStep) {
         AVector chord = currStep.get("chord");
         AVector beat = currStep.get("beat");
         int chord_root = (int) chord.get(0);
         AVector chord_type = chord.subVector(1, 12);
-        this.beat_part.provide(beat,this.num_experts);
+        this.beat_part.provide(beat, this.num_experts);
         this.feature_part.provide(this.queue.dequeueStep(), this.num_experts);
-        
+
         AVector accum_probabilities = null;
-        for(int i=0; i<this.num_experts; i++) {
+        for (int i = 0; i < this.num_experts; i++) {
             RelativeNoteEncoding enc = this.decoder_expert_encodings[i];
             int relpos = enc.get_relative_position(chord_root);
-            
+
             AVector full_decoder_input = RelativeInputPart.combine(this.decoder_inputs[i], relpos, chord_root, chord_type);
             AVector activations = this.decoder_experts[i].process(full_decoder_input);
             AVector probabilities = enc.getProbabilities(activations, chord_root, this.low_bound, this.high_bound);
-            
-            if(probabilities.length() != this.high_bound-this.low_bound+2)
-                throw new RuntimeException("Length of probs was wrong! Was "+ probabilities.length() +", expected "+(this.high_bound-this.low_bound+2));
-            
-            if(accum_probabilities == null)
+
+            if (probabilities.length() != this.high_bound - this.low_bound + 2)
+                throw new RuntimeException("Length of probs was wrong! Was " + probabilities.length() + ", expected " + (this.high_bound - this.low_bound + 2));
+
+            if (accum_probabilities == null)
                 accum_probabilities = probabilities.mutable();
             else
                 accum_probabilities.multiply(probabilities);
         }
-        
+
         accum_probabilities.divide(accum_probabilities.elementSum());
-        
+
         int sampled = NNUtilities.sample(this.rand, accum_probabilities);
         int midival;
-        if(sampled == 0)
+        if (sampled == 0)
             midival = -1;
-        else if(sampled == 1)
+        else if (sampled == 1)
             midival = -2;
         else
-            midival = this.low_bound + (sampled-2);
-        
-        for(int i=0; i<this.num_experts; i++) {
+            midival = this.low_bound + (sampled - 2);
+
+        for (int i = 0; i < this.num_experts; i++) {
             RelativeNoteEncoding enc = this.decoder_expert_encodings[i];
             AVector prev_output = enc.encode(midival, chord_root);
             this.last_output_parts[i].provide(prev_output);
         }
         return Vector.of(midival);
     }
-    
+
     @Override
     public boolean load(INDArray data, String loadPath) {
         // Expected format: (enc|dec)_#_<expert params>
@@ -276,14 +267,14 @@ public class ProductCompressingAutoencoder implements Loadable {
             default:
                 return false;
         }
-        
+
         try {
             int expertIdx = Integer.parseInt(car2);
-            if(expertIdx >= 0 && expertIdx < num_experts)
+            if (expertIdx >= 0 && expertIdx < num_experts)
                 return exps[expertIdx].load(data, cdr2);
             else
                 return false;
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }

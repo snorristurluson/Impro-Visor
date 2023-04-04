@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +31,7 @@ import imp.util.Trace;
  * @see         Part
  * @see         CopyCommand
  * @see         CutCommand
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class ReverseCommand implements Command, Constants {
 
@@ -74,7 +74,7 @@ public class ReverseCommand implements Command, Constants {
      * the slot where a rest is inserted
      */
     protected int stopIndex;
-    
+
     /**
      * true since the pasting can be undone
      */
@@ -111,7 +111,7 @@ public class ReverseCommand implements Command, Constants {
      * @param undoable          the boolean to see if the action is undoable
      */
     public ReverseCommand(MelodyPart source, int startSlot, int stopSlot,
-                                     boolean undoable, boolean play) {
+                          boolean undoable, boolean play) {
         this(source, startSlot, stopSlot, play);
         this.undoable = undoable;
         Trace.log(2, "creating Reverse Command");
@@ -123,70 +123,66 @@ public class ReverseCommand implements Command, Constants {
      * undoing and redoing purposes.
      */
     public void execute() {
-      Trace.log(2, "executing ReverseCommand");
-      if( source != null && dest != null && source.size() > 0 )
-        {
-        Trace.log(3, "reversing slots from " + startSlot + " to " + stopSlot);
+        Trace.log(2, "executing ReverseCommand");
+        if (source != null && dest != null && source.size() > 0) {
+            Trace.log(3, "reversing slots from " + startSlot + " to " + stopSlot);
 
-        source = source.extractReverse(startSlot, stopSlot);
+            source = source.extractReverse(startSlot, stopSlot);
 
-        oldSection = dest.extractSlots(startSlot, stopSlot);
+            oldSection = dest.extractSlots(startSlot, stopSlot);
 
-        dest.pasteOver(source, startSlot);
-        
-	if( play && source instanceof MelodyPart && ImproVisor.getPlay() )
-	  {
-          ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
-	  // old way: new PlayPartCommand(((MelodyPart)source)).execute();
-	  }
+            dest.pasteOver(source, startSlot);
 
-        // if we're inserting a Note, then we want to make sure it stops
-        // auto-expanding after two measures (and remember that we did that)
+            if (play && source instanceof MelodyPart && ImproVisor.getPlay()) {
+                ImproVisor.playCurrentSelection(false, 0, PlayScoreCommand.USEDRUMS);
+                // old way: new PlayPartCommand(((MelodyPart)source)).execute();
+            }
 
-        int lastIndex = stopSlot;
-        if( lastIndex >= 0  ) {
-	  Unit lastUnit = dest.getUnit(lastIndex);
-	  if(lastUnit instanceof Note) {
-	      Note note = (Note)lastUnit;
-	      if(note.nonRest()) {
-		  // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
-		  Unit lastSourceUnit = source.getPrevUnit(source.size());
-		  stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
-		  if(stopIndex < dest.size() &&
-		     dest.getNextIndex(lastIndex) > stopIndex) {
-		      dest.setUnit(stopIndex, new Rest());
-		      restInserted = true;
-		  }  
-	      }
-          }        
+            // if we're inserting a Note, then we want to make sure it stops
+            // auto-expanding after two measures (and remember that we did that)
+
+            int lastIndex = stopSlot;
+            if (lastIndex >= 0) {
+                Unit lastUnit = dest.getUnit(lastIndex);
+                if (lastUnit instanceof Note) {
+                    Note note = (Note) lastUnit;
+                    if (note.nonRest()) {
+                        // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
+                        Unit lastSourceUnit = source.getPrevUnit(source.size());
+                        stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
+                        if (stopIndex < dest.size() &&
+                                dest.getNextIndex(lastIndex) > stopIndex) {
+                            dest.setUnit(stopIndex, new Rest());
+                            restInserted = true;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
 
     /**
      * Undoes the reversal.
      */
     public void undo() {
-        if( source != null && dest != null )
-          {
-	  if(restInserted)
-	      dest.delUnit(stopIndex);
+        if (source != null && dest != null) {
+            if (restInserted)
+                dest.delUnit(stopIndex);
 
-	  dest.pasteSlots(oldSection, startSlot);
-          }
+            dest.pasteSlots(oldSection, startSlot);
+        }
     }
 
     /**
      * Redoes the reversal
      */
     public void redo() {
-        if( source != null && dest != null )
-          {
-	  dest.pasteOver(source, startSlot);
+        if (source != null && dest != null) {
+            dest.pasteOver(source, startSlot);
 
-	  if(restInserted)
-	      dest.setUnit(stopIndex, new Rest());
-          }
+            if (restInserted)
+                dest.setUnit(stopIndex, new Rest());
+        }
 
     }
 

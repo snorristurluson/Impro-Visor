@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2018 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -27,21 +27,20 @@ import imp.util.BasicEditor;
 
 /**
  *
- * @author  David Morrison
+ * @author David Morrison
  */
-public class SourceEditorDialog extends javax.swing.JDialog implements BasicEditor
-{
-     /**
+public class SourceEditorDialog extends javax.swing.JDialog implements BasicEditor {
+    /**
      * Used as a prefix on editor window titles
      */
-    
+
     Notate parent;
     java.awt.Frame frameParent;
     CommandManager cm;
     int type;
-    
+
     public static final String titlePrefix = "Editor For: ";
-    
+
     public static final int LEADSHEET = 0;
     public static final int GRAMMAR = 1;
     public static final int STYLE = 2;
@@ -49,53 +48,52 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
     public static final String[] typeStr = {"Leadsheet", "Grammar", "Style", "Dictionary"};
 
     public static String editorTitlePrefix = "Editor for: ";
-    
+
     private boolean firstTime = true;
-   
+
     /** Creates new form sourceEditorDialog */
-    public SourceEditorDialog(java.awt.Frame parent, boolean modal, Notate p, CommandManager cm, int type)
-    {
+    public SourceEditorDialog(java.awt.Frame parent, boolean modal, Notate p, CommandManager cm, int type) {
         super(parent, modal);
         frameParent = parent;
         this.parent = p;
         this.cm = cm;
         this.type = type;
         initComponents();
-        setSize(200,200);
+        setSize(200, 200);
         setTitle("");
         editorToSourceButton.setText("Editor to " + typeStr[type]);
         sourceToEditorButton.setText(typeStr[type] + " to Editor");
-        
+
         sourceEditor.setFont(new java.awt.Font("Lucida Console", java.awt.Font.PLAIN, 13));
     }
 
     private String title = "";
+
     @Override
     public void setTitle(String title) {
         this.title = title;
         super.setTitle(titlePrefix + title);
     }
-    
+
     @Override
     public String getTitle() {
         return title;
     }
-    
+
     public String getText() {
         return sourceEditor.getText();
     }
-    
+
     public void setText(String text) {
-      
+
         sourceEditor.setSize(600, 2000);
         sourceEditor.setText(text);
     }
 
-    public void setRows(int numRows)
-    {
+    public void setRows(int numRows) {
         sourceEditor.setRows(numRows);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -153,13 +151,11 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
 
     private void sourceToEditorButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_sourceToEditorButtonActionPerformed
     {//GEN-HEADEREND:event_sourceToEditorButtonActionPerformed
-    fillEditor();
+        fillEditor();
     }//GEN-LAST:event_sourceToEditorButtonActionPerformed
 
-    public void fillEditor()
-    {
-    switch (type)
-        {
+    public void fillEditor() {
+        switch (type) {
             case LEADSHEET:
                 cm.execute(new LeadsheetToEditorCommand(parent, this));
                 parent.setStatus("Text loaded from leadsheet");
@@ -171,24 +167,22 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 cm.execute(new StylesToEditorCommand(this));
                 break;
             case DICTIONARY:
-                new DictionaryToEditorCommand(((RoadMapFrame)frameParent).getDictionaryFilename(), this).execute();
+                new DictionaryToEditorCommand(((RoadMapFrame) frameParent).getDictionaryFilename(), this).execute();
                 break;
         }
-    if( firstTime )
-      {
-      sourceEditor.moveCaretPosition(0);
-      firstTime = false;
-      }
+        if (firstTime) {
+            sourceEditor.moveCaretPosition(0);
+            firstTime = false;
+        }
     }
-    
+
     private void editorToSourceButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_editorToSourceButtonActionPerformed
     {//GEN-HEADEREND:event_editorToSourceButtonActionPerformed
-        switch (type)
-        {
+        switch (type) {
             case LEADSHEET:
                 Score newScore = new Score();
                 cm.execute(new EditorToLeadsheetCommand(newScore, this));
-                setTitle(newScore.getTitle().equals("")?"Untitled Leadsheet":newScore.getTitle());
+                setTitle(newScore.getTitle().equals("") ? "Untitled Leadsheet" : newScore.getTitle());
                 parent.setupScore(newScore);
                 parent.setStatus("Text transmitted to leadsheet");
                 break;
@@ -201,15 +195,14 @@ public class SourceEditorDialog extends javax.swing.JDialog implements BasicEdit
                 //parent.reloadStyles();
                 break;
             case DICTIONARY:
-                new EditorToDictionaryCommand((RoadMapFrame)frameParent, this).execute();
+                new EditorToDictionaryCommand((RoadMapFrame) frameParent, this).execute();
                 break;
         }
     }//GEN-LAST:event_editorToSourceButtonActionPerformed
 
-private void windowClosingHandler(java.awt.event.WindowEvent evt)//GEN-FIRST:event_windowClosingHandler
-  {//GEN-HEADEREND:event_windowClosingHandler
-        switch (type)
-        {
+    private void windowClosingHandler(java.awt.event.WindowEvent evt)//GEN-FIRST:event_windowClosingHandler
+    {//GEN-HEADEREND:event_windowClosingHandler
+        switch (type) {
             case LEADSHEET:
                 parent.setNormalMode();
                 break;
@@ -217,20 +210,20 @@ private void windowClosingHandler(java.awt.event.WindowEvent evt)//GEN-FIRST:eve
                 break;
             case STYLE:
                 break;
-         }
-  }//GEN-LAST:event_windowClosingHandler
-    
+        }
+    }//GEN-LAST:event_windowClosingHandler
+
     //used when calling the grammar to editor button automatically from Notate
     public void performEditorToSourceButton(java.awt.event.ActionEvent evt) {
         editorToSourceButtonActionPerformed(evt);
 
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton editorToSourceButton;
     private javax.swing.JTextArea sourceEditor;
     private javax.swing.JScrollPane sourceEditorScrollPane;
     private javax.swing.JButton sourceToEditorButton;
     // End of variables declaration//GEN-END:variables
-    
+
 }

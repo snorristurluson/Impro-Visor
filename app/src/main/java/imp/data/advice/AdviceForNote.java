@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,7 +33,7 @@ import polya.Polylist;
  * be inserted into Score.
  * @see         Advice
  * @see         Advisor
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class AdviceForNote extends Advice {
 
@@ -42,13 +42,13 @@ public class AdviceForNote extends Advice {
      */
     private String advice;
     private int[] metre = new int[2];
-    
+
     /**
      * Creates a new piece of Advice.
      * @param name      a String containing the display name for the Advice
      */
     public AdviceForNote(NoteSymbol noteSymbol, int[] metre) {
-        super((noteSymbol.getPitchString()));	// strip duration and octave from symbol
+        super((noteSymbol.getPitchString()));    // strip duration and octave from symbol
         this.advice = noteSymbol.getPitchClass().toString();
         this.metre[0] = metre[0];
         this.metre[1] = metre[1];
@@ -61,20 +61,20 @@ public class AdviceForNote extends Advice {
      * @return Part     the Advice in Part form, ready to be inserted
      */
     public MelodyPart getPart(int target, Polylist rhythm) {
-        int beatValue = ((BEAT*4)/metre[1]);
+        int beatValue = ((BEAT * 4) / metre[1]);
         MelodyPart newPart = new MelodyPart();
         newPart.setMetre(metre[0], metre[1]);
-        Note note = Key.makeNote(advice, C4, beatValue/2);
+        Note note = Key.makeNote(advice, C4, beatValue / 2);
 
-        note.setRhythmValue(beatValue/2);
+        note.setRhythmValue(beatValue / 2);
 
         newPart.addUnit(note);
-        
+
         return newPart;
     }
-    
+
     public MelodyPart getPart() {
         return getPart(C4, Polylist.nil);
-}
+    }
 
 }

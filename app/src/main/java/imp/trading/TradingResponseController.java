@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2018 Robert Keller and Harvey Mudd College XML export code
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -24,6 +24,7 @@ import imp.data.MelodyPart;
 import imp.gui.Notate;
 import imp.lickgen.transformations.Transform;
 import imp.trading.tradingResponseModes.*;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +47,7 @@ public class TradingResponseController {
     private final long desiredFinishDuration;
     boolean generationCancelled;
     private final Notate notate;
-    
+
     public TradingResponseController(Notate notate, int[] metre, int tradeLength, TradingResponseMode responseMode) throws ExceptionTradeModeNotFound {
         responseInfo = new TradingResponseInfo(notate, metre, tradeLength);
         //response mode is now initialized on creation of controller so that we aren't creating a new one AND doing all of our operations at the response method call
@@ -58,56 +59,52 @@ public class TradingResponseController {
         desiredFinishDuration = 20000000;
         this.notate = notate;
     }
-    
+
     public void onStartTrading() {
         responseMode.onStartTrading();
     }
-    
+
     public int getNumRemainingParts() {
         return responseSections.length - sectionIndex;
     }
-    
+
     /**
      * This method should be called at the beginning of the human
      * @param responseChords
-     * @param nextSection 
+     * @param nextSection
      */
-    public void startTradingGeneration(ChordPart responseChords, int nextSection)
-    {
+    public void startTradingGeneration(ChordPart responseChords, int nextSection) {
         //update response info with the chords to generate on as well as the next section's first slot
         responseInfo.updateResponse(null, null, responseChords, nextSection);
         responseMode.endGeneration(); //in case the responseMode was still running a generation thread
         responseSections = responseMode.generateResponseStructure(); //create placeholder future melody part sections and start generating their values
     }
-    
+
     /**
      * This method is used to signal to old, retrofitted response modes (BlockResponseMode subclasses) that they should generate now with the given input
      * @param inputMelody
      * @param inputChords
      * @param responseChords
-     * @param nextSection 
+     * @param nextSection
      */
-    public void finishResponse(MelodyPart inputMelody, ChordPart inputChords, ChordPart responseChords, int nextSection)
-    {
+    public void finishResponse(MelodyPart inputMelody, ChordPart inputChords, ChordPart responseChords, int nextSection) {
         responseInfo.updateResponse(inputMelody, inputChords, responseChords, nextSection);
         responseMode.signalFinish();
         sectionIndex = 0;
         finishTime = System.nanoTime();
     }
-    
-    public boolean hasNext(){
+
+    public boolean hasNext() {
         //if Improvisor goes first, responseSections is null so tracking breaks, this seems to fix that
         return responseSections != null && sectionIndex < responseSections.length;
     }
-    
-    public boolean hasNextReady()
-    {
+
+    public boolean hasNextReady() {
         return hasNext() && responseSections[sectionIndex].isDone();
     }
-    
-    public MelodyPart retrieveNext()
-    {
-        if(!generationCancelled) {
+
+    public MelodyPart retrieveNext() {
+        if (!generationCancelled) {
             try {
                 long timeSinceFinish = System.nanoTime() - finishTime;
                 long maxWaitTime = desiredFinishDuration - timeSinceFinish;
@@ -120,9 +117,8 @@ public class TradingResponseController {
                 return defaultMelody;
             } catch (InterruptedException | ExecutionException ex) {
                 ex.printStackTrace();
-            } 
-        } else
-        {
+            }
+        } else {
             sectionIndex++;
             return responseMode.getDefaultMelodyPart();
         }
@@ -132,12 +128,11 @@ public class TradingResponseController {
     public void updateResponse(MelodyPart inputMelody, ChordPart inputChords, ChordPart responseChords, int nextSection) {
         responseInfo.updateResponse(inputMelody, inputChords, responseChords, nextSection);
     }
-    
-    public void setMusician(Transform musician)
-    {
+
+    public void setMusician(Transform musician) {
         responseInfo.setMusician(musician);
     }
-    
+
     public void updateResponse(MelodyPart inputMelody, ChordPart inputChords, ChordPart responseChords, int nextSection, Transform musician) {
         responseInfo.updateResponse(inputMelody, inputChords, responseChords, nextSection);
         responseInfo.setMusician(musician);
@@ -147,9 +142,9 @@ public class TradingResponseController {
     public MelodyPart extractFromGrammarSolo(int startSlot, int slotLength) {
         return responseInfo.extractFromGrammarSolo(startSlot, slotLength);
     }
-    
-    public MelodyPart response(){
-            return ((BlockResponseMode) responseMode).generateResponse();
+
+    public MelodyPart response() {
+        return ((BlockResponseMode) responseMode).generateResponse();
     }
 
     public TradingResponseInfo getTradingResponseInfo() {

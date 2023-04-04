@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2005-2015 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modifyc it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -25,6 +25,7 @@
  */
 
 package imp.gui;
+
 import java.awt.*;
 import java.io.*;
 import java.util.logging.Level;
@@ -34,15 +35,16 @@ public class IntervalLearningFrame
         extends javax.swing.JDialog
         implements imp.Constants {
 
-    
+
     private final Notate notate;
-    
+
     private final IntervalLearningPanel intervalLearningTab;
+
     /**
      * Creates new LickgenFrame
      * @param notate The notate this interval learning frame was spawned from
      */
-    public IntervalLearningFrame(Notate notate){
+    public IntervalLearningFrame(Notate notate) {
         this.notate = notate;
         initComponents();
         intervalLearningTab = new IntervalLearningPanel(notate);
@@ -167,8 +169,10 @@ public class IntervalLearningFrame
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 generatorWindowMenu1MenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -200,44 +204,46 @@ public class IntervalLearningFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-                        private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
-                            // TODO add your handling code here:
-                        }//GEN-LAST:event_fileMenuActionPerformed
+    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileMenuActionPerformed
 
-                        private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindowMI2ActionPerformed
+    private void closeWindowMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMI2ActionPerformed
+        closeWindow();
+    }//GEN-LAST:event_closeWindowMI2ActionPerformed
+
     public void closeWindow() {
         this.setVisible(false);
 
         WindowRegistry.unregisterWindow(this);
     }
-                        private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
-                            WindowRegistry.cascadeWindows(this);
-                        }//GEN-LAST:event_cascadeMI2ActionPerformed
 
-                        private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
+    private void cascadeMI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMI2ActionPerformed
+        WindowRegistry.cascadeWindows(this);
+    }//GEN-LAST:event_cascadeMI2ActionPerformed
 
-                            generatorWindowMenu1.removeAll();
+    private void generatorWindowMenu1MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_generatorWindowMenu1MenuSelected
 
-                            generatorWindowMenu1.add(closeWindowMI2);
+        generatorWindowMenu1.removeAll();
 
-                            generatorWindowMenu1.add(cascadeMI2);
+        generatorWindowMenu1.add(closeWindowMI2);
 
-                            generatorWindowMenu1.add(windowMenuSeparator2);
+        generatorWindowMenu1.add(cascadeMI2);
 
-                            for (WindowMenuItem w : WindowRegistry.getWindows()) {
+        generatorWindowMenu1.add(windowMenuSeparator2);
 
-                                generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
-                            }
+        for (WindowMenuItem w : WindowRegistry.getWindows()) {
 
-                            generatorWindowMenu1.repaint();
+            generatorWindowMenu1.add(w.getMI(this));      // these are static, and calling getMI updates the name on them too in case the window title changed
+        }
 
-                        }//GEN-LAST:event_generatorWindowMenu1MenuSelected
+        generatorWindowMenu1.repaint();
 
-                        private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
-                            closeWindow();
-                        }//GEN-LAST:event_closeWindow
+    }//GEN-LAST:event_generatorWindowMenu1MenuSelected
+
+    private void closeWindow(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeWindow
+        closeWindow();
+    }//GEN-LAST:event_closeWindow
 
     private void newFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFileActionPerformed
         intervalLearningTab.newFile();
@@ -267,10 +273,10 @@ public class IntervalLearningFrame
         }
     }//GEN-LAST:event_saveFileActionPerformed
 
-    public void intervalImprovise(){
+    public void intervalImprovise() {
         intervalLearningTab.generateSolo();
     }
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addFromFile;
     private javax.swing.JMenuItem cascadeMI2;

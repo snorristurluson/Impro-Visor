@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -34,7 +34,7 @@ public class Pattern {
     /**
      * the Style this to which this Pattern belongs
      */
-  
+
     protected Style style;
 
     /**
@@ -42,7 +42,7 @@ public class Pattern {
      */
     protected float weight = 10;
 
-    
+
     private String errorMessage = null;
 
 
@@ -50,64 +50,56 @@ public class Pattern {
      * Gets the duration. This is intended to be overridden by specific types of Pattern.
      * @return the duration
      */
-    
-    public int getDuration()
-    {
-      return 0;
+
+    public int getDuration() {
+        return 0;
     }
 
     /**
      * Gets the weight.
      * @return the weight
      */
-    
-    public float getWeight()
-    {
-      return weight;
+
+    public float getWeight() {
+        return weight;
     }
 
     /**
      * Gets the Style.
      * @return the style
      */
-    
-    public Style getStyle()
-    {
-      return style;
+
+    public Style getStyle() {
+        return style;
     }
 
     /**
      * Sets the weight.
      * @param w         a float containing the weight
      */
-    
-    public void setWeight(float w)
-    {
-      weight = w;
+
+    public void setWeight(float w) {
+        weight = w;
     }
 
     /**
      * Sets the style.
      * @param s         the Style
      */
-    
-    public void setStyle(Style s)
-    {
-      style = s;
+
+    public void setStyle(Style s) {
+        style = s;
     }
-    
-public boolean getStatus()
-  {
-    return errorMessage == null;
-  }
 
-public String getErrorMessage()
-  {
-    return errorMessage == null ? "" : errorMessage;
-  }
+    public boolean getStatus() {
+        return errorMessage == null;
+    }
 
-protected void setError(String error)
-  {
-    errorMessage = error;
-  }
+    public String getErrorMessage() {
+        return errorMessage == null ? "" : errorMessage;
+    }
+
+    protected void setError(String error) {
+        errorMessage = error;
+    }
 }

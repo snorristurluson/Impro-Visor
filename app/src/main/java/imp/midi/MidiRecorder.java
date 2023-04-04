@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,6 +29,7 @@ import imp.data.Note;
 import imp.data.Rest;
 import imp.data.Score;
 import imp.gui.Notate;
+
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
@@ -38,8 +39,7 @@ import javax.sound.midi.Sequencer;
  * @author Martin Hunt. Robert Keller added countInOffset stuff 7/12/2010
  */
 
-public class MidiRecorder implements imp.Constants, Receiver
-{
+public class MidiRecorder implements imp.Constants, Receiver {
     Notate notate;
     MelodyPart melodyPart;
     Score score;
@@ -56,73 +56,59 @@ public class MidiRecorder implements imp.Constants, Receiver
     boolean isSuspended = false;
     int transposition = 0;
     private javax.swing.JToggleButton midiInputChannel[];
-    
- 
-public MidiRecorder(Notate notate, Score score)
-  {
+
+
+    public MidiRecorder(Notate notate, Score score) {
         this.notate = notate;
         this.score = score;
     }
 
-public double getLatency()
-  {
+    public double getLatency() {
         return latency;
     }
 
-public void setLatency(double latency)
-  {
+    public void setLatency(double latency) {
         this.latency = latency;
     }
 
-public long getTime()
-  {
-    if( sequencer != null && sequencer.isRunning() )
-      {
-      return sequencer.getMicrosecondPosition();
-      }
-    else
-      {
-      return -1;
-      }
+    public long getTime() {
+        if (sequencer != null && sequencer.isRunning()) {
+            return sequencer.getMicrosecondPosition();
+        } else {
+            return -1;
+        }
     }
 
-public long getTick()
-  {
-  if( sequencer != null && sequencer.isRunning() )
-      {
-      double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
-      long latencyTicks = Math.round(bpms * resolution * latency);
+    public long getTick() {
+        if (sequencer != null && sequencer.isRunning()) {
+            double bpms = ((double) sequencer.getTempoInBPM()) / 60000;    // beats per millisecond
+            long latencyTicks = Math.round(bpms * resolution * latency);
 
-       return sequencer.getTickPosition() - latencyTicks;
-      }
-    else
-      {
-      return -1;
-       }
+            return sequencer.getTickPosition() - latencyTicks;
+        } else {
+            return -1;
+        }
     }
 
-/**
- * Start MIDI recording
- * @param countInOffset
- * @param insertionOffset
- * @param transposition 
- */
+    /**
+     * Start MIDI recording
+     * @param countInOffset
+     * @param insertionOffset
+     * @param transposition
+     */
 
-public void start(int countInOffset, int insertionOffset, int transposition)
-    {
+    public void start(int countInOffset, int insertionOffset, int transposition) {
         this.countInOffset = countInOffset;
         this.insertionOffset = insertionOffset;
         this.transposition = transposition;
         this.sequencer = notate.getSequencer();
-        if( sequencer == null || sequencer.getSequence() == null )
-          {
+        if (sequencer == null || sequencer.getSequence() == null) {
             return;
-          }
+        }
         resolution = sequencer.getSequence().getResolution();
 
-        while( (noteOn = getTick()) < 0 )
-          {
-          }
+        while ((noteOn = getTick()) < 0) {
+        }
 
         noteOff = noteOn = getTick();
         notePlaying = false;
@@ -134,29 +120,27 @@ public void start(int countInOffset, int insertionOffset, int transposition)
         return notate.getFirstChorus() ? countInOffset : 0;
     }
 
-    public boolean getSuspended(){
+    public boolean getSuspended() {
         return isSuspended;
     }
-    
-    public void suspend(){
-        if( !isSuspended )
-        {
+
+    public void suspend() {
+        if (!isSuspended) {
             isSuspended = true;
-            if(notePlaying) {
+            if (notePlaying) {
                 lastEvent = getTick();
                 handleNoteOff(prevNote, 0, 0);
             }
         }
     }
-    
-    public void unSuspend(){
-        if( isSuspended )
-        {
+
+    public void unSuspend() {
+        if (isSuspended) {
             isSuspended = false;
             lastEvent = noteOff = noteOn = getTick();
         }
     }
-    
+
     /**
      * This function is called by others to send a MIDI message to this object
      * for processing.
@@ -180,7 +164,7 @@ public void start(int countInOffset, int insertionOffset, int transposition)
                 note = m[1] + transposition;
                 velocity = m[2];
                 if ((velocity == 0 || note < this.notate.getLow() || note > this.notate.getHigh()) && this.notate.getFilter()) {
-                // this is actually a note-off event, done to allow 
+                    // this is actually a note-off event, done to allow
                     // 'running status': 
                     // http://www.borg.com/~jglatt/tech/midispec/run.htm
 
@@ -209,11 +193,10 @@ public void start(int countInOffset, int insertionOffset, int transposition)
 
     void handleNoteOn(int note, int velocity, int channel) {
         //System.out.print("noteOn: " + note + " channel = " + channel + " ");
-        if( !midiInputChannel[channel].isSelected() )
-          {
+        if (!midiInputChannel[channel].isSelected()) {
             //System.out.println("skipped");
             return;
-          }
+        }
         //System.out.println();
         // new note played, so finish up previous notes or insert rests up to the current note
         int index;
@@ -256,19 +239,19 @@ public void start(int countInOffset, int insertionOffset, int transposition)
         prevNote = note;
         notePlaying = true;
     }
-    
+
     /**
      * Setter for the instance variable tradePart;
      * this was added while implementing interactive trading functionality;
      * it allows one to record midi into some specified melody; 
      * when instance variable 'tradePart' is null, midi will be 
      * recorded into the current melodyPart of 'notate' - Zach Kondak.
-     * 
+     *
      * Maybe this design should be revisited. - Bob Keller 5/20/2016
-     * 
+     *
      * @param destination melody part into which midi is actually recorded
      */
-    public void setDestination(MelodyPart destination){
+    public void setDestination(MelodyPart destination) {
         this.tradePart = destination;
         //System.out.println("MidiRecorder:setDestination to " + destination);
     }
@@ -280,37 +263,33 @@ public void start(int countInOffset, int insertionOffset, int transposition)
      * @param index
      * @param noteToAdd
      */
-    private void setNote(int index, Note noteToAdd)
-    {
+    private void setNote(int index, Note noteToAdd) {
         if (tradePart == null) {
             this.melodyPart = notate.getCurrentMelodyPart();
-        }
-        else {
+        } else {
             this.melodyPart = tradePart;
         }
 
-      //melodyPart.setNoteAndLength(index, noteToAdd, notate);
-      // Avoid using notate, if possible.
+        //melodyPart.setNoteAndLength(index, noteToAdd, notate);
+        // Avoid using notate, if possible.
         // However the version above does not shorten notes on release,
         // but rather only when a next note is pressed. We'd need to mark
         // the first place after the generator has played notes.
         // FIX: Revisit this issue after more refactoring.
-        
-        int actualIndex = (index% melodyPart.size()) - insertionOffset;
-        if( actualIndex < 0 )
-          {
+
+        int actualIndex = (index % melodyPart.size()) - insertionOffset;
+        if (actualIndex < 0) {
             actualIndex = 0;
-          }
+        }
         melodyPart.setNote(actualIndex, noteToAdd);
     }
 
     void handleNoteOff(int note, int velocity, int channel) {
         //System.out.print("noteOff: " + note + " channel = " + channel + " ");
-        if( !midiInputChannel[channel].isSelected() )
-          {
+        if (!midiInputChannel[channel].isSelected()) {
             //System.out.println("skipped");
             return;
-          }
+        }
         //System.out.println();
         //System.out.println("noteOff: " + noteOff + "; event: " + lastEvent);
 
@@ -335,7 +314,7 @@ public void start(int countInOffset, int insertionOffset, int transposition)
             Note noteToAdd = new Note(note, duration);
             noteToAdd.setEnharmonic(score.getCurrentEnharmonics(index));
             setNote(index, noteToAdd);
-        //System.out.println("at " + index + " add " + noteToAdd);
+            //System.out.println("at " + index + " add " + noteToAdd);
         }
 
         index += duration;
@@ -360,17 +339,15 @@ public void start(int countInOffset, int insertionOffset, int transposition)
         return (int) (BEAT * duration / resolution);
     }
 
-    boolean multipleOf(int value, int divisor)
-    {
-    return (value % divisor) == 0;  
+    boolean multipleOf(int value, int divisor) {
+        return (value % divisor) == 0;
     }
-    
+
     @Override
     public void close() {
     }
-    
-    public void setMidiInputChannel(javax.swing.JToggleButton[] midiInputChannel)
-    {
+
+    public void setMidiInputChannel(javax.swing.JToggleButton[] midiInputChannel) {
         this.midiInputChannel = midiInputChannel;
     }
 }

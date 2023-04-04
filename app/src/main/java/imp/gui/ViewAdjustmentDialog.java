@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -39,20 +39,18 @@ public class ViewAdjustmentDialog extends javax.swing.JDialog {
         this.notate = notate;
     }
 
-public int getParallax()
-  {
-    return Integer.parseInt(parallaxSpinner.getValue().toString());
-  }
-    
-public void setTrackerDelay(double value)
-{
-    trackerDelayTextField2.setText("" + value);
-}
+    public int getParallax() {
+        return Integer.parseInt(parallaxSpinner.getValue().toString());
+    }
 
-public String getTrackerDelay()
-{
-    return trackerDelayTextField2.getText();
-}
+    public void setTrackerDelay(double value) {
+        trackerDelayTextField2.setText("" + value);
+    }
+
+    public String getTrackerDelay() {
+        return trackerDelayTextField2.getText();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,6 +113,7 @@ public String getTrackerDelay()
             public void focusGained(java.awt.event.FocusEvent evt) {
                 trackerDelayTextField2FocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 trackerDelayTextField2FocusLost(evt);
             }
@@ -123,9 +122,11 @@ public String getTrackerDelay()
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 trackerDelayTextField2KeyTyped(evt);
             }
+
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 trackerDelayTextField2KeyPressed(evt);
             }
+
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 trackerDelayTextField2KeyReleased(evt);
             }
@@ -182,8 +183,6 @@ public String getTrackerDelay()
     private void trackerDelayTextField2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trackerDelayTextField2MousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_trackerDelayTextField2MousePressed
-
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

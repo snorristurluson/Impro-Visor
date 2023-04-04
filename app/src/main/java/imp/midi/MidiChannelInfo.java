@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -22,6 +22,7 @@ package imp.midi;
 
 import imp.data.ImportMelody;
 import imp.util.ErrorLog;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ import java.util.Map;
  * @author research
  */
 public class MidiChannelInfo {
-    
+
     public class ChannelInfo {
 
         private int channelNum;
@@ -67,11 +68,11 @@ public class MidiChannelInfo {
             }
         }
     }
-    
+
     private Map<Integer, String> channelNames = new HashMap<Integer, String>();
     private int chordChannel = -1;
     private int bassChannel = -1;
-    
+
     public MidiChannelInfo(String filename) {
         jm.music.data.Score score = new jm.music.data.Score();
         jm.util.Read.midi(score, filename);
@@ -108,7 +109,7 @@ public class MidiChannelInfo {
             }
         }
     }
-    
+
     public ChannelInfo[] getChannelInfo() {
         ChannelInfo[] channelInfo = new ChannelInfo[channelNames.size() + 1];
         int index = 0;
@@ -124,14 +125,12 @@ public class MidiChannelInfo {
         }
         return channelInfo;
     }
-     
-    public int getBassChannel()
-    {
+
+    public int getBassChannel() {
         return bassChannel;
     }
-    
-    public int getChordChannel()
-    {
+
+    public int getChordChannel() {
         return chordChannel;
     }
     //create channel names

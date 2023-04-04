@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,9 +31,9 @@ import java.io.Serializable;
  * @see Cluster
  * from: http://www.codecodex.com/wiki/index.php?title=K-means_cluster_analysis_algorithm#Java
  */
-class Centroid implements Serializable{
+class Centroid implements Serializable {
 
-    private double mCt, mCu, mCv, mCw,  mCx,  mCy,  mCz;
+    private double mCt, mCu, mCv, mCw, mCx, mCy, mCz;
     private Cluster mCluster;
 
     public Centroid(double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
@@ -75,7 +75,7 @@ class Centroid implements Serializable{
         this.mCx = tempX / numDP;
         this.mCy = tempY / numDP;
         this.mCz = tempZ / numDP;
-        
+
         //calculating the new Euclidean Distance for each Data Point
         tempT = 0;
         tempU = 0;
@@ -84,7 +84,7 @@ class Centroid implements Serializable{
         tempX = 0;
         tempY = 0;
         tempZ = 0;
-        
+
         for (i = 0; i < numDP; i++) {
             mCluster.getDataPoint(i).calcEuclideanDistance();
         }
@@ -95,23 +95,23 @@ class Centroid implements Serializable{
     public void setCluster(Cluster c) {
         this.mCluster = c;
     }
-    
+
     public double getCt() {
         return mCt;
     }
-    
+
     public double getCu() {
         return mCu;
     }
-    
+
     public double getCv() {
         return mCv;
     }
-    
+
     public double getCw() {
         return mCw;
     }
-    
+
     public double getCx() {
         return mCx;
     }
@@ -123,7 +123,7 @@ class Centroid implements Serializable{
     public double getCz() {
         return mCz;
     }
-    
+
     public Cluster getCluster() {
         return mCluster;
     }

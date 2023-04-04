@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -27,6 +27,7 @@ import imp.data.NoteSymbol;
 import imp.gui.RangeChooser;
 import imp.style.StyleEditor;
 import imp.gui.WindowRegistry;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -43,25 +44,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *Graphical user interface to allow user to modify voicing settings
  * @author Daniel Scanteianu, Errick Jackson
  */
-public class ControlPanelFrame extends javax.swing.JFrame implements Serializable{
+public class ControlPanelFrame extends javax.swing.JFrame implements Serializable {
 
     /**
      * Creates new form ControlPanelFrame
      */
     public ControlPanelFrame(AutomaticVoicingSettings avs1) {
         WindowRegistry.registerWindow(this);
-        this.avs=avs1;
+        this.avs = avs1;
         initComponents();
         associateSliders();
         syncFromSettings();
         setSlidersToVariables();
         setLabels();
-        System.out.println("Lower Left hand: "+avs.getLeftHandLowerLimit());
+        System.out.println("Lower Left hand: " + avs.getLeftHandLowerLimit());
         this.setTitle("Automated Voicing Generator Settings Editor");
         setTitle(AVPFileCreator.getLastFileName());
-        File openFile=new File(ImproVisor.getVoicingDirectory(),AVPFileCreator.getLastFileName());
+        File openFile = new File(ImproVisor.getVoicingDirectory(), AVPFileCreator.getLastFileName());
         //JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
-        AVPFileCreator.fileToSettings( openFile, avs);
+        AVPFileCreator.fileToSettings(openFile, avs);
         setSlidersToVariables();
         setTitle(openFile.getName());
         setLabels();
@@ -87,11 +88,10 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
        });*/
         jButton3.addActionListener(new ActionListener() {
 
-           public void actionPerformed(ActionEvent e)
-           {
-              resetValues();
-           }
-       }); 
+            public void actionPerformed(ActionEvent e) {
+                resetValues();
+            }
+        });
        /*loadFile.addActionListener(new ActionListener() {
 
            public void actionPerformed(ActionEvent e)
@@ -142,52 +142,49 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
                 
             }
        });*/
-         LHRangeButton.addActionListener(new ActionListener() {
+        LHRangeButton.addActionListener(new ActionListener() {
 
-           public void actionPerformed(ActionEvent e)
-           {
-              saveSlidersToVariables();
-              RangeChooser rc=new RangeChooser(null, leftHandLowerLimit,leftHandUpperLimit, 21, 108);
-              int range[]=rc.getRange();
-              System.out.println(leftHandUpperLimit+"limit old");
-              leftHandLowerLimit=range[0];
-              leftHandUpperLimit=range[1];
-              syncToSettings();
-              //LHLLSpinner.setValue(leftHandLowerLimit);
-              //LHULSpinner.setValue(leftHandUpperLimit);
-              //System.out.println(leftHandUpperLimit+"limit set");
-              setSlidersToVariables();
+            public void actionPerformed(ActionEvent e) {
+                saveSlidersToVariables();
+                RangeChooser rc = new RangeChooser(null, leftHandLowerLimit, leftHandUpperLimit, 21, 108);
+                int range[] = rc.getRange();
+                System.out.println(leftHandUpperLimit + "limit old");
+                leftHandLowerLimit = range[0];
+                leftHandUpperLimit = range[1];
+                syncToSettings();
+                //LHLLSpinner.setValue(leftHandLowerLimit);
+                //LHULSpinner.setValue(leftHandUpperLimit);
+                //System.out.println(leftHandUpperLimit+"limit set");
+                setSlidersToVariables();
             }
-       });
-         RHRangeButton.addActionListener(new ActionListener() {
+        });
+        RHRangeButton.addActionListener(new ActionListener() {
 
-           public void actionPerformed(ActionEvent e)
-           {
-              saveSlidersToVariables();
-              RangeChooser rc=new RangeChooser(null, rightHandLowerLimit,rightHandUpperLimit, 21, 108);
-              int range[]=rc.getRange();
-              //System.out.println(leftHandUpperLimit+"limit old");
-              rightHandLowerLimit=range[0];
-              rightHandUpperLimit=range[1];
-              syncToSettings();
-              //LHLLSpinner.setValue(leftHandLowerLimit);
-              //LHULSpinner.setValue(leftHandUpperLimit);
-              //System.out.println(leftHandUpperLimit+"limit set");
-              setSlidersToVariables();
+            public void actionPerformed(ActionEvent e) {
+                saveSlidersToVariables();
+                RangeChooser rc = new RangeChooser(null, rightHandLowerLimit, rightHandUpperLimit, 21, 108);
+                int range[] = rc.getRange();
+                //System.out.println(leftHandUpperLimit+"limit old");
+                rightHandLowerLimit = range[0];
+                rightHandUpperLimit = range[1];
+                syncToSettings();
+                //LHLLSpinner.setValue(leftHandLowerLimit);
+                //LHULSpinner.setValue(leftHandUpperLimit);
+                //System.out.println(leftHandUpperLimit+"limit set");
+                setSlidersToVariables();
             }
-       });
-       
-       loadDefault.addActionListener(new ActionListener() {
+        });
 
-           public void actionPerformed(ActionEvent e)
-           {
-              File openFile=new File(ImproVisor.getVoicingDirectory(),styleEditor.getVoicingFileName());
+        loadDefault.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                File openFile = new File(ImproVisor.getVoicingDirectory(), styleEditor.getVoicingFileName());
                 JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
-                AVPFileCreator.fileToSettings( openFile, avs);
+                AVPFileCreator.fileToSettings(openFile, avs);
                 setSlidersToVariables();
                 setTitle(openFile.getName());
-           }
-       });
+            }
+        });
        
        /* saveToNew.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e)
@@ -229,34 +226,32 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
                 
             }
        });*/
-       for(JSpinner slider:handLimits)
-       {
-           slider.addChangeListener(new ChangeListener(){
-                public void stateChanged(ChangeEvent e)
-           {
-              setLabels();
-           }
-       });
-           
-       }
-       
+        for (JSpinner slider : handLimits) {
+            slider.addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    setLabels();
+                }
+            });
+
+        }
+
     }
 
     public ControlPanelFrame() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     @Override
-        public void dispose()
-          {
+    public void dispose() {
 
 
+        WindowRegistry.unregisterWindow(this);
+        super.dispose();
+    }
 
-          WindowRegistry.unregisterWindow(this);
-          super.dispose();
-          }
-    private void setVoicingFile(File file)
-    { AVPFileCreator.settingsToFile(avs, file);
-                setSlidersToVariables();
+    private void setVoicingFile(File file) {
+        AVPFileCreator.settingsToFile(avs, file);
+        setSlidersToVariables();
     }
     /**
      * hard coded defaults for when defaults button is pressed.
@@ -290,11 +285,11 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         fullStepReducer=.7;
         syncToSettings();
     }*/
+
     /**
      * Sets the values in the automatic voicing settings object to the variables
      */
-    public void syncToSettings()
-    {
+    public void syncToSettings() {
         avs.setLeftHandLowerLimit(leftHandLowerLimit);
         avs.setRightHandLowerLimit(rightHandLowerLimit);
         avs.setLeftHandUpperLimit(leftHandUpperLimit);
@@ -325,97 +320,96 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         avs.setLeftMinInterval(leftMinInterval);
         avs.setRightMinInterval(rightMinInterval);
     }
+
     /**
      * sets the variables to the values in the settings object
      */
-    public void syncFromSettings()
-    {
-        leftHandLowerLimit=avs.getLeftHandLowerLimit();
-        rightHandLowerLimit=avs.getRightHandLowerLimit();
-        leftHandUpperLimit=avs.getLeftHandUpperLimit();
-        rightHandUpperLimit=avs.getRightHandUpperLimit();
-        leftHandSpread=avs.getLeftHandSpread();
-        rightHandSpread=avs.getRightHandSpread();
-        leftHandMinNotes=avs.getLeftHandMinNotes();
-        leftHandMaxNotes=avs.getLeftHandMaxNotes();
-        rightHandMinNotes=avs.getRightHandMinNotes();
-        rightHandMaxNotes=avs.getRightHandMaxNotes();
+    public void syncFromSettings() {
+        leftHandLowerLimit = avs.getLeftHandLowerLimit();
+        rightHandLowerLimit = avs.getRightHandLowerLimit();
+        leftHandUpperLimit = avs.getLeftHandUpperLimit();
+        rightHandUpperLimit = avs.getRightHandUpperLimit();
+        leftHandSpread = avs.getLeftHandSpread();
+        rightHandSpread = avs.getRightHandSpread();
+        leftHandMinNotes = avs.getLeftHandMinNotes();
+        leftHandMaxNotes = avs.getLeftHandMaxNotes();
+        rightHandMinNotes = avs.getRightHandMinNotes();
+        rightHandMaxNotes = avs.getRightHandMaxNotes();
         //voice leading controls
-        preferredMotion=avs.getPreferredMotion();
-        preferredMotionRange=avs.getPreferredMotionRange();
-        previousVoicingMultiplier=avs.getPreviousVoicingMultiplier();// multiplier for notes used in previous voicing
-        halfStepAwayMultiplier=avs.getHalfStepAwayMultiplier();
-        fullStepAwayMultiplier=avs.getFullStepAwayMultiplier();
+        preferredMotion = avs.getPreferredMotion();
+        preferredMotionRange = avs.getPreferredMotionRange();
+        previousVoicingMultiplier = avs.getPreviousVoicingMultiplier();// multiplier for notes used in previous voicing
+        halfStepAwayMultiplier = avs.getHalfStepAwayMultiplier();
+        fullStepAwayMultiplier = avs.getFullStepAwayMultiplier();
         //voicing control
-        leftColorPriority=avs.getLeftColorPriority();//priority of any color note
-        rightColorPriority=avs.getRightColorPriority();
-        maxPriority=avs.getMaxPriority();//max priority a note in the priority array can have
-        priorityMultiplier=avs.getPriorityMultiplier();//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
-        repeatMultiplier=avs.getRepeatMultiplier();
-        halfStepReducer=avs.getHalfStepReducer();
-        fullStepReducer=avs.getFullStepReducer();
-        invertM9=avs.getInvertM9();
-        voiceAll=avs.getVoiceAll();
-        rootless=avs.getRootless();
-        leftMinInterval=avs.getLeftMinInterval();
-        rightMinInterval=avs.getRightMinInterval();
+        leftColorPriority = avs.getLeftColorPriority();//priority of any color note
+        rightColorPriority = avs.getRightColorPriority();
+        maxPriority = avs.getMaxPriority();//max priority a note in the priority array can have
+        priorityMultiplier = avs.getPriorityMultiplier();//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
+        repeatMultiplier = avs.getRepeatMultiplier();
+        halfStepReducer = avs.getHalfStepReducer();
+        fullStepReducer = avs.getFullStepReducer();
+        invertM9 = avs.getInvertM9();
+        voiceAll = avs.getVoiceAll();
+        rootless = avs.getRootless();
+        leftMinInterval = avs.getLeftMinInterval();
+        rightMinInterval = avs.getRightMinInterval();
     }
-        /*
-    private void setupHandParams()
-    {
-        handLimits=new JSlider[4];
-        handLimits[0]=new JSlider(21,108,leftHandLowerLimit);
-        handLimits[1]=new JSlider(21,108,leftHandUpperLimit);
-        handLimits[2]=new JSlider(21,108,rightHandLowerLimit);
-        handLimits[3]=new JSlider(21,108,rightHandUpperLimit);
-        handSpreads=new JSlider[2];
-        handSpreads[0]=new JSlider(7,19,leftHandSpread);
-        handSpreads[1]=new JSlider(7,19,rightHandSpread);
-        handNotes=new JSlider[4];
-        handNotes[0]=new JSlider(0,5, leftHandMinNotes);
-        handNotes[1]=new JSlider(0,5, leftHandMaxNotes);
-        handNotes[2]=new JSlider(0,5, rightHandMinNotes);
-        handNotes[3]=new JSlider(0,5, rightHandMaxNotes);
-        
-    }
-    private void setupVoicingParams()
-    {
-        colorPrioritySlider=new JSlider(0,10,colorPriority);
-        maxPrioritySlider=new JSlider(0,10,maxPriority);
-        repeatedNoteProbability=new JSlider(0,10,(int)(repeatMultiplier*10));
-        priorityWeighting=new JSlider(0,15,(int)(colorPriority*10));
-    }
-    private void setupLeadingParams()
-    {
-        voiceLeadingWeights=new JSlider[3];//index=change in half steps
-        voiceLeadingWeights[0]=new JSlider(0,50,(int)(previousVoicingMultiplier*10));//0 prevents previous note from being played
-        voiceLeadingWeights[1]=new JSlider(0,50,(int)(halfStepAwayMultiplier*10));
-        voiceLeadingWeights[2]=new JSlider(0,50,(int)(fullStepAwayMultiplier*10));
-        preferredMotionSlider=new JSlider(-5,5,preferredMotion);
-        motionRange=new JSlider(0,5,preferredMotionRange);
-    }
-        */
-    public void resetValues()
-    {
+
+    /*
+private void setupHandParams()
+{
+    handLimits=new JSlider[4];
+    handLimits[0]=new JSlider(21,108,leftHandLowerLimit);
+    handLimits[1]=new JSlider(21,108,leftHandUpperLimit);
+    handLimits[2]=new JSlider(21,108,rightHandLowerLimit);
+    handLimits[3]=new JSlider(21,108,rightHandUpperLimit);
+    handSpreads=new JSlider[2];
+    handSpreads[0]=new JSlider(7,19,leftHandSpread);
+    handSpreads[1]=new JSlider(7,19,rightHandSpread);
+    handNotes=new JSlider[4];
+    handNotes[0]=new JSlider(0,5, leftHandMinNotes);
+    handNotes[1]=new JSlider(0,5, leftHandMaxNotes);
+    handNotes[2]=new JSlider(0,5, rightHandMinNotes);
+    handNotes[3]=new JSlider(0,5, rightHandMaxNotes);
+
+}
+private void setupVoicingParams()
+{
+    colorPrioritySlider=new JSlider(0,10,colorPriority);
+    maxPrioritySlider=new JSlider(0,10,maxPriority);
+    repeatedNoteProbability=new JSlider(0,10,(int)(repeatMultiplier*10));
+    priorityWeighting=new JSlider(0,15,(int)(colorPriority*10));
+}
+private void setupLeadingParams()
+{
+    voiceLeadingWeights=new JSlider[3];//index=change in half steps
+    voiceLeadingWeights[0]=new JSlider(0,50,(int)(previousVoicingMultiplier*10));//0 prevents previous note from being played
+    voiceLeadingWeights[1]=new JSlider(0,50,(int)(halfStepAwayMultiplier*10));
+    voiceLeadingWeights[2]=new JSlider(0,50,(int)(fullStepAwayMultiplier*10));
+    preferredMotionSlider=new JSlider(-5,5,preferredMotion);
+    motionRange=new JSlider(0,5,preferredMotionRange);
+}
+    */
+    public void resetValues() {
         avs.setDefaults();
         this.syncFromSettings();
         setSlidersToVariables();
     }
+
     /**
      * updates the note limit labels to the note on the sliders
      */
-    public void setLabels()
-    {
-        for(int i=0; i<4; i++)
-        {
+    public void setLabels() {
+        for (int i = 0; i < 4; i++) {
             limitLabels[i].setText((NoteSymbol.makeNoteSymbol(new Note(Integer.parseInt(handLimits[i].getValue().toString()))).toString().replaceAll("4", "")));
         }
     }
+
     /**
      * Sets the sliders to the values in the variables
      */
-    public void setSlidersToVariables()
-    {
+    public void setSlidersToVariables() {
         syncFromSettings();
         handLimits[0].setValue(leftHandLowerLimit);
         handLimits[2].setValue(rightHandLowerLimit);
@@ -430,123 +424,124 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         //voice leading controls
         preferredMotionSlider.setValue(preferredMotion);
         motionRange.setValue(preferredMotionRange);
-        voiceLeadingWeights[0].setValue((int)(previousVoicingMultiplier*10));// multiplier for notes used in previous voicing
-        voiceLeadingWeights[1].setValue((int)(halfStepAwayMultiplier*10));
-        voiceLeadingWeights[2].setValue((int)(fullStepAwayMultiplier*10));
+        voiceLeadingWeights[0].setValue((int) (previousVoicingMultiplier * 10));// multiplier for notes used in previous voicing
+        voiceLeadingWeights[1].setValue((int) (halfStepAwayMultiplier * 10));
+        voiceLeadingWeights[2].setValue((int) (fullStepAwayMultiplier * 10));
         //voicing control
         leftColorPrioritySlider.setValue(leftColorPriority);//priority of any color note
         rightColorPrioritySlider.setValue(rightColorPriority);//priority of any color note
         maxPrioritySlider.setValue(maxPriority);//max priority a note in the priority array can have
-        priorityWeighting.setValue((int)(priorityMultiplier*10));//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
-        repeatedNoteProbability.setValue((int)(repeatMultiplier*10));
-        closeNoteReducer[0].setValue((int)(halfStepReducer*10));
-        closeNoteReducer[1].setValue((int)(fullStepReducer*10));
+        priorityWeighting.setValue((int) (priorityMultiplier * 10));//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
+        repeatedNoteProbability.setValue((int) (repeatMultiplier * 10));
+        closeNoteReducer[0].setValue((int) (halfStepReducer * 10));
+        closeNoteReducer[1].setValue((int) (fullStepReducer * 10));
         invertBox.setState(invertM9);
         voiceAllNotes.setState(voiceAll);
         rootlessBox.setState(rootless);
         leftMinIntervalSpinner.setValue(leftMinInterval);
         rightMinIntervalSpinner.setValue(rightMinInterval);
     }
+
     /**
      * points sliders we declared and named to auto-created sliders from gui designer.
      */
-     public void associateSliders()
-    {
-        handLimits=new JSpinner[4];
-        handSpreads=new JSpinner[2];
-        handNotes=new JSpinner[4];
-        voiceLeadingWeights=new JSlider[3];
+    public void associateSliders() {
+        handLimits = new JSpinner[4];
+        handSpreads = new JSpinner[2];
+        handNotes = new JSpinner[4];
+        voiceLeadingWeights = new JSlider[3];
         //handLimits[0]=LHLLSpinner;
         //handLimits[1]=LHULSpinner;
         //handLimits[2]=RHLLSpinner;
         //handLimits[3]=RHULSpinner;
-        handLimits[0]=new JSpinner();
-        handLimits[1]=new JSpinner();
-        handLimits[2]=new JSpinner();
-        handLimits[3]=new JSpinner();
-        handSpreads[0]=LHStretchSpinner;
-        handSpreads[1]=RHStretchSpinner;
-        handNotes[0]=LHMinNotesSpinner;
-        handNotes[1]=LHMaxNotesSpinner;
-        handNotes[2]=RHMinNotesSpinner;
-        handNotes[3]=RHMaxNotesSpinner;
-        
+        handLimits[0] = new JSpinner();
+        handLimits[1] = new JSpinner();
+        handLimits[2] = new JSpinner();
+        handLimits[3] = new JSpinner();
+        handSpreads[0] = LHStretchSpinner;
+        handSpreads[1] = RHStretchSpinner;
+        handNotes[0] = LHMinNotesSpinner;
+        handNotes[1] = LHMaxNotesSpinner;
+        handNotes[2] = RHMinNotesSpinner;
+        handNotes[3] = RHMaxNotesSpinner;
+
         //voice leading controls
-        preferredMotionSlider=PrefMotionDirSlider;
-        motionRange=PrefMotionDistSlider;
-        voiceLeadingWeights[0]=PrevChordPrioritySlider;// multiplier for notes used in previous voicing
-        voiceLeadingWeights[1]=HalfStepAwaySlider;
-        voiceLeadingWeights[2]=WholeStepAwaySlider;
+        preferredMotionSlider = PrefMotionDirSlider;
+        motionRange = PrefMotionDistSlider;
+        voiceLeadingWeights[0] = PrevChordPrioritySlider;// multiplier for notes used in previous voicing
+        voiceLeadingWeights[1] = HalfStepAwaySlider;
+        voiceLeadingWeights[2] = WholeStepAwaySlider;
         //voicing control
-        leftColorPrioritySlider=LHColorPriority;//priority of any color note
-        rightColorPrioritySlider=RHColorPriority;
-        maxPrioritySlider=ChordToneMaxPrioritySlider;
-        priorityWeighting=ChordTonePriorityWeightSlider;
-        repeatedNoteProbability=ProbSameNoteTwoOctavesSlider;
-        limitLabels=new JLabel[4];
-        limitLabels[0]=LHLLNote;
-        limitLabels[1]=LHULNote;
-        limitLabels[2]=RHLLNote;
-        limitLabels[3]=RHULNote;
-        closeNoteReducer=new JSlider[2];
-        closeNoteReducer[0]=HalfStepRedSlider;
-        closeNoteReducer[1]=WholeStepRedSlider;
-        
-        
+        leftColorPrioritySlider = LHColorPriority;//priority of any color note
+        rightColorPrioritySlider = RHColorPriority;
+        maxPrioritySlider = ChordToneMaxPrioritySlider;
+        priorityWeighting = ChordTonePriorityWeightSlider;
+        repeatedNoteProbability = ProbSameNoteTwoOctavesSlider;
+        limitLabels = new JLabel[4];
+        limitLabels[0] = LHLLNote;
+        limitLabels[1] = LHULNote;
+        limitLabels[2] = RHLLNote;
+        limitLabels[3] = RHULNote;
+        closeNoteReducer = new JSlider[2];
+        closeNoteReducer[0] = HalfStepRedSlider;
+        closeNoteReducer[1] = WholeStepRedSlider;
+
+
     }
-     /**
-      * ensures the user's settings make sense logically (avoids sending the voicing program impossible settings
+
+    /**
+     * ensures the user's settings make sense logically (avoids sending the voicing program impossible settings
      */
-    public void checkSliders()
-    {
-       if(Integer.parseInt(handLimits[1].getValue().toString())<Integer.parseInt(handLimits[0].getValue().toString())+Integer.parseInt(handSpreads[0].getValue().toString()))
-           handLimits[1].setValue(Integer.parseInt(handLimits[0].getValue().toString())+Integer.parseInt(handSpreads[0].getValue().toString()));
-       if(Integer.parseInt(handLimits[3].getValue().toString())<Integer.parseInt(handLimits[2].getValue().toString())+Integer.parseInt(handSpreads[1].getValue().toString()))
-           handLimits[3].setValue(Integer.parseInt(handLimits[3].getValue().toString())+Integer.parseInt(handLimits[2].getValue().toString()));
-       if(Integer.parseInt(handNotes[0].getValue().toString())>Integer.parseInt(handNotes[1].getValue().toString()))
-           handNotes[0].setValue(Integer.parseInt(handNotes[1].getValue().toString()));
-       if(Integer.parseInt(handNotes[2].getValue().toString())>Integer.parseInt(handNotes[3].getValue().toString()))
-           handNotes[2].setValue(Integer.parseInt(handNotes[3].getValue().toString()));
-       
+    public void checkSliders() {
+        if (Integer.parseInt(handLimits[1].getValue().toString()) < Integer.parseInt(handLimits[0].getValue().toString()) + Integer.parseInt(handSpreads[0].getValue().toString()))
+            handLimits[1].setValue(Integer.parseInt(handLimits[0].getValue().toString()) + Integer.parseInt(handSpreads[0].getValue().toString()));
+        if (Integer.parseInt(handLimits[3].getValue().toString()) < Integer.parseInt(handLimits[2].getValue().toString()) + Integer.parseInt(handSpreads[1].getValue().toString()))
+            handLimits[3].setValue(Integer.parseInt(handLimits[3].getValue().toString()) + Integer.parseInt(handLimits[2].getValue().toString()));
+        if (Integer.parseInt(handNotes[0].getValue().toString()) > Integer.parseInt(handNotes[1].getValue().toString()))
+            handNotes[0].setValue(Integer.parseInt(handNotes[1].getValue().toString()));
+        if (Integer.parseInt(handNotes[2].getValue().toString()) > Integer.parseInt(handNotes[3].getValue().toString()))
+            handNotes[2].setValue(Integer.parseInt(handNotes[3].getValue().toString()));
+
     }
+
     /**
      * saves values in sliders to variables.
      */
-    public void saveSlidersToVariables()
-    {
+    public void saveSlidersToVariables() {
         checkSliders();
-        leftHandLowerLimit=Integer.parseInt(handLimits[0].getValue().toString());
-        rightHandLowerLimit=Integer.parseInt(handLimits[2].getValue().toString());
-        leftHandUpperLimit=Integer.parseInt(handLimits[1].getValue().toString());
-        rightHandUpperLimit=Integer.parseInt(handLimits[3].getValue().toString());
-        leftHandSpread=Integer.parseInt(handSpreads[0].getValue().toString());
-        rightHandSpread=Integer.parseInt(handSpreads[1].getValue().toString());
-        leftHandMinNotes=Integer.parseInt(handNotes[0].getValue().toString());
-        leftHandMaxNotes=Integer.parseInt(handNotes[1].getValue().toString());
-        rightHandMinNotes=Integer.parseInt(handNotes[2].getValue().toString());
-        rightHandMaxNotes=Integer.parseInt(handNotes[3].getValue().toString());
+        leftHandLowerLimit = Integer.parseInt(handLimits[0].getValue().toString());
+        rightHandLowerLimit = Integer.parseInt(handLimits[2].getValue().toString());
+        leftHandUpperLimit = Integer.parseInt(handLimits[1].getValue().toString());
+        rightHandUpperLimit = Integer.parseInt(handLimits[3].getValue().toString());
+        leftHandSpread = Integer.parseInt(handSpreads[0].getValue().toString());
+        rightHandSpread = Integer.parseInt(handSpreads[1].getValue().toString());
+        leftHandMinNotes = Integer.parseInt(handNotes[0].getValue().toString());
+        leftHandMaxNotes = Integer.parseInt(handNotes[1].getValue().toString());
+        rightHandMinNotes = Integer.parseInt(handNotes[2].getValue().toString());
+        rightHandMaxNotes = Integer.parseInt(handNotes[3].getValue().toString());
         //voice leading controls
-        preferredMotion=preferredMotionSlider.getValue();
-        preferredMotionRange=motionRange.getValue();
-        previousVoicingMultiplier=voiceLeadingWeights[0].getValue()/10.0;// multiplier for notes used in previous voicing
-        halfStepAwayMultiplier=voiceLeadingWeights[1].getValue()/10.0;
-        fullStepAwayMultiplier=voiceLeadingWeights[2].getValue()/10.0;
+        preferredMotion = preferredMotionSlider.getValue();
+        preferredMotionRange = motionRange.getValue();
+        previousVoicingMultiplier = voiceLeadingWeights[0].getValue() / 10.0;// multiplier for notes used in previous voicing
+        halfStepAwayMultiplier = voiceLeadingWeights[1].getValue() / 10.0;
+        fullStepAwayMultiplier = voiceLeadingWeights[2].getValue() / 10.0;
         //voicing control
-        leftColorPriority=leftColorPrioritySlider.getValue();//priority of any color note
-        rightColorPriority=rightColorPrioritySlider.getValue();
-        maxPriority=maxPrioritySlider.getValue();//max priority a note in the priority array can have
-        priorityMultiplier=priorityWeighting.getValue()/10.0;//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
-        repeatMultiplier=repeatedNoteProbability.getValue()/10.0;
-        halfStepReducer=closeNoteReducer[0].getValue()/10.0;
-        fullStepReducer=closeNoteReducer[1].getValue()/10.0;
-        invertM9=invertBox.getState();
-        voiceAll=voiceAllNotes.getState();
-        rootless=rootlessBox.getState();
-        leftMinInterval=Integer.parseInt(leftMinIntervalSpinner.getValue().toString());
-        rightMinInterval=Integer.parseInt(rightMinIntervalSpinner.getValue().toString());
+        leftColorPriority = leftColorPrioritySlider.getValue();//priority of any color note
+        rightColorPriority = rightColorPrioritySlider.getValue();
+        maxPriority = maxPrioritySlider.getValue();//max priority a note in the priority array can have
+        priorityMultiplier = priorityWeighting.getValue() / 10.0;//should be between 0 and 1, multiply this by the index in priority array, subtract result from max priority to get note priority
+        repeatMultiplier = repeatedNoteProbability.getValue() / 10.0;
+        halfStepReducer = closeNoteReducer[0].getValue() / 10.0;
+        fullStepReducer = closeNoteReducer[1].getValue() / 10.0;
+        invertM9 = invertBox.getState();
+        voiceAll = voiceAllNotes.getState();
+        rootless = rootlessBox.getState();
+        leftMinInterval = Integer.parseInt(leftMinIntervalSpinner.getValue().toString());
+        rightMinInterval = Integer.parseInt(rightMinIntervalSpinner.getValue().toString());
         syncToSettings();
-        
+
     }
+
     private JSpinner handLimits[];
     private JSpinner handSpreads[];
     private JSpinner handNotes[];
@@ -610,12 +605,15 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     public boolean isRootless() {
         return rootless;
     }
+
     public boolean getRootless() {
         return rootless;
     }
+
     public void setRootless(boolean rootless) {
         this.rootless = rootless;
     }
+
     private StyleEditor styleEditor;
 
     public StyleEditor getStyleEditor() {
@@ -625,6 +623,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     public void setStyleEditor(StyleEditor styleEditor) {
         this.styleEditor = styleEditor;
     }
+
     private AutomaticVoicingSettings avs;
 
     public AutomaticVoicingSettings getVoicingSettings() {
@@ -787,7 +786,6 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         this.rightColorPriority = rightColorPriority;
     }
 
-   
 
     public int getMaxPriority() {
         return maxPriority;
@@ -812,6 +810,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     public void setRepeatMultiplier(double repeatMultiplier) {
         this.repeatMultiplier = repeatMultiplier;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1659,51 +1658,51 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
     }//GEN-LAST:event_closeBActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       File openFile=null;
-                JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Fluid Voicings", "fv");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(null);
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    openFile=chooser.getSelectedFile();
-                }
-                
-                AVPFileCreator.fileToSettings( openFile, avs);
-                setSlidersToVariables();
-                setTitle(openFile.getName());
-                styleEditor.setVoicingFileName(openFile.getName());
+        File openFile = null;
+        JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Fluid Voicings", "fv");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            openFile = chooser.getSelectedFile();
+        }
+
+        AVPFileCreator.fileToSettings(openFile, avs);
+        setSlidersToVariables();
+        setTitle(openFile.getName());
+        styleEditor.setVoicingFileName(openFile.getName());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-         saveSlidersToVariables();
-                syncToSettings();
-                File saveFile=new File(ImproVisor.getVoicingDirectory(),styleEditor.getVoicingFileName());
-                JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Fluid Voicings", "fv");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showSaveDialog(null);
-                if(returnVal == JFileChooser.APPROVE_OPTION) {
-                    saveFile=chooser.getSelectedFile();
-                    if(!saveFile.getName().toLowerCase().endsWith(".fv"))
-                        saveFile=new File(saveFile.getAbsolutePath()+".fv");   
-                    if(saveFile.getName().contains(" "))
-                        saveFile=new File(saveFile.getParent(),saveFile.getName().replaceAll(" ", "-"));
-                }
-                //syncToSettings();
-                //AVPFileCreator.fileToSettings(openFile,avs);
-                AVPFileCreator.settingsToFile(avs,saveFile);
-                syncFromSettings();
-                styleEditor.setVoicingFileName(saveFile.getName());
-                setTitle(saveFile.getName());
+        saveSlidersToVariables();
+        syncToSettings();
+        File saveFile = new File(ImproVisor.getVoicingDirectory(), styleEditor.getVoicingFileName());
+        JFileChooser chooser = new JFileChooser(ImproVisor.getVoicingDirectory());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Fluid Voicings", "fv");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            saveFile = chooser.getSelectedFile();
+            if (!saveFile.getName().toLowerCase().endsWith(".fv"))
+                saveFile = new File(saveFile.getAbsolutePath() + ".fv");
+            if (saveFile.getName().contains(" "))
+                saveFile = new File(saveFile.getParent(), saveFile.getName().replaceAll(" ", "-"));
+        }
+        //syncToSettings();
+        //AVPFileCreator.fileToSettings(openFile,avs);
+        AVPFileCreator.settingsToFile(avs, saveFile);
+        syncFromSettings();
+        styleEditor.setVoicingFileName(saveFile.getName());
+        setTitle(saveFile.getName());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         saveSlidersToVariables();
-                
-                File saveFile=new File(ImproVisor.getVoicingDirectory(),styleEditor.getVoicingFileName());
-                
-                syncToSettings();
-                AVPFileCreator.settingsToFile(avs,saveFile);
+
+        File saveFile = new File(ImproVisor.getVoicingDirectory(), styleEditor.getVoicingFileName());
+
+        syncToSettings();
+        AVPFileCreator.settingsToFile(avs, saveFile);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
@@ -1713,7 +1712,7 @@ public class ControlPanelFrame extends javax.swing.JFrame implements Serializabl
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

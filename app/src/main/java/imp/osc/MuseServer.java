@@ -1,25 +1,27 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 package imp.osc;
+
 import oscP5.*;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -29,7 +31,7 @@ import java.util.Queue;
  * @author Andy and Rachel
  */
 public class MuseServer {
-    
+
     OscP5 oscServer;
 
     double currentAccValue = 0.0;
@@ -39,7 +41,7 @@ public class MuseServer {
     public int windowSize = 10;
     ArrayList<Double> alphas = new ArrayList<Double>();
     Queue<Double> window = new LinkedList<Double>();
-    
+
     double averageAlpha = 0.0;
     double standev = 0.0;
     double windowSum = 0.0;
@@ -52,7 +54,7 @@ public class MuseServer {
         }
 
         // Brain Data
-    	if (msg.checkAddrPattern("/muse/elements/alpha_absolute") == true) {
+        if (msg.checkAddrPattern("/muse/elements/alpha_absolute") == true) {
             currentAlphaValue = msg.get(0).floatValue();
             updateWindow();
 
@@ -66,37 +68,36 @@ public class MuseServer {
                     calculateStandardDeviation();
                 }
             }
-    	}
+        }
     }
 
     void updateWindow() {
-    	Double poppedSample = 0.0;
-    	if (window.size() < windowSize) { //initializing queue
+        Double poppedSample = 0.0;
+        if (window.size() < windowSize) { //initializing queue
             window.add(currentAlphaValue);
             windowSum += currentAlphaValue;
-    	}
-    	else {
+        } else {
             window.add(currentAlphaValue);
             poppedSample = window.remove();
             windowSum += currentAlphaValue;
             windowSum -= poppedSample;
-    	}
+        }
     }
 
     void calculateAverage() {
-    	Double sum = 0.0;
-    	for (Double alpha : alphas) {
+        Double sum = 0.0;
+        for (Double alpha : alphas) {
             sum += alpha;
-    	}
-    	averageAlpha = sum / alphas.size();
+        }
+        averageAlpha = sum / alphas.size();
     }
 
     void calculateStandardDeviation() {
-    	Double sum = 0.0;
-    	for (Double alpha : alphas) {
+        Double sum = 0.0;
+        for (Double alpha : alphas) {
             sum += Math.pow((alpha - averageAlpha), 2);
-    	}
-    	standev = Math.sqrt(sum/alphas.size());
+        }
+        standev = Math.sqrt(sum / alphas.size());
     }
 
     void resetCalibration() {
@@ -107,14 +108,24 @@ public class MuseServer {
         windowSum = 0.0;
     }
 
-    double getAccValue() { return currentAccValue; }
+    double getAccValue() {
+        return currentAccValue;
+    }
 
-    double getAlphaValue() { return currentAlphaValue; }
+    double getAlphaValue() {
+        return currentAlphaValue;
+    }
 
-    double getAverageAlpha() { return averageAlpha; }
+    double getAverageAlpha() {
+        return averageAlpha;
+    }
 
-    double getSD() { return standev; }
+    double getSD() {
+        return standev;
+    }
 
-    double getWindowSum() { return windowSum; }
+    double getWindowSum() {
+        return windowSum;
+    }
 
 }

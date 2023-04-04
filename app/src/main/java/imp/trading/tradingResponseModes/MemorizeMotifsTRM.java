@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2017 Robert Keller and Harvey Mudd College.
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -33,11 +33,14 @@ import imp.lickgen.Grammar;
 import imp.lickgen.LickGen;
 import imp.lickgen.LickgenFrame;
 import imp.lickgen.NoteConverter;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
 import polya.Polylist;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,11 +58,11 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
     static Notate notate;
     String[] abstractMelodies;
     Grammar _grammar;
-    
+
     private static final boolean TESTING = false;
-    
+
     static String allRest = Polylist.list("slope", "0", "0", "R").toString();
-    
+
 //    FetchMelodiesThread fetchMelodiesThread;
 //    CreateDataPointsThread createDataPointsThread;
 //    AddToClustersThread addToClustersThread;
@@ -67,11 +70,11 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
 //    ConcurrentLinkedQueue melodiesToDataPointsQueue;
 //    ConcurrentLinkedQueue dataPointsToClustersQueue;
 //    ConcurrentLinkedQueue    clustersToGrammarQueue;
-    
+
     private int _initGrammarSize;
-    
+
     private String _grammarSaveName;
-   
+
     public MemorizeMotifsTRM(String message, Notate note) {
         super(message);
         notate = note;
@@ -81,24 +84,23 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
 
         // name to save new Motif grammar to
         _grammarSaveName = notate.getGrammarFileName().
-                                    replaceFirst(notate.getGrammarName(),
-                                                "UserMotifTrade_".concat(
-                                                        (new SimpleDateFormat("dd-MM-yy_HH-mm-ss"))
-                                                                .format(Calendar.getInstance().getTime())));
-        
+                replaceFirst(notate.getGrammarName(),
+                        "UserMotifTrade_".concat(
+                                (new SimpleDateFormat("dd-MM-yy_HH-mm-ss"))
+                                        .format(Calendar.getInstance().getTime())));
+
     }
 
-    
-    
+
     // multithreaded version not implemented right now, but the code is all there for it to work (though there exists at least 1 race condition)
-    
+
     /**
      * Called on the beginning of trading. Loads grammar file and converts it into proper format.
      */
     @Override
-    public void onStartTrading(){
-        
-        
+    public void onStartTrading() {
+
+
         initGrammar();
         
         
@@ -133,7 +135,7 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
         addToGrammarThread.start();
         */
     }
-    
+
     /**
      * Uses a generated motif grammar to create response
      * @return MelodyPart of generated solo response
@@ -141,109 +143,110 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
     @Override
     public MelodyPart generateResponse() {
 
-        
+
         // TODO: change windowSize to get from user specified
         MelodyPart[] parts = responseInfo.chopResponse(responseInfo.getResponse(), 0, windowSize);
-        
+
         abstractMelodies = new String[parts.length];
-        
-        
-        if(TESTING){
-            for(MelodyPart p : parts){
+
+
+        if (TESTING) {
+            for (MelodyPart p : parts) {
                 System.out.println("Part: " + p);
                 System.out.println(p.getBars());
             }
         }
 
-        
+
         DataPoint d;
-        for(int i = 0; i < parts.length; i++){
+        for (int i = 0; i < parts.length; i++) {
             try {
-                d = getDataPointForUser(parts[i], parts[0].getEndTime() + windowSize*measure*i);
+                d = getDataPointForUser(parts[i], parts[0].getEndTime() + windowSize * measure * i);
                 MotifClusterManager.addMotif(d);
             } catch (EmptySoloException ex) {
                 System.out.println("Empty solo played");
             }
-            
+
             if (TESTING) System.err.println("Got out");
 
         }
         if (TESTING) System.err.println("Done adding data points");
 
-        
+
         Collection<MotifCluster> motifs = MotifClusterManager.getMotifClusters();
         if (TESTING) System.err.println("got clusters");
 
         motifs.forEach((MotifCluster mc) -> {
-            (new Thread(){
-                
+            (new Thread() {
+
                 @Override
-                public void run(){
+                public void run() {
                     Polylist r, p;
                     r = (Polylist) mc.getMotif().grammarRule().second();
-                    
+
                     Polylist tempRule = mc.getMotif().grammarRule();
 
                     // HACK: doesn't add rules that contain empty list (formatting error in abstract melody creation makes bad rules
                     Polylist flattened = tempRule.flatten();
                     boolean containsJunk = flattened.member("ENDTIED") || flattened.member("STARTTIED") || flattened.member("ENDT") || flattened.member("STARTT");
-                    if(flattened.member(Polylist.nil) || containsJunk){
+                    if (flattened.member(Polylist.nil) || containsJunk) {
                         return;
                     }
 
                     Polylist checkAllRest = (Polylist) ((Polylist) tempRule.third()).first();
-                    
 
-                    if(checkAllRest.toString().equalsIgnoreCase(allRest)){
+
+                    if (checkAllRest.toString().equalsIgnoreCase(allRest)) {
                         return;
                     }
-                    
+
                     Polylist finalRule = Polylist.list("rule", Polylist.list(MotifStartSymbol), tempRule.third(), tempRule.last());
                     Polylist currentRules;
-                    
+
                     currentRules = _grammar.getRules();
                     boolean ruleExists = false;
 
-                    if(TESTING) System.err.println("In grammar creation...");
+                    if (TESTING) System.err.println("In grammar creation...");
 
-                    for(Polylist R = currentRules; R.nonEmpty(); R = R.rest()){
-                        if(((Polylist) R.first()).prefix(3).equals(finalRule.prefix(3))){
+                    for (Polylist R = currentRules; R.nonEmpty(); R = R.rest()) {
+                        if (((Polylist) R.first()).prefix(3).equals(finalRule.prefix(3))) {
                             R.setFirst(((Polylist) R.first()).prefix(3).append(Polylist.list(finalRule.last())));
                             ruleExists = true;
                         }
                     }
-                    if(!ruleExists) {
+                    if (!ruleExists) {
                         _grammar.addRule(finalRule);
-                        if(TESTING) System.out.println("Part to compare: " + (String) ((Polylist)finalRule.second()).first());
+                        if (TESTING)
+                            System.out.println("Part to compare: " + (String) ((Polylist) finalRule.second()).first());
                     }
 
 
                 }
             }).start();
         });
-        
-        
+
+
 //        synchronized(_grammar){
-            if(TESTING) System.err.println("In synchronized");
-            
-            
-            if(TESTING) _grammarSaveName = "/home/cssummer17/impro-visor-version-9.2-files/test_grammar_output.grammar";
-            if(TESTING) System.err.println("About to save grammar to: " + _grammarSaveName);
-            
-            _grammar.saveGrammar(_grammarSaveName);
-            
-            
-            if(TESTING) System.err.println("Grammar saved. About to generate solo...");
-            
-            responseInfo.genMotifSolo(_grammar);
-            
-            if(TESTING) System.err.println("Solo generated. Returning solo...");
-            
-            MelodyPart response = notate.quantizeMelody(responseInfo.getResponse(),
-                                                        notate.getRealtimeQuantization());
-            
-            
-            return response;
+        if (TESTING) System.err.println("In synchronized");
+
+
+        if (TESTING) _grammarSaveName = "/home/cssummer17/impro-visor-version-9.2-files/test_grammar_output.grammar";
+        if (TESTING) System.err.println("About to save grammar to: " + _grammarSaveName);
+
+        _grammar.saveGrammar(_grammarSaveName);
+
+
+        if (TESTING) System.err.println("Grammar saved. About to generate solo...");
+
+        responseInfo.genMotifSolo(_grammar);
+
+        if (TESTING) System.err.println("Solo generated. Returning solo...");
+
+        MelodyPart response = notate.quantizeMelody(responseInfo.getResponse(),
+                notate.getRealtimeQuantization());
+
+
+        return response;
 //        }
     }
 
@@ -253,37 +256,36 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
      * @param nextSection the index of this melody
      * @return the {@link DataPoint} version of the {@link MelodyPart}
      */
-    public synchronized static DataPoint getDataPointForUser(MelodyPart melody, int nextSection) throws EmptySoloException{
-      
+    public synchronized static DataPoint getDataPointForUser(MelodyPart melody, int nextSection) throws EmptySoloException {
+
         LickGen lg = new LickGen(ImproVisor.getGrammarFile().getAbsolutePath(), notate, null);
         LickgenFrame lgf = new LickgenFrame(notate, lg, new CommandManager());
         String abstractMel = lgf.addMeasureToAbstractMelody(nextSection, 4, false, false);
         String exactMelody = lgf.getExactMelody(4, abstractMel, nextSection);
-        
-        try{
+
+        try {
             abstractMel = abstractMel.substring(1, abstractMel.length() - 1);
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             if (TESTING) System.err.println("Empty melody played");
         }
-        
+
         String relativePitch = NoteConverter.melPartToRelativePitch(melody, notate.getChordProg());
-        
+
         Polylist temp;
-        
-        try{
+
+        try {
             temp = Polylist.PolylistFromString(abstractMel);
-        } catch (NullPointerException nullExp){
+        } catch (NullPointerException nullExp) {
             throw new EmptySoloException(nullExp.getMessage(), nullExp.getCause());
         }
-        
-        
-        
-        Polylist rule;
-        
 
-        if(temp.member(Polylist.list())){
+
+        Polylist rule;
+
+
+        if (temp.member(Polylist.list())) {
             rule = Polylist.list("Seg4").append((Polylist) temp.first());
-        } else{
+        } else {
             rule = Polylist.list("Seg4").append(temp);
         }
 
@@ -293,35 +295,35 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
                 + ") (Brick-type null) Head "
                 + exactMelody
                 + " CHORDS Fm7 G7b9";
-        
+
         String i = "0";
 
         /**@TODO make this whatever metric factory joseph wants to cluster on*/
         return CreateGrammar.processRule(rule, ruleString, i, new DefaultMetricListFactory());
     }
-    
-    
+
+
     /**
      * Initializes grammar. Sets grammar, sets grammar length, converts to proper format, and adds start rule.
      * @see MemorizeMotifsTRM#convertGrammar(imp.lickgen.Grammar) convertGrammar(Grammar g)
-     * 
+     *
      */
-    private void initGrammar(){
+    private void initGrammar() {
         String grammarName = notate.getGrammarFileName();
 
-        if(TESTING) {
+        if (TESTING) {
             grammarName = notate.getGrammarFileName().replaceFirst(notate.getGrammarName(), "chord");
             System.out.println("Grammar Name: " + grammarName);
         }
-        
+
         _grammar = convertGrammar(new Grammar(grammarName));
-        
+
         _grammar.addRule(Polylist.list("rule", Polylist.list("P"), Polylist.list(MotifStartSymbol, "P"), 10));
 
         _initGrammarSize = _grammar.getRules().flatten().length();
     }
-    
-    
+
+
     /**
      * Convert the selected grammar to work as a base.
      * @param g the grammar to change
@@ -330,77 +332,77 @@ public class MemorizeMotifsTRM extends BlockResponseMode {
     private Grammar convertGrammar(Grammar g) {
         Polylist rules = Polylist.list();
         int Qs = -1;
-        
-        
+
+
         // extract parameters and terminals from loaded grammar
-        for(Polylist p = g.getRules(); p.nonEmpty(); p = p.rest()){
+        for (Polylist p = g.getRules(); p.nonEmpty(); p = p.rest()) {
             Polylist temp = (Polylist) p.first();
-            
+
             boolean isParameter = ((String) temp.first()).equalsIgnoreCase("parameter");
             boolean isRule = ((String) temp.first()).equalsIgnoreCase("rule");
-            
+
             boolean containsQ;
-            try{
-                containsQ = ((String)((Polylist) temp.second()).first()).contains("Q");
-            } catch (Exception e){
+            try {
+                containsQ = ((String) ((Polylist) temp.second()).first()).contains("Q");
+            } catch (Exception e) {
                 containsQ = false;
             }
-            
+
             boolean isMotif;
-            try{
-                isMotif = ((String)((Polylist) temp.second()).first()).contains(MotifStartSymbol);
-            } catch (Exception e){
+            try {
+                isMotif = ((String) ((Polylist) temp.second()).first()).contains(MotifStartSymbol);
+            } catch (Exception e) {
                 isMotif = false;
             }
-            
-            if(isParameter || (isRule && containsQ) || (isRule && isMotif)){
-                rules = rules.addToEnd(p.first());  
-                
-                try{
-                    Qs = Integer.parseInt(((String)((Polylist) temp.second()).first()).substring(1));
+
+            if (isParameter || (isRule && containsQ) || (isRule && isMotif)) {
+                rules = rules.addToEnd(p.first());
+
+                try {
+                    Qs = Integer.parseInt(((String) ((Polylist) temp.second()).first()).substring(1));
                 } catch (NumberFormatException | ClassCastException e) {
-                    
+
                 }
             }
         }
-        
+
         // add passage from M_X to preexisting terminals
-        for(int i = 0; i <= Qs; i++){
+        for (int i = 0; i <= Qs; i++) {
             rules = rules.addToEnd(Polylist.list("rule", Polylist.list("M_X"), Polylist.list("Q".concat(String.valueOf(i))), 1));
         }
-        
+
         // add initial start state as long as Q rules exist
-        if(Qs >= 0){
+        if (Qs >= 0) {
             rules = rules.addToEnd(Polylist.list("rule", Polylist.list("P"), Polylist.list("M_X", "P"), 1));
         }
-        
+
         // set start symbol
         rules = rules.addToEnd(Polylist.list("startsymbol", "P"));
-        
+
         // create new grammar
         Grammar grammar = new Grammar(rules);
-        
+
         return grammar;
-        
+
     }
-    
+
     private static class EmptySoloException extends Exception {
-        public EmptySoloException(){
-            
+        public EmptySoloException() {
+
         }
-        
-        public EmptySoloException(String message){
+
+        public EmptySoloException(String message) {
             super(message);
         }
-        
-        public EmptySoloException(Throwable cause){
+
+        public EmptySoloException(Throwable cause) {
             super(cause);
         }
-        
-        public EmptySoloException(String message, Throwable cause){
+
+        public EmptySoloException(String message, Throwable cause) {
             super(message, cause);
         }
-        
+
     }
-    
+
 }

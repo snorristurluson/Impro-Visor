@@ -1,23 +1,24 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package imp.osc;
+
 import oscP5.*;
 
 /**
@@ -48,7 +49,7 @@ public class MuseReceiver {
                 return 1L;
             } else {
                 System.out.println("MIDDLE");
-                return (long)Math.round(Math.random());
+                return (long) Math.round(Math.random());
             }
         }
 
@@ -60,7 +61,7 @@ public class MuseReceiver {
 
             // Only outputs when calibration is complete
             if (averageAlpha != 0.0) {
-                double zscore = (sampledAlpha - averageAlpha)/standev;
+                double zscore = (sampledAlpha - averageAlpha) / standev;
                 System.out.println("\nZ Score: " + zscore);
                 System.out.println("Average Alpha: " + averageAlpha);
                 System.out.println("Sampled Alpha: " + sampledAlpha);
@@ -69,33 +70,27 @@ public class MuseReceiver {
                 if (zscore < -2.0) {
                     System.out.println("VERY HIGH");
                     return 4L;
-                }
-                else if (zscore >= -2.0 && zscore <= -0.75)
-                {
+                } else if (zscore >= -2.0 && zscore <= -0.75) {
                     System.out.println("HIGH");
                     return 3L;
-                }
-                else if (zscore > -0.75 && zscore <= 0.70) {
+                } else if (zscore > -0.75 && zscore <= 0.70) {
                     System.out.println("MEDIUM");
                     return 2L;
-                }
-                else if (zscore > 0.70 && zscore <= 2.0) {
+                } else if (zscore > 0.70 && zscore <= 2.0) {
                     System.out.println("LOW");
                     return 1L;
-                }
-                else {
+                } else {
                     System.out.println("VERY LOW");
                     return 0L;
                 }
-            }
-            else {
-            	return -1L;
+            } else {
+                return -1L;
             }
         }
     }
 
-    public void resetCalibration() {        
+    public void resetCalibration() {
         museServer.resetCalibration();
     }
-    
+
 }

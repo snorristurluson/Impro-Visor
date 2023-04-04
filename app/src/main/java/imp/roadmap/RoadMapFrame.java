@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2011-2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110z-1301  USA
@@ -35,6 +35,7 @@ import imp.util.ErrorLog;
 import imp.util.FileUtilities;
 import imp.midi.MidiPlayListener;
 import imp.util.Preferences;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +52,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
 import polya.Polylist;
 import polya.Tokenizer;
 
@@ -65,189 +67,190 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     public static final String DICTIONARY_EXT = ".dictionary";
 
     public static String defaultStyleName = "no-style";
-    
+
     private int keyColorationOffset = 0;
-    
+
     private String defaultDictionaryName = "My";
-    
+
     private String dictionaryNameSuffix = " dictionary";
-    
+
     JCheckBoxMenuItem recentlySelected = null;
-    
+
     //private String dictionaryDir = Directories.dictionaryDirName + File.separator;
-    
+
     private String dictionaryFilename;
-    
+
     private String dictionaryName;
-    
-     /** Communication with leadsheet and score is done through Notate frame. */
+
+    /** Communication with leadsheet and score is done through Notate frame. */
     private Notate notate = null;
-    
+
     /** auxNotate is a separate notate window for converting the roadmap
      * to a leadsheet. */
-    private Notate auxNotate = null;;
-    
+    private Notate auxNotate = null;
+    ;
+
     /** Buffer for the preview panel  */
     private Image bufferPreviewPanel;
-    
+
     /** Width of the preview buffer */
-    private final int previewBufferWidth  = 2400;
-    
+    private final int previewBufferWidth = 2400;
+
     /** Height of the preview buffer */
     private final int previewBufferHeight = 100;
 
     /** Buffer for the roadmap panel */
-    private Image bufferRoadMap;  
-    
+    private Image bufferRoadMap;
+
     /** Width of the roadmap buffer */
-    private final int roadMapBufferWidth  = 2400;
-    
+    private final int roadMapBufferWidth = 2400;
+
     /** Height of the roadmap buffer */
     private final int roadMapBufferHeight = 6000;
-    
+
     /** Dictionary frame location, relative to the roadmap panel */
     private final int dictionaryFrameX = 910;
     private final int dictionaryFrameY = 350;
-    
+
     /** Panel for previewing bricks from the library */
     private PreviewPanel previewPanel;
-    
+
     /** Panel where the roadmap is drawn */
     private RoadMapPanel roadMapPanel;
-    
+
     /** Library of available bricks */
     private BrickLibrary brickLibrary;
-    
+
     /** Parser for chord analysis */
     private CYKParser cykParser = new CYKParser();
-    
+
     /** When bricks are dragged, they are removed from the roadmap and store here */
     private ArrayList<GraphicBrick> draggedBricks = new ArrayList();
-    
+
     /** Stores copied bricks */
     private static ArrayList<Block> clipboard = new ArrayList();
-    
+
     /** Choices in the duration combobox */
-    private Object[] durationChoices = {8,7,6,5,4,3,2,1};
-    
+    private Object[] durationChoices = {8, 7, 6, 5, 4, 3, 2, 1};
+
     /** Combo box model for choosing styles */
     private Notate.StyleComboBoxModel styleComboBoxModel = new Notate.StyleComboBoxModel();
-    
+
     /** Default width of the roadmap frame */
     private int RMframeWidth = 1315;
-    
+
     /** Playback status */
     private MidiPlayListener.Status isPlaying = MidiPlayListener.Status.STOPPED;
-    
+
     /** This timer provides updates to the roadmap panel during playback */
     private javax.swing.Timer playTimer;
-    
+
     /** Tree used to store the brick library */
     private DefaultTreeModel libraryTreeModel;
-    
+
     /** Graphical settings are stored here */
     private RoadMapSettings settings = new RoadMapSettings();
-    
+
     /** Actions that can be undone */
     private LinkedList<RoadMapSnapShot> roadMapHistory = new LinkedList();
-    
+
     /** Actions that can be redone */
     private LinkedList<RoadMapSnapShot> roadMapFuture = new LinkedList();
-    
+
     /** Prefix on the frame title */
     private static String roadMapTitlePrefix = "RoadMap: ";
-    
+
     /** Title for feature width */
     private static String featureWidthTitle = "Width";
-    
+
     /** Suffix for constrained feature width */
     private static String featureWidthSuffix = "(Constrained)";
-    
+
     /** Title of this piece */
     public String roadMapTitle = "Untitled";
-    
+
     /** Default selectedStyle name */
     public String styleName = defaultStyleName;
-    
+
     /** Style of this piece */
     public Style style = Advisor.getStyle(styleName);
-        
+
     /** Time signature of this piece */
-    public int[] metre = {4,4};
-    
+    public int[] metre = {4, 4};
+
     private SourceEditorDialog dictionaryEditor = null;
-    
+
     private static int DICTIONARY_EDITOR_ROWS = 3000;
     private static int DICTIONARY_EDITOR_WIDTH = 700;
     private static int DICTIONARY_EDITOR_HEIGHT = 900;
     private static int DICTIONARY_EDITOR_X_OFFSET = 200;
     private static int DICTIONARY_EDITOR_Y_OFFSET = 200;
-    
+
     FileDialog saveAWT = new FileDialog(this, "Save Dictionary As...", FileDialog.SAVE);
-    
+
     public static final String INVISIBLE = "Invisible";
-    
+
     private boolean jSliderIgnoreStateChangedEvt = false;
-    
+
     private ArrayList<String> styleNames = new ArrayList<>();
-    
+
     /* The file chooser for opening the dictionary */
-    
-    private JFileChooser dictionaryfc = new JFileChooser();;
+
+    private JFileChooser dictionaryfc = new JFileChooser();
+    ;
 
     public Transposition roadMapTransposition = Transposition.none;
-   
-    private RoadMapFrame() {} // Not for you.
-    
+
+    private RoadMapFrame() {
+    } // Not for you.
+
     /** Creates new form RoadMapFrame */
-    public RoadMapFrame(Notate notate) 
-      {
+    public RoadMapFrame(Notate notate) {
         this(notate, notate.getTitle());
-      }
+    }
 
     /** Creates new form RoadMapFrame, with a different title */
-    public RoadMapFrame(Notate notate, String title) 
-      {
+    public RoadMapFrame(Notate notate, String title) {
         this.notate = notate;
-        
+
         previewPanel = new PreviewPanel(this);
         roadMapPanel = new RoadMapPanel(this);
-                
+
         initComponents(); // Must be done before newDictionary is called.
-        
+
         setDictionaryFilename(defaultDictionaryName);
         newDictionary();
-        
+
         initBuffer();
-        
+
         initTimer();
-        
+
         deactivateButtons();
 
         setRoadMapTitle(title);
 
         roadMapScrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        
+
         brickDictionaryDialog.setSize(brickDictionaryDialog.getPreferredSize());
-        
+
         brickDictionaryDialog.setLocationRelativeTo(roadMapPanel);
-    
+
         brickDictionaryDialog.setLocation(dictionaryFrameX, dictionaryFrameY);
-        
+
         WindowRegistry.registerWindow(this);
-        
+
         setFeatureWidthLocked(true);
-        
+
         setStyle(style);
-        
+
         //settings.generateColors(.3f);
-        
+
         styleComboBox.setSelectedItem(defaultStyleName);
-        
+
         // Caution: The reason for .first() below is that a one-element list
         // is returned. This is not the best design and should be revisited.
-        Polylist colorList = (Polylist)Polylist.PolylistFromString(Preferences.getPreference(Preferences.ROADMAP_COLORS)).first();
-        
+        Polylist colorList = (Polylist) Polylist.PolylistFromString(Preferences.getPreference(Preferences.ROADMAP_COLORS)).first();
+
         settings.setRoadmapColors(colorList);
     }
 
@@ -477,7 +480,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 3, 0);
         addBrickDialog.getContentPane().add(dialogCancelButton, gridBagConstraints);
 
-        dialogModeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Major", "Minor", "Dominant" }));
+        dialogModeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Major", "Minor", "Dominant"}));
         dialogModeComboBox.setName("dialogModeComboBox"); // NOI18N
         dialogModeComboBox.setPreferredSize(new java.awt.Dimension(120, 27));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -486,7 +489,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         addBrickDialog.getContentPane().add(dialogModeComboBox, gridBagConstraints);
 
         dialogKeyComboBox.setMaximumRowCount(12);
-        dialogKeyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
+        dialogKeyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db"}));
         dialogKeyComboBox.setName("dialogKeyComboBox"); // NOI18N
         dialogKeyComboBox.setPreferredSize(new java.awt.Dimension(74, 200));
         dialogKeyComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -691,6 +694,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 brickDictionaryDialogComponentShown(evt);
             }
+
             public void componentHidden(java.awt.event.ComponentEvent evt) {
                 brickDictionaryDialogComponentHidden(evt);
             }
@@ -723,6 +727,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void treeExpanded(javax.swing.event.TreeExpansionEvent evt) {
                 libraryTreeTreeExpanded(evt);
             }
+
             public void treeCollapsed(javax.swing.event.TreeExpansionEvent evt) {
                 libraryTreeTreeCollapsed(evt);
             }
@@ -754,7 +759,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         brickDictionaryDialog.getContentPane().add(libraryScrollPane, gridBagConstraints);
 
         keyComboBox.setMaximumRowCount(12);
-        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db" }));
+        keyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db"}));
         keyComboBox.setToolTipText("Key of the brick."); // NOI18N
         keyComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder("Key/Root"));
         keyComboBox.setMinimumSize(new java.awt.Dimension(52, 54));
@@ -854,6 +859,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 roadMapWindowClosing(evt);
             }
+
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
@@ -904,7 +910,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         scaleLabel.setName("scaleLabel"); // NOI18N
         topToolBar.add(scaleLabel);
 
-        scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5" }));
+        scaleComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"/5", "/4", "/3", "/2", "x1", "x2", "x3", "x4", "x5"}));
         scaleComboBox.setSelectedIndex(4);
         scaleComboBox.setToolTipText("Scale the length of the brick or chord by a factor."); // NOI18N
         scaleComboBox.setMaximumSize(new java.awt.Dimension(80, 45));
@@ -1034,7 +1040,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         topToolBar.add(keyColorationButton);
 
         barsPerLineComboBox.setMaximumRowCount(24);
-        barsPerLineComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", " " }));
+        barsPerLineComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", " "}));
         barsPerLineComboBox.setSelectedIndex(7);
         barsPerLineComboBox.setToolTipText("Set the maximum number of bars per line.\n"); // NOI18N
         barsPerLineComboBox.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bars/Line ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Lucida Grande 12", 0, 12))); // NOI18N
@@ -1233,6 +1239,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void focusGained(java.awt.event.FocusEvent evt) {
                 tempoSetFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tempoSetFocusLost(evt);
             }
@@ -1404,6 +1411,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneMouseMoved(evt);
             }
+
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapDragged(evt);
             }
@@ -1412,6 +1420,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapReleased(evt);
             }
+
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 roadMapScrollPaneroadMapClicked(evt);
             }
@@ -1420,6 +1429,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 roadMapScrollPaneroadMapKeyPressed(evt);
             }
+
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 roadMapScrollPaneroadMapKeyReleased(evt);
             }
@@ -1744,8 +1754,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 dictionaryMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -1796,8 +1808,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 preferencesMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -2174,8 +2188,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
             public void menuSelected(javax.swing.event.MenuEvent evt) {
                 windowMenuMenuSelected(evt);
             }
+
             public void menuDeselected(javax.swing.event.MenuEvent evt) {
             }
+
             public void menuCanceled(javax.swing.event.MenuEvent evt) {
             }
         });
@@ -2271,98 +2287,99 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     // <editor-fold defaultstate="collapsed" desc="Events">
     private void libraryTreeSelected(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_libraryTreeSelected
         setPreview();
-}//GEN-LAST:event_libraryTreeSelected
+    }//GEN-LAST:event_libraryTreeSelected
 
     private void previewScrollPanepreviewPaneReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneReleased
         int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue() + previewScrollPane.getY() - roadMapScrollPane.getY();
         int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue() + previewScrollPane.getX();
-        int x = evt.getX()+xOffset;
-        int y = evt.getY()+yOffset;
+        int x = evt.getX() + xOffset;
+        int y = evt.getY() + yOffset;
         dropFromPreview(x, y);
-}//GEN-LAST:event_previewScrollPanepreviewPaneReleased
+    }//GEN-LAST:event_previewScrollPanepreviewPaneReleased
 
     private void previewScrollPanepreviewPaneDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_previewScrollPanepreviewPaneDragged
         int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue() + previewScrollPane.getY() - roadMapScrollPane.getY();
         int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue() + previewScrollPane.getX();
-        int x = evt.getX()+xOffset;
-        int y = evt.getY()+yOffset;
+        int x = evt.getX() + xOffset;
+        int y = evt.getY() + yOffset;
         dragFromPreview(x, y);
-}//GEN-LAST:event_previewScrollPanepreviewPaneDragged
+    }//GEN-LAST:event_previewScrollPanepreviewPaneDragged
 
     private void durationComboBoxdurationChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationComboBoxdurationChosen
         setPreviewDuration();
-}//GEN-LAST:event_durationComboBoxdurationChosen
+    }//GEN-LAST:event_durationComboBoxdurationChosen
 
     private void roadMapScrollPaneroadMapReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapReleased
         int x = evt.getX() + roadMapScrollPane.getHorizontalScrollBar().getValue();
         int y = evt.getY() + roadMapScrollPane.getVerticalScrollBar().getValue();
         dropCurrentBrick(x, y);
-}//GEN-LAST:event_roadMapScrollPaneroadMapReleased
+    }//GEN-LAST:event_roadMapScrollPaneroadMapReleased
 
     private void roadMapScrollPaneroadMapClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapClicked
         int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
         int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
-        int x = evt.getX()+xOffset;
-        int y = evt.getY()+yOffset;
-        int index = roadMapPanel.getBrickIndexAt(x,y);
-        if(evt.getButton() == evt.BUTTON1) {
-            if(index != -1) {
+        int x = evt.getX() + xOffset;
+        int y = evt.getY() + yOffset;
+        int index = roadMapPanel.getBrickIndexAt(x, y);
+        if (evt.getButton() == evt.BUTTON1) {
+            if (index != -1) {
                 int jndex = roadMapPanel.getBrick(index).getChordAt(x, y);
-                if(evt.isShiftDown())
+                if (evt.isShiftDown())
                     selectBricks(index);
-                else if( roadMapPanel.getBrick(index).isSelected() &&
+                else if (roadMapPanel.getBrick(index).isSelected() &&
                         evt.getClickCount() == 2 && jndex != -1) {
-                    selectChord(index,jndex);
+                    selectChord(index, jndex);
                     activateChordDialog();
-                } else if( roadMapPanel.getBrick(index).isSelected() && jndex != -1) {
-                    selectChord(index,jndex);
+                } else if (roadMapPanel.getBrick(index).isSelected() && jndex != -1) {
+                    selectChord(index, jndex);
                 } else
                     selectBrick(index);
-                if( playOnClickToggleButton.isSelected() )
-                  {
+                if (playOnClickToggleButton.isSelected()) {
                     playSelection();
-                  }
+                }
             } else //TODO, renaming and other outside clicks
                 deselectBricks();
-        } else if(evt.getButton() == evt.BUTTON3) {
+        } else if (evt.getButton() == evt.BUTTON3) {
             // Nothing
         }
         roadMapScrollPane.requestFocus();
-}//GEN-LAST:event_roadMapScrollPaneroadMapClicked
+    }//GEN-LAST:event_roadMapScrollPaneroadMapClicked
 
     private void roadMapScrollPaneroadMapDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapDragged
         int x = evt.getX() + roadMapScrollPane.getHorizontalScrollBar().getValue();
         int y = evt.getY() + roadMapScrollPane.getVerticalScrollBar().getValue();
         dragSelectedBricks(x, y);
-}//GEN-LAST:event_roadMapScrollPaneroadMapDragged
+    }//GEN-LAST:event_roadMapScrollPaneroadMapDragged
 
     private void roadMapScrollPaneroadMapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyPressed
         switch (evt.getKeyCode()) {
-            default:                                                    break;
+            default:
+                break;
         }
-}//GEN-LAST:event_roadMapScrollPaneroadMapKeyPressed
+    }//GEN-LAST:event_roadMapScrollPaneroadMapKeyPressed
 
     private void roadMapScrollPaneroadMapKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_roadMapScrollPaneroadMapKeyReleased
         switch (evt.getKeyCode()) {
-            default:                            break;
+            default:
+                break;
         }
-}//GEN-LAST:event_roadMapScrollPaneroadMapKeyReleased
+    }//GEN-LAST:event_roadMapScrollPaneroadMapKeyReleased
 
     private void flattenButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenButtonPressed
         flattenSelection();
-}//GEN-LAST:event_flattenButtonPressed
+    }//GEN-LAST:event_flattenButtonPressed
 
     private void breakButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breakButtonPressed
         breakSelection();
-}//GEN-LAST:event_breakButtonPressed
+    }//GEN-LAST:event_breakButtonPressed
 
     private void scaleComboBoxscaleComboReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleComboReleased
-}//GEN-LAST:event_scaleComboBoxscaleComboReleased
+    }//GEN-LAST:event_scaleComboBoxscaleComboReleased
 
     private void scaleComboBoxscaleChosen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaleComboBoxscaleChosen
         scaleSelection();
         scaleComboBox.setSelectedItem("x1");
-}//GEN-LAST:event_scaleComboBoxscaleChosen
+    }//GEN-LAST:event_scaleComboBoxscaleChosen
 
     private void newBrickButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBrickButtonPressed
         dialogNameField.setText("");
@@ -2371,11 +2388,11 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         dialogKeyComboBox.setSelectedIndex(0);
         addBrickDialog.setLocation(100, 100);
         addBrickDialog.setVisible(true);
-}//GEN-LAST:event_newBrickButtonPressed
+    }//GEN-LAST:event_newBrickButtonPressed
 
     private void analyzeButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonPressed
         analyzeInBackground(settings.showJoins);
-}//GEN-LAST:event_analyzeButtonPressed
+    }//GEN-LAST:event_analyzeButtonPressed
 
     private void exitMIhandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMIhandler
         closeWindow();
@@ -2402,96 +2419,93 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_featureWidthSliderChanged
 
     private void selectAllMenuItemClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectAllMenuItemClicked
-        if(!roadMapTextEntry.isFocusOwner()) selectAllBricks();
+        if (!roadMapTextEntry.isFocusOwner()) selectAllBricks();
     }//GEN-LAST:event_selectAllMenuItemClicked
 
     private void undoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) undo();
+        if (!roadMapTextEntry.isFocusOwner()) undo();
     }//GEN-LAST:event_undoMenuItemActionPerformed
 
     private void redoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) redo();
+        if (!roadMapTextEntry.isFocusOwner()) redo();
     }//GEN-LAST:event_redoMenuItemActionPerformed
 
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) cutSelection();
+        if (!roadMapTextEntry.isFocusOwner()) cutSelection();
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) copySelection();
+        if (!roadMapTextEntry.isFocusOwner()) copySelection();
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) pasteSelection();
+        if (!roadMapTextEntry.isFocusOwner()) pasteSelection();
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) deleteSelection();
+        if (!roadMapTextEntry.isFocusOwner()) deleteSelection();
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void flattenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) flattenSelection();
+        if (!roadMapTextEntry.isFocusOwner()) flattenSelection();
     }//GEN-LAST:event_flattenMenuItemActionPerformed
 
     private void breakMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_breakMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) breakSelection();
+        if (!roadMapTextEntry.isFocusOwner()) breakSelection();
     }//GEN-LAST:event_breakMenuItemActionPerformed
 
     private void toggleSectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleSectionMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) toggleSectionBreak();
+        if (!roadMapTextEntry.isFocusOwner()) toggleSectionBreak();
     }//GEN-LAST:event_toggleSectionMenuItemActionPerformed
 
     private void loopToggleButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loopToggleButtonPressed
-        if( loopToggleButton.isSelected() )
-          {
+        if (loopToggleButton.isSelected()) {
             loopToggleButton.setText("No Loop");
             loopToggleButton.setBackground(Color.RED);
-          }
-        else
-          {
+        } else {
             loopToggleButton.setText("Loop");
             loopToggleButton.setBackground(Color.GREEN);
             stopPlayingSelection();
-          }
+        }
     }//GEN-LAST:event_loopToggleButtonPressed
 
-    
+
     /**
      * Add chords in leadsheet notation (with bar lines, etc.) from textual Entry
-     * @param evt 
+     * @param evt
      */
     private void textualEntryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textualEntryKeyPressed
-        if( evt.getKeyCode() == KeyEvent.VK_ENTER ) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             saveState("TextEntry");
 
             String entered = roadMapTextEntry.getText();
 
-            if( !entered.isEmpty() ){
+            if (!entered.isEmpty()) {
                 Score score = new Score();
                 score.setMetre(getMetre());
                 Tokenizer tokenizer = new Tokenizer(new StringReader(entered));
 
                 Leadsheet.readLeadSheet(tokenizer, score);
-                
+
 //                if( score.getPart(0).size() > 120 )
 //                    ErrorLog.log(ErrorLog.WARNING, "Melody notes entered with chord part will be ignored.");
 
-            roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true); 
-            roadMapPanel.placeBricks();
-            roadMapPanel.deselectBricks();
-            activateButtons();
+                roadMapPanel.addBlocksBeforeSelection(score.getChordProg().toBlockList(), true);
+                roadMapPanel.placeBricks();
+                roadMapPanel.deselectBricks();
+                activateButtons();
 
-            this.requestFocus();
+                this.requestFocus();
             }
         }
     }//GEN-LAST:event_textualEntryKeyPressed
 
     private void chordDialogAcceptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chordDialogAcceptButtonActionPerformed
         String name = chordDialogNameField.getText();
-        if(ChordSymbol.makeChordSymbol(name) != null) {
+        if (ChordSymbol.makeChordSymbol(name) != null) {
             chordChangeDialog.setVisible(false);
             changeChord(name,
-                    (Integer)chordDialogDurationComboBox.getSelectedItem() * settings.getSlotsPerBeat());
+                    (Integer) chordDialogDurationComboBox.getSelectedItem() * settings.getSlotsPerBeat());
         }
     }//GEN-LAST:event_chordDialogAcceptButtonActionPerformed
 
@@ -2502,29 +2516,25 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void libraryTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryTreeMouseClicked
         int clicks = evt.getClickCount();
         TreePath path = libraryTree.getPathForLocation(evt.getX(), evt.getY());
-        if(path != null && previewPanel.getBrick() != null && clicks%2==0)
-          {
+        if (path != null && previewPanel.getBrick() != null && clicks % 2 == 0) {
             // If double-clicking with shift down, the brick will be played
             // after it is added.
-            
-            if( evt.isShiftDown() )
-              {
+
+            if (evt.isShiftDown()) {
                 addAndPlayBrickFromPreview();
-              }
-            else
-              {
+            } else {
                 addBrickFromPreview();
-              }
-          }
-    libraryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);        
+            }
+        }
+        libraryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     }//GEN-LAST:event_libraryTreeMouseClicked
 
     private void transposeDownMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeDownMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) transposeSelection(1);
+        if (!roadMapTextEntry.isFocusOwner()) transposeSelection(1);
     }//GEN-LAST:event_transposeDownMenuItemActionPerformed
 
     private void transposeUpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transposeUpMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) transposeSelection(-1);
+        if (!roadMapTextEntry.isFocusOwner()) transposeSelection(-1);
     }//GEN-LAST:event_transposeUpMenuItemActionPerformed
 
     private void closeWindowMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeWindowMIActionPerformed
@@ -2532,21 +2542,21 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_closeWindowMIActionPerformed
 
     private void cascadeMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeMIActionPerformed
-        
+
         WindowRegistry.cascadeWindows(this);
     }//GEN-LAST:event_cascadeMIActionPerformed
 
     private void windowMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_windowMenuMenuSelected
-        
+
         windowMenu.removeAll();
-        
+
         windowMenu.add(closeWindowMI);
-        
+
         windowMenu.add(cascadeMI);
-        
-        for(WindowMenuItem w : WindowRegistry.getWindows())
+
+        for (WindowMenuItem w : WindowRegistry.getWindows())
             windowMenu.add(w.getMI(this));       // these are static, and calling getMI updates the name on them too in case the window title changed
-        
+
         windowMenu.repaint();
     }//GEN-LAST:event_windowMenuMenuSelected
 
@@ -2559,20 +2569,19 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_formWindowActivated
 
     private void togglePhraseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePhraseMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) togglePhraseEnd();
+        if (!roadMapTextEntry.isFocusOwner()) togglePhraseEnd();
     }//GEN-LAST:event_togglePhraseMenuItemActionPerformed
 
     private void openLeadsheetMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openLeadsheetMIActionPerformed
         notate.openLeadsheet(false);
-}//GEN-LAST:event_openLeadsheetMIActionPerformed
+    }//GEN-LAST:event_openLeadsheetMIActionPerformed
 
     private void saveAsToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsToNewLeadsheetMIaction
-        if(!roadMapTextEntry.isFocusOwner()) 
-          {
+        if (!roadMapTextEntry.isFocusOwner()) {
             // To force saving to a new leadsheet.
             auxNotate = null;
             saveToNewNotate();
-          }
+        }
     }//GEN-LAST:event_saveAsToNewLeadsheetMIaction
 
     private void keyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyComboBoxActionPerformed
@@ -2582,9 +2591,9 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     private void roadMapScrollPaneMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_roadMapScrollPaneMouseMoved
         int yOffset = roadMapScrollPane.getVerticalScrollBar().getValue();
         int xOffset = roadMapScrollPane.getHorizontalScrollBar().getValue();
-        int x = evt.getX()+xOffset;
-        int y = evt.getY()+yOffset;
-        roadMapPanel.setRolloverPos(new Point(x,y));
+        int x = evt.getX() + xOffset;
+        int y = evt.getY() + yOffset;
+        roadMapPanel.setRolloverPos(new Point(x, y));
         roadMapPanel.draw();
     }//GEN-LAST:event_roadMapScrollPaneMouseMoved
 
@@ -2594,9 +2603,8 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        if (previewPanel.currentBrick != null)
-        {
-            brickLibrary.exileBrick((Brick)previewPanel.currentBrick.getBlock(), dictionaryFilename);
+        if (previewPanel.currentBrick != null) {
+            brickLibrary.exileBrick((Brick) previewPanel.currentBrick.getBlock(), dictionaryFilename);
             initLibraryTree();
             libraryTree.setModel(libraryTreeModel);
             cykParser.createRules(brickLibrary);
@@ -2605,24 +2613,23 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
 
 
     private void preferencesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner())
-          {
+        if (!roadMapTextEntry.isFocusOwner()) {
             activatePreferencesDialog();
-          }
+        }
     }//GEN-LAST:event_preferencesMenuItemActionPerformed
 
     private void prefDialogCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogCancelButtonActionPerformed
 
-            preferencesDialog.setVisible(false);
+        preferencesDialog.setVisible(false);
 
     }//GEN-LAST:event_prefDialogCancelButtonActionPerformed
 
     private void brickLibraryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brickLibraryMenuItemActionPerformed
-        
+
     }//GEN-LAST:event_brickLibraryMenuItemActionPerformed
 
     private void dialogNameFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dialogNameFieldKeyReleased
-        if(brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
+        if (brickLibrary.hasBrick(BrickLibrary.dashless(dialogNameField.getText()))) {
             // why? ErrorLog.log(ErrorLog.WARNING, dialogNameField.getText());
             dialogVariantField.setEditable(true);
             dialogVariantLabel.setEnabled(true);
@@ -2633,7 +2640,7 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_dialogNameFieldKeyReleased
 
     private void featureWidthSliderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_featureWidthSliderMouseClicked
-        if(evt.getClickCount()%2 == 0) {
+        if (evt.getClickCount() % 2 == 0) {
             scaleToWindow();
         } else {
             setFeatureWidthLocked(false);
@@ -2641,11 +2648,10 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
     }//GEN-LAST:event_featureWidthSliderMouseClicked
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
-        if(border.getTitle().endsWith(featureWidthSuffix))
-          {
+        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder) featureWidthSlider.getBorder();
+        if (border.getTitle().endsWith(featureWidthSuffix)) {
             scaleToWindow();
-          }
+        }
     }//GEN-LAST:event_formComponentResized
 
     private void libraryTreeTreeCollapsed(javax.swing.event.TreeExpansionEvent evt) {//GEN-FIRST:event_libraryTreeTreeCollapsed
@@ -2658,34 +2664,31 @@ public class RoadMapFrame extends javax.swing.JFrame implements MidiPlayListener
         // adjustForTreeChange();
     }//GEN-LAST:event_libraryTreeTreeExpanded
 
-private void adjustForTreeChange()
-  {
-  int width = libraryTree.getPreferredSize().width;
-  
-  int newHeight = libraryTree.getRowCount() * libraryTree.getRowHeight();
-  
-  libraryTree.setPreferredSize(new Dimension(width, newHeight));
-  }
+    private void adjustForTreeChange() {
+        int width = libraryTree.getPreferredSize().width;
+
+        int newHeight = libraryTree.getRowCount() * libraryTree.getRowHeight();
+
+        libraryTree.setPreferredSize(new Dimension(width, newHeight));
+    }
 
     private void fileStepBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepBackBtnActionPerformed
         notate.fileStepBackward();
-        if(notate.getAutoCreateRoadMap())
+        if (notate.getAutoCreateRoadMap())
             ;
-        else
-          {
+        else {
             notate.roadMapThisAnalyze();
-          }
-}//GEN-LAST:event_fileStepBackBtnActionPerformed
+        }
+    }//GEN-LAST:event_fileStepBackBtnActionPerformed
 
     private void fileStepForwardBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileStepForwardBtnActionPerformed
         notate.fileStepForward();
-        if(notate.getAutoCreateRoadMap())
+        if (notate.getAutoCreateRoadMap())
             ;
-        else
-          {
+        else {
             notate.roadMapThisAnalyze();
-          }
-}//GEN-LAST:event_fileStepForwardBtnActionPerformed
+        }
+    }//GEN-LAST:event_fileStepForwardBtnActionPerformed
 
     private void dialogKeyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogKeyComboBoxActionPerformed
         // TODO add your handling code here:
@@ -2693,37 +2696,33 @@ private void adjustForTreeChange()
 
     private void dictionaryMenuMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_dictionaryMenuMenuSelected
         populateRoadmapDictionaryMenu(defaultDictionaryName);
-        
+
     }//GEN-LAST:event_dictionaryMenuMenuSelected
 
     private void keyColorationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyColorationButtonActionPerformed
-        if( settings.keysColored )
-          {
+        if (settings.keysColored) {
             settings.keysColored = false;
             keyColorationButton.setBackground(Color.red);
             keyColorationButton.setText("Color");
-          }
-        else
-          {
+        } else {
             settings.keysColored = true;
             keyColorationButton.setBackground(new Color(153, 204, 255));
             keyColorationButton.setText("Gray");
-          }
+        }
         roadMapPanel.draw();
     }//GEN-LAST:event_keyColorationButtonActionPerformed
 
-    private void acceptPreferences()
-      {
-      if( intFromTextField(lowerMetre) % 2 == 0) {
+    private void acceptPreferences() {
+        if (intFromTextField(lowerMetre) % 2 == 0) {
             preferencesDialog.setVisible(false);
             setRoadMapInfo();
-        } else
-            {
-              ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
-            }    
-      }
+        } else {
+            ErrorLog.log(ErrorLog.COMMENT, "Metre bottom must be 1, 2, 4 or 8");
+        }
+    }
+
     private void prefDialogAcceptButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prefDialogAcceptButton1ActionPerformed
-       acceptPreferences();                                                     
+        acceptPreferences();
     }//GEN-LAST:event_prefDialogAcceptButton1ActionPerformed
 
     private void dialogCancelButtondialogAccepted(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dialogCancelButtondialogAccepted
@@ -2739,55 +2738,68 @@ private void adjustForTreeChange()
     }//GEN-LAST:event_preferencesMenuMenuSelected
 
     private void fixedColorsRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fixedColorsRadioBtnActionPerformed
-        settings.setColorationBias(0); roadMapPanel.draw();
+        settings.setColorationBias(0);
+        roadMapPanel.draw();
     }//GEN-LAST:event_fixedColorsRadioBtnActionPerformed
 
     private void relativeToCbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToCbuttonActionPerformed
-        settings.setColorationBias(0); roadMapPanel.draw();
+        settings.setColorationBias(0);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToCbuttonActionPerformed
 
     private void relativeToBbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToBbuttonActionPerformed
-        settings.setColorationBias(1); roadMapPanel.draw();
+        settings.setColorationBias(1);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToBbuttonActionPerformed
 
     private void relativeToBbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToBbbuttonActionPerformed
-        settings.setColorationBias(2); roadMapPanel.draw();
+        settings.setColorationBias(2);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToBbbuttonActionPerformed
 
     private void relativeToAbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToAbuttonActionPerformed
-        settings.setColorationBias(3); roadMapPanel.draw();
+        settings.setColorationBias(3);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToAbuttonActionPerformed
 
     private void relativeToAbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToAbbuttonActionPerformed
-        settings.setColorationBias(4); roadMapPanel.draw();
+        settings.setColorationBias(4);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToAbbuttonActionPerformed
 
     private void relativeToGbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToGbuttonActionPerformed
-        settings.setColorationBias(5); roadMapPanel.draw();
+        settings.setColorationBias(5);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToGbuttonActionPerformed
 
     private void relativeTGbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeTGbbuttonActionPerformed
-        settings.setColorationBias(6); roadMapPanel.draw();
+        settings.setColorationBias(6);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeTGbbuttonActionPerformed
 
     private void relativeToFbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToFbuttonActionPerformed
-        settings.setColorationBias(7); roadMapPanel.draw();
+        settings.setColorationBias(7);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToFbuttonActionPerformed
 
     private void relativeToEbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToEbuttonActionPerformed
-        settings.setColorationBias(8); roadMapPanel.draw();
+        settings.setColorationBias(8);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToEbuttonActionPerformed
 
     private void relativeToEbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToEbbuttonActionPerformed
-       settings.setColorationBias(9); roadMapPanel.draw();
+        settings.setColorationBias(9);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToEbbuttonActionPerformed
 
     private void relativeToDbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToDbuttonActionPerformed
-        settings.setColorationBias(10); roadMapPanel.draw();
+        settings.setColorationBias(10);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToDbuttonActionPerformed
 
     private void relativeToDbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relativeToDbbuttonActionPerformed
-        settings.setColorationBias(11); roadMapPanel.draw();
+        settings.setColorationBias(11);
+        roadMapPanel.draw();
     }//GEN-LAST:event_relativeToDbbuttonActionPerformed
 
     private void analyzeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeMenuItemActionPerformed
@@ -2799,241 +2811,247 @@ private void adjustForTreeChange()
     }//GEN-LAST:event_unselectAllMenuItemClicked
 
     private void titleBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleBoxActionPerformed
-       acceptPreferences();
+        acceptPreferences();
     }//GEN-LAST:event_titleBoxActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-                roadMapTextEntry.setText("");
+        roadMapTextEntry.setText("");
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void saveToNewLeadsheetMIaction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveToNewLeadsheetMIaction
-          saveToNewNotate();          
+        saveToNewNotate();
     }//GEN-LAST:event_saveToNewLeadsheetMIaction
 
     private void stopButtonPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonPressed
-         stopPlayingSelection();
+        stopPlayingSelection();
     }//GEN-LAST:event_stopButtonPressed
 
     private void insertBrickButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBrickButtonActionPerformed
         addBrickFromPreview();
     }//GEN-LAST:event_insertBrickButtonActionPerformed
 
-private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
-  {//GEN-HEADEREND:event_playSelectionMIActionPerformed
-   if( !roadMapTextEntry.isFocusOwner() )
-     {
-       playSelection();
-     }
-  }//GEN-LAST:event_playSelectionMIActionPerformed
+    private void playSelectionMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playSelectionMIActionPerformed
+    {//GEN-HEADEREND:event_playSelectionMIActionPerformed
+        if (!roadMapTextEntry.isFocusOwner()) {
+            playSelection();
+        }
+    }//GEN-LAST:event_playSelectionMIActionPerformed
 
-private void playAllMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playAllMIActionPerformed
-  {//GEN-HEADEREND:event_playAllMIActionPerformed
-   if( !roadMapTextEntry.isFocusOwner() )
-     {  
-     selectAllBricks();
-     playSelection();
-     deselectBricks();
-     }
-  }//GEN-LAST:event_playAllMIActionPerformed
+    private void playAllMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playAllMIActionPerformed
+    {//GEN-HEADEREND:event_playAllMIActionPerformed
+        if (!roadMapTextEntry.isFocusOwner()) {
+            selectAllBricks();
+            playSelection();
+            deselectBricks();
+        }
+    }//GEN-LAST:event_playAllMIActionPerformed
 
-private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayMIActionPerformed
-  {//GEN-HEADEREND:event_stopPlayMIActionPerformed
-  stopPlayingSelection();
- }//GEN-LAST:event_stopPlayMIActionPerformed
+    private void stopPlayMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_stopPlayMIActionPerformed
+    {//GEN-HEADEREND:event_stopPlayMIActionPerformed
+        stopPlayingSelection();
+    }//GEN-LAST:event_stopPlayMIActionPerformed
 
-private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMenuActionPerformed
-  {//GEN-HEADEREND:event_playMenuActionPerformed
+    private void playMenuActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playMenuActionPerformed
+    {//GEN-HEADEREND:event_playMenuActionPerformed
 
-  }//GEN-LAST:event_playMenuActionPerformed
+    }//GEN-LAST:event_playMenuActionPerformed
 
-private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showJoinsCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_showJoinsCheckBoxMIActionPerformed
-    setShowJoins(showJoinsCheckBoxMI.getState());
-    roadMapPanel.draw();
-  }//GEN-LAST:event_showJoinsCheckBoxMIActionPerformed
+    private void showJoinsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showJoinsCheckBoxMIActionPerformed
+    {//GEN-HEADEREND:event_showJoinsCheckBoxMIActionPerformed
+        setShowJoins(showJoinsCheckBoxMI.getState());
+        roadMapPanel.draw();
+    }//GEN-LAST:event_showJoinsCheckBoxMIActionPerformed
 
-private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_dictionaryEditorMIActionPerformed
-  {//GEN-HEADEREND:event_dictionaryEditorMIActionPerformed
-    openDictionaryEditor();
-  }//GEN-LAST:event_dictionaryEditorMIActionPerformed
+    private void dictionaryEditorMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_dictionaryEditorMIActionPerformed
+    {//GEN-HEADEREND:event_dictionaryEditorMIActionPerformed
+        openDictionaryEditor();
+    }//GEN-LAST:event_dictionaryEditorMIActionPerformed
 
-private void roadMapStatustextualEntryKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_roadMapStatustextualEntryKeyPressed
-  {//GEN-HEADEREND:event_roadMapStatustextualEntryKeyPressed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_roadMapStatustextualEntryKeyPressed
+    private void roadMapStatustextualEntryKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_roadMapStatustextualEntryKeyPressed
+    {//GEN-HEADEREND:event_roadMapStatustextualEntryKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roadMapStatustextualEntryKeyPressed
 
-private void saveDictionaryAsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveDictionaryAsMIActionPerformed
-  {//GEN-HEADEREND:event_saveDictionaryAsMIActionPerformed
-    saveDictionaryAs();
-  }//GEN-LAST:event_saveDictionaryAsMIActionPerformed
+    private void saveDictionaryAsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveDictionaryAsMIActionPerformed
+    {//GEN-HEADEREND:event_saveDictionaryAsMIActionPerformed
+        saveDictionaryAs();
+    }//GEN-LAST:event_saveDictionaryAsMIActionPerformed
 
-private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleComboReleased
-  {//GEN-HEADEREND:event_barsPerLineComboBoxscaleComboReleased
-    roadMapScrollPane.requestFocus();
-  }//GEN-LAST:event_barsPerLineComboBoxscaleComboReleased
+    private void barsPerLineComboBoxscaleComboReleased(java.awt.event.MouseEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleComboReleased
+    {//GEN-HEADEREND:event_barsPerLineComboBoxscaleComboReleased
+        roadMapScrollPane.requestFocus();
+    }//GEN-LAST:event_barsPerLineComboBoxscaleComboReleased
 
-private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
-  {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
-    settings.setBarsPerLine(Integer.parseInt((String)barsPerLineComboBox.getSelectedItem()));
-  }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
+    private void barsPerLineComboBoxscaleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barsPerLineComboBoxscaleChosen
+    {//GEN-HEADEREND:event_barsPerLineComboBoxscaleChosen
+        settings.setBarsPerLine(Integer.parseInt((String) barsPerLineComboBox.getSelectedItem()));
+    }//GEN-LAST:event_barsPerLineComboBoxscaleChosen
 
-private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
-  {//GEN-HEADEREND:event_allVolumeToolBarSliderStateChanged
-    setVolumeSlider(allVolumeToolBarSlider.getValue());
-  }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
+    private void allVolumeToolBarSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_allVolumeToolBarSliderStateChanged
+    {//GEN-HEADEREND:event_allVolumeToolBarSliderStateChanged
+        setVolumeSlider(allVolumeToolBarSlider.getValue());
+    }//GEN-LAST:event_allVolumeToolBarSliderStateChanged
 
-private void tempoSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tempoSetMousePressed
-  {//GEN-HEADEREND:event_tempoSetMousePressed
-     tempoSet.requestFocusInWindow();
-   }//GEN-LAST:event_tempoSetMousePressed
+    private void tempoSetMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tempoSetMousePressed
+    {//GEN-HEADEREND:event_tempoSetMousePressed
+        tempoSet.requestFocusInWindow();
+    }//GEN-LAST:event_tempoSetMousePressed
 
-private void tempoSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tempoSetActionPerformed
-  {//GEN-HEADEREND:event_tempoSetActionPerformed
-     setTempo(Notate.intFromTextField(tempoSet, Notate.MIN_TEMPO, Notate.MAX_TEMPO, (int)notate.getDefaultTempo()));   
-}//GEN-LAST:event_tempoSetActionPerformed
+    private void tempoSetActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_tempoSetActionPerformed
+    {//GEN-HEADEREND:event_tempoSetActionPerformed
+        setTempo(Notate.intFromTextField(tempoSet, Notate.MIN_TEMPO, Notate.MAX_TEMPO, (int) notate.getDefaultTempo()));
+    }//GEN-LAST:event_tempoSetActionPerformed
 
-private void tempoSetFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusGained
-  {//GEN-HEADEREND:event_tempoSetFocusGained
+    private void tempoSetFocusGained(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusGained
+    {//GEN-HEADEREND:event_tempoSetFocusGained
 
-     //tempoSetOldTempo = tempoSet.getText();   
-}//GEN-LAST:event_tempoSetFocusGained
+        //tempoSetOldTempo = tempoSet.getText();
+    }//GEN-LAST:event_tempoSetFocusGained
 
-private void tempoSetFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusLost
-  {//GEN-HEADEREND:event_tempoSetFocusLost
+    private void tempoSetFocusLost(java.awt.event.FocusEvent evt)//GEN-FIRST:event_tempoSetFocusLost
+    {//GEN-HEADEREND:event_tempoSetFocusLost
 
-     updateTempoFromTextField();
-}//GEN-LAST:event_tempoSetFocusLost
+        updateTempoFromTextField();
+    }//GEN-LAST:event_tempoSetFocusLost
 
-private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_tempoSliderStateChanged
-  {//GEN-HEADEREND:event_tempoSliderStateChanged
+    private void tempoSliderStateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_tempoSliderStateChanged
+    {//GEN-HEADEREND:event_tempoSliderStateChanged
 
-     if( jSliderIgnoreStateChangedEvt )
-       {
-         return;
-       }
-     int value = tempoSlider.getValue();
-     value = 2 * Math.round(value / 2);
-     setTempo(value);
-     //setPlaybackManagerTime(); 
-}//GEN-LAST:event_tempoSliderStateChanged
+        if (jSliderIgnoreStateChangedEvt) {
+            return;
+        }
+        int value = tempoSlider.getValue();
+        value = 2 * Math.round(value / 2);
+        setTempo(value);
+        //setPlaybackManagerTime();
+    }//GEN-LAST:event_tempoSliderStateChanged
 
-private void lowerMetreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lowerMetreActionPerformed
-  {//GEN-HEADEREND:event_lowerMetreActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_lowerMetreActionPerformed
+    private void lowerMetreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_lowerMetreActionPerformed
+    {//GEN-HEADEREND:event_lowerMetreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lowerMetreActionPerformed
 
-private void showBrickNamesCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showBrickNamesCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_showBrickNamesCheckBoxMIActionPerformed
-      settings.showBrickNames = showBrickNamesCheckBoxMI.getState();
-      roadMapPanel.draw();
-  }//GEN-LAST:event_showBrickNamesCheckBoxMIActionPerformed
+    private void showBrickNamesCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showBrickNamesCheckBoxMIActionPerformed
+    {//GEN-HEADEREND:event_showBrickNamesCheckBoxMIActionPerformed
+        settings.showBrickNames = showBrickNamesCheckBoxMI.getState();
+        roadMapPanel.draw();
+    }//GEN-LAST:event_showBrickNamesCheckBoxMIActionPerformed
 
-private void showKeysCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showKeysCheckBoxMIActionPerformed
-  {//GEN-HEADEREND:event_showKeysCheckBoxMIActionPerformed
-      settings.showKeys = showKeysCheckBoxMI.getState();
-      roadMapPanel.draw();
-  }//GEN-LAST:event_showKeysCheckBoxMIActionPerformed
+    private void showKeysCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showKeysCheckBoxMIActionPerformed
+    {//GEN-HEADEREND:event_showKeysCheckBoxMIActionPerformed
+        settings.showKeys = showKeysCheckBoxMI.getState();
+        roadMapPanel.draw();
+    }//GEN-LAST:event_showKeysCheckBoxMIActionPerformed
 
-private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reloadButtonActionPerformed
-  {//GEN-HEADEREND:event_reloadButtonActionPerformed
-    reloadDictionary();
-  }//GEN-LAST:event_reloadButtonActionPerformed
+    private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_reloadButtonActionPerformed
+    {//GEN-HEADEREND:event_reloadButtonActionPerformed
+        reloadDictionary();
+    }//GEN-LAST:event_reloadButtonActionPerformed
 
-private void keyPressedDictionaryTree(java.awt.event.KeyEvent evt)//GEN-FIRST:event_keyPressedDictionaryTree
-  {//GEN-HEADEREND:event_keyPressedDictionaryTree
-    if( evt.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER )
-      {
-        playSelection();
-      }
-  }//GEN-LAST:event_keyPressedDictionaryTree
+    private void keyPressedDictionaryTree(java.awt.event.KeyEvent evt)//GEN-FIRST:event_keyPressedDictionaryTree
+    {//GEN-HEADEREND:event_keyPressedDictionaryTree
+        if (evt.getKeyChar() == java.awt.event.KeyEvent.VK_ENTER) {
+            playSelection();
+        }
+    }//GEN-LAST:event_keyPressedDictionaryTree
 
-private void styleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleChosen
-  {//GEN-HEADEREND:event_styleChosen
-    style = (Style)styleComboBox.getSelectedItem();
-    setStyle(style);
-    roadMapScrollPane.requestFocus();
-  }//GEN-LAST:event_styleChosen
+    private void styleChosen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_styleChosen
+    {//GEN-HEADEREND:event_styleChosen
+        style = (Style) styleComboBox.getSelectedItem();
+        setStyle(style);
+        roadMapScrollPane.requestFocus();
+    }//GEN-LAST:event_styleChosen
 
-private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playOnClickToggleButtonPressed
-  {//GEN-HEADEREND:event_playOnClickToggleButtonPressed
-        if( playOnClickToggleButton.isSelected() )
-          {
+    private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playOnClickToggleButtonPressed
+    {//GEN-HEADEREND:event_playOnClickToggleButtonPressed
+        if (playOnClickToggleButton.isSelected()) {
             playOnClickToggleButton.setText("<html><center>No Play<br>on Click</center></html>");
             playOnClickToggleButton.setBackground(Color.RED);
-          }
-        else
-          {
+        } else {
             playOnClickToggleButton.setText("<html><center>Play<br>on Click</center></html>");
             playOnClickToggleButton.setBackground(Color.GREEN);
-          }
-  }//GEN-LAST:event_playOnClickToggleButtonPressed
+        }
+    }//GEN-LAST:event_playOnClickToggleButtonPressed
 
     private void replaceWithPhiCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithPhiCheckBoxMIActionPerformed
         boolean checked = replaceWithPhiCheckBoxMI.getState();
-        updatePhiAndDelta(checked,replaceWithDeltaCheckBoxMI.getState());
+        updatePhiAndDelta(checked, replaceWithDeltaCheckBoxMI.getState());
         roadMapPanel.draw();
     }//GEN-LAST:event_replaceWithPhiCheckBoxMIActionPerformed
 
     private void replaceWithDeltaCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceWithDeltaCheckBoxMIActionPerformed
         boolean checked = replaceWithDeltaCheckBoxMI.getState();
-        updatePhiAndDelta(replaceWithPhiCheckBoxMI.getState(),checked);
+        updatePhiAndDelta(replaceWithPhiCheckBoxMI.getState(), checked);
         roadMapPanel.draw();
     }//GEN-LAST:event_replaceWithDeltaCheckBoxMIActionPerformed
 
     private void noRomanNumeralsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noRomanNumeralsBtnActionPerformed
-        settings.setRomanNumeralHomeKey(""); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("");
+        roadMapPanel.draw();
     }//GEN-LAST:event_noRomanNumeralsBtnActionPerformed
 
     private void romanNumeralRelativeToCbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToCbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("c"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("c");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToCbuttonActionPerformed
 
     private void romanNumeralRelativeToBbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToBbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("b"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("b");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToBbuttonActionPerformed
 
     private void romanNumeralRelativeToBbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToBbbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("bb"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("bb");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToBbbuttonActionPerformed
 
     private void romanNumeralRelativeToAbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToAbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("a"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("a");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToAbuttonActionPerformed
 
     private void romanNumeralRelativeToAbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToAbbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("ab"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("ab");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToAbbuttonActionPerformed
 
     private void romanNumeralRelativeToGbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToGbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("g"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("g");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToGbuttonActionPerformed
 
     private void romanNumeralRelativeTGbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeTGbbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("gb"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("gb");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeTGbbuttonActionPerformed
 
     private void romanNumeralRelativeToFbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToFbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("f"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("f");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToFbuttonActionPerformed
 
     private void romanNumeralRelativeToEbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToEbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("e"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("e");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToEbuttonActionPerformed
 
     private void romanNumeralRelativeToEbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToEbbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("eb"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("eb");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToEbbuttonActionPerformed
 
     private void romanNumeralRelativeToDbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToDbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("d"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("d");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToDbuttonActionPerformed
 
     private void romanNumeralRelativeToDbbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_romanNumeralRelativeToDbbuttonActionPerformed
-        settings.setRomanNumeralHomeKey("db"); roadMapPanel.draw();
+        settings.setRomanNumeralHomeKey("db");
+        roadMapPanel.draw();
     }//GEN-LAST:event_romanNumeralRelativeToDbbuttonActionPerformed
 
     private void copyToTextMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyToTextMenuItemActionPerformed
-        if(!roadMapTextEntry.isFocusOwner()) copySelectionToTextWindow();
+        if (!roadMapTextEntry.isFocusOwner()) copySelectionToTextWindow();
     }//GEN-LAST:event_copyToTextMenuItemActionPerformed
 
     private void showStartingNoteCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStartingNoteCheckBoxMIActionPerformed
@@ -3042,8 +3060,8 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
     }//GEN-LAST:event_showStartingNoteCheckBoxMIActionPerformed
 
     private void showVariantsCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showVariantsCheckBoxMIActionPerformed
-       settings.showVariants = showVariantsCheckBoxMI.getState(); // TODO add your handling code here:
-       roadMapPanel.draw();
+        settings.showVariants = showVariantsCheckBoxMI.getState(); // TODO add your handling code here:
+        roadMapPanel.draw();
     }//GEN-LAST:event_showVariantsCheckBoxMIActionPerformed
 
     private void showStylesCheckBoxMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showStylesCheckBoxMIActionPerformed
@@ -3071,48 +3089,41 @@ private void playOnClickToggleButtonPressed(java.awt.event.ActionEvent evt)//GEN
         // TODO add your handling code here:
     }//GEN-LAST:event_brickDictionaryDialogKeyReleased
 
-private Notate.StyleComboBoxModel getStyleMenuModel()
-  {
-    return styleComboBoxModel;
-  }
-        
-public void setVolumeSlider(int volume)
-  {
-    if( jSliderIgnoreStateChangedEvt )
-      {
-        return;
-      }
+    private Notate.StyleComboBoxModel getStyleMenuModel() {
+        return styleComboBoxModel;
+    }
 
-    jSliderIgnoreStateChangedEvt = true;
-    
-    allVolumeToolBarSlider.setValue(volume);
-    
-    notate.setSliderVolumes(volume);
+    public void setVolumeSlider(int volume) {
+        if (jSliderIgnoreStateChangedEvt) {
+            return;
+        }
 
-    jSliderIgnoreStateChangedEvt = false;
-  }
+        jSliderIgnoreStateChangedEvt = true;
+
+        allVolumeToolBarSlider.setValue(volume);
+
+        notate.setSliderVolumes(volume);
+
+        jSliderIgnoreStateChangedEvt = false;
+    }
 
 //</editor-fold>
+
     /** Creates the play timer and adds a listener */
-    private void initTimer()
-    {
+    private void initTimer() {
         playTimer = new javax.swing.Timer(10,
-                new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent evt)
-                    {
-                        if(notate.getMidiSynthRM().finishedPlaying())
-                        {
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (notate.getMidiSynthRM().finishedPlaying()) {
                             setPlaying(false);
                             roadMapPanel.draw();
                             return;
                         }
-                        
+
                         ///*
                         Rectangle playline = getRoadMapPanel().getPlayline();
 
-                        if( playline != null && playline.height == 0 )
-                        {
+                        if (playline != null && playline.height == 0) {
                             roadMapPanel.draw();
                             //System.out.println("checkpoint 11111");
                             return;
@@ -3120,157 +3131,133 @@ public void setVolumeSlider(int volume)
 
                         Rectangle viewport = getRoadMapScrollPane().getViewport().getViewRect();
                         //System.out.println("checkpoint 22222");
-                        
-                        if( viewport != null && playline != null )
-                        {
-                        Boolean temp = viewport.contains(playline);
-                        //System.out.println(temp + "");
-                        
-                        //System.out.println("viewport " + viewport.toString());
-                        //System.out.println("playline " + playline.toString());
 
-                        if( !viewport.contains(playline) )
-                        {
-                            // If out of view, try adjusting x-coordinate first
-                            //System.out.println("checkpoint <---->");
-                            int adjust = 20 + 10; //240 is approx. left indent
+                        if (viewport != null && playline != null) {
+                            Boolean temp = viewport.contains(playline);
+                            //System.out.println(temp + "");
 
-                            if( viewport.width < adjust )
-                            {
-                                adjust = 0;
+                            //System.out.println("viewport " + viewport.toString());
+                            //System.out.println("playline " + playline.toString());
+
+                            if (!viewport.contains(playline)) {
+                                // If out of view, try adjusting x-coordinate first
+                                //System.out.println("checkpoint <---->");
+                                int adjust = 20 + 10; //240 is approx. left indent
+
+                                if (viewport.width < adjust) {
+                                    adjust = 0;
+                                }
+
+                                viewport.x = playline.x - adjust;
+
+                                if (viewport.x < 0) {
+                                    //System.out.println("checkpoint <----> ++");
+                                    viewport.x = 0;
+                                }
                             }
 
-                            viewport.x = playline.x - adjust;
-                            
-                            if( viewport.x < 0 )
-                            {
-                                //System.out.println("checkpoint <----> ++");
-                                viewport.x = 0;
+                            // If still out of view, try adjusting the y-coordinate
+
+                            if (!viewport.contains(playline)) {
+                                viewport.y = playline.y;
+                                //System.out.println("checkpoint ^^^^^^");
+                                if (playline.y < 0) {
+                                    playline.y = 0;
+                                    //System.out.println("checkpoint ^^^^^^ ++");
+                                }
                             }
-                        }
 
-                        // If still out of view, try adjusting the y-coordinate
-
-                        if( !viewport.contains(playline) )
-                        {
-                            viewport.y = playline.y;
-                            //System.out.println("checkpoint ^^^^^^");
-                            if( playline.y < 0 )
-                            {
-                                playline.y = 0;
-                                //System.out.println("checkpoint ^^^^^^ ++");
+                            if (viewport.contains(playline)) {
+                                setCurrentScrollPosition(viewport);
+                                //System.out.println("checkpoint finale");
                             }
-                        }
-
-                        if( viewport.contains(playline) )
-                        {
-                            setCurrentScrollPosition(viewport);
-                            //System.out.println("checkpoint finale");
-                        }
                         }
                         //*/
                         roadMapPanel.draw();
                     }
                 }
-                );
+        );
     }
-    
+
     public void setCurrentScrollPosition(Rectangle r) {
-   //System.out.println("setCurrentScrollPosition(" + r + ")");
+        //System.out.println("setCurrentScrollPosition(" + r + ")");
         getRoadMapScrollPane().getViewport().setViewPosition(r.getLocation());
     }
-    
-    public RoadMapPanel getRoadMapPanel()
-    {
+
+    public RoadMapPanel getRoadMapPanel() {
         return roadMapPanel;
     }
-    
-    public JScrollPane getRoadMapScrollPane()
-    {
+
+    public JScrollPane getRoadMapScrollPane() {
         return roadMapScrollPane;
     }
-    
+
     /** Initializes the buffers for the roadmap and preview panel. */
-    private void initBuffer()
-    {
-      try 
-        {
-        bufferPreviewPanel = new BufferedImage(previewBufferWidth, previewBufferHeight, BufferedImage.TYPE_INT_RGB);
-        bufferRoadMap = new BufferedImage(roadMapBufferWidth, roadMapBufferHeight, BufferedImage.TYPE_INT_RGB);
-        previewPanel.setBuffer(bufferPreviewPanel);
-        roadMapPanel.setBuffer(bufferRoadMap);
-        
-        
-        roadMapScrollPane.setViewportView(roadMapPanel);
-        
-        roadMapPanel.draw();
-        previewPanel.draw();
-        }
-      catch( java.lang.OutOfMemoryError e)
-        {
-        ErrorLog.log(ErrorLog.SEVERE, "Out of memory. It might not be possible to continue.");
+    private void initBuffer() {
+        try {
+            bufferPreviewPanel = new BufferedImage(previewBufferWidth, previewBufferHeight, BufferedImage.TYPE_INT_RGB);
+            bufferRoadMap = new BufferedImage(roadMapBufferWidth, roadMapBufferHeight, BufferedImage.TYPE_INT_RGB);
+            previewPanel.setBuffer(bufferPreviewPanel);
+            roadMapPanel.setBuffer(bufferRoadMap);
+
+
+            roadMapScrollPane.setViewportView(roadMapPanel);
+
+            roadMapPanel.draw();
+            previewPanel.draw();
+        } catch (java.lang.OutOfMemoryError e) {
+            ErrorLog.log(ErrorLog.SEVERE, "Out of memory. It might not be possible to continue.");
         }
     }
-    
+
     /** Builds the library tree from the brick library */
-    private void initLibraryTree()
-    {
+    private void initLibraryTree() {
         LinkedList<LinkedList<Brick>> bricks = brickLibrary.getMap();
-        
+
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-        
+
         ArrayList<String> categoryNames = new ArrayList<String>(Arrays.asList(brickLibrary.getTypes()));
         ArrayList<DefaultMutableTreeNode> categories = new ArrayList<DefaultMutableTreeNode>();
-        
-        for(String name : categoryNames)
-          {
-          categories.add(new DefaultMutableTreeNode(name));
-          }
-        
+
+        for (String name : categoryNames) {
+            categories.add(new DefaultMutableTreeNode(name));
+        }
+
         DefaultMutableTreeNode node;
-        
-        for( LinkedList<Brick> variants : bricks )
-        {
+
+        for (LinkedList<Brick> variants : bricks) {
             Brick brick = variants.getFirst();
             String name = brick.getName();
             String type = brick.getType();
-            
+
             node = new DefaultMutableTreeNode(name);
-            
-            if(variants.size() > 1)
-              {
-                for( Brick variant : variants)
-                    {
-                      node.add(new DefaultMutableTreeNode(variant.getVariant()));
-                    }
-              }
-             
+
+            if (variants.size() > 1) {
+                for (Brick variant : variants) {
+                    node.add(new DefaultMutableTreeNode(variant.getVariant()));
+                }
+            }
+
             int ind = categoryNames.indexOf(type);
-            
-            if(ind != -1)
-              {
+
+            if (ind != -1) {
                 categories.get(ind).add(node);
-              }
-            else
-              {
+            } else {
                 ErrorLog.log(ErrorLog.WARNING, type + " is not in type list.");
-              }
+            }
         }
-        
-        for(DefaultMutableTreeNode type : categories)
-          {
-            if( !type.toString().equals(INVISIBLE) )
-              {
-              root.add(type);
-              }
-          }
-        
+
+        for (DefaultMutableTreeNode type : categories) {
+            if (!type.toString().equals(INVISIBLE)) {
+                root.add(type);
+            }
+        }
+
         libraryTreeModel = new DefaultTreeModel(root);
     }
-    
+
     /** Recycle buffer memory by setting them to null*/
-    private void disposeBuffers()
-    {
+    private void disposeBuffers() {
         bufferPreviewPanel = null;
         bufferRoadMap = null;
         previewPanel.setBuffer(null);
@@ -3280,299 +3267,267 @@ public void setVolumeSlider(int volume)
     /** Paints the image white.
      * @param image, an Image
      */
-    public void setBackground(Image image)
-    {
-      if( image != null )
-        {
-        Graphics graphics = image.getGraphics();
-        graphics.setColor(Color.white);
-        graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
+    public void setBackground(Image image) {
+        if (image != null) {
+            Graphics graphics = image.getGraphics();
+            graphics.setColor(Color.white);
+            graphics.fillRect(0, 0, image.getWidth(null), image.getHeight(null));
         }
     }
-    
+
     /** setBackgrounds <p>
      * Sets the background of each bufferPreviewPanel.
      */
-    public void setBackgrounds()
-    {
+    public void setBackgrounds() {
         setBackground(bufferPreviewPanel);
         setBackground(bufferRoadMap);
     }
- 
+
     /** Sets the roadmap and frame title to the given string */
-    public void setRoadMapTitle(String title)
-    {
-        
+    public void setRoadMapTitle(String title) {
+
         setTitle(roadMapTitlePrefix + title);
         roadMapTitle = title;
         roadMapPanel.draw();
     }
-    
-   
+
+
     /** Returns the current graphical settings */
-    public RoadMapSettings getSettings()
-    {
+    public RoadMapSettings getSettings() {
         return settings;
     }
-    
+
     /** Returns the brick library */
-    public BrickLibrary getLibrary()
-    {
+    public BrickLibrary getLibrary() {
         return brickLibrary;
     }
-    
+
     /** Returns the chords in the current selection */
-    public ArrayList<ChordBlock> getChordsInSelection()
-    {
+    public ArrayList<ChordBlock> getChordsInSelection() {
         return RoadMap.getChords(roadMapPanel.getSelection());
     }
-    
-    public String getFirstStylenameInSelection()
-    {
+
+    public String getFirstStylenameInSelection() {
         return roadMapPanel.getFirstStylenameInSelection();
     }
-    
+
     /** Saves the current state of the roadmap */
-    private void saveState(String name)
-    {
+    private void saveState(String name) {
         stopPlayingSelection(); //TODO this probably doesn't belong here,
         //but I don't want to write it over and over again and this is called for
         //in relevant actions
-        if(name.equals("Transpose") &&
-                roadMapHistory.getLast().getName().equals("Transpose"))
-          {
+        if (name.equals("Transpose") &&
+                roadMapHistory.getLast().getName().equals("Transpose")) {
             return;
-          } //Multiple transpositions should be the same action
-            //ISSUE: changing multiple bricks in render undoes them all
+        } //Multiple transpositions should be the same action
+        //ISSUE: changing multiple bricks in render undoes them all
         RoadMapSnapShot ss = new RoadMapSnapShot(name, roadMapPanel.getRoadMap());
         roadMapHistory.add(ss);
         roadMapFuture.clear();
     }
-    
+
     /** Reverts to the previous state */
-    private void stepStateBack()
-    {
-        if(roadMapHistory.peek() != null) {
+    private void stepStateBack() {
+        if (roadMapHistory.peek() != null) {
             RoadMapSnapShot ss = roadMapHistory.removeLast();
             roadMapFuture.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
             roadMapPanel.setRoadMap(ss.getRoadMap());
         }
     }
-    
+
     /** Verts to the next state */
-    private void stepStateForward()
-    {
-        if(roadMapFuture.peek() != null) {
+    private void stepStateForward() {
+        if (roadMapFuture.peek() != null) {
             RoadMapSnapShot ss = roadMapFuture.removeLast();
             roadMapHistory.add(new RoadMapSnapShot(ss.getName(), roadMapPanel.getRoadMap()));
             roadMapPanel.setRoadMap(ss.getRoadMap());
         }
     }
-    
+
     /** Undoes the any actions performed */
-    private void undo()
-    {
+    private void undo() {
         deselectBricks();
         stepStateBack();
         //System.out.println("History: " + roadMapHistory);
         //System.out.println("Future: " + roadMapFuture);
         roadMapPanel.placeBricks();
     }
-    
+
     /** Redoes any undone action */
-    private void redo()
-    {
+    private void redo() {
         deselectBricks();
         stepStateForward();
         //System.out.println("History: " + roadMapHistory);
         //System.out.println("Future: " + roadMapFuture);
         roadMapPanel.placeBricks();
     }
-       
+
     /* -------- Actions -------- */
-    
+
     /** Action to add a chord to the roadmap */
-    public void addChord(ChordBlock chord)
-    {
+    public void addChord(ChordBlock chord) {
         saveState("AddChord");
         roadMapPanel.addBlock(chord);
         roadMapPanel.placeBricks();
     }
-    
+
     /** Action to insert a list of blocks into the roadmap */
-    public void addBlocks(int ind, ArrayList<Block> blocks)
-    {
+    public void addBlocks(int ind, ArrayList<Block> blocks) {
         saveState("AddBricks");
         roadMapPanel.addBlocks(ind, blocks);
         roadMapPanel.placeBricks();
     }
-    
+
     /** Action to delete the selection */
-    public void deleteSelection()
-    {
+    public void deleteSelection() {
         saveState("Delete");
         roadMapPanel.deleteSelection();
         deactivateButtons();
     }
-    
+
     /** Action to break the selected bricks */
-    public void breakSelection()
-    {
+    public void breakSelection() {
         saveState("Break");
         roadMapPanel.breakSelection();
     }
-    
+
     /** Action to copy the chords of the selection to the text entry window */
-    public void copySelectionToTextWindow(){
+    public void copySelectionToTextWindow() {
         String chordText = roadMapPanel.copySelectionToTextWindow();
         roadMapTextEntry.setText(chordText);
     }
-    
+
     /** Action to create a new brick from the selection */
-    public void makeBrickFromSelection()
-    {
+    public void makeBrickFromSelection() {
         saveState("Merge");
         long key = BrickLibrary.keyNameToNum((String) dialogKeyComboBox.getSelectedItem());
         String name = dialogNameField.getText();
-        
+
         String variant = "";
-        if(brickLibrary.hasBrick(name))
+        if (brickLibrary.hasBrick(name))
             variant = dialogVariantField.getText();
-        
-        String mode = (String)dialogModeComboBox.getSelectedItem();
-        String type = (String)dialogTypeComboBox.getSelectedItem();
+
+        String mode = (String) dialogModeComboBox.getSelectedItem();
+        String type = (String) dialogTypeComboBox.getSelectedItem();
         Brick newBrick = roadMapPanel.makeBrickFromSelection(name, variant, key,
-                                                             mode, type);
+                mode, type);
         addToLibrary(newBrick);
     }
 
     /** Action to transpose the key of the selection */
-    public void transposeSelection(long diff)
-    {
+    public void transposeSelection(long diff) {
         saveState("Transpose");
         roadMapPanel.transposeSelection(diff);
     }
-    
+
     /** Action to analyze the selection */
-    public void analyzeSelection(boolean showJoinsOnCompletion)
-    {
+    public void analyzeSelection(boolean showJoinsOnCompletion) {
         saveState("Analyze");
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
+
         ArrayList<Block> blocks = roadMapPanel.getSelection();
         roadMapPanel.replaceSelection(analyze(blocks));
-        
+
         setShowJoins(showJoinsOnCompletion);
-        
+
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
-    
+
     /** Action to flatten the selected bricks */
-    public void flattenSelection()
-    {
+    public void flattenSelection() {
         saveState("Flatten");
         roadMapPanel.flattenSelection();
     }
-    
+
     /** Action to scale the durations of the selected bricks */
-    public void scaleSelection()
-    {
+    public void scaleSelection() {
         saveState("Scale");
-        String choice = (String)scaleComboBox.getSelectedItem();
-        
-        if( choice == null )
+        String choice = (String) scaleComboBox.getSelectedItem();
+
+        if (choice == null)
             return;
-        
+
         int scale = choice.charAt(1) - 48; // set to integer
-        
-        if( choice.charAt(0) == 47) //  / = division
+
+        if (choice.charAt(0) == 47) //  / = division
             scale = -scale;
-        
-        roadMapPanel.scaleSelection(scale);       
+
+        roadMapPanel.scaleSelection(scale);
     }
-    
+
     /** Action to change a chord's name and/or duration */
-    public void changeChord(String name, int dur)
-    {
+    public void changeChord(String name, int dur) {
         saveState("ChordChange");
         roadMapPanel.changeChord(name, dur);
     }
-    
+
     /** Action to add/remove a phrase end */
-    private void togglePhraseEnd()
-    {
+    private void togglePhraseEnd() {
         saveState("PhraseEnd");
         roadMapPanel.togglePhrase();
     }
-    
+
     /** Action to add/remove a section end */
-    private void toggleSectionBreak()
-    {
+    private void toggleSectionBreak() {
         saveState("SectionBreak");
         roadMapPanel.toggleSection();
     }
-    
+
     /** Action to add a section end to the end of the roadmap */
-    public void endSection()
-    {
+    public void endSection() {
         saveState("SectionBreak");
         roadMapPanel.endSection();
     }
 
     /** Action to cut the selection, adding it to the clipboard */
-    public void cutSelection()
-    {
+    public void cutSelection() {
         saveState("Cut");
         clipboard = roadMapPanel.removeSelection();
         roadMapPanel.placeBricks();
     }
-    
+
     /** Action to paste the selection, adding it to the roadmap from the clipboard */
-    public void pasteSelection()
-    {
+    public void pasteSelection() {
         saveState("Paste");
-        
+
         ArrayList<Block> blocks = RoadMap.cloneBlocks(clipboard);
-        
+
         roadMapPanel.addBlocksBeforeSelection(blocks, false);
-        
+
         roadMapPanel.placeBricks();
     }
-    
+
     /** Action to copy the selection, adding it to the clipboard */
-    public void copySelection()
-    {
-        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());        
+    public void copySelection() {
+        clipboard = RoadMap.cloneBlocks(roadMapPanel.getSelection());
     }
-    
+
     /** Implements dragging behavior.
      * @param x, the x-coordinate of the mouse
      * @param y, the y-coordinate of the mouse */
-    public void dragSelectedBricks(int x, int y)
-    {   
+    public void dragSelectedBricks(int x, int y) {
         int index = roadMapPanel.getBrickIndexAt(x, y);
-        if( draggedBricks.isEmpty() ) {
+        if (draggedBricks.isEmpty()) {
             saveState("Drag");
             roadMapPanel.setRolloverPos(null);
-            if( !roadMapPanel.isSelection(index))
+            if (!roadMapPanel.isSelection(index))
                 selectBrick(index);
-            if( roadMapPanel.hasSelection() )
+            if (roadMapPanel.hasSelection())
                 draggedBricks = roadMapPanel.makeBricks(roadMapPanel.removeSelectionNoUpdate());
         }
-        
-        if( !draggedBricks.isEmpty() ) {
+
+        if (!draggedBricks.isEmpty()) {
             roadMapPanel.setInsertLine(x, y);
             roadMapPanel.draw();
             roadMapPanel.drawBricksAt(draggedBricks, x, y);
         }
     }
-    
+
     /** Implements dropping behavior.
      * @param x, the x-coordinate of the mouse
      * @param y, the y-coordinate of the mouse */
-    public void dropCurrentBrick(int x, int y)
-    {   
-        if( !draggedBricks.isEmpty() ) {
+    public void dropCurrentBrick(int x, int y) {
+        if (!draggedBricks.isEmpty()) {
             int index = roadMapPanel.getIndexAt(x, y);
             roadMapPanel.addBlocks(index, roadMapPanel.makeBlocks(draggedBricks), true);
             draggedBricks.clear();
@@ -3580,15 +3535,14 @@ public void setVolumeSlider(int volume)
         }
         roadMapPanel.placeBricks();
     }
-    
+
     /** Implements dragging behavior from the preview window.
      * @param x, the x-coordinate of the mouse
      * @param y, the y-coordinate of the mouse */
-    public void dragFromPreview(int x, int y) 
-    {        
-        if( draggedBricks.isEmpty() ) {
+    public void dragFromPreview(int x, int y) {
+        if (draggedBricks.isEmpty()) {
             roadMapPanel.deselectBricks();
-            
+
             if (previewPanel.currentBrick != null) {
                 draggedBricks.add(previewPanel.getBrick());
                 setPreview();
@@ -3596,209 +3550,184 @@ public void setVolumeSlider(int volume)
         }
         dragSelectedBricks(x, y);
     }
-    
+
     /** Implements dropping behavior from the preview window.
      * @param x, the x-coordinate of the mouse
      * @param y, the y-coordinate of the mouse */
-    public void dropFromPreview(int x, int y)
-    {
+    public void dropFromPreview(int x, int y) {
         saveState("Drop");
         dropCurrentBrick(x, y);
         activateButtons();
     }
-    
+
     /** Adds the current preview brick to the roadmap */
-    public void addBrickFromPreview()
-    {
+    public void addBrickFromPreview() {
         saveState("Drop");
         ArrayList<Block> block = new ArrayList<Block>();
         Block preview = previewPanel.getBlock();
-        if( preview == null )
-          {
+        if (preview == null) {
             return;
-          }
+        }
         Block newBlock = previewPanel.getBlock();
         newBlock.setStyleName(getStyle().getName());
         block.add(newBlock);
         roadMapPanel.addBlocksBeforeSelection(block, true);
         roadMapPanel.placeBricks();
     }
-    
+
     /** Adds the current preview brick to the roadmap and plays it */
-    public void addAndPlayBrickFromPreview()
-    {
+    public void addAndPlayBrickFromPreview() {
         addBrickFromPreview();
         playSelection();
     }
-    
+
     /** Sets the preview brick (from the library), as well as its duration and key. */
-    public void setPreview()
-    {
+    public void setPreview() {
         TreePath path = libraryTree.getSelectionPath();
-        if(path != null) {
+        if (path != null) {
 
             int pathLength = path.getPathCount();
-            
-            if( pathLength > 2 ) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-                DefaultMutableTreeNode parent = (DefaultMutableTreeNode)path.getParentPath().getLastPathComponent();
+
+            if (pathLength > 2) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getParentPath().getLastPathComponent();
                 Brick brick;
-                
-                if(pathLength > 3 )
-                  {
-                    brick = brickLibrary.getBrick(parent.toString(),node.toString(), 0);
-                  }
-                else
-                  {
+
+                if (pathLength > 3) {
+                    brick = brickLibrary.getBrick(parent.toString(), node.toString(), 0);
+                } else {
                     brick = brickLibrary.getBrick(node.toString(), 0);
-                  }
-                
+                }
+
                 //setDurationChoices(brick);
-                
-                if( brick != null )  // This has happened
-                  {
-                  previewPanel.setBrick( brick );
-                  }
+
+                if (brick != null)  // This has happened
+                {
+                    previewPanel.setBrick(brick);
+                }
 
                 setPreviewKey();
                 setPreviewDuration();
             }
         }
     }
-    
+
     /** Sets the key of the brick in the preview pane to the key chosen by
      * the key spinner. */
-    public void setPreviewKey()
-    {
-        String key = (String)keyComboBox.getSelectedItem();
-        if(BrickLibrary.isValidKey(key))
-          {
-            previewPanel.setKey( key );
-          }
+    public void setPreviewKey() {
+        String key = (String) keyComboBox.getSelectedItem();
+        if (BrickLibrary.isValidKey(key)) {
+            previewPanel.setKey(key);
+        }
     }
-    
+
     /** Sets the duration of the brick in the preview pane to the key chosen by
      * the duration combo box. */
-    public void setPreviewDuration()
-    {
-        previewPanel.setDuration(settings.getSlotsPerBeat()*(Integer)durationChoices[durationComboBox.getSelectedIndex()]);
+    public void setPreviewDuration() {
+        previewPanel.setDuration(settings.getSlotsPerBeat() * (Integer) durationChoices[durationComboBox.getSelectedIndex()]);
         previewPanel.draw();
     }
-           
+
     /** Adds the brick at index to the selection, either extending the selection
      * or reducing it depending on whether the brick is selected. 
      * @param index, the index of the brick to be selected */
-    public void selectBricks(int index)
-    {
+    public void selectBricks(int index) {
         roadMapPanel.selectBricks(index);
-        activateButtons();   
+        activateButtons();
     }
-    
+
     /** Selects all bricks in the roadmap */
-    public void selectAllBricks()
-    {
+    public void selectAllBricks() {
         roadMapPanel.selectAll();
         activateButtons();
     }
-    
+
     /** Selects only the brick at index, deselecting all other bricks.
      * @param index, the index of the brick to be selected */
-    public void selectBrick(int index)
-    {
+    public void selectBrick(int index) {
         roadMapPanel.selectBrick(index);
         activateButtons();
     }
-    
+
     /** Selects a chord within a brick
      * @param brickInd the index of the brick
      * @param chordInd the index of the chord within the brick */
-    public void selectChord(int brickInd, int chordInd)
-    {
+    public void selectChord(int brickInd, int chordInd) {
         roadMapPanel.selectChord(brickInd, chordInd);
         deactivateButtons();
         deleteMenuItem.setEnabled(true);
         sectionMenu.setEnabled(true);
     }
-    
+
     /** Deselects all bricks. */
-    public void deselectBricks()
-    {
+    public void deselectBricks() {
         roadMapPanel.deselectBricks();
         deactivateButtons();
     }
-       
+
     /** Uses cykParser to analyze a list of blocks */
-    public ArrayList<Block> analyze(ArrayList<Block> blocks)
-    {
+    public ArrayList<Block> analyze(ArrayList<Block> blocks) {
         long startTime = System.currentTimeMillis();
         ArrayList<Block> result = cykParser.parse(blocks, brickLibrary);
         long endTime = System.currentTimeMillis();
         //ErrorLog.log(ErrorLog.WARNING, "Analysis: " + (endTime - startTime) + "ms");
-        
+
         return result;
-    }  
-  
+    }
+
     /** Deactivates relevant buttons for selection */
-    public void deactivateButtons()
-    {
+    public void deactivateButtons() {
         setButtonEnabled(false);
     }
-    
+
     /** Activates relevant buttons for selection */
-    public void activateButtons()
-    {
+    public void activateButtons() {
         setButtonEnabled(true);
     }
-    
+
     /** Activates/Deactivates relecent buttons for selection */
-    public void setButtonEnabled(boolean value)
-    {
+    public void setButtonEnabled(boolean value) {
         cutMenuItem.setEnabled(value);
         copyMenuItem.setEnabled(value);
-        
+
         transposeMenu.setEnabled(value);
-        
+
         sectionMenu.setEnabled(value);
-        
+
         flattenButton.setEnabled(value);
         flattenMenuItem.setEnabled(value);
-       
+
         deleteMenuItem.setEnabled(value);
-        
+
         breakButton.setEnabled(value);
         breakMenuItem.setEnabled(value);
-        
+
         newBrickButton.setEnabled(value);
         scaleComboBox.setEnabled(value);
     }
 
     /** Adds a brick to the brick library */
-    private void addToLibrary(Brick brick)
-    {
+    private void addToLibrary(Brick brick) {
         Brick scaledBrick = new Brick(brick);
         scaledBrick.reduceDurations();
         brickLibrary.addBrickDefinition(scaledBrick, dictionaryFilename);
         cykParser.createRules(brickLibrary);
         initLibraryTree();
         libraryTree.setModel(libraryTreeModel);
-        if (scaledBrick.getVariant().isEmpty())
-          {
+        if (scaledBrick.getVariant().isEmpty()) {
             addToLibraryTree(scaledBrick.getName());
-          }
-        else
-          {
+        } else {
             addToLibraryTree(scaledBrick.getName(), scaledBrick.getVariant());
-          }
+        }
     }
-    
+
     /** Adds a brick name to the library tree */
-    private void addToLibraryTree(String name)
-    {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)libraryTreeModel.getRoot();
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getLastChild();
-        
+    private void addToLibraryTree(String name) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) libraryTreeModel.getRoot();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getLastChild();
+
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
-        if(node.toString().equals("Recently Created")) {
+        if (node.toString().equals("Recently Created")) {
             libraryTreeModel.insertNodeInto(newNode, node, node.getChildCount());
         } else {
             DefaultMutableTreeNode newParent = new DefaultMutableTreeNode("Recently Created");
@@ -3806,17 +3735,16 @@ public void setVolumeSlider(int volume)
             libraryTreeModel.insertNodeInto(newParent, root, root.getChildCount());
         }
     }
-    
+
     /** Adds a brick by name and variant to the library tree */
-    private void addToLibraryTree(String name, String variant)
-    {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)libraryTreeModel.getRoot();
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getLastChild();
-        
-        DefaultMutableTreeNode variantNode= new DefaultMutableTreeNode(variant);
+    private void addToLibraryTree(String name, String variant) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) libraryTreeModel.getRoot();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) root.getLastChild();
+
+        DefaultMutableTreeNode variantNode = new DefaultMutableTreeNode(variant);
         DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(name);
         newNode.add(variantNode);
-        if(node.toString().equals("Recently Created")) {
+        if (node.toString().equals("Recently Created")) {
             libraryTreeModel.insertNodeInto(newNode, node, node.getChildCount());
         } else {
             DefaultMutableTreeNode newParent = new DefaultMutableTreeNode("Recently Created");
@@ -3824,7 +3752,7 @@ public void setVolumeSlider(int volume)
             libraryTreeModel.insertNodeInto(newParent, root, root.getChildCount());
         }
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog addBrickDialog;
@@ -3976,106 +3904,97 @@ public void setVolumeSlider(int volume)
     private javax.swing.JSeparator windowMenuSeparator;
     // End of variables declaration//GEN-END:variables
 
- 
-/** 
- * Sends the currently-selected blocks to a new Notate window called auxNotate.
- * Any existing associate with that window is detached and lost.
- *
- * If no blocks are selected, selects them all first.
- *
- * If the road map is empty, does nothing.
- */
-    
-public void saveToNewNotate()
-  {
-    selectAllBricks();
 
-    ChordPart chordPart = new ChordPart();
-    chordPart.setStyle(getStyle());
+    /**
+     * Sends the currently-selected blocks to a new Notate window called auxNotate.
+     * Any existing associate with that window is detached and lost.
+     *
+     * If no blocks are selected, selects them all first.
+     *
+     * If the road map is empty, does nothing.
+     */
 
-    chordPart.addFromRoadMapChordBlocks(getChordsInSelection(), 
-                                        getFirstStylenameInSelection());
+    public void saveToNewNotate() {
+        selectAllBricks();
 
-    // A small hack to deal with a totally empty chord part.
+        ChordPart chordPart = new ChordPart();
+        chordPart.setStyle(getStyle());
 
-    if( chordPart.size() == 0 )
-      {
-        chordPart.addChord("NC", 480);
-      }
+        chordPart.addFromRoadMapChordBlocks(getChordsInSelection(),
+                getFirstStylenameInSelection());
 
-    Score score = new Score(chordPart);
-    score.getPart(0).setUnit(0, new Rest(score.getChordProg().size()));
-    score.setMetre(getMetre());
-    score.setTempo(getTempo());
-    score.setTitle(roadMapTitle);
-    score.setStyle(getStyle());
-    score.setDefaultLayout();
-    score.setRoadmapLayout(settings.barsPerLine);
+        // A small hack to deal with a totally empty chord part.
 
-    if( auxNotate == null )
-      {
-        // Save As ... branch
-        auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
-        //System.out.println("auxNotate = " + auxNotate);
-        auxNotate.forceNotateFrameHeight();
-        auxNotate.setAutoCreateRoadMap(false);
-        //auxNotate.setupScore(score);
-        auxNotate.setVisible(true);
-        auxNotate.saveAsLeadsheet();
-      }
-    else
-      {
-        // Save ... branch
-        auxNotate.setupScore(score);
-        auxNotate.setVisible(true);
-        auxNotate.saveLeadsheet();
-      }
+        if (chordPart.size() == 0) {
+            chordPart.addChord("NC", 480);
+        }
 
-    deselectBricks();
-  }
+        Score score = new Score(chordPart);
+        score.getPart(0).setUnit(0, new Rest(score.getChordProg().size()));
+        score.setMetre(getMetre());
+        score.setTempo(getTempo());
+        score.setTitle(roadMapTitle);
+        score.setStyle(getStyle());
+        score.setDefaultLayout();
+        score.setRoadmapLayout(settings.barsPerLine);
+
+        if (auxNotate == null) {
+            // Save As ... branch
+            auxNotate = notate.newNotateWithScore(score, getNewXlocation(), getNewYlocation());
+            //System.out.println("auxNotate = " + auxNotate);
+            auxNotate.forceNotateFrameHeight();
+            auxNotate.setAutoCreateRoadMap(false);
+            //auxNotate.setupScore(score);
+            auxNotate.setVisible(true);
+            auxNotate.saveAsLeadsheet();
+        } else {
+            // Save ... branch
+            auxNotate.setupScore(score);
+            auxNotate.setVisible(true);
+            auxNotate.saveLeadsheet();
+        }
+
+        deselectBricks();
+    }
 
 
-public void setParent(Notate notate)
-  {
-    this.notate = notate;
-  }
+    public void setParent(Notate notate) {
+        this.notate = notate;
+    }
 
-/** Call from auxNotate when deleted to prevent dangling reference. */
-public void resetAuxNotate()
-    {
+    /** Call from auxNotate when deleted to prevent dangling reference. */
+    public void resetAuxNotate() {
         auxNotate = null;
     }
 
-/** 
- * Plays the currently-selected blocks in the style determined from the
- * style menu
- *
- * If no blocks are selected, all blocks are selected first.
- *
- * If the road map is empty, does nothing.
-*/
-    
+    /**
+     * Plays the currently-selected blocks in the style determined from the
+     * style menu
+     *
+     * If no blocks are selected, all blocks are selected first.
+     *
+     * If the road map is empty, does nothing.
+     */
+
     public void playSelection() {
-        if (roadMapPanel.getNumBlocks() < 1)
-          {
+        if (roadMapPanel.getNumBlocks() < 1) {
             return;
-          }
-        
+        }
+
         boolean nothingSelected = !roadMapPanel.hasSelection();
-        if (nothingSelected)
-         {
-          selectAllBricks();            
-         }
-         
+        if (nothingSelected) {
+            selectAllBricks();
+        }
+
         ChordPart chordPart = new ChordPart();
         //ArrayList<Block> blocks = roadMapPanel.getSelection();
-            
+
         Style selectedStyle = getStyle();
-        
+
         chordPart.setStyle(selectedStyle);
-        chordPart.addFromRoadMapChordBlocks(getChordsInSelection(), 
-                                            styleName);
- 
+        chordPart.addFromRoadMapChordBlocks(getChordsInSelection(),
+                styleName);
+
         Score score = new Score(chordPart);
         score.setStyle(selectedStyle);
         score.setMetre(getMetre());
@@ -4083,48 +4002,41 @@ public void resetAuxNotate()
         score.setTransposition(roadMapTransposition);
         //System.out.print(score.getTransposition());
         int volume = allVolumeToolBarSlider.getValue();
-        
-        score.setMasterVolume(volume); 
+
+        score.setMasterVolume(volume);
         setVolumeSlider(volume);
-         
+
         setPlaying(MidiPlayListener.Status.PLAYING, Transposition.none);
-         
-        if( loopToggleButton.isSelected() )
-          {
+
+        if (loopToggleButton.isSelected()) {
             notate.playAscoreWithStyle(score, -1, score.getTransposition());
-          }
-        else
-          {
+        } else {
             notate.playAscoreWithStyle(score, 0, score.getTransposition());
-          }
-        
-        if( nothingSelected )
-          {
+        }
+
+        if (nothingSelected) {
             deselectBricks();
-          }
+        }
     }
 
     /** Stops playback */
-    public void stopPlayingSelection()
-    {
+    public void stopPlayingSelection() {
         //if(isPlaying()) {
-            notate.stopPlayAscore();
-            setPlaying(MidiPlayListener.Status.STOPPED, Transposition.none);
+        notate.stopPlayAscore();
+        setPlaying(MidiPlayListener.Status.STOPPED, Transposition.none);
         //}
     }
-    
+
     /** Stops then restarts playback */
-    public void restartPlayingSelection()
-    {
+    public void restartPlayingSelection() {
         stopPlayingSelection();
         playSelection();
     }
 
     /** Set the playback status */
-    public void setPlaying(MidiPlayListener.Status playing, Transposition transposition)
-    {
+    public void setPlaying(MidiPlayListener.Status playing, Transposition transposition) {
         isPlaying = playing;
-        if(isPlaying()) {
+        if (isPlaying()) {
             roadMapPanel.setPlayLineOffset();
             roadMapPanel.setPlaySection();
             playTimer.start();
@@ -4133,68 +4045,56 @@ public void resetAuxNotate()
             roadMapPanel.draw();
         }
     }
-    
+
     /** Sets the playback status */
-    public void setPlaying(boolean status)
-    {
-        if(status)
-          {
+    public void setPlaying(boolean status) {
+        if (status) {
             setPlaying(MidiPlayListener.Status.PLAYING, Transposition.none);
-          }
-        else
-          {
+        } else {
             setPlaying(MidiPlayListener.Status.STOPPED, Transposition.none);
-          }
+        }
     }
-    
+
     /** Returns the playback status */
-    public MidiPlayListener.Status getPlaying()
-    {
+    public MidiPlayListener.Status getPlaying() {
         return isPlaying;
     }
 
     /** Returns whether payback is active */
-    public boolean isPlaying()
-    {
+    public boolean isPlaying() {
         return isPlaying == MidiPlayListener.Status.PLAYING;
     }
-    
+
 
     /** Close this RoadMapFrame and clean up. */
-    public void closeWindow()
-    {
+    public void closeWindow() {
         brickDictionaryDialog.setVisible(false); //TODO somehow make only one window
-        if(isPlaying())
-          {
+        if (isPlaying()) {
             stopPlayingSelection();
-          }
+        }
         WindowRegistry.unregisterWindow(this);
 
-        if( notate != null )
-          {
+        if (notate != null) {
             notate.disestablishRoadMapFrame();
-          }
+        }
 
         disposeBuffers();
         dispose();
-        if( notate != null )
-          {
+        if (notate != null) {
             notate.setNormalMode();
-          }
+        }
     }
 
 
     /** Get X location for new frame cascaded from original. */
-    public int getNewXlocation()
-    {
-        return (int)getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
+    public int getNewXlocation() {
+        return (int) getLocation().getX() + WindowRegistry.defaultXnewWindowStagger;
     }
 
 
     /** Get Y location for new frame cascaded from original. */
-    public int getNewYlocation()
-    {
-        return (int)getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
+    public int getNewYlocation() {
+        return (int) getLocation().getY() + WindowRegistry.defaultYnewWindowStagger;
     }
 
 
@@ -4204,8 +4104,7 @@ public void resetAuxNotate()
      * it is at the bottom, for some reason vertical staggering does not happen.
      * @param notate
      */
-    public void setRoadMapFrameHeight()
-    {
+    public void setRoadMapFrameHeight() {
         int desiredWidth = RMframeWidth; // alternatively: dm.getWidth() - x
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices(); // Get size of each screen
@@ -4220,107 +4119,91 @@ public void resetAuxNotate()
 
 
     /** Make this RoadMapFrame visible */
-    public void makeVisible(boolean analyze)
-    {
-      //System.out.println("makeVisible analyze = " + analyze);
+    public void makeVisible(boolean analyze) {
+        //System.out.println("makeVisible analyze = " + analyze);
         // Don't show joins until analysis is done.
         boolean showJoinsOnCompletion = settings.showJoins;
-        
+
         //setVisible(true); 
         // Instead, it will be visible through "Roadmap this Leadsheet" under Roadmap tab
-        if( brickLibraryMenuItem.isSelected() )
-          {
-          brickDictionaryDialog.setVisible(true);
-          }
-        
-        if( analyze )
-          {
+        if (brickLibraryMenuItem.isSelected()) {
+            brickDictionaryDialog.setVisible(true);
+        }
+
+        if (analyze) {
             setShowJoins(false);
             analyzeInBackground(showJoinsOnCompletion);
-          }
+        }
     }
-    
+
     /**
      * Analyze in the background by creating Analyzer Thread.
      */
-    
-public void analyzeInBackground(boolean showJoinsOnCompletion)
-  {
-    final Analyzer analyzer = new Analyzer(this, showJoinsOnCompletion);
-    analyzer.start();
-    synchronized(analyzer)
-      {
-        try
-          {
-            analyzer.wait();
-          }
-        catch( Exception e )
-          {
-            System.out.println("Exception waiting for analyzer: " + e);
-          }
-      }
-  }
+
+    public void analyzeInBackground(boolean showJoinsOnCompletion) {
+        final Analyzer analyzer = new Analyzer(this, showJoinsOnCompletion);
+        analyzer.start();
+        synchronized (analyzer) {
+            try {
+                analyzer.wait();
+            } catch (Exception e) {
+                System.out.println("Exception waiting for analyzer: " + e);
+            }
+        }
+    }
 
     /** Sets the time signature of the roadmap for Americans
      * @param meter
      */
-    public void setMeter(int meter[])
-    {
+    public void setMeter(int meter[]) {
         setMetre(meter);
     }
 
     /** Sets the time signature of the roadmap for the rest of the world
-     * @param metre 
+     * @param metre
      */
-    public void setMetre(int metre[])
-    {
+    public void setMetre(int metre[]) {
         this.metre[0] = metre[0];
         this.metre[1] = metre[1];
         settings.setMetre(metre);
     }
 
     /** Returns the time signature of the roadmap for Americans
-     * @return 
+     * @return
      */
-    public int[] getMeter()
-    {
+    public int[] getMeter() {
         return metre;
     }
 
     /** Returns the time signature of the roadmap for the rest of the world
-     * @return 
+     * @return
      */
-    public int[] getMetre()
-    {
+    public int[] getMetre() {
         return metre;
     }
 
     /** Returns the tempo */
-    public int getTempo()
-    {
-        return Notate.intFromTextField(tempoSet, 
-                                       Notate.MIN_TEMPO, 
-                                       Notate.MAX_TEMPO, 
-                                       (int)notate.getDefaultTempo());
+    public int getTempo() {
+        return Notate.intFromTextField(tempoSet,
+                Notate.MIN_TEMPO,
+                Notate.MAX_TEMPO,
+                (int) notate.getDefaultTempo());
     }
 
-    /** Returns the selectedStyle */ 
-    public Style getStyle()
-    {
-        return (Style)styleComboBox.getSelectedItem(); //style;
+    /** Returns the selectedStyle */
+    public Style getStyle() {
+        return (Style) styleComboBox.getSelectedItem(); //style;
     }
 
     /** Gets the current playback slot from notate */
-    public int getMidiSlot()
-    {
+    public int getMidiSlot() {
         return notate.getMidiSlot();
     }
 
     /** Gets the roadmap's musical info from a score */
-    public void setMusicalInfo(Score score)
-    {
+    public void setMusicalInfo(Score score) {
         setMetre(score.getMetre());
-        setTempo((int)score.getTempo());
+        setTempo((int) score.getTempo());
         setStyle(score.getStyle());
         setBarsPerLine(score.getRoadmapLayout());
     }
@@ -4329,482 +4212,411 @@ public void analyzeInBackground(boolean showJoinsOnCompletion)
      * Set the bars per line parameter for the roadmap layout.
      * Assumes that exactly the integer values from 1 to size of the
      * ComboBoxModel are present in the model.
-     * @param bars 
+     * @param bars
      */
-    private void setBarsPerLine(int bars)
-      {
+    private void setBarsPerLine(int bars) {
         settings.setBarsPerLine(bars);
-        
+
         ComboBoxModel model = barsPerLineComboBox.getModel();
         int size = model.getSize();
-        if( bars < 1 || bars > size )
-          {
+        if (bars < 1 || bars > size) {
             return; // cannot set 
-          }
-        barsPerLineComboBox.setSelectedIndex(bars-1);
-      }
-    
+        }
+        barsPerLineComboBox.setSelectedIndex(bars - 1);
+    }
+
     /** Activate the preferences dialog and set the default values */
-    private void activatePreferencesDialog()
-    {
+    private void activatePreferencesDialog() {
         prefDialogTitleField.setText(roadMapTitle);
         upperMetre.setText(String.valueOf(getMetre()[0]));
         lowerMetre.setText(String.valueOf(getMetre()[1]));
         preferencesDialog.setVisible(true);
     }
-    
+
     /** Activate the chord change dialog and set the default values*/
-    private void activateChordDialog()
-    {
-        ChordBlock chord = (ChordBlock)roadMapPanel.getSelection().get(0);
+    private void activateChordDialog() {
+        ChordBlock chord = (ChordBlock) roadMapPanel.getSelection().get(0);
         chordDialogNameField.setText(chord.getName());
-        chordDialogDurationComboBox.setSelectedItem(chord.getDuration()/settings.slotsPerBeat);
+        chordDialogDurationComboBox.setSelectedItem(chord.getDuration() / settings.slotsPerBeat);
         chordChangeDialog.setLocation(roadMapPanel.getLocationOnScreen());
         chordChangeDialog.setVisible(true);
     }
 
     /** Gets the info from the preferences dialog */
-    private void setRoadMapInfo()
-    {
+    private void setRoadMapInfo() {
         setRoadMapTitle(prefDialogTitleField.getText());
         int metreTop = intFromTextField(upperMetre);
         int metreBottom = intFromTextField(lowerMetre);
         setMetre(new int[]{metreTop, metreBottom});
-        style = (Style)styleComboBox.getSelectedItem();
+        style = (Style) styleComboBox.getSelectedItem();
         styleName = style.getName();
         roadMapPanel.updateBricks();
     }
-    
+
     /** Scales the roadmap display to the current window size */
-    private void scaleToWindow()
-    {
-        int width = roadMapScrollPane.getWidth()-roadMapScrollPane.getVerticalScrollBar().getWidth()-5;
-        featureWidthSlider.setValue((width - 2*settings.xOffset)/settings.barsPerLine);    
+    private void scaleToWindow() {
+        int width = roadMapScrollPane.getWidth() - roadMapScrollPane.getVerticalScrollBar().getWidth() - 5;
+        featureWidthSlider.setValue((width - 2 * settings.xOffset) / settings.barsPerLine);
         setFeatureWidthLocked(true);
     }
-    
+
     /** Lock the feature width to scale to the window */
-    private void setFeatureWidthLocked(boolean value)
-    {
-        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder)featureWidthSlider.getBorder();
+    private void setFeatureWidthLocked(boolean value) {
+        javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder) featureWidthSlider.getBorder();
         String title = featureWidthTitle;
-        if(value)
-          {
+        if (value) {
             title += " " + featureWidthSuffix;
-          }
+        }
         border.setTitle(title);
     }
-    
-    
- /**
-  * Populate the dictionary menu in the Roadmap window
-  * Creates actionListener for each name in the menu.
-  */
-
-private void populateRoadmapDictionaryMenu(String dictionaryName)
-  {
-    dictionaryfc.setCurrentDirectory(ImproVisor.getDictionaryDirectory());
-    
-    File directory = dictionaryfc.getCurrentDirectory();
-    if( directory.isDirectory() )
-      {
-        dictionaryMenu.removeAll();
-        
-        String fileName[] = directory.list();
-        for( int i = 0; i < fileName.length; i++ )
-          {
-            String name = fileName[i];
-
-            if( name.endsWith(DictionaryFilter.EXTENSION) )
-              {
-                int len = name.length();
-                String stem = name.substring(0, len - DictionaryFilter.EXTENSION.length());
-                final JCheckBoxMenuItem item = new JCheckBoxMenuItem(stem);
-                dictionaryMenu.add(item);
-                
-                item.addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        
-                        if( recentlySelected != null )
-                          {
-                          // If some other item was, unselect it.
-                          recentlySelected.setIcon(null);
-                          }
-                        
-                        item.setSelected(true);
-
-                        recentlySelected = item;
-
-                        // Item wasn't selected, but is now.
-                        
-                        String newDictionaryName = item.getText();
-                        
-                        setDictionaryFilename(newDictionaryName);
-                        newDictionary();
-                        populateRoadmapDictionaryMenu(item.getText());
-                       
-                        if(!roadMapTextEntry.isFocusOwner())
-                          {
-                          brickDictionaryDialog.setVisible(true);
-                          }
-                      }
-                });
-              }
-          }
-      }
-  }
 
 
-public void setDictionaryFilename(String dictionaryName)
-  {
-    this.dictionaryName = dictionaryName;
-    dictionaryFilename = ImproVisor.getDictionaryDirectory() + File.separator + dictionaryName + DictionaryFilter.EXTENSION;
-    setDictionaryTitle(dictionaryName);
-  }
+    /**
+     * Populate the dictionary menu in the Roadmap window
+     * Creates actionListener for each name in the menu.
+     */
 
-/**
- * Create a new dictionary with the given name, based on a similarly-named
- * dictionary file.
- * @param dictionaryName 
- */
+    private void populateRoadmapDictionaryMenu(String dictionaryName) {
+        dictionaryfc.setCurrentDirectory(ImproVisor.getDictionaryDirectory());
 
-public void newDictionary()
-  {
-    newDictionary(dictionaryFilename);
-  }
+        File directory = dictionaryfc.getCurrentDirectory();
+        if (directory.isDirectory()) {
+            dictionaryMenu.removeAll();
 
-public void newDictionary(String dictionaryFilename)
-  {
-    //System.out.println("newDictionary: " + dictionaryFilename);
-    try
-      {
-        brickLibrary = new BrickLibrary();
-        brickLibrary.processDictionary(dictionaryFilename);
-        cykParser.createRules(brickLibrary);
-        initLibraryTree();
-        libraryTree.setModel(libraryTreeModel);
+            String fileName[] = directory.list();
+            for (int i = 0; i < fileName.length; i++) {
+                String name = fileName[i];
 
-        dialogTypeComboBox.removeAllItems();
+                if (name.endsWith(DictionaryFilter.EXTENSION)) {
+                    int len = name.length();
+                    String stem = name.substring(0, len - DictionaryFilter.EXTENSION.length());
+                    final JCheckBoxMenuItem item = new JCheckBoxMenuItem(stem);
+                    dictionaryMenu.add(item);
 
-        for( String type : brickLibrary.getTypes() )
-          {
-            dialogTypeComboBox.addItem(type);
-          }
-      }
-    catch( Exception e )
-      {
-        // Usually redundant due to another error message
-        //ErrorLog.log(ErrorLog.SEVERE, "In processing dictionary by RoadMap: " + e);
-      }
+                    item.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-  }
+                            if (recentlySelected != null) {
+                                // If some other item was, unselect it.
+                                recentlySelected.setIcon(null);
+                            }
 
+                            item.setSelected(true);
 
-/**
- * Set the title for the dictionary on the dictionary frame and on
- * the menu bar.
- * @param dictionaryName 
- */
-private void setDictionaryTitle(String dictionaryName)
-  {
-   String dictionaryTitle = dictionaryName + dictionaryNameSuffix;
-   dictionaryMenu.setText(dictionaryTitle);
-   brickDictionaryDialog.setTitle(dictionaryTitle); 
-  }
+                            recentlySelected = item;
+
+                            // Item wasn't selected, but is now.
+
+                            String newDictionaryName = item.getText();
+
+                            setDictionaryFilename(newDictionaryName);
+                            newDictionary();
+                            populateRoadmapDictionaryMenu(item.getText());
+
+                            if (!roadMapTextEntry.isFocusOwner()) {
+                                brickDictionaryDialog.setVisible(true);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
 
 
-/**
- * Analyze the selection if there is one.
- * If no selection, then analyze the entire roadmap.
- * Deselect everything following analysis in the second case.
- */
+    public void setDictionaryFilename(String dictionaryName) {
+        this.dictionaryName = dictionaryName;
+        dictionaryFilename = ImproVisor.getDictionaryDirectory() + File.separator + dictionaryName + DictionaryFilter.EXTENSION;
+        setDictionaryTitle(dictionaryName);
+    }
 
-public void analyze(boolean showJoinsOnCompletion)
-  {
-    if( !roadMapPanel.hasSelection() )
-      {
+    /**
+     * Create a new dictionary with the given name, based on a similarly-named
+     * dictionary file.
+     * @param dictionaryName
+     */
+
+    public void newDictionary() {
+        newDictionary(dictionaryFilename);
+    }
+
+    public void newDictionary(String dictionaryFilename) {
+        //System.out.println("newDictionary: " + dictionaryFilename);
+        try {
+            brickLibrary = new BrickLibrary();
+            brickLibrary.processDictionary(dictionaryFilename);
+            cykParser.createRules(brickLibrary);
+            initLibraryTree();
+            libraryTree.setModel(libraryTreeModel);
+
+            dialogTypeComboBox.removeAllItems();
+
+            for (String type : brickLibrary.getTypes()) {
+                dialogTypeComboBox.addItem(type);
+            }
+        } catch (Exception e) {
+            // Usually redundant due to another error message
+            //ErrorLog.log(ErrorLog.SEVERE, "In processing dictionary by RoadMap: " + e);
+        }
+
+    }
+
+
+    /**
+     * Set the title for the dictionary on the dictionary frame and on
+     * the menu bar.
+     * @param dictionaryName
+     */
+    private void setDictionaryTitle(String dictionaryName) {
+        String dictionaryTitle = dictionaryName + dictionaryNameSuffix;
+        dictionaryMenu.setText(dictionaryTitle);
+        brickDictionaryDialog.setTitle(dictionaryTitle);
+    }
+
+
+    /**
+     * Analyze the selection if there is one.
+     * If no selection, then analyze the entire roadmap.
+     * Deselect everything following analysis in the second case.
+     */
+
+    public void analyze(boolean showJoinsOnCompletion) {
+        if (!roadMapPanel.hasSelection()) {
+            roadMapPanel.selectAll();
+            analyzeSelection(showJoinsOnCompletion);
+            roadMapPanel.deselectBricks();
+        } else {
+            analyzeSelection(showJoinsOnCompletion);
+        }
+
+        //notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
+    }
+
+    public ArrayList<Block> getFullRoadMap() {
         roadMapPanel.selectAll();
-        analyzeSelection(showJoinsOnCompletion);
-        roadMapPanel.deselectBricks();
-      }
-    else
-      {
-        analyzeSelection(showJoinsOnCompletion);
-      }
-    
-  //notate.getScore().getChordProg().setRoadmapPoly(roadMapPanel.getRoadmapPoly());
-  }
-
-public ArrayList<Block> getFullRoadMap()
-  {
-    roadMapPanel.selectAll();
-    return analyze(roadMapPanel.getSelection());
-  }
-
-public String getDictionaryFilename()
-  {
-    return dictionaryFilename;
-  }
-
-private void openDictionaryEditor()
-  {
-    dictionaryEditor = new SourceEditorDialog(this, false, notate, null,
-            SourceEditorDialog.DICTIONARY);
-
-    dictionaryEditor.setRows(DICTIONARY_EDITOR_ROWS);
-    dictionaryEditor.setSize(DICTIONARY_EDITOR_WIDTH, DICTIONARY_EDITOR_HEIGHT);
-    dictionaryEditor.setLocation(DICTIONARY_EDITOR_X_OFFSET, DICTIONARY_EDITOR_Y_OFFSET);
-    dictionaryEditor.fillEditor();
-    dictionaryEditor.setVisible(true);
-  }
-
-public void setStatus(String text)
-  {
-    roadMapStatus.setText(text);
-  }
-
-public void setStatusColor(Color color)
-  {
-    roadMapStatus.setBackground(color);
-  }
-
-public void saveDictionaryAs()
-  {
-    saveDictionaryAsAWT();
-  }
-
- 
-  public boolean saveDictionaryAsAWT()
-    {
-    saveAWT.setDirectory(ImproVisor.getDictionaryDirectory().getAbsolutePath());
-    saveAWT.setVisible(true);
-    
-    String selected = saveAWT.getFile();
-    
-    String newFileName = selected;
-
-    String dir = saveAWT.getDirectory();
-    
-    if( selected != null )
-      {
-
-      boolean noErrors = true;
-
-      if( !newFileName.endsWith(DICTIONARY_EXT) )
-        {
-        newFileName += DICTIONARY_EXT;
-        }
-
-      File newFile = new File(dir + newFileName);
-      
-      try
-        {
-          FileUtilities.copy(new File(dictionaryFilename), newFile);
-        }
-      catch( IOException e)
-        {
-          ErrorLog.log(ErrorLog.SEVERE, "Error writing new dictionary: " + newFile);
-        }
-      
-      setDictionaryFilename(selected);
-      }
-
-    return false;
+        return analyze(roadMapPanel.getSelection());
     }
-  
-  
 
-  
- private void setTempo(double value)
-    {
-    if( value >= Notate.MIN_TEMPO && value <= Notate.MAX_TEMPO )
-      {
-      tempoSet.setText("" + (int)value);
-
-      tempoSlider.setValue((int)value);
-      notate.getMidiSynthRM().setTempo((float)value);
-      }
-    else
-      {
-      ErrorLog.log(ErrorLog.COMMENT,
-              "The tempo must be in the range "
-            + notate.MIN_TEMPO 
-            + " to " + notate.MAX_TEMPO 
-            + ",\nusing default: " + notate.getDefaultTempo() + ".");
-      }
+    public String getDictionaryFilename() {
+        return dictionaryFilename;
     }
-  
-  private void updateTempoFromTextField()
-  {
-    try
-      {
-        int value = (int)Double.valueOf(tempoSet.getText()).doubleValue();
 
-        jSliderIgnoreStateChangedEvt = true;
+    private void openDictionaryEditor() {
+        dictionaryEditor = new SourceEditorDialog(this, false, notate, null,
+                SourceEditorDialog.DICTIONARY);
 
-        setTempo(value);
-
-        jSliderIgnoreStateChangedEvt = false;
-      }
-    catch( NumberFormatException e )
-      {
-      tempoSet.setForeground(Color.RED);
-
-      return;
-      }
-
-    tempoSet.setForeground(Color.BLACK);
-  }
-    
-  private static int intFromTextField(JTextField field)
-    {
-      String text = field.getText();
-      
-      int value = 0;
-      try
-        {
-         value = Integer.parseInt(text); 
-        }
-      catch( Exception e )
-        {
-        }
-      
-      return value;
+        dictionaryEditor.setRows(DICTIONARY_EDITOR_ROWS);
+        dictionaryEditor.setSize(DICTIONARY_EDITOR_WIDTH, DICTIONARY_EDITOR_HEIGHT);
+        dictionaryEditor.setLocation(DICTIONARY_EDITOR_X_OFFSET, DICTIONARY_EDITOR_Y_OFFSET);
+        dictionaryEditor.fillEditor();
+        dictionaryEditor.setVisible(true);
     }
-  
-private void reloadDictionary()
-  {
-    setDictionaryFilename(dictionaryName);
-    newDictionary();
-    populateRoadmapDictionaryMenu(dictionaryName);
 
-    brickDictionaryDialog.setVisible(true);
-  }
+    public void setStatus(String text) {
+        roadMapStatus.setText(text);
+    }
 
-private void setShowJoins(boolean value)
-  {
-    //System.out.println("showJoins = " + value);
-    settings.showJoins = value;
-  }
+    public void setStatusColor(Color color) {
+        roadMapStatus.setBackground(color);
+    }
+
+    public void saveDictionaryAs() {
+        saveDictionaryAsAWT();
+    }
 
 
-public void setStyle(Style style)
-  {
-    this.style = style;
-    styleComboBox.setSelectedItem(style);
-    String name = style.getName();
-    if( !styleNames.isEmpty() )
-      {
-        styleNames.set(0, name);
-        ArrayList<Block> blocks = roadMapPanel.getBlocks();
-        if( !blocks.isEmpty() )
-          {
-           blocks.get(0).setStyleName(name);
-           }
-        roadMapPanel.drawStyles();
-      }
-    //System.out.println("setting Style to " + name);
-  }
+    public boolean saveDictionaryAsAWT() {
+        saveAWT.setDirectory(ImproVisor.getDictionaryDirectory().getAbsolutePath());
+        saveAWT.setVisible(true);
 
-public RoadMap getRoadMap()
-  {
-    
-    return roadMapPanel.getRoadMap();
-  }
+        String selected = saveAWT.getFile();
 
-@Override
-public String toString()
-    {
+        String newFileName = selected;
+
+        String dir = saveAWT.getDirectory();
+
+        if (selected != null) {
+
+            boolean noErrors = true;
+
+            if (!newFileName.endsWith(DICTIONARY_EXT)) {
+                newFileName += DICTIONARY_EXT;
+            }
+
+            File newFile = new File(dir + newFileName);
+
+            try {
+                FileUtilities.copy(new File(dictionaryFilename), newFile);
+            } catch (IOException e) {
+                ErrorLog.log(ErrorLog.SEVERE, "Error writing new dictionary: " + newFile);
+            }
+
+            setDictionaryFilename(selected);
+        }
+
+        return false;
+    }
+
+
+    private void setTempo(double value) {
+        if (value >= Notate.MIN_TEMPO && value <= Notate.MAX_TEMPO) {
+            tempoSet.setText("" + (int) value);
+
+            tempoSlider.setValue((int) value);
+            notate.getMidiSynthRM().setTempo((float) value);
+        } else {
+            ErrorLog.log(ErrorLog.COMMENT,
+                    "The tempo must be in the range "
+                            + notate.MIN_TEMPO
+                            + " to " + notate.MAX_TEMPO
+                            + ",\nusing default: " + notate.getDefaultTempo() + ".");
+        }
+    }
+
+    private void updateTempoFromTextField() {
+        try {
+            int value = (int) Double.valueOf(tempoSet.getText()).doubleValue();
+
+            jSliderIgnoreStateChangedEvt = true;
+
+            setTempo(value);
+
+            jSliderIgnoreStateChangedEvt = false;
+        } catch (NumberFormatException e) {
+            tempoSet.setForeground(Color.RED);
+
+            return;
+        }
+
+        tempoSet.setForeground(Color.BLACK);
+    }
+
+    private static int intFromTextField(JTextField field) {
+        String text = field.getText();
+
+        int value = 0;
+        try {
+            value = Integer.parseInt(text);
+        } catch (Exception e) {
+        }
+
+        return value;
+    }
+
+    private void reloadDictionary() {
+        setDictionaryFilename(dictionaryName);
+        newDictionary();
+        populateRoadmapDictionaryMenu(dictionaryName);
+
+        brickDictionaryDialog.setVisible(true);
+    }
+
+    private void setShowJoins(boolean value) {
+        //System.out.println("showJoins = " + value);
+        settings.showJoins = value;
+    }
+
+
+    public void setStyle(Style style) {
+        this.style = style;
+        styleComboBox.setSelectedItem(style);
+        String name = style.getName();
+        if (!styleNames.isEmpty()) {
+            styleNames.set(0, name);
+            ArrayList<Block> blocks = roadMapPanel.getBlocks();
+            if (!blocks.isEmpty()) {
+                blocks.get(0).setStyleName(name);
+            }
+            roadMapPanel.drawStyles();
+        }
+        //System.out.println("setting Style to " + name);
+    }
+
+    public RoadMap getRoadMap() {
+
+        return roadMapPanel.getRoadMap();
+    }
+
+    @Override
+    public String toString() {
         return roadMapPanel.toString();
     }
 
-public void updatePhiAndDelta(boolean phi, boolean delta){
-    setPhiStatus(phi);
-    setDeltaStatus(delta);
-    settings.setPhi(phi);
-    settings.setDelta(delta);    
-}
+    public void updatePhiAndDelta(boolean phi, boolean delta) {
+        setPhiStatus(phi);
+        setDeltaStatus(delta);
+        settings.setPhi(phi);
+        settings.setDelta(delta);
+    }
 
-public void setPhiStatus(boolean phi){
-    replaceWithPhiCheckBoxMI.setState(phi);
-}
+    public void setPhiStatus(boolean phi) {
+        replaceWithPhiCheckBoxMI.setState(phi);
+    }
 
-public void setDeltaStatus(boolean delta){
-    replaceWithDeltaCheckBoxMI.setState(delta);
-}
+    public void setDeltaStatus(boolean delta) {
+        replaceWithDeltaCheckBoxMI.setState(delta);
+    }
 
-public boolean getPhiStatus(){
-    return replaceWithPhiCheckBoxMI.getState();
-}
+    public boolean getPhiStatus() {
+        return replaceWithPhiCheckBoxMI.getState();
+    }
 
-public boolean getDeltaStatus(){
-    return replaceWithDeltaCheckBoxMI.getState();
-}
+    public boolean getDeltaStatus() {
+        return replaceWithDeltaCheckBoxMI.getState();
+    }
 
-public void setRoadMap(RoadMap roadmap)
-  {
-    roadMapPanel.setRoadMap(roadmap);
-  }
+    public void setRoadMap(RoadMap roadmap) {
+        roadMapPanel.setRoadMap(roadmap);
+    }
 
-public void rawSetRoadMap(RoadMap roadmap)
-  {
-    roadMapPanel.rawSetRoadMap(roadmap);
-}
+    public void rawSetRoadMap(RoadMap roadmap) {
+        roadMapPanel.rawSetRoadMap(roadmap);
+    }
 
-public void analyze()
-  {
-    analyzeInBackground(settings.showJoins);
-  }
+    public void analyze() {
+        analyzeInBackground(settings.showJoins);
+    }
 
-public void reset()
-  {
-    roadMapPanel.reset();
-  }
+    public void reset() {
+        roadMapPanel.reset();
+    }
 
-public Note getFirstNote()
-{
-    return notate.getFirstNote();
-}
+    public Note getFirstNote() {
+        return notate.getFirstNote();
+    }
 
-public String getComposer()
-{
-    return notate.getComposer();
-}
+    public String getComposer() {
+        return notate.getComposer();
+    }
 
-public void setStyleNames(ArrayList<String> styles)
-{
+    public void setStyleNames(ArrayList<String> styles) {
         styleNames = styles;
-        if( !styleNames.isEmpty() )
-          {
+        if (!styleNames.isEmpty()) {
             setStyle(Style.getStyle(styleNames.get(0)));
-          }
+        }
         //System.out.println("styleNames = " + styles);
-}
+    }
 
 
-public ArrayList<String> getStyleNames()
-{
-    return styleNames;
-}
+    public ArrayList<String> getStyleNames() {
+        return styleNames;
+    }
 
- private void setPlayTransposed() {
-    setTransposition(getTransposition());
-}
-    
-public void setTransposition(Transposition transposition)
-  {
-    if( transposeSpinner != null )
-      {
-        transposeSpinner.setValue(transposition.getChordTransposition());
-      }
+    private void setPlayTransposed() {
+        setTransposition(getTransposition());
+    }
 
-    roadMapTransposition = transposition;
-  } 
+    public void setTransposition(Transposition transposition) {
+        if (transposeSpinner != null) {
+            transposeSpinner.setValue(transposition.getChordTransposition());
+        }
 
-public Transposition getTransposition()
-  {
-    int value = Integer.parseInt(transposeSpinner.getValue().toString());
-    return new Transposition(value, value, 0);
-  }
+        roadMapTransposition = transposition;
+    }
+
+    public Transposition getTransposition() {
+        int value = Integer.parseInt(transposeSpinner.getValue().toString());
+        return new Transposition(value, value, 0);
+    }
 
 }

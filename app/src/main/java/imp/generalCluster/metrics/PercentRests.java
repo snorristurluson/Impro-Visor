@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,21 +24,22 @@ import imp.data.Duration;
 import imp.generalCluster.CreateGrammar;
 import imp.generalCluster.IndexedMelodyPart;
 import polya.Polylist;
+
 import static imp.Constants.BEAT;
 
 /**
  *
  * @author Cai Glencross
  */
-public class PercentRests extends Metric{
-    
-    public PercentRests(float weight){
+public class PercentRests extends Metric {
+
+    public PercentRests(float weight) {
         super(weight, "percentRests", true);
     }
-    
-    public double getRestDuration(Polylist rule){
+
+    public double getRestDuration(Polylist rule) {
         double restDuration = 0;
-         if (rule.last().equals("STARTTIED")) {
+        if (rule.last().equals("STARTTIED")) {
             rule = rule.allButLast();
         }
 
@@ -57,14 +58,14 @@ public class PercentRests extends Metric{
         while (rule.nonEmpty()) {
             if (rule.first() instanceof Polylist) {
                 Polylist inner = (Polylist) rule.first();
-               
+
                 //get rid of slopes
                 inner = inner.rest().rest().rest();
-               
+
                 //loop through terminals of segments
                 while (inner.nonEmpty()) {
                     String terminal = inner.first().toString();
-                    if (terminal.charAt(0) == 'R') { 
+                    if (terminal.charAt(0) == 'R') {
                         restDuration += Duration.getDuration(terminal.substring(1));
                     }
                     inner = inner.rest();
@@ -74,16 +75,16 @@ public class PercentRests extends Metric{
         }
         return restDuration;
     }
-    
-    public int getSegLength(Polylist rule){
+
+    public int getSegLength(Polylist rule) {
         return Integer.parseInt(rule.first().toString().substring(CreateGrammar.SEG_LENGTH));
     }
-    
+
     @Override
-    public double compute(String ruleString, IndexedMelodyPart exactMelody, Polylist rule){
+    public double compute(String ruleString, IndexedMelodyPart exactMelody, Polylist rule) {
         double segLength = getSegLength(rule);
         this.value = getRestDuration(rule) / segLength * BEAT;
-        
+
         return this.value;
     }
 }

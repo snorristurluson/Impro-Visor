@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2018 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,7 +22,7 @@ package imp.gui;
 
 /**
  *
- * @author  Stephen Jones, Aaron Wolin, Robert Keller
+ * @author Stephen Jones, Aaron Wolin, Robert Keller
  */
 
 public class AboutDialog extends javax.swing.JDialog {
@@ -40,8 +40,7 @@ public class AboutDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         menuBar1 = new java.awt.MenuBar();
@@ -112,10 +111,8 @@ public class AboutDialog extends javax.swing.JDialog {
         okAboutBtn.setOpaque(true);
         okAboutBtn.setPreferredSize(new java.awt.Dimension(300, 30));
         okAboutBtn.setSelected(true);
-        okAboutBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okAboutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okAboutBtnActionPerformed(evt);
             }
         });
@@ -138,13 +135,13 @@ public class AboutDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void okAboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAboutBtnActionPerformed
-dispose();
-}//GEN-LAST:event_okAboutBtnActionPerformed
+    private void okAboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okAboutBtnActionPerformed
+        dispose();
+    }//GEN-LAST:event_okAboutBtnActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

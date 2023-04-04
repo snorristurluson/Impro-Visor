@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -33,74 +33,70 @@ import imp.gui.ErrorDialogNonModal;
  * which is obtained by getDialog();
  */
 
-public class ErrorNonModal
-{
-/** 
- * tag put in front of error messages
- */
-  
-private static String tag = "";
+public class ErrorNonModal {
+    /**
+     * tag put in front of error messages
+     */
 
-/** 
- * dialog for GUI 
- */
+    private static String tag = "";
 
-private static ErrorDialogNonModal errorDialogNonModal = new ErrorDialogNonModal(true);
+    /**
+     * dialog for GUI
+     */
 
-/** 
- * text in dialog 
- */
+    private static ErrorDialogNonModal errorDialogNonModal = new ErrorDialogNonModal(true);
 
-private static javax.swing.JTextPane errorText = errorDialogNonModal.getTextPane();
+    /**
+     * text in dialog
+     */
 
-/** 
- * button in dialog 
- */
+    private static javax.swing.JTextPane errorText = errorDialogNonModal.getTextPane();
 
-private static javax.swing.JButton okButton = errorDialogNonModal.getButton();
+    /**
+     * button in dialog
+     */
 
-
-/**
- * Changes the title of the errorDialogNonModal to title
- **/
-public static void setDialogTitle(String title)
-  {
-  errorDialogNonModal.setTitle(title);
-  }
+    private static javax.swing.JButton okButton = errorDialogNonModal.getButton();
 
 
-/**
- * Call to log message of any type.
- */
-
-public static String log(String message)
-  {
-  // FIX: This should be modified to use the GUI if it has
-  // been opened.
-
-  String line = "Please Fix Error : " + message;
-
-    errorText.setText(line);
-    errorDialogNonModal.getRootPane().setDefaultButton(okButton);
-    errorDialogNonModal.setVisible(true);
-    errorDialogNonModal.requestFocus();
+    /**
+     * Changes the title of the errorDialogNonModal to title
+     **/
+    public static void setDialogTitle(String title) {
+        errorDialogNonModal.setTitle(title);
+    }
 
 
-  /* FIX: The following behavior is temporary. What should happen is that the error dialog
-   * opens, and when dismissed, then System.exit(1) is called.
-   */
+    /**
+     * Call to log message of any type.
+     */
 
-  return line;
-  }
+    public static String log(String message) {
+        // FIX: This should be modified to use the GUI if it has
+        // been opened.
 
-/**
- * Return the error dialog.
- */
+        String line = "Please Fix Error : " + message;
 
-public static ErrorDialogNonModal getDialog()
-  {
-  return errorDialogNonModal;
-  }
+        errorText.setText(line);
+        errorDialogNonModal.getRootPane().setDefaultButton(okButton);
+        errorDialogNonModal.setVisible(true);
+        errorDialogNonModal.requestFocus();
+
+
+        /* FIX: The following behavior is temporary. What should happen is that the error dialog
+         * opens, and when dismissed, then System.exit(1) is called.
+         */
+
+        return line;
+    }
+
+    /**
+     * Return the error dialog.
+     */
+
+    public static ErrorDialogNonModal getDialog() {
+        return errorDialogNonModal;
+    }
 
 }
 

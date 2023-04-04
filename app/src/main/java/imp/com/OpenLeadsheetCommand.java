@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,7 +24,9 @@ import imp.RecentFiles;
 import imp.data.Leadsheet;
 import imp.data.Score;
 import imp.util.ErrorLog;
+
 import java.io.*;
+
 import polya.Tokenizer;
 
 /**
@@ -33,11 +35,11 @@ import polya.Tokenizer;
  * @see         CommandManager
  * @see         Score
  * @see         File
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class OpenLeadsheetCommand implements Command {
 
-    /** 
+    /**
      * the File to open
      */
     private File file;
@@ -72,13 +74,12 @@ public class OpenLeadsheetCommand implements Command {
      */
     public void execute() {
         FileInputStream leadStream;
-        
+
         try {
             leadStream = new FileInputStream(file);
             RecentFiles recFile = new RecentFiles(file.getAbsolutePath());
             recFile.writeNewFile();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             ErrorLog.log(ErrorLog.SEVERE, "File does not exist: " + file);
             return;
             // e.printStackTrace();
@@ -87,41 +88,34 @@ public class OpenLeadsheetCommand implements Command {
         Leadsheet.readLeadSheet(new Tokenizer(leadStream), score);
     }
 
-public static String fileToString(File file)
-  {
-  InputStream leadStream;
-  try {
-      leadStream = new FileInputStream(file);
-      }
-  catch( Exception e )
-    {
-    return null;
-    }
-  InputStreamReader reader = new InputStreamReader(leadStream);
+    public static String fileToString(File file) {
+        InputStream leadStream;
+        try {
+            leadStream = new FileInputStream(file);
+        } catch (Exception e) {
+            return null;
+        }
+        InputStreamReader reader = new InputStreamReader(leadStream);
 
-  StringBuilder buffer = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
 
-  try
-    {
-    int c;
-    while( (c = reader.read()) != -1 )
-      {
-      buffer.append((char)c);
-      }
+        try {
+            int c;
+            while ((c = reader.read()) != -1) {
+                buffer.append((char) c);
+            }
+        } catch (IOException e) {
+        }
+        return buffer.toString();
     }
-  catch( IOException e )
-    {
-    }
-  return buffer.toString();
-  }
 
 
     /**
      * Undo unsupported for OpenLeadsheet.
      */
     public void undo() {
-        throw new 
-            UnsupportedOperationException("Undo unsupported for OpenLeadsheet.");
+        throw new
+                UnsupportedOperationException("Undo unsupported for OpenLeadsheet.");
     }
 
     /**
@@ -129,9 +123,9 @@ public static String fileToString(File file)
      */
     public void redo() {
         throw new
-            UnsupportedOperationException("Redo unsupported for OpenLeadsheet.");
+                UnsupportedOperationException("Redo unsupported for OpenLeadsheet.");
     }
-    
+
     public boolean isUndoable() {
         return undoable;
     }

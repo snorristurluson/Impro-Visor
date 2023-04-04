@@ -25,14 +25,12 @@ import imp.util.ErrorLog;
 import polya.Polylist;
 
 /**
- *
  * @author Carli Lessard
  */
 public class ChordPatternElement {
 
-    public enum ChordNoteType
-    {
-    CHORD, PITCH, VOLUME, REST, UNKNOWN
+    public enum ChordNoteType {
+        CHORD, PITCH, VOLUME, REST, UNKNOWN
     }
 
     ChordNoteType noteType = ChordNoteType.CHORD;
@@ -41,204 +39,165 @@ public class ChordPatternElement {
 
     String durationString;
 
-    public ChordPatternElement getCopy()
-    {
-	return new ChordPatternElement(noteType, degree, durationString);
+    public ChordPatternElement getCopy() {
+        return new ChordPatternElement(noteType, degree, durationString);
     }
 
-    public ChordPatternElement(String durationString)
-    {
-	this(ChordNoteType.CHORD, durationString);
+    public ChordPatternElement(String durationString) {
+        this(ChordNoteType.CHORD, durationString);
     }
 
-    public ChordPatternElement(ChordNoteType noteType, String durationString)
-    {
-	this.noteType = noteType;
-	this.durationString = durationString;
+    public ChordPatternElement(ChordNoteType noteType, String durationString) {
+        this.noteType = noteType;
+        this.durationString = durationString;
     }
 
-    public ChordPatternElement(ChordNoteType noteType, int degree, String durationString)
-    {
-	this.noteType = noteType;
-	this.degree = degree;
-	this.durationString = durationString;
+    public ChordPatternElement(ChordNoteType noteType, int degree, String durationString) {
+        this.noteType = noteType;
+        this.degree = degree;
+        this.durationString = durationString;
     }
 
-    public ChordNoteType getNoteType()
-    {
-	return noteType;
+    public ChordNoteType getNoteType() {
+        return noteType;
     }
 
-    public void setNoteType(ChordNoteType noteType)
-    {
-    	this.noteType = noteType;
+    public void setNoteType(ChordNoteType noteType) {
+        this.noteType = noteType;
     }
 
-    public int getDegree()
-    {
-	return degree;
+    public int getDegree() {
+        return degree;
     }
 
-    public void setDegree(int degree)
-    {
-	this.degree = degree;
+    public void setDegree(int degree) {
+        this.degree = degree;
     }
 
-    public int getSlots()
-    {
-	return Duration.getDuration(durationString);
+    public int getSlots() {
+        return Duration.getDuration(durationString);
     }
 
-    public void setDuration(int slots)
-    {
-	durationString = Note.getDurationString(slots);
+    public void setDuration(int slots) {
+        durationString = Note.getDurationString(slots);
     }
 
-    public static ChordPatternElement makeChordPatternElement(Object ob) 
-    {
-	if( ob instanceof String )
-	{
-		String stringOb = (String) ob;
-		
-		if( stringOb.equals("") )
-		{
-			return null;
-		}
-		
-		String durationString = stringOb.substring(1);
+    public static ChordPatternElement makeChordPatternElement(Object ob) {
+        if (ob instanceof String) {
+            String stringOb = (String) ob;
 
-		if( stringOb.startsWith("V") )
-		{
-			return new ChordPatternElement(ChordNoteType.VOLUME, durationString);
-		}
+            if (stringOb.equals("")) {
+                return null;
+            }
 
-		ChordNoteType noteType = getChordNoteType(stringOb.charAt(0));
+            String durationString = stringOb.substring(1);
 
-		if( noteType == ChordNoteType.UNKNOWN )
-		{
-			ErrorLog.log(ErrorLog.WARNING, "Unknown chord note type: " + stringOb);
-			return null;
-		}
-		
-		if( durationString.equals("") )
-		{
-			ErrorLog.log(ErrorLog.WARNING, "Chord pattern element has no duration: " + stringOb);
-			return null;
-		}
-		
-		else
-		{
-			int duration = Duration.getDuration(durationString);
+            if (stringOb.startsWith("V")) {
+                return new ChordPatternElement(ChordNoteType.VOLUME, durationString);
+            }
 
-			if( duration == 0 )
-			{
-				ErrorLog.log(ErrorLog.WARNING, "Chord pattern ele,ent has 0 duration: " + stringOb);
-				return null;
-			}
+            ChordNoteType noteType = getChordNoteType(stringOb.charAt(0));
 
-			else
-			{
-				return new ChordPatternElement(noteType, durationString);
-			}
-		}
-	}
+            if (noteType == ChordNoteType.UNKNOWN) {
+                ErrorLog.log(ErrorLog.WARNING, "Unknown chord note type: " + stringOb);
+                return null;
+            }
 
-	else if( ob instanceof Polylist )
-	{
-		Polylist listOb = (Polylist) ob;
-		int len = listOb.length();
-		if( len == 3 )
-		{
-			if( listOb.first().equals("X") )
-			{
-				Object second = listOb.second();
+            if (durationString.equals("")) {
+                ErrorLog.log(ErrorLog.WARNING, "Chord pattern element has no duration: " + stringOb);
+                return null;
+            } else {
+                int duration = Duration.getDuration(durationString);
 
-				int degreeValue = 1;
+                if (duration == 0) {
+                    ErrorLog.log(ErrorLog.WARNING, "Chord pattern ele,ent has 0 duration: " + stringOb);
+                    return null;
+                } else {
+                    return new ChordPatternElement(noteType, durationString);
+                }
+            }
+        } else if (ob instanceof Polylist) {
+            Polylist listOb = (Polylist) ob;
+            int len = listOb.length();
+            if (len == 3) {
+                if (listOb.first().equals("X")) {
+                    Object second = listOb.second();
 
-				if( second instanceof Long )
-				{
-					degreeValue = ((Long) listOb.second()).intValue();
+                    int degreeValue = 1;
 
-					if( degreeValue < 1 || degreeValue > 11 || degreeValue == 8 || degreeValue == 10 )
-					{
-						ErrorLog.log(ErrorLog.WARNING, "Scale degree out of range in chord note: " + ob);
-						return null;
-					}
-				}
-				
-				String durationString = "";
-			
-				Object third = listOb.third();
+                    if (second instanceof Long) {
+                        degreeValue = ((Long) listOb.second()).intValue();
 
-				if( third instanceof Long || third instanceof String )
-				{
-					durationString = "" + third;
+                        if (degreeValue < 1 || degreeValue > 11 || degreeValue == 8 || degreeValue == 10) {
+                            ErrorLog.log(ErrorLog.WARNING, "Scale degree out of range in chord note: " + ob);
+                            return null;
+                        }
+                    }
 
-					int duration = Duration.getDuration(durationString);
+                    String durationString = "";
 
-					if ( duration == 0 )
-					{
-						ErrorLog.log(ErrorLog.WARNING, "Chord pattern element has 0 duration: " + ob);
-						return null;
-					}
-				}
+                    Object third = listOb.third();
 
-				return new ChordPatternElement(ChordNoteType.PITCH, degreeValue, durationString);
+                    if (third instanceof Long || third instanceof String) {
+                        durationString = "" + third;
 
-			}
-		}
-	}
-	ErrorLog.log(ErrorLog.WARNING, "Unrecognized chord note: " + ob);
-	return null;
+                        int duration = Duration.getDuration(durationString);
+
+                        if (duration == 0) {
+                            ErrorLog.log(ErrorLog.WARNING, "Chord pattern element has 0 duration: " + ob);
+                            return null;
+                        }
+                    }
+
+                    return new ChordPatternElement(ChordNoteType.PITCH, degreeValue, durationString);
+
+                }
+            }
+        }
+        ErrorLog.log(ErrorLog.WARNING, "Unrecognized chord note: " + ob);
+        return null;
     }
 
-public static ChordNoteType getChordNoteType(char c)
-{
-	switch( c )
-	{
-		case 'X':
-		case 'x':
-			return ChordNoteType.CHORD;
+    public static ChordNoteType getChordNoteType(char c) {
+        switch (c) {
+            case 'X':
+            case 'x':
+                return ChordNoteType.CHORD;
 
-		case 'R':
-		case 'r':
-			return ChordNoteType.REST;
+            case 'R':
+            case 'r':
+                return ChordNoteType.REST;
 
-		case 'V':
-		case 'v': 
-			return ChordNoteType.VOLUME;
+            case 'V':
+            case 'v':
+                return ChordNoteType.VOLUME;
 
-		default:	
-			return ChordNoteType.UNKNOWN;
-	}
-}
+            default:
+                return ChordNoteType.UNKNOWN;
+        }
+    }
 
-public String getDurationString()
-{
-	return durationString;
-}
+    public String getDurationString() {
+        return durationString;
+    }
 
-public String getDegreeString()
-{
-	return "" + getDegree();
-}
+    public String getDegreeString() {
+        return "" + getDegree();
+    }
 
-public Object getText()
-{
-	switch( noteType )
-	{
-		default:
-		case CHORD:
-			return "X" + getDurationString();
+    public Object getText() {
+        switch (noteType) {
+            default:
+            case CHORD:
+                return "X" + getDurationString();
 
-		case PITCH:
-			return Polylist.list("X", getDegreeString(), getDurationString());
-	}
-}
+            case PITCH:
+                return Polylist.list("X", getDegreeString(), getDurationString());
+        }
+    }
 
-public boolean nonRest()
-{
-	return noteType != ChordNoteType.REST;
-}
-    
+    public boolean nonRest() {
+        return noteType != ChordNoteType.REST;
+    }
+
 }

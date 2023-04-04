@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2015-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -23,82 +23,82 @@ package imp.gui;
 import imp.Constants;
 import imp.data.PianoKey;
 import imp.util.Preferences;
+
 import javax.swing.Icon;
 import javax.swing.JLabel;
-
 
 
 /**
  *
  * @author muddCS15
  */
-public class RangeChooser extends javax.swing.JDialog implements Constants{
+public class RangeChooser extends javax.swing.JDialog implements Constants {
 
     //Used when user does not have a preferred default range or minimum range
     private static final int NO_PREFERENCE = -1;
-    
+
     //minimum range span that is allowed
     private int minimumRange;
-    
+
     //range of keys which are clickable
-    private static final int [] bassLimits = {C1, E5};
-    private static final int [] trebleLimits = {A2, C7};
-    private static final int [] grandLimits = {C1, C7};
-    
+    private static final int[] bassLimits = {C1, E5};
+    private static final int[] trebleLimits = {A2, C7};
+    private static final int[] grandLimits = {C1, C7};
+
     //stores range of keys which are clickable
-    private final int [] limits;
-    
+    private final int[] limits;
+
     //the default keys that are initially clicked
-    private static final int [] bassDefaults = {G2, C4};
-    private static final int [] trebleDefaults = {C4, G5};
-    private static final int [] grandDefaults = {G2, G5};
-    
+    private static final int[] bassDefaults = {G2, C4};
+    private static final int[] trebleDefaults = {C4, G5};
+    private static final int[] grandDefaults = {G2, G5};
+
     //the midi values of two keys that are currently clicked
-    private int [] clicked;
-    
+    private int[] clicked;
+
     //array of piano keys
-    private PianoKey [] pkeys;
-    
+    private PianoKey[] pkeys;
+
     //constants representing which key to replace
     private static int LOW = 0;
     private static int HIGH = 1;
-    
+
     /**
-    * Getting the piano key images.
-    */
-    public javax.swing.ImageIcon whiteKey = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/whitekey.jpg"));
+     * Getting the piano key images.
+     */
+    public javax.swing.ImageIcon whiteKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/whitekey.jpg"));
 
-    public javax.swing.ImageIcon whiteKeyPressed = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/whitekeypressed.jpg"));
+    public javax.swing.ImageIcon whiteKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/whitekeypressed.jpg"));
 
-    public javax.swing.ImageIcon blackKey = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/blackkey.jpg"));
+    public javax.swing.ImageIcon blackKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackkey.jpg"));
 
-    public javax.swing.ImageIcon blackKeyPressed = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/blackkeypressed.jpg"));
+    public javax.swing.ImageIcon blackKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackkeypressed.jpg"));
 
-    public javax.swing.ImageIcon bassKey = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/rootkey.jpg"));
+    public javax.swing.ImageIcon bassKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/rootkey.jpg"));
 
-    public javax.swing.ImageIcon bassKeyPressed = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/rootkeypressed.jpg"));
+    public javax.swing.ImageIcon bassKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/rootkeypressed.jpg"));
 
-    public javax.swing.ImageIcon blackBassKey = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/blackrootkey.jpg"));
+    public javax.swing.ImageIcon blackBassKey =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackrootkey.jpg"));
 
-    public javax.swing.ImageIcon blackBassKeyPressed = 
-        new javax.swing.ImageIcon(
-           getClass().getResource("/graphics/blackrootkeypressed.jpg"));
-    
-   //Piano key constants
+    public javax.swing.ImageIcon blackBassKeyPressed =
+            new javax.swing.ImageIcon(
+                    getClass().getResource("/graphics/blackrootkeypressed.jpg"));
+
+    //Piano key constants
     public final int WKWIDTH = 20;      // width of a white key
     public final int WKHEIGHT = 120;    // height of a white key
     public final int BKHEIGHT = 80;     // height of a black key
@@ -107,27 +107,27 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
     public final int A = 21;            // MIDI value of 1st key on keyboard
     public final int P_OCTAVE = 12;     // 12 notes per octave
     public final int OCTAVE_WIDTH = 140;      // width of an octave
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
      * @param defaultLow midi value of low key to be initially selected
      * @param defaultHigh midi value of high key to be initially selected
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh){
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh) {
         this(parent, defaultLow, defaultHigh, NO_PREFERENCE);
     }
-    
+
     /**
      * Constructor
      * @param lowLimit - lowest clickable key
      * @param highLimit - highest clickable key
      * @param parent - frame that spawned this dialog box
      */
-    public RangeChooser(int lowLimit, int highLimit, java.awt.Frame parent){
+    public RangeChooser(int lowLimit, int highLimit, java.awt.Frame parent) {
         this(parent, NO_PREFERENCE, NO_PREFERENCE, lowLimit, highLimit);
     }
-    
+
     /**
      * Constructor
      * @param lowLimit lowest clickable key
@@ -135,20 +135,20 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param minimumRange minimum size of range that user must pick
      * @param parent frame that spawned this dialog box
      */
-    public RangeChooser(int lowLimit, int highLimit, int minimumRange, java.awt.Frame parent){
+    public RangeChooser(int lowLimit, int highLimit, int minimumRange, java.awt.Frame parent) {
         this(parent, NO_PREFERENCE, NO_PREFERENCE, minimumRange, lowLimit, highLimit);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
      * @param fullKeyboard true to have the full keyboard be clickable,
      * false to have the keyboard range selected according to the current stave
      */
-    public RangeChooser(java.awt.Frame parent, boolean fullKeyboard){
+    public RangeChooser(java.awt.Frame parent, boolean fullKeyboard) {
         this(A0, C8, parent);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
@@ -157,10 +157,10 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param fullKeyboard true to have the full keyboard be clickable,
      * false to have the keyboard range selected according to the current stave
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, boolean fullKeyboard){
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, boolean fullKeyboard) {
         this(parent, defaultLow, defaultHigh, A0, C8);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
@@ -168,10 +168,10 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param fullKeyboard true to have the full keyboard be clickable,
      * false to have the keyboard range selected according to the current stave
      */
-    public RangeChooser(java.awt.Frame parent, int minimumRange, boolean fullKeyboard){
+    public RangeChooser(java.awt.Frame parent, int minimumRange, boolean fullKeyboard) {
         this(parent, NO_PREFERENCE, NO_PREFERENCE, minimumRange, A0, C8);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
@@ -181,15 +181,15 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param fullKeyboard true to have the full keyboard be clickable,
      * false to have the keyboard range selected according to the current stave
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange, boolean fullKeyboard){
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange, boolean fullKeyboard) {
         this(parent, defaultLow, defaultHigh, minimumRange, A0, C8);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
      */
-    public RangeChooser(java.awt.Frame parent){
+    public RangeChooser(java.awt.Frame parent) {
         this(parent, NO_PREFERENCE, NO_PREFERENCE);
     }
 
@@ -200,10 +200,10 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param defaultHigh midi value of high key to be initially selected
      * @param minimumRange minimum size of range that user must pick
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange){
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange) {
         this(parent, defaultLow, defaultHigh, minimumRange, NO_PREFERENCE, NO_PREFERENCE);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
@@ -212,10 +212,10 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param lowLimit lowest key that is clickable
      * @param highLimit highest key that is clickable
      */
-    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int lowLimit, int highLimit){
+    public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int lowLimit, int highLimit) {
         this(parent, defaultLow, defaultHigh, NO_PREFERENCE, lowLimit, highLimit);
     }
-    
+
     /**
      * Constructor
      * @param parent frame that spawned this dialog box
@@ -226,65 +226,65 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param highLimit highest key that is clikable
      */
     public RangeChooser(java.awt.Frame parent, int defaultLow, int defaultHigh, int minimumRange, int lowLimit, int highLimit) {
-        
+
         //RangeChooser is always modal
         super(parent, true);
-        
+
         //set minimum range
-        if(minimumRange<0){
+        if (minimumRange < 0) {
             this.minimumRange = NO_PREFERENCE;
-        }else{
+        } else {
             this.minimumRange = minimumRange;
-        }   
-        
+        }
+
         //Set range of clickable keys and default selected range
         //based on the current stave
         StaveType stave = Preferences.getStaveTypeFromPreferences();
-        
-        int [] programDefaults;
-        int [] defaultLimits;
-        
-        if(stave==StaveType.TREBLE){
+
+        int[] programDefaults;
+        int[] defaultLimits;
+
+        if (stave == StaveType.TREBLE) {
             defaultLimits = trebleLimits;
             programDefaults = trebleDefaults;
-        }else if(stave==StaveType.BASS){
+        } else if (stave == StaveType.BASS) {
             defaultLimits = bassLimits;
             programDefaults = bassDefaults;
-        }else{
+        } else {
             defaultLimits = grandLimits;
             programDefaults = grandDefaults;
         }
-        
-        int [] userLimits = {lowLimit, highLimit};
-        if(limitsOkay(lowLimit, highLimit)){
+
+        int[] userLimits = {lowLimit, highLimit};
+        if (limitsOkay(lowLimit, highLimit)) {
             limits = userLimits;
             //use stave-determined program defaults for initial notes clicked
             //if those aren't within the not-blue notes, use the range limits
-            if(!rangeOkay(programDefaults)){
+            if (!rangeOkay(programDefaults)) {
                 programDefaults = userLimits;
             }
-        }else{
+        } else {
             limits = defaultLimits;
         }
-        
+
         //set the two initially clicked keys
         //use the user defaults if they're valid, program defaults otherwise
-        int [] userDefaults = {defaultLow, defaultHigh};
+        int[] userDefaults = {defaultLow, defaultHigh};
         clicked = rangeOkay(userDefaults) ? userDefaults : programDefaults;
-        
+
         //initialize graphical components
         initComponents();
-        
+
         //initialize the array of piano keys
         initKeys();
-        
+
         //make the out-of-range keys blue & unclickable
         setBlueKeys();
-        
+
         //click the default keys
         pressKey(midiToKey(clicked[LOW]));
         pressKey(midiToKey(clicked[HIGH]));
-        
+
         //make dialog box visible
         this.setVisible(true);
     }
@@ -297,42 +297,42 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * @param high the upper limit
      * @return whether or not the limits are okay
      */
-    private boolean limitsOkay(int low, int high){
-        return low>=A0&&high<=C8&&low<high;
+    private boolean limitsOkay(int low, int high) {
+        return low >= A0 && high <= C8 && low < high;
     }
-    
+
     /**
      * getRange - for public use
      * @return an int array containing the midi values of the
      * two keys selected by the user
      */
-    public int [] getRange(){
+    public int[] getRange() {
         return clicked;
     }
-    
+
     /**
      * inRange
      * @param midi midi value of note
      * @return true if note is within click-able range
      */
-    private boolean inRange(int midi){
+    private boolean inRange(int midi) {
         return midi >= limits[LOW] && midi <= limits[HIGH];
     }
-    
+
     /**
      * rangeOkay
      * Determines whether a range given by a two-element array is okay
      * @param limits two-element array of ints
      * @return whether the range is okay (false if array doesn't contain 2 ints)
      */
-    private boolean rangeOkay(int [] limits){
-        if(limits.length==2){
+    private boolean rangeOkay(int[] limits) {
+        if (limits.length == 2) {
             return rangeOkay(limits[LOW], limits[HIGH]);
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     /**
      * rangeOkay
      * @param low midi value of low note
@@ -342,187 +342,187 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
      * the low note is lower than the high note,
      * and the distance between the low and high notes is > the minimum range
      */
-    private boolean rangeOkay(int low, int high){
-        return  inRange(low)
+    private boolean rangeOkay(int low, int high) {
+        return inRange(low)
                 && inRange(high)
                 && (low < high)
                 && distance(low, high) >= minimumRange;
     }
-    
+
     /**
      * distance
      * @param low midi value of low note
      * @param high midi value of high note
      * @return absolute distance between the two notes
      */
-    private int distance(int low, int high){
-        return Math.abs(high-low);
+    private int distance(int low, int high) {
+        return Math.abs(high - low);
     }
-    
+
     /**
      * pianoKeys
      * @return pkeys, the array of piano keys
      */
-    public PianoKey[] pianoKeys(){
+    public PianoKey[] pianoKeys() {
         return pkeys;
     }
-    
+
     /**
      * setKeyboard
      * @param midiValue midi value of key clicked
      */
-    public void setKeyboard(int midiValue){
-        
+    public void setKeyboard(int midiValue) {
+
         //If note within clickable range (not blue)
-        if(midiValue >= limits[LOW] && midiValue <= limits[HIGH]){
-            
+        if (midiValue >= limits[LOW] && midiValue <= limits[HIGH]) {
+
             int keyIndex = closer(midiValue);
             replaceKey(keyIndex, midiValue);
 
         }
     }
-    
+
     /**
      * closer
      * @param midiValue midi value of note
      * @return LOW if note is closer to the currently selected low limit,
      * HIGH otherwise (tie break)
      */
-    private int closer(int midiValue){
+    private int closer(int midiValue) {
         return distance(midiValue, clicked[LOW]) < distance(midiValue, clicked[HIGH]) ? LOW : HIGH;
     }
-    
+
     /**
      * replaceKey
      * @param keyIndex index (LOW or HIGH) of key to be un-clicked
      * @param newMidi midi value of note to be clicked
      */
-    private void replaceKey(int keyIndex, int newMidi){
+    private void replaceKey(int keyIndex, int newMidi) {
 
         //midi value to be replaced
         int oldMidi = clicked[keyIndex];
-        
+
         //potential new low and high range limits
         int newLow = keyIndex == LOW ? newMidi : clicked[LOW];
         int newHigh = keyIndex == LOW ? clicked[HIGH] : newMidi;
-        int [] newRange = {newLow, newHigh};
-        
+        int[] newRange = {newLow, newHigh};
+
         //if the proposed new range is not ok, return
-        if(!rangeOkay(newRange)){
+        if (!rangeOkay(newRange)) {
             return;
         }
-        
+
         //The new key
         PianoKey newKey = midiToKey(newMidi);
-        
+
         //The old key
         PianoKey oldKey = midiToKey(oldMidi);
-        
+
         //click the new key
         pressKey(newKey);
-        
+
         //unclick the old key
         pressKey(oldKey);
-        
+
         //store the new range
         clicked = newRange;
 
     }
-    
+
     /**
      * midiToKey
      * Returns Piano Key corresponding to midi value
      * @param midi midi value
      * @return Piano Key corresponding to midi value
      */
-    private PianoKey midiToKey(int midi){
+    private PianoKey midiToKey(int midi) {
         return pkeys[index(midi)];
     }
-    
+
     /**
      * index
      * @param midi midi value of note
      * @return index at which that note's piano key is stored in the pkeys array
      */
-    private int index(int midi){
-        return midi-A;
+    private int index(int midi) {
+        return midi - A;
     }
 
     /**
-    * pressKey changes the images of the keys based on whether they have been
-    * pressed or not.
-    * 
-    * @param keyPlayed the key to be played / un-played
-    */
-   private void pressKey(PianoKey keyPlayed){
-       
+     * pressKey changes the images of the keys based on whether they have been
+     * pressed or not.
+     *
+     * @param keyPlayed the key to be played / un-played
+     */
+    private void pressKey(PianoKey keyPlayed) {
+
         //we use the isBass feature to mark keys as blue/unclickable
-        if(keyPlayed.isBass()){
+        if (keyPlayed.isBass()) {
             return;
         }
-        
+
         //get key's label, onIcon, and offIcon
         JLabel label = keyPlayed.getLabel();
         Icon onIcon = keyPlayed.getOnIcon();
         Icon offIcon = keyPlayed.getOffIcon();
 
         //if the key is pressed, unpress it
-        if (keyPlayed.isPressed()){
-            
+        if (keyPlayed.isPressed()) {
+
             label.setIcon(offIcon);
             keyPlayed.setPressed(false);
-            
+
         }
-        
+
         //if the key is unpressed, press it
-        else if (!keyPlayed.isPressed()){
-            
+        else if (!keyPlayed.isPressed()) {
+
             label.setIcon(onIcon);
             keyPlayed.setPressed(true);
-            
+
         }
-        
+
         //force paint so keys update
         forcePaint();
     }
-   
+
     /**
      * setBlueKeys makes keys outside the range limits blue/un-clickable
      */
-    private void setBlueKeys(){
-        for(int i = 0; i < index(limits[LOW]); ++i){
+    private void setBlueKeys() {
+        for (int i = 0; i < index(limits[LOW]); ++i) {
             makeBlue(i);
         }
 
-        for(int i = index(limits[HIGH])+1; i < pkeys.length; ++i){
+        for (int i = index(limits[HIGH]) + 1; i < pkeys.length; ++i) {
             makeBlue(i);
         }
     }
-    
+
     /**
      * makeBlue
      * @param index index of key in pkeys to make blue
      * makes the key blue/un-clickable
      */
-    private void makeBlue(int index){
+    private void makeBlue(int index) {
         PianoKey key = pkeys[index];
         key.setIsBass(true);
         key.getLabel().setIcon(key.getBassOnIcon());
     }
-   
-   /**
-    * Force painting the window, without waiting for repaint to do it,
-    * as repaints may be queued when the calling application sleeps.
-    */
-    private void forcePaint(){
+
+    /**
+     * Force painting the window, without waiting for repaint to do it,
+     * as repaints may be queued when the calling application sleeps.
+     */
+    private void forcePaint() {
         paint(getGraphics());
     }
-    
+
     /**
      * Initialize the array of piano keys
      */
-    private void initKeys(){
-        
+    private void initKeys() {
+
         pkeys = new PianoKey[88];
         // 0th octave keys
         pkeys[0] = new PianoKey(21, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyA0);
@@ -629,17 +629,16 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
 
         // 8th octave keys
         pkeys[87] = new PianoKey(108, whiteKeyPressed, whiteKey, bassKey, bassKeyPressed, keyC8);
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         instructionsPanel = new javax.swing.JPanel();
@@ -761,10 +760,8 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
 
         keyboardLP.setMinimumSize(new java.awt.Dimension(1045, 150));
         keyboardLP.setRequestFocusEnabled(false);
-        keyboardLP.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        keyboardLP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 keyboardLPMouseClicked(evt);
             }
         });
@@ -1178,10 +1175,8 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         okPanel.setLayout(new java.awt.GridBagLayout());
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
@@ -1206,8 +1201,7 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
         int y = evt.getY();
         int x = evt.getX();
 
-        if (y < WKHEIGHT)
-        {
+        if (y < WKHEIGHT) {
             // True if the user clicked a black key.
             boolean blackPianoKey = false;
 
@@ -1218,15 +1212,15 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
 
             // gives the octave number (ex. 4 in C4 for middle C) by
             // determining where x is in relation to the pixel width of an octave
-            int octave = ( (x + 5*WKWIDTH) / OCTAVE_WIDTH);
+            int octave = ((x + 5 * WKWIDTH) / OCTAVE_WIDTH);
 
             // Only occurs if the click is at a y position that could be a black key
             if (y < BKHEIGHT) {
                 // find the position of the click within the key
-                int inKey = x - keyNum*WKWIDTH;
+                int inKey = x - keyNum * WKWIDTH;
 
                 // if click is in right half of black key
-                if (inKey < (BKWIDTH/2 + 1)){
+                if (inKey < (BKWIDTH / 2 + 1)) {
                     blackPianoKey = true;
                     note -= 1;
 
@@ -1237,7 +1231,7 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
                 }
 
                 // if click is in left half of black key
-                else if (inKey > WKWIDTH - (BKWIDTH/2 + 1)) {
+                else if (inKey > WKWIDTH - (BKWIDTH / 2 + 1)) {
                     blackPianoKey = true;
                     note = keyNum;
 
@@ -1251,77 +1245,75 @@ public class RangeChooser extends javax.swing.JDialog implements Constants{
             // determine the MIDI value of the note clicked
             int baseMidi = 0;
 
-            int oct = note - OCTKEYS*(octave - 1);
+            int oct = note - OCTKEYS * (octave - 1);
 
             if (octave == 0) {
-                oct = note - OCTKEYS*octave;
+                oct = note - OCTKEYS * octave;
             }
 
             // if the note is a black key
-            if (blackPianoKey)
-            {
-                switch(oct) {
+            if (blackPianoKey) {
+                switch (oct) {
                     case 0:
-                    baseMidi = A + 1;     //Bb
-                    break;
+                        baseMidi = A + 1;     //Bb
+                        break;
                     case 2:
-                    baseMidi = A + 4;     //C#
-                    break;
+                        baseMidi = A + 4;     //C#
+                        break;
                     case 3:
-                    baseMidi = A + 6;     //Eb
-                    break;
+                        baseMidi = A + 6;     //Eb
+                        break;
                     case 5:
-                    baseMidi = A + 9;     //F#
-                    break;
+                        baseMidi = A + 9;     //F#
+                        break;
                     case 6:
-                    baseMidi = A + 11;    //G#
-                    break;
+                        baseMidi = A + 11;    //G#
+                        break;
                     case 7:
-                    baseMidi = A + 13;    //Bb
-                    break;
+                        baseMidi = A + 13;    //Bb
+                        break;
                 }
             }
             // if the note is not a black key
-            else
-            {
-                switch(oct) {
+            else {
+                switch (oct) {
                     case 0:
-                    baseMidi = A;      //A
-                    break;
+                        baseMidi = A;      //A
+                        break;
                     case 1:
-                    baseMidi = A + 2;  //B
-                    break;
+                        baseMidi = A + 2;  //B
+                        break;
                     case 2:
-                    baseMidi = A + 3;  //C
-                    break;
+                        baseMidi = A + 3;  //C
+                        break;
                     case 3:
-                    baseMidi = A + 5;  //D
-                    break;
+                        baseMidi = A + 5;  //D
+                        break;
                     case 4:
-                    baseMidi = A + 7;  //E
-                    break;
+                        baseMidi = A + 7;  //E
+                        break;
                     case 5:
-                    baseMidi = A + 8;  //F
-                    break;
+                        baseMidi = A + 8;  //F
+                        break;
                     case 6:
-                    baseMidi = A + 10; //G
-                    break;
+                        baseMidi = A + 10; //G
+                        break;
                     case 7:
-                    baseMidi = A + 12; //A
-                    break;
+                        baseMidi = A + 12; //A
+                        break;
                     case 8:
-                    baseMidi = A + 14; //B
-                    break;
+                        baseMidi = A + 14; //B
+                        break;
                 }
             }
 
             // Adjust the MIDI value for different octaves
-            int midiValue = baseMidi + P_OCTAVE*(octave - 1);
+            int midiValue = baseMidi + P_OCTAVE * (octave - 1);
 
             if (octave == 0) {
                 midiValue = baseMidi;
             }
-            
+
             setKeyboard(midiValue);
         }
     }//GEN-LAST:event_keyboardLPMouseClicked

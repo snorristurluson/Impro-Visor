@@ -6,6 +6,7 @@
 package imp.trading;
 
 import static imp.Constants.DEFAULT_BEATS_PER_BAR;
+
 import imp.ImproVisor;
 import imp.com.CommandManager;
 import imp.data.Chord;
@@ -24,15 +25,20 @@ import imp.data.advice.AdviceForMelody;
 import imp.data.advice.AdviceForRhythm;
 import imp.generalCluster.Cluster;
 import imp.generalCluster.CreateGrammar;
+
 import static imp.generalCluster.CreateGrammar.SEG_LENGTH;
+
 import imp.generalCluster.DataPoint;
 import imp.gui.Notate;
+
 import static imp.gui.Notate.DEFAULT_BARS_PER_PART;
+
 import imp.trading.tradingResponseModes.CorrectRhythmTRM;
 import imp.trading.tradingResponseModes.RhythmHelperTRM;
 import imp.trading.tradingResponseModes.TradingResponseMode;
 import imp.util.NonExistentParameterException;
 import imp.util.Preferences;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -83,14 +89,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+
 import polya.Polylist;
 
 /**
- *
  * @author Lukas Gnirke & Cai Glencross
  */
-public class UserRhythmSelecterDialog extends javax.swing.JDialog implements java.beans.Customizer {  
-//
+public class UserRhythmSelecterDialog extends javax.swing.JDialog implements java.beans.Customizer {
+    //
 //    /**
 //     * This method is called from within the constructor to initialize the form.
 //     * WARNING: Do NOT modify this code. The content of this method is always
@@ -188,7 +194,6 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
     }// </editor-fold>//GEN-END:initComponents
 
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LabelsPanel;
     private javax.swing.JButton addButton;
@@ -223,191 +228,191 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
     private Double[] minMetricValues;
     public static final java.awt.Point INITIAL_OPEN_POINT = new java.awt.Point(25, 0);
     private RhythmListCellRenderer rhythmListCellRenderer;
-    
-    
+
+
     public UserRhythmSelecterDialog(TradingResponseMode trm) {
         //Get gloabals from rhythmHelperTrm
-        rhythmHelperTRM = (RhythmHelperTRM) trm;        
+        rhythmHelperTRM = (RhythmHelperTRM) trm;
         this.windowSize = rhythmHelperTRM.getWindowSizeOfCluster();
         this.rhythmClusters = rhythmHelperTRM.getRhythmClusters();
         maxMetricValues = rhythmHelperTRM.getMaxMetricVals();
-        minMetricValues = rhythmHelperTRM.getMinMetricVals();       
-        this.notate  = rhythmHelperTRM.getNotate();
-        
+        minMetricValues = rhythmHelperTRM.getMinMetricVals();
+        this.notate = rhythmHelperTRM.getNotate();
+
         //create initial models (necessary because RhythmSelecterEntry keeps track of scrollPane and need to instantiate these to create scrollPane)
         sessionRhythmsModel = new LeadsheetImageListModel(new ArrayList<RhythmSelecterEntry>());
         myRhythmsModel = new LeadsheetImageListModel(new ArrayList<RhythmSelecterEntry>());
-        
+
         //Create the GUI components (including JList, ScrollPane, Buttons)
         initComponents();
-        
-        
+
+
         //Get the rhythms from the previous session
         sessionDataPoints = getSessionDataPoints(this.rhythmClusters);
         userRuleStrings = getUserRuleStrings(sessionDataPoints);
         sessionRhythmEntries = getSessionRhythms(userRuleStrings, sessionDataPoints);
-        
+
         //Get the rhythms saved to the myRhythms file
         filePath = retrieveUserRhythmsFileName();
         ruleStringsFromFile = readInRuleStringsFromFile(filePath);
         myRhythmEntries = createMyRhythmEntries(ruleStringsFromFile);
-        
+
         //Create the list models
         sessionRhythmsModel = new LeadsheetImageListModel(sessionRhythmEntries);
         myRhythmsModel = new LeadsheetImageListModel(myRhythmEntries);
-        
+
         //add selectionListener that plays selected rhythm on leadsheet
         addSessionListSelectionListener();
         addMyRhythmsListSelectionListener();
-        
-           
+
+
         //Set the list models for the two JLists
         sessionRhythmsList.setModel(sessionRhythmsModel);
         myRhythmsList.setModel(myRhythmsModel);
-        
-        
+
+
         //Set the Renderer for the two lists
         rhythmListCellRenderer = new RhythmListCellRenderer(this.notate);
         sessionRhythmsList.setCellRenderer(rhythmListCellRenderer);
         myRhythmsList.setCellRenderer(rhythmListCellRenderer);
-        
+
         //Need to set fixed cell dimensions to have enough space for when image loads
         sessionRhythmsList.setFixedCellHeight(40);
         sessionRhythmsList.setFixedCellWidth(200);
         myRhythmsList.setFixedCellHeight(40);
         myRhythmsList.setFixedCellWidth(200);
-        
-        addButton.addActionListener(new ActionListener(){     
-          public void actionPerformed(ActionEvent e){
-              addSelectedRhythms();
-          }          
-        } );
-        
-        deleteButton.addActionListener(new ActionListener(){        
-          public void actionPerformed(ActionEvent e){
-              deleteSelectedRhythms();
-          }          
-        } );
-        
-        saveButton.addActionListener(new ActionListener(){
+
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addSelectedRhythms();
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteSelectedRhythms();
+            }
+        });
+
+        saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveChanges();
                 dispose();
             }
         });
-        
+
 //        this.addWindowListener(new java.awt.event.WindowAdapter() {
 //               @Override
 //               public void windowClosing(java.awt.event.WindowEvent windowEvent){
 //                   //killInvisibleNotate();
 //               }
 //        });
-        
+
         //only want to show gradeLabel if just came from corrective trading mode
         gradeLabel.setVisible(false);
     }
-    
+
     /**
      * adds ListSelectionListener to sessionRhythmsList. Whenever an item is selected
-     * in the list the valueChanged function gets called. Code in valueChanged function 
+     * in the list the valueChanged function gets called. Code in valueChanged function
      * displays and plays selected rhythm in the main notate
      */
-    private void addSessionListSelectionListener(){
-        sessionRhythmsList.addListSelectionListener(new ListSelectionListener(){
+    private void addSessionListSelectionListener() {
+        sessionRhythmsList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()){
-                    JList source = (JList) e.getSource();        
+                if (!e.getValueIsAdjusting()) {
+                    JList source = (JList) e.getSource();
                     int[] selectedIndices = source.getSelectedIndices();
                     LeadsheetImageListModel rlm = (LeadsheetImageListModel) source.getModel();
                     RhythmSelecterEntry rse = rlm.getElementAt(selectedIndices[selectedIndices.length - 1]);
-                    
-                    displayRhythmOnLeadsheet(rse.getRealMelody());              
-                } 
-            } 
+
+                    displayRhythmOnLeadsheet(rse.getRealMelody());
+                }
+            }
         });
     }
-    
+
     /**
      * adds ListSelectionListener to myRhythmsList. Whenever an item is selected
-     * in the list the valueChanged function gets called. Code in valueChanged function 
+     * in the list the valueChanged function gets called. Code in valueChanged function
      * displays and plays selected rhythm in the main notate
      */
-    private void addMyRhythmsListSelectionListener(){
-        myRhythmsList.addListSelectionListener(new ListSelectionListener(){
+    private void addMyRhythmsListSelectionListener() {
+        myRhythmsList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                JList source = (JList) e.getSource();        
+                JList source = (JList) e.getSource();
                 int[] selectedIndices = source.getSelectedIndices();
-                if(selectedIndices.length > 0){
+                if (selectedIndices.length > 0) {
                     LeadsheetImageListModel rlm = (LeadsheetImageListModel) source.getModel();
                     RhythmSelecterEntry rse = rlm.getElementAt(selectedIndices[selectedIndices.length - 1]);
-                    displayRhythmOnLeadsheet(rse.getRealMelody());              
-                } 
-            } 
+                    displayRhythmOnLeadsheet(rse.getRealMelody());
+                }
+            }
         });
     }
-    
+
     /**
-     * Goes through all of the rhythms selected in the sessionRhythmsList and 
-     * adds them to the myRhythmsList. Creates a new sessionRhythmsList and 
+     * Goes through all of the rhythms selected in the sessionRhythmsList and
+     * adds them to the myRhythmsList. Creates a new sessionRhythmsList and
      * myRhythmsList in the process.
      */
-    private void addSelectedRhythms(){           
-          int[] selectedIndices = sessionRhythmsList.getSelectedIndices();
-          for(int index : selectedIndices){
-              myRhythmsModel.addListElement(sessionRhythmsModel.getElementAt(index));
-          }
-          sessionRhythmsModel.removeListElements(selectedIndices);
-          createNewSessionRhythmsList(sessionRhythmsModel.getList());
-          createNewMyRhythmsList(myRhythmsModel.getList());
-          sessionRhythmsScrollPane.setViewportView(sessionRhythmsList);
-          myRhythmsScrollPane.setViewportView(myRhythmsList);
-          
-          sessionRhythmsScrollPane.repaint();
-          myRhythmsScrollPane.repaint();
+    private void addSelectedRhythms() {
+        int[] selectedIndices = sessionRhythmsList.getSelectedIndices();
+        for (int index : selectedIndices) {
+            myRhythmsModel.addListElement(sessionRhythmsModel.getElementAt(index));
+        }
+        sessionRhythmsModel.removeListElements(selectedIndices);
+        createNewSessionRhythmsList(sessionRhythmsModel.getList());
+        createNewMyRhythmsList(myRhythmsModel.getList());
+        sessionRhythmsScrollPane.setViewportView(sessionRhythmsList);
+        myRhythmsScrollPane.setViewportView(myRhythmsList);
+
+        sessionRhythmsScrollPane.repaint();
+        myRhythmsScrollPane.repaint();
     }
-    
+
     /**
      * Creates a new myRhythmsList. Called whenever you want to refresh the
      * myRhythmsList.
-     * 
+     *
      * @param rhythmsList - the updated list of elements for the new list
      */
-    private void createNewMyRhythmsList(ArrayList<RhythmSelecterEntry> rhythmsList){
+    private void createNewMyRhythmsList(ArrayList<RhythmSelecterEntry> rhythmsList) {
         myRhythmsModel = new LeadsheetImageListModel(rhythmsList);
         //myRhythmsList = new RhythmList(myRhythmsModel, rhythmListCellRenderer, 200, 40, rhythmHelperTRM.getMetre(), notate);
         myRhythmsList = new JList();
         myRhythmsList.setModel(myRhythmsModel);
-        myRhythmsList.setCellRenderer(rhythmListCellRenderer);  
+        myRhythmsList.setCellRenderer(rhythmListCellRenderer);
         addMyRhythmsListSelectionListener();
     }
-    
+
     /**
      * Creates a new sessionRhythmsList. Called whenever you want to refresh the
      * sessionRhythmsList.
-     * 
+     *
      * @param rhythmsList - the updated list of elements for the new list
      */
-    private void createNewSessionRhythmsList(ArrayList<RhythmSelecterEntry> rhythmsList){
+    private void createNewSessionRhythmsList(ArrayList<RhythmSelecterEntry> rhythmsList) {
         sessionRhythmsModel = new LeadsheetImageListModel(rhythmsList);
         //sessionRhythmsList = new RhythmList(sessionRhythmsModel, rhythmListCellRenderer, 200, 40, rhythmHelperTRM.getMetre(), notate);
         sessionRhythmsList = new JList();
         sessionRhythmsList.setModel(sessionRhythmsModel);
-        sessionRhythmsList.setCellRenderer(rhythmListCellRenderer);   
+        sessionRhythmsList.setCellRenderer(rhythmListCellRenderer);
         addSessionListSelectionListener();
     }
-    
+
     /**
      * Removes listElements selected in the myRhythmsList and moves them to the
      * sessionRhythmsPanel. Creates a new sessionRhythmsList and myRhythmsList
      * in the process.
      */
-    private void deleteSelectedRhythms(){
+    private void deleteSelectedRhythms() {
         int[] selectedIndices = myRhythmsList.getSelectedIndices();
-        for(int index : selectedIndices){
-              sessionRhythmsModel.addListElement(myRhythmsModel.getElementAt(index));
+        for (int index : selectedIndices) {
+            sessionRhythmsModel.addListElement(myRhythmsModel.getElementAt(index));
         }
         myRhythmsModel.removeListElements(selectedIndices);
         createNewSessionRhythmsList(sessionRhythmsModel.getList());
@@ -415,139 +420,139 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
         sessionRhythmsScrollPane.setViewportView(sessionRhythmsList);
         myRhythmsScrollPane.setViewportView(myRhythmsList);
     }
-    
+
 
     @Override
     public void setObject(Object bean) {
         this.bean = bean;
     }
 
-    
+
     /**
      * Gets the rhythms from the last session and creates a RhythmSelecterEntry
-     * for each of the rhythms. Returns a list of these objects which will 
+     * for each of the rhythms. Returns a list of these objects which will
      * become the initial content of the sessionRhythmsList.
-     * 
+     *
      * @param sessionRuleStrings - list of ruleStrings representing rhythms played
-     * in the last session
-     * @param sessionDataPoints - list of dataPoints from rhythms played in last
-     * session
-     * @return a list of RhythmSelecterEntry objects 
+     *                           in the last session
+     * @param sessionDataPoints  - list of dataPoints from rhythms played in last
+     *                           session
+     * @return a list of RhythmSelecterEntry objects
      */
-    private ArrayList<RhythmSelecterEntry> getSessionRhythms(ArrayList<Polylist> sessionRuleStrings, ArrayList<DataPoint> sessionDataPoints){
+    private ArrayList<RhythmSelecterEntry> getSessionRhythms(ArrayList<Polylist> sessionRuleStrings, ArrayList<DataPoint> sessionDataPoints) {
         ArrayList<RhythmSelecterEntry> sessionRhythms = new ArrayList<RhythmSelecterEntry>();
-          
-        for(int i = 0; i < sessionRuleStrings.size(); i++){
+
+        for (int i = 0; i < sessionRuleStrings.size(); i++) {
             Polylist ruleString = sessionRuleStrings.get(i);
             Polylist XNotation = (Polylist) ruleString.third();
-            
+
             //skip XNotationTag
             XNotation = XNotation.rest();
-            
+
             Polylist segLenPL = (Polylist) ((Polylist) ruleString.second()).second();
             int numBars = Integer.parseInt(segLenPL.toStringSansParens().substring(SEG_LENGTH));
             /**@TODO don't use DEFAULT_BEATS_PER_BAR, maybe use something from metre instead
-             * 
+             *
              */
             //make the length of the line you want to screenshot in the RhythmNotate the number of measures in the rule string 
             //rhythmNotate.adjustLayout(Polylist.list((long) (numBars / DEFAULT_BEATS_PER_BAR)));
-            
+
             //make the "real melody" representation so that the rhythm can be displayed on the rhythmNotate
             Polylist relativePitchPolylist = getRelativePitchPolylist(XNotation.toStringSansParens());
             String realMelody = makeRealMelodyFromRhythmPolylist(relativePitchPolylist);
-            
-            RhythmSelecterEntry rse = new RhythmSelecterEntry(null, true, realMelody, ruleString, this.rhythmHelperTRM.getFutureInvisibleNotate(), 
+
+            RhythmSelecterEntry rse = new RhythmSelecterEntry(null, true, realMelody, ruleString, this.rhythmHelperTRM.getFutureInvisibleNotate(),
                     rhythmHelperTRM.getMetre(), numBars, sessionRhythmsScrollPane);
-            rse.addDataPoint(sessionDataPoints.get(i));            
+            rse.addDataPoint(sessionDataPoints.get(i));
             Thread t = new Thread(rse);
             t.start();
             sessionRhythms.add(rse);
         }
-      
+
         return sessionRhythms;
     }
 
     /**
      * Gets the rhythms from the myRhythmsList and creates a RhythmSelecterEntry
-     * for each of the rhythms. Returns a list of these objects which will 
+     * for each of the rhythms. Returns a list of these objects which will
      * become the initial content of the myRhythmsList.
-     * 
+     *
      * @param ruleStringsFromFile - list of ruleStrings representing rhythms saved
-     * to the file
-     * @return a list of RhythmSelecterEntry objects 
+     *                            to the file
+     * @return a list of RhythmSelecterEntry objects
      */
-    private ArrayList<RhythmSelecterEntry> createMyRhythmEntries(ArrayList<Polylist> ruleStringsFromFile){
+    private ArrayList<RhythmSelecterEntry> createMyRhythmEntries(ArrayList<Polylist> ruleStringsFromFile) {
         ArrayList<RhythmSelecterEntry> myRhythms = new ArrayList<RhythmSelecterEntry>();
-          
-        for(int i = 0; i < ruleStringsFromFile.size(); i++){
+
+        for (int i = 0; i < ruleStringsFromFile.size(); i++) {
 //            System.out.println("ruleString: " + ruleStringsFromFile.get(i));
             Polylist ruleString = ruleStringsFromFile.get(i);
             Polylist XNotation = (Polylist) ruleString.third();
             //skip XNotationTag
             XNotation = XNotation.rest();
-            
+
             Polylist segLenPL = (Polylist) ((Polylist) ruleString.second()).second();
             int numBars = Integer.parseInt(segLenPL.toStringSansParens().substring(SEG_LENGTH));
             /**@TODO don't use DEFAULT_BEATS_PER_BAR, maybe use something from metre instead
-             * 
+             *
              */
-            
+
             //rhythmNotate.adjustLayout(Polylist.list((long) (numBars / DEFAULT_BEATS_PER_BAR)));
-            
+
             Polylist relativePitchPolylist = getRelativePitchPolylist(XNotation.toStringSansParens());
-            
+
             String realMelody = makeRealMelodyFromRhythmPolylist(relativePitchPolylist);
 
-            RhythmSelecterEntry rse = new RhythmSelecterEntry(null, false, realMelody, ruleString, this.rhythmHelperTRM.getFutureInvisibleNotate(), 
+            RhythmSelecterEntry rse = new RhythmSelecterEntry(null, false, realMelody, ruleString, this.rhythmHelperTRM.getFutureInvisibleNotate(),
                     rhythmHelperTRM.getMetre(), numBars, myRhythmsScrollPane);
             Thread t = new Thread(rse);
             t.start();
             myRhythms.add(rse);
-        } 
+        }
         return myRhythms;
     }
 
-    
+
     private ArrayList<Polylist> getUserRuleStrings(ArrayList<DataPoint> userData) {
         ArrayList<Polylist> ruleStringsPL = new ArrayList<Polylist>();
 
-        for(int i = 0; i < userData.size(); i++){
+        for (int i = 0; i < userData.size(); i++) {
             String plString = "(userRuleString " + userData.get(i).getRuleString() + ")";
             Polylist addPL = Polylist.PolylistFromString(plString);
             addPL = (Polylist) addPL.first();
-            
+
             ruleStringsPL.add(addPL);
-            
+
             //test stuff
             Polylist p = ruleStringsPL.get(i);
 
         }
-        
+
         return ruleStringsPL;
     }
-    
-    private ArrayList<DataPoint> getSessionDataPoints(ArrayList<RhythmCluster> rhythmClusters){
+
+    private ArrayList<DataPoint> getSessionDataPoints(ArrayList<RhythmCluster> rhythmClusters) {
         ArrayList<DataPoint> userData = new ArrayList<DataPoint>();
-        for(int i = 0; i < rhythmClusters.size(); i++){
+        for (int i = 0; i < rhythmClusters.size(); i++) {
             ArrayList<DataPoint> rcData = rhythmClusters.get(i).getUserDataPoints();
-            for(int j = 0; j < rcData.size(); j++){
+            for (int j = 0; j < rcData.size(); j++) {
                 userData.add(rcData.get(j));
             }
         }
         return userData;
     }
-    
-    
+
+
     /**
      * Creates the rhythmNotate object. This object will be shown so far offscreen
      * that it will be invisible. Rhythms will be pasted to this invisible notate
      * and then we grab a screenshot of the rhythm and use that as the rhythm image.
-     * 
+     *
      * @return the invisible notate object
      */
-    public Notate getRhythmNotate(){
+    public Notate getRhythmNotate() {
         //Create the score for the notate
-        Score newScore = new Score("");        
+        Score newScore = new Score("");
         int chordFontSize = Integer.valueOf(Preferences.getPreference(Preferences.DEFAULT_CHORD_FONT_SIZE));
         newScore.setChordFontSize(chordFontSize);
         newScore.setTempo(1);
@@ -559,58 +564,60 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
         newScore.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
         Transposition transposition =
                 new Transposition(notate.getIntFromSpinner(notate.getLeadsheetChordTranspositionSpinner()),
-                                  notate.getIntFromSpinner(notate.getLeadsheetBassTranspositionSpinner()),
-                                  notate.getIntFromSpinner(notate.getChorusMelodyTranspositionSpinner()));
+                        notate.getIntFromSpinner(notate.getLeadsheetBassTranspositionSpinner()),
+                        notate.getIntFromSpinner(notate.getChorusMelodyTranspositionSpinner()));
         newScore.setTransposition(transposition);
-        
+
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
-        
+
         int x = screenSize.width;
         int y = screenSize.height;
 
         // open a new notate window
         rhythmNotate = //new Notate(newScore, -1, -1);
-               new Notate(newScore, x, y);
+                new Notate(newScore, x, y);
         rhythmNotate.setTransposition(transposition);
 
         rhythmNotate.makeVisible();
-        
+
         return rhythmNotate;
     }
-    
-    public Polylist getRelativePitchPolylist(String relativePitchMelody){
+
+    public Polylist getRelativePitchPolylist(String relativePitchMelody) {
         String[] part = relativePitchMelody.split("\\(|\\)");
-            
+
         Polylist relativePL = Polylist.list("rhythm");
-        for (String s: part){
+        for (String s : part) {
             s = s.trim();//remove trailing and leading whitespace
-            if(s.length() == 0){continue;}//skip empty strings
-            if(s.charAt(0) == 'R'){   
+            if (s.length() == 0) {
+                continue;
+            }//skip empty strings
+            if (s.charAt(0) == 'R') {
                 Polylist note = DataPoint.getNotePolylistWLeadingR(s);
-                        
+
                 relativePL = relativePL.addToEnd(note);
-            }else if(s.charAt(0) == 'X'){
+            } else if (s.charAt(0) == 'X') {
                 Polylist note = DataPoint.getNotePolylistWLeadingX(s);
                 relativePL = relativePL.addToEnd(note);
             }
         }
-       
+
         return relativePL;
     }
-    
-    private String makeRealMelodyFromRhythmPolylist(Polylist rhythmPolylist){
+
+    private String makeRealMelodyFromRhythmPolylist(Polylist rhythmPolylist) {
         String rtn = "";
         //get rid of tag
-        if(!rhythmPolylist.isEmpty()){
+        if (!rhythmPolylist.isEmpty()) {
             rhythmPolylist = rhythmPolylist.rest();
         }
-        
-        while (!rhythmPolylist.isEmpty()){
+
+        while (!rhythmPolylist.isEmpty()) {
             Polylist currentNote = (Polylist) rhythmPolylist.first();
-            if (currentNote.first().equals("X")){
+            if (currentNote.first().equals("X")) {
                 rtn += "c";
-            }else{
+            } else {
                 rtn += "r";
             }
             rtn += currentNote.second() + " ";
@@ -618,47 +625,49 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
         }
         return rtn;
     }
-    
+
     /*
      Get the file name from preferences and prepend the file path to it.
     */
-    public String retrieveUserRhythmsFileName(){
+    public String retrieveUserRhythmsFileName() {
         String fileName = getUserRhythmFileNameFromPreferences();
         fileName = ImproVisor.getRhythmClusterDirectory() + "/" + fileName;
         return fileName;
     }
-    
+
     /**
      * Get the file name for the user rhythms stored in the preferences file
-     * @return 
+     *
+     * @return
      */
-    public String getUserRhythmFileNameFromPreferences(){
+    public String getUserRhythmFileNameFromPreferences() {
         String rtn = "";
-        try{
+        try {
             rtn = Preferences.getPreferenceQuietly(Preferences.MY_RHYTHMS_FILE);
-        }catch(NonExistentParameterException e){
+        } catch (NonExistentParameterException e) {
             System.out.println("No user rhythm file name found in preferences!");
         }
-        
-        
+
+
         return rtn;
     }
-    
-    /**Takes RuleStrings from the file specified and return them in an ArrayList
+
+    /**
+     * Takes RuleStrings from the file specified and return them in an ArrayList
      * represented as Polylists
-     * 
+     *
      * @param fileName
-     * @return ArrayList of 
+     * @return ArrayList of
      */
-     public static ArrayList<Polylist> readInRuleStringsFromFile(String fileName){
+    public static ArrayList<Polylist> readInRuleStringsFromFile(String fileName) {
         BufferedReader reader;
-       
+
         try {
             reader = new BufferedReader(new FileReader(fileName));
-            ArrayList<Polylist> ruleStringPL=fillUserRuleStringsToWrite(reader);
+            ArrayList<Polylist> ruleStringPL = fillUserRuleStringsToWrite(reader);
             reader.close();
             return ruleStringPL;
-               
+
         } catch (IOException ex) {
             //Logger.getLogger(UserRhythmSelecterDialog.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("***Could not load user rhythms from file: " + fileName);
@@ -666,178 +675,182 @@ public class UserRhythmSelecterDialog extends javax.swing.JDialog implements jav
             return new ArrayList<Polylist>();
         }
     }
-     
-     /**Does the bulk of the work for readInRuleStringsFromFile, makes an ArrayList
-      * of polylists of the ruleStrings in the BufferedReader passed in
-      * 
-      * @param reader - buffered reader for file with rulestrings in it
-      * @return ArrayList of ruleStrings represented as Polylists
-      * @throws IOException - if theres a problem with the bufferedReader
-      */
-     public static ArrayList<Polylist> fillUserRuleStringsToWrite(BufferedReader reader) throws IOException{
-         ArrayList<Polylist> ruleStringsFromFile = new ArrayList<Polylist>();
-         String line = reader.readLine();
-         while( line != null){
-             Polylist ruleStringPL = (Polylist) Polylist.PolylistFromString(line).first();
-             ruleStringsFromFile.add(ruleStringPL);
-             line = reader.readLine();
-         }
-         return ruleStringsFromFile;
-     }
-     
-     /**Plays and displays the rhythm specified in the argument on the leadsheet, using middle
+
+    /**
+     * Does the bulk of the work for readInRuleStringsFromFile, makes an ArrayList
+     * of polylists of the ruleStrings in the BufferedReader passed in
+     *
+     * @param reader - buffered reader for file with rulestrings in it
+     * @return ArrayList of ruleStrings represented as Polylists
+     * @throws IOException - if theres a problem with the bufferedReader
+     */
+    public static ArrayList<Polylist> fillUserRuleStringsToWrite(BufferedReader reader) throws IOException {
+        ArrayList<Polylist> ruleStringsFromFile = new ArrayList<Polylist>();
+        String line = reader.readLine();
+        while (line != null) {
+            Polylist ruleStringPL = (Polylist) Polylist.PolylistFromString(line).first();
+            ruleStringsFromFile.add(ruleStringPL);
+            line = reader.readLine();
+        }
+        return ruleStringsFromFile;
+    }
+
+    /**
+     * Plays and displays the rhythm specified in the argument on the leadsheet, using middle
      * c for the pitch value
-     * 
+     *
      * @param userRhythm - rhythm to display
      */
-    private void displayRhythmOnLeadsheet(String userRhythm){
+    private void displayRhythmOnLeadsheet(String userRhythm) {
         String[] userRhythmNoteStrings = userRhythm.split(" ");
         Polylist noteSymbolPolylist = new Polylist();
         Polylist pitchNoteSymbolPolylist = new Polylist();
-        for (int i = 0; i < userRhythmNoteStrings.length; i++){
+        for (int i = 0; i < userRhythmNoteStrings.length; i++) {
             NoteSymbol noteSymbol = NoteSymbol.makeNoteSymbol(userRhythmNoteStrings[i]);
             noteSymbolPolylist = noteSymbolPolylist.addToEnd(noteSymbol);
             pitchNoteSymbolPolylist = pitchNoteSymbolPolylist.addToEnd(NoteSymbol.makeNoteSymbol("c4"));
         }
-        
+
         Polylist notePolylistToWrite = NoteSymbol.newPitchesForNotes(noteSymbolPolylist, pitchNoteSymbolPolylist);
-    
-    
+
+
         MelodyPart melodyPartToWrite = new MelodyPart(notePolylistToWrite.toStringSansParens());
-     
+
 
         AdviceForMelody advice = new AdviceForMelody("RhythmPreview", notePolylistToWrite, "c", Key.getKey("c"),
-                        rhythmHelperTRM.getMetre(), 0);//make a new advice for melody object 
-        
+                rhythmHelperTRM.getMetre(), 0);//make a new advice for melody object
+
         advice.setNewPart(melodyPartToWrite);//new part of advice object is the part that gets pasted to the leadsheet
-        
+
         advice.insertInPart(notate.getScore().getPart(0), 0, new CommandManager(), notate);//insert melodyPartToWrite into the notate score
         notate.repaint();//refresh the notate page
         notate.playCurrentSelection(false, 0, false, "Printing Rhythm");//play the leadsheet    
     }
-    
+
     /**
      * Writes the rule strings (aka rhythms) that a user wants to keep to the
      * user rhythms file specified in My.prefs. Also rewrites the cluster files
      * so that the rhythms a user wishes to delete are not written.
      */
-    private void saveChanges(){
+    private void saveChanges() {
         addSessionRhythmsToClusters();
         writeMyRuleStringPLsToFile(filePath);
-            try {
-                deleteSelectedRhythmsFromClusters(getRhythmsToDelete());
-            } catch (IOException ex) {
-                Logger.getLogger(UserRhythmSelecterDialog.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            deleteSelectedRhythmsFromClusters(getRhythmsToDelete());
+        } catch (IOException ex) {
+            Logger.getLogger(UserRhythmSelecterDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     /**
-     * Adds all of the sessionRhythms that the user chose to add to the clusters 
+     * Adds all of the sessionRhythms that the user chose to add to the clusters
      * in the rhythmCluster file that was just used.
      */
-    private void addSessionRhythmsToClusters(){
-        for(int i = 0; i < myRhythmEntries.size(); i++){
-            if(myRhythmEntries.get(i).isSession()){
+    private void addSessionRhythmsToClusters() {
+        for (int i = 0; i < myRhythmEntries.size(); i++) {
+            if (myRhythmEntries.get(i).isSession()) {
                 RhythmCluster rc = rhythmHelperTRM.findNearestCluster(rhythmClusters, myRhythmEntries.get(i).getDataPoint());
                 rc.addSelectedRuleString(myRhythmEntries.get(i).getRuleStringPL());//add datapoint to rhythm cluster
             }
         }
     }
-    
+
     /**
      * Makes a list of all the rhythms that should be deleted from the myRhythms
      * file and the clusterFile.
-     * @return 
+     *
+     * @return
      */
-    private ArrayList<String> getRhythmsToDelete(){
+    private ArrayList<String> getRhythmsToDelete() {
         ArrayList<String> rhythmsToDelete = new ArrayList<String>();
-        for(int i = 0; i < sessionRhythmEntries.size(); i++){
-            if(!sessionRhythmEntries.get(i).isSession()){
+        for (int i = 0; i < sessionRhythmEntries.size(); i++) {
+            if (!sessionRhythmEntries.get(i).isSession()) {
                 rhythmsToDelete.add(sessionRhythmEntries.get(i).getRuleStringPL().toString());
             }
         }
         //System.out.println("rhythmsToDelete: " + rhythmsToDelete);
         return rhythmsToDelete;
     }
-    
-    /**Takes Rule Strings represented as Polylist and writes them to the 
+
+    /**
+     * Takes Rule Strings represented as Polylist and writes them to the
      * file specified in filePath. Used to write the rhythms to the user rhythm file.
-     * 
+     *
      * @param filePath - path to the My.rhythms file
      */
-    private void writeMyRuleStringPLsToFile(String filePath){
-         Writer writer;
-         RhythmSelecterEntry rse;
-             
+    private void writeMyRuleStringPLsToFile(String filePath) {
+        Writer writer;
+        RhythmSelecterEntry rse;
+
         try {
             writer = new BufferedWriter(new FileWriter(filePath));
-            for(int i = 0; i < myRhythmEntries.size(); i++){
+            for (int i = 0; i < myRhythmEntries.size(); i++) {
                 rse = myRhythmEntries.get(i);
                 Polylist ruleStringPL = rse.getRuleStringPL();
                 writer.write(ruleStringPL.toString() + "\n");
-            } 
+            }
             writer.close();
         } catch (IOException ex) {
             System.out.println("Could not write to file: " + filePath);
             Logger.getLogger(UserRhythmSelecterDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }
-    
-    
-    /**Removes the rhythms in the array from the rhythm clusters they were placed into,
+
+
+    /**
+     * Removes the rhythms in the array from the rhythm clusters they were placed into,
      * and writes the edited rhythmCluster to the file.
-     * 
+     *
      * @param rhythmsToExclude - rhythms to be deleted from their respective rhythmClusters
      * @throws IOException - if there's a problem writing to the rhythm Clusters file
      */
     private void deleteSelectedRhythmsFromClusters(ArrayList<String> rhythmsToExclude) throws IOException {
         Cluster[] clusterArray = ClusterArrayListToClusterArray(rhythmClusters);
         CreateGrammar.selectiveClusterToFile(clusterArray, rhythmHelperTRM.getClusterFileName(), rhythmsToExclude, windowSize,
-               maxMetricValues, minMetricValues);
+                maxMetricValues, minMetricValues);
 
     }
-    
+
     /**
      * Used to convert an arrayList of clusters to an array of clusters.
-     * 
+     * <p>
      * Necessary because clusterToFile takes an array of clusters.
-     * 
+     *
      * @param rcArrayList The arrayList of clusters.
-     * 
-     * @return the array version of the arrayList. 
+     * @return the array version of the arrayList.
      */
-    private Cluster[] ClusterArrayListToClusterArray(ArrayList<RhythmCluster> rcArrayList){
+    private Cluster[] ClusterArrayListToClusterArray(ArrayList<RhythmCluster> rcArrayList) {
         Cluster[] clusterArray = new Cluster[rcArrayList.size()];
-        for(int i = 0; i < rcArrayList.size(); i++){
+        for (int i = 0; i < rcArrayList.size(); i++) {
             clusterArray[i] = rcArrayList.get(i);
         }
         return clusterArray;
     }
-     
-    
-    /**@TODO
-     * implement show grade gui stuff....
+
+
+    /**
+     * @TODO implement show grade gui stuff....
      */
-    public void showGrade(int numTrades){
+    public void showGrade(int numTrades) {
         String introString = "Your Grade: ";
         String grade;
-          
-        if (rhythmHelperTRM instanceof CorrectRhythmTRM){
+
+        if (rhythmHelperTRM instanceof CorrectRhythmTRM) {
             CorrectRhythmTRM correctRhythmTRM = (CorrectRhythmTRM) rhythmHelperTRM;
             double score = correctRhythmTRM.getScore();
-           // System.out.println("score to grade from: "+score);
+            // System.out.println("score to grade from: "+score);
             //System.out.println("numTrades: "+ numTrades);
-            if (score > CorrectRhythmTRM.A * numTrades){
+            if (score > CorrectRhythmTRM.A * numTrades) {
                 grade = "Amazing!!!!!!";
-            }else if(score > CorrectRhythmTRM.B *numTrades){
+            } else if (score > CorrectRhythmTRM.B * numTrades) {
                 grade = "Good";
-            }else{
+            } else {
                 grade = "Needs work";
             }
-            gradeLabel.setText(introString+grade);
-            
-        }else{
+            gradeLabel.setText(introString + grade);
+
+        } else {
             gradeLabel.setText("sorry, no grade available");
         }
         gradeLabel.setVisible(true);

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2012 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,10 +24,12 @@ import imp.data.advice.Advisor;
 import imp.gui.Notate;
 import imp.util.ErrorLog;
 import imp.util.SplashDialog;
+
 import java.io.File;
 import java.io.FileInputStream;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 import polya.Polylist;
 import polya.Tokenizer;
 
@@ -37,11 +39,11 @@ import polya.Tokenizer;
  * @see         CommandManager
  * @see         Advisor
  * @see         File
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class LoadAdviceCommand implements Command, Runnable {
 
-    /** 
+    /**
      * the File to open
      */
     private File file;
@@ -55,22 +57,22 @@ public class LoadAdviceCommand implements Command, Runnable {
      * true if the rulebase is appended to
      */
     private boolean append = false;
-    
+
     /**
      * set to true means hide the splash screen when finished
      * if false, can be hidden by a call to hideLoadDialog
-     */    
+     */
     private boolean hideSplash;
-    
+
     /**
      * false since this Command cannot be undone
      */
     private boolean undoable = false;
-    
+
     private Notate parent;
-    
+
     private SplashDialog ld;
-    
+
     /**
      * Creates a new Command that can read a File into an Advisor.
      * @param file      the File to read
@@ -79,8 +81,8 @@ public class LoadAdviceCommand implements Command, Runnable {
     public LoadAdviceCommand(File file, Advisor adv, JFrame notate, boolean showSplash, boolean hideSplash) {
         this.file = file;
         this.adv = adv;
-	parent = (Notate)notate;
-	ld = new SplashDialog(notate, false, showSplash);
+        parent = (Notate) notate;
+        ld = new SplashDialog(notate, false, showSplash);
         this.hideSplash = hideSplash;
     }
 
@@ -98,7 +100,7 @@ public class LoadAdviceCommand implements Command, Runnable {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                if(parent != null)
+                if (parent != null)
                     parent.showFakeModalDialog(ld);
                 else
                     ld.setVisible(true);
@@ -107,7 +109,7 @@ public class LoadAdviceCommand implements Command, Runnable {
 
         try {
             adviceStream = new FileInputStream(file);
-        } catch(Exception e) {
+        } catch (Exception e) {
             //e.printStackTrace();
         }
 
@@ -116,25 +118,24 @@ public class LoadAdviceCommand implements Command, Runnable {
         Polylist rules = new Polylist();
         Object prevOb = null;
         String typeOfItemLoaded = "";
-        
+
         ld.setText("Loading Vocabulary ...");
         ld.repaint();
 
-        while( (ob = in.nextSexp()) != Tokenizer.eof ) {
-            if( ob.equals(prevOb) ) {
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            if (ob.equals(prevOb)) {
                 ErrorLog.log(ErrorLog.WARNING, "Two consecutive vocabulary items are identical: " + ob);
             }
-            if( (ob instanceof Polylist) && ((Polylist)ob).nonEmpty() ) {
-                 String loading = (String)((Polylist)ob).first();
+            if ((ob instanceof Polylist) && ((Polylist) ob).nonEmpty()) {
+                String loading = (String) ((Polylist) ob).first();
                 // avoid extra repainting
-                if( !loading.equals(typeOfItemLoaded) )
-                  {
-                  //ld.setText("Loading " + loading + "s...");
-                  // ??not sure why we need to repaint here if using the same text.
-                  // However, without it, no text appears.
-                  ld.repaint();
-                  typeOfItemLoaded = loading;
-		  }
+                if (!loading.equals(typeOfItemLoaded)) {
+                    //ld.setText("Loading " + loading + "s...");
+                    // ??not sure why we need to repaint here if using the same text.
+                    // However, without it, no text appears.
+                    ld.repaint();
+                    typeOfItemLoaded = loading;
+                }
                  
                 /* Do we really need to do this?
                  
@@ -156,7 +157,7 @@ public class LoadAdviceCommand implements Command, Runnable {
                 if (!ob.equals(prevOb) && obNoGrade.equals(prevObNoGrade))
                     ErrorLog.log(ErrorLog.WARNING, "Two consecutive vocabulary items are identical: " + ob);
                 */
-                rules = rules.cons((Polylist)ob);	// FIX: Need more form checking here.
+                rules = rules.cons((Polylist) ob);    // FIX: Need more form checking here.
             }
             prevOb = ob;
         }
@@ -169,44 +170,45 @@ public class LoadAdviceCommand implements Command, Runnable {
         }
 */
 
-        if(hideSplash)
+        if (hideSplash)
             hideLoadDialog();
 
-        synchronized(this) {
+        synchronized (this) {
             doneLoading = true;
             this.notifyAll();
         }
     }
-    
+
     public boolean hasLoaded() {
         return doneLoading;
     }
-    
+
     private boolean doneLoading = false;
+
     public void hideLoadDialog() {
-        if(parent != null) {
+        if (parent != null) {
             parent.hideFakeModalDialog(ld);
         } else {
             ld.setVisible(false);
         }
         ld.dispose();
     }
-    
+
     public void setLoadDialogText(String msg) {
         ld.setText(msg);
     }
-    
+
     public void execute() {
-	Thread t = new Thread(this);
-	t.start();
+        Thread t = new Thread(this);
+        t.start();
     }
 
     /**
      * Undo unsupported for LoadAdviceCommand.
      */
     public void undo() {
-        throw new 
-            UnsupportedOperationException("Undo unsupported for LoadAdvice.");
+        throw new
+                UnsupportedOperationException("Undo unsupported for LoadAdvice.");
     }
 
     /**
@@ -214,9 +216,9 @@ public class LoadAdviceCommand implements Command, Runnable {
      */
     public void redo() {
         throw new
-            UnsupportedOperationException("Redo unsupported for LoadAdvice.");
+                UnsupportedOperationException("Redo unsupported for LoadAdvice.");
     }
-    
+
     public boolean isUndoable() {
         return undoable;
     }

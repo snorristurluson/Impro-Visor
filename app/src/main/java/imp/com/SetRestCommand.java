@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2014 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +31,7 @@ import imp.util.Trace;
  * @see         Rest
  * @see         Note
  * @see         MelodyPart
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class SetRestCommand implements Command, Constants {
 
@@ -54,7 +54,7 @@ public class SetRestCommand implements Command, Constants {
      * for undoing the rest insert
      */
     private DeleteUnitsCommand deleteUnits;
-    
+
     /**
      * true since this Command can be undone.
      */
@@ -78,40 +78,34 @@ public class SetRestCommand implements Command, Constants {
         Trace.log(2, "executing SetRestCommand");
         int prevIndex = part.getPrevIndex(slotIndex);
         int nextIndex = part.getNextIndex(slotIndex);
-        if(nextIndex == part.size())
+        if (nextIndex == part.size())
             nextIndex = slotIndex;
-        if(prevIndex == -1)
+        if (prevIndex == -1)
             prevIndex = slotIndex;
         deleteUnits = new DeleteUnitsCommand(part, prevIndex, nextIndex);
         deleteUnits.execute();
 
-        if(deleteUnits.isUndoable())
+        if (deleteUnits.isUndoable())
             deleteUnits.undo();
 
         // oldNote = part.getNote(slotIndex);
         // part.setRest(slotIndex);
 
-        if(part.getPrevNote(slotIndex) != null
+        if (part.getPrevNote(slotIndex) != null
                 && part.getPrevNote(slotIndex).isRest()
                 && part.getNextNote(slotIndex) != null
                 && part.getNextNote(slotIndex).isRest()) {
             part.delUnit(slotIndex);
             part.delUnit(part.getNextIndex(slotIndex));
-        }
-
-        else if(part.getPrevNote(slotIndex) != null
+        } else if (part.getPrevNote(slotIndex) != null
                 && part.getPrevNote(slotIndex).isRest()) {
             part.delUnit(slotIndex);
             undoable = false;
-        }
-
-        else if(part.getNextNote(slotIndex) != null
+        } else if (part.getNextNote(slotIndex) != null
                 && part.getNextNote(slotIndex).isRest()) {
             part.setRest(slotIndex);
             part.delUnit(part.getNextIndex(slotIndex));
-        }
-
-        else
+        } else
             part.setRest(slotIndex);
     }
 
@@ -120,7 +114,7 @@ public class SetRestCommand implements Command, Constants {
      */
     public void undo() {
         // part.setNote(slotIndex, oldNote);
-        if(deleteUnits.isUndoable())
+        if (deleteUnits.isUndoable())
             deleteUnits.undo();
     }
 

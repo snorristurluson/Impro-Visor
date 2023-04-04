@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -31,7 +31,7 @@ import imp.util.Trace;
  * @see         Part
  * @see         CopyCommand
  * @see         CutCommand
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class PasteCommand implements Command, Constants {
 
@@ -84,7 +84,7 @@ public class PasteCommand implements Command, Constants {
      * the slot where a rest is inserted
      */
     protected int stopIndex;
-    
+
     /**
      * true since the pasting can be undone
      */
@@ -118,8 +118,8 @@ public class PasteCommand implements Command, Constants {
      * @param startSlot         the slot to start pasting over in the dest
      * @param undoable          the boolean to see if the action is undoable
      */
-    public PasteCommand(Part source, Part dest, int startSlot, 
-                                     boolean undoable, boolean play) {
+    public PasteCommand(Part source, Part dest, int startSlot,
+                        boolean undoable, boolean play) {
         this(source, dest, startSlot, play);
         this.undoable = undoable;
         Trace.log(2, "creating Paste Command");
@@ -131,100 +131,91 @@ public class PasteCommand implements Command, Constants {
      * undoing and redoing purposes.
      */
     public void execute() {
-      if( source != null && dest != null && source.size() > 0 )
-        {
-        Trace.log(1, "pasting notes starting at " + startSlot 
-                   + ", source size = " + source.size() + ", dest size = " + dest.size());
-        source = source.copy();
-        oldSection = dest.extractSlots(startSlot, 
-                                       startSlot + source.size() - 1);
+        if (source != null && dest != null && source.size() > 0) {
+            Trace.log(1, "pasting notes starting at " + startSlot
+                    + ", source size = " + source.size() + ", dest size = " + dest.size());
+            source = source.copy();
+            oldSection = dest.extractSlots(startSlot,
+                    startSlot + source.size() - 1);
 
-        // if the source won't fit, then we should resize the source
-        if(oldSection.size() < source.size())
-            source.setSize(oldSection.size());
+            // if the source won't fit, then we should resize the source
+            if (oldSection.size() < source.size())
+                source.setSize(oldSection.size());
 
-        dest.pasteOver(source, startSlot);
-       
-        // if we're inserting a Note, then we want to make sure it stops
-        // auto-expanding after two measures (and remember that we did that)
-        int lastIndex = dest.getPrevIndex(startSlot + source.size());
-        if( lastIndex >= 0  ) {
-	  Unit lastUnit = dest.getUnit(lastIndex);
-	  if(lastUnit instanceof Note) {
-	      Note note = (Note)lastUnit;
-	      if(note.nonRest()) {
-		  // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
-		  Unit lastSourceUnit = source.getPrevUnit(source.size());
-                  if( lastSourceUnit != null )
-                    {
-		    stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
-		    if(stopIndex < dest.size() &&
-		       dest.getNextIndex(lastIndex) > stopIndex) 
-                      {
-		      dest.setUnit(stopIndex, new Rest());
-		      restInserted = true;
-                      }
-		  }  
-	      }
-          }        
+            dest.pasteOver(source, startSlot);
+
+            // if we're inserting a Note, then we want to make sure it stops
+            // auto-expanding after two measures (and remember that we did that)
+            int lastIndex = dest.getPrevIndex(startSlot + source.size());
+            if (lastIndex >= 0) {
+                Unit lastUnit = dest.getUnit(lastIndex);
+                if (lastUnit instanceof Note) {
+                    Note note = (Note) lastUnit;
+                    if (note.nonRest()) {
+                        // stopIndex = (lastIndex/(metre*BEAT)+2)*metre*BEAT;
+                        Unit lastSourceUnit = source.getPrevUnit(source.size());
+                        if (lastSourceUnit != null) {
+                            stopIndex = lastIndex + lastSourceUnit.getRhythmValue();
+                            if (stopIndex < dest.size() &&
+                                    dest.getNextIndex(lastIndex) > stopIndex) {
+                                dest.setUnit(stopIndex, new Rest());
+                                restInserted = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
-      
-    if( chordSource != null && chordDest != null )
-      {
-        Trace.log(1, "pasting chords starting at " + startSlot 
-                   + " source size = " + chordSource.size() 
-                   + ", dest size = " + chordDest.size());
 
-      oldChordSection = chordDest.extractSlots(startSlot, 
-                                      startSlot + chordSource.size() - 1);
+        if (chordSource != null && chordDest != null) {
+            Trace.log(1, "pasting chords starting at " + startSlot
+                    + " source size = " + chordSource.size()
+                    + ", dest size = " + chordDest.size());
 
-      chordDest.pasteOver(chordSource, startSlot);
-      }
+            oldChordSection = chordDest.extractSlots(startSlot,
+                    startSlot + chordSource.size() - 1);
+
+            chordDest.pasteOver(chordSource, startSlot);
+        }
     }
 
     /**
      * Undoes the pasting.
      */
     public void undo() {
-        if( !undoable )
-          {
+        if (!undoable) {
             return;
-          }
+        }
 // For the time being, undo of chord pasting should be disabled.
 // The reason is that undoing a recent paste causes a crash
 // wherein 120 slots appear and the application effectively freezes.
 
-        if( source != null && dest != null )
-          {
-	  if(restInserted)
-	      dest.delUnit(stopIndex);
+        if (source != null && dest != null) {
+            if (restInserted)
+                dest.delUnit(stopIndex);
 
-	  dest.pasteSlots(oldSection, startSlot);
-          }
+            dest.pasteSlots(oldSection, startSlot);
+        }
 
-        if( chordSource != null && chordDest != null )
-          {
-          chordDest.pasteSlots(oldChordSection, startSlot);
-          }
+        if (chordSource != null && chordDest != null) {
+            chordDest.pasteSlots(oldChordSection, startSlot);
+        }
     }
 
     /**
      * Redoes the pasting.
      */
     public void redo() {
-        if( source != null && dest != null )
-          {
-	  dest.pasteOver(source, startSlot);
+        if (source != null && dest != null) {
+            dest.pasteOver(source, startSlot);
 
-	  if(restInserted)
-	      dest.setUnit(stopIndex, new Rest());
-          }
+            if (restInserted)
+                dest.setUnit(stopIndex, new Rest());
+        }
 
-        if( chordSource != null && chordDest != null )
-          {
-          chordDest.pasteOver(chordSource, startSlot);
-          }
+        if (chordSource != null && chordDest != null) {
+            chordDest.pasteOver(chordSource, startSlot);
+        }
     }
 
     public boolean isUndoable() {

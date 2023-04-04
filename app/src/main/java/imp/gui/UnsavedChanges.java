@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,41 +29,42 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author  mhunt
+ * @author mhunt
  */
 public class UnsavedChanges extends javax.swing.JDialog {
-    public enum Value { YES, NO, CANCEL }
+    public enum Value {YES, NO, CANCEL}
+
     Value value = Value.CANCEL;
-    
+
     /** Creates new form UnsavedChanges */
     public UnsavedChanges(java.awt.Frame parent, String message, Object[] options) {
         super(parent, true);
         initComponents();
-        
+
         getRootPane().setDefaultButton(yesBtn);
-        
+
         yesBtn.setText(options[0].toString());
         noBtn.setText(options[1].toString());
         cancelBtn.setText(options[2].toString());
-        
+
         shortmsg.setText(message);
         pack();
     }
-    
+
     @Override
     public void setVisible(boolean visible) {
         setLocationRelativeTo(getParent());
         super.setVisible(visible);
     }
-    
+
     public Value getValue() {
         return value;
     }
-    
+
     public void setMsg(String text) {
         msg.setText(text);
     }
-                
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -114,7 +115,7 @@ public class UnsavedChanges extends javax.swing.JDialog {
         };
 
         yesBtn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('y'), yesAction.getValue(Action.NAME));
-        yesBtn.getActionMap().put(yesAction.getValue(Action.NAME),yesAction);
+        yesBtn.getActionMap().put(yesAction.getValue(Action.NAME), yesAction);
         yesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 yesBtnActionPerformed(evt);
@@ -138,7 +139,7 @@ public class UnsavedChanges extends javax.swing.JDialog {
         };
 
         noBtn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('n'), noAction.getValue(Action.NAME));
-        noBtn.getActionMap().put(noAction.getValue(Action.NAME),noAction);
+        noBtn.getActionMap().put(noAction.getValue(Action.NAME), noAction);
         noBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 noBtnActionPerformed(evt);
@@ -162,7 +163,7 @@ public class UnsavedChanges extends javax.swing.JDialog {
         };
 
         cancelBtn.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelAction.getValue(Action.NAME));
-        cancelBtn.getActionMap().put(cancelAction.getValue(Action.NAME),cancelAction);
+        cancelBtn.getActionMap().put(cancelAction.getValue(Action.NAME), cancelAction);
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
@@ -208,7 +209,7 @@ public class UnsavedChanges extends javax.swing.JDialog {
         value = Value.YES;
         setVisible(false);
     }//GEN-LAST:event_yesBtnActionPerformed
-        
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
     private javax.swing.JTextArea msg;
@@ -216,5 +217,5 @@ public class UnsavedChanges extends javax.swing.JDialog {
     private javax.swing.JLabel shortmsg;
     private javax.swing.JButton yesBtn;
     // End of variables declaration//GEN-END:variables
-    
+
 }

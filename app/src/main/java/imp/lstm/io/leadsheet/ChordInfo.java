@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application.
- *
+ * <p>
  * Copyright (C) 2016-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -31,14 +31,14 @@ public class ChordInfo {
     private String root;
     private String type;
     private String bass;
-    
+
     public ChordInfo(int duration, String root, String type, String bass) {
         this.duration = duration;
         this.root = root;
         this.type = type;
         this.bass = (bass == null) ? root : bass;
     }
-    
+
     public ChordInfo(int duration, String root, String type) {
         this(duration, root, type, null);
     }
@@ -49,29 +49,24 @@ public class ChordInfo {
         this.bass = chord.getChordSymbol().getBass().toString().toUpperCase();
         this.type = chord.getQuality();
     }
-    
-    public int getDuration()
-    {
+
+    public int getDuration() {
         return duration;
     }
-    
-    public void setDuration(int duration)
-    {
+
+    public void setDuration(int duration) {
         this.duration = duration;
     }
-    
-    public String getRoot()
-    {
+
+    public String getRoot() {
         return root;
     }
-    
-    public String getType()
-    {
+
+    public String getType() {
         return type;
     }
-    
-    public String getBass()
-    {
+
+    public String getBass() {
         return bass;
     }
 }

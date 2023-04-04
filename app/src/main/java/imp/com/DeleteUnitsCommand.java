@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -30,7 +30,7 @@ import imp.util.Trace;
  * @see         CommandManager
  * @see         Part
  * @see         Unit
- * @author      Stephen Jones
+ * @author Stephen Jones
  */
 public class DeleteUnitsCommand implements Command, Constants {
 
@@ -48,7 +48,7 @@ public class DeleteUnitsCommand implements Command, Constants {
      * the first slot that had a unit
      */
     private int deletedStartSlot;
-    
+
     /**
      * the first slot to delete from
      */
@@ -84,48 +84,46 @@ public class DeleteUnitsCommand implements Command, Constants {
         Trace.log(2, "executing DeleteUnitsCommand");
         deletedStartSlot = startSlot;
         Unit firstUnit = part.getUnit(deletedStartSlot);
-        
-        while(firstUnit == null) {
+
+        while (firstUnit == null) {
             deletedStartSlot++;
-            if(deletedStartSlot == part.size())
+            if (deletedStartSlot == part.size())
                 break;
             firstUnit = part.getUnit(deletedStartSlot);
         }
-        
-        if(firstUnit == null || deletedStartSlot > endSlot) {
+
+        if (firstUnit == null || deletedStartSlot > endSlot) {
             undoable = false;
             return;
         }
-        
+
         deletedUnits = part.extract(startSlot, endSlot);
         part.delUnits(startSlot, endSlot);
 
-        if(part instanceof MelodyPart) {
-            MelodyPart melody = (MelodyPart)part;
+        if (part instanceof MelodyPart) {
+            MelodyPart melody = (MelodyPart) part;
 
-            if(melody.getPrevNote(startSlot) != null &&
-               melody.getPrevNote(startSlot).isRest() &&
-               melody.getNextNote(endSlot) != null &&
-               melody.getNextNote(endSlot).isRest()) {
+            if (melody.getPrevNote(startSlot) != null &&
+                    melody.getPrevNote(startSlot).isRest() &&
+                    melody.getNextNote(endSlot) != null &&
+                    melody.getNextNote(endSlot).isRest()) {
                 Command setRest = new SetRestCommand(startSlot, melody);
                 setRest.execute();
-            }
-            else {
+            } else {
                 int prevIndex = melody.getPrevIndex(startSlot);
                 int[] metre = melody.getMetre();
-                int beatValue = ((WHOLE)/metre[1]);
+                int beatValue = ((WHOLE) / metre[1]);
                 int measureLength = metre[0] * beatValue;
-                int barSlot = startSlot - startSlot%(measureLength) - 1;
-                
-                if(prevIndex > -1) {
-                    if(prevIndex < barSlot) {
-                        Command setNote = new SetNoteCommand(barSlot, 
+                int barSlot = startSlot - startSlot % (measureLength) - 1;
+
+                if (prevIndex > -1) {
+                    if (prevIndex < barSlot) {
+                        Command setNote = new SetNoteCommand(barSlot,
                                 melody.getNote(prevIndex).copy(), melody);
                         setNote.execute();
                         melody.delUnit(barSlot);
-                    }
-                    else {
-                        Command setNote = new SetNoteCommand(prevIndex, 
+                    } else {
+                        Command setNote = new SetNoteCommand(prevIndex,
                                 melody.getNote(prevIndex).copy(), melody);
                         setNote.execute();
                     }

@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,6 +21,7 @@
 package imp.generalCluster;
 
 import imp.generalCluster.metrics.Metric;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,21 +34,21 @@ import java.util.ArrayList;
  * @see Cluster
  * from: http://www.codecodex.com/wiki/index.php?title=K-means_cluster_analysis_algorithm#Java
  */
-public class Centroid implements Serializable{
+public class Centroid implements Serializable {
 
-    private double mCt, mCu, mCv, mCw,  mCx,  mCy,  mCz;
+    private double mCt, mCu, mCv, mCw, mCx, mCy, mCz;
     private Cluster mCluster;
     private Metric[] metricList;
-    
+
     public Centroid(Metric[] metricList) {
         this.metricList = metricList;
     }
 
-    public Metric getMetricAtI(int i){
+    public Metric getMetricAtI(int i) {
         return metricList[i];
     }
-    
-    
+
+
     public Centroid(double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
         this.mCt = ct;
         this.mCu = cu;
@@ -59,17 +60,17 @@ public class Centroid implements Serializable{
     }
 
     public void calcCentroid() { //only called by CAInstance
-        
-        
+
+
         double[] avgMetricVals = new double[mCluster.getCentroid().getMetrics().length];
 
         int numDP = mCluster.getNumDataPoints();
-        
+
         for (int i = 0; i < numDP; i++) {
-            for (int j=0; j<avgMetricVals.length;j++){
+            for (int j = 0; j < avgMetricVals.length; j++) {
                 avgMetricVals[j] += mCluster.getDataPoint(i).getMetrics()[j].getValue();
             }
-            
+
         }
 //        for (int j=0; j<avgMetricVals.length;j++){
 //            System.out.println("avgMetricVals["+j+"]"+avgMetricVals[j]);
@@ -77,22 +78,21 @@ public class Centroid implements Serializable{
         //System.out.println("datapoints note count in centroid: "+mCluster.getDataPoint(0).getMetrics().get(2).getValue());
         //System.out.println("(before division) avgMetricVals[2] (notecount?): "+avgMetricVals[2]);
 
-            
-        
+
         //calculating the new Centroid
-        for(int i = 0;i<avgMetricVals.length;i++){
-            avgMetricVals[i] =  avgMetricVals[i] / numDP;
+        for (int i = 0; i < avgMetricVals.length; i++) {
+            avgMetricVals[i] = avgMetricVals[i] / numDP;
         }
         //System.out.println("avgMetricVals[2] (notecount?): "+avgMetricVals[2]);
         //System.out.println("numDP: "+numDP);
-        
-        for(int i = 0; i < avgMetricVals.length; i++){
+
+        for (int i = 0; i < avgMetricVals.length; i++) {
             metricList[i].setValue(avgMetricVals[i]);
         }
-        
+
         //calculating the new Euclidean Distance for each Data Point
 
-        
+
         for (int i = 0; i < numDP; i++) {
             mCluster.getDataPoint(i).calcEuclideanDistance();
         }
@@ -103,23 +103,23 @@ public class Centroid implements Serializable{
     public void setCluster(Cluster c) {
         this.mCluster = c;
     }
-    
+
     public double getCt() {
         return mCt;
     }
-    
+
     public double getCu() {
         return mCu;
     }
-    
+
     public double getCv() {
         return mCv;
     }
-    
+
     public double getCw() {
         return mCw;
     }
-    
+
     public double getCx() {
         return mCx;
     }
@@ -131,38 +131,38 @@ public class Centroid implements Serializable{
     public double getCz() {
         return mCz;
     }
-    
+
     public Cluster getCluster() {
         return mCluster;
     }
-    
-    public Metric[] getMetrics(){
+
+    public Metric[] getMetrics() {
         return metricList;
     }
-    
-    public double[] getnormalizedCentroidMetricValues(){
+
+    public double[] getnormalizedCentroidMetricValues() {
         double[] normalizedCentroidMetricValues = new double[metricList.length];
         double totalMetricVectorLength = getLengthOfMetricVector();
-        for(int i = 0; i < metricList.length; i++){
+        for (int i = 0; i < metricList.length; i++) {
             normalizedCentroidMetricValues[i] = metricList[i].getValue() / totalMetricVectorLength;
         }
         return normalizedCentroidMetricValues;
     }
-    
-    private double getLengthOfMetricVector(){
+
+    private double getLengthOfMetricVector() {
         double totalMetricListLength = 0;
-        for(int i = 0; i < metricList.length; i++){//get the sum of squares for all of the metric values in the metric list
+        for (int i = 0; i < metricList.length; i++) {//get the sum of squares for all of the metric values in the metric list
             totalMetricListLength += Math.pow(metricList[i].getValue(), 2);
         }
-        
-        return Math.sqrt(totalMetricListLength); 
+
+        return Math.sqrt(totalMetricListLength);
     }
-    
-    public String toString(){
+
+    public String toString() {
         String rtn = "";
-        for (Metric m: metricList){
-            rtn += "("+m.getName()+": "+m.getValue()+")";
-         
+        for (Metric m : metricList) {
+            rtn += "(" + m.getName() + ": " + m.getValue() + ")";
+
         }
         return rtn;
     }

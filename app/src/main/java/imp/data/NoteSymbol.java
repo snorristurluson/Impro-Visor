@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2018 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -22,8 +22,10 @@ package imp.data;
 
 import imp.Constants;
 import imp.data.advice.AdviceForMelody;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import polya.Polylist;
 import polya.PolylistBuffer;
 
@@ -35,10 +37,10 @@ import polya.PolylistBuffer;
  * A Note can be created from a NoteSymbol using the toNote() method.
  *
  * @see         Leadsheet
- * @author      Robert Keller
+ * @author Robert Keller
  */
 public class NoteSymbol extends MelodySymbol
-                        implements Constants, Serializable {
+        implements Constants, Serializable {
 
     /**
      * the PitchClass of this note.  A rest is represented by a pitchClass value of null.
@@ -51,7 +53,7 @@ public class NoteSymbol extends MelodySymbol
      * the octave above that is 1, below that is -1, etc.
      */
 
-   private int octave;
+    private int octave;
 
 
     /**
@@ -59,18 +61,18 @@ public class NoteSymbol extends MelodySymbol
      */
 
     private int duration;
-    
+
     public static int defaultVolume = 127;
-    
+
     /**
      * Volume
      */
-    
+
     private int volume = defaultVolume;
-    
+
 
     private String stringRep;
-    
+
     public static String DEFAULT_PITCH_SYMBOL = "c+";
 
     /**
@@ -87,51 +89,46 @@ public class NoteSymbol extends MelodySymbol
      * 36       c               -2
      * 48       c               -1
      * 60       c                0
-     * 72       c                1  
+     * 72       c                1
      * 84       c                2
      * 96       c                3
      * 108      c                4
      * 120      c                5
      * 127      g                5
      */
-    
-       /** constructor */
 
-  private NoteSymbol()
-    {
+    /** constructor */
+
+    private NoteSymbol() {
     }
 
 
-   /** constructor */
-  
-   public NoteSymbol(PitchClass pitchClass)
-     {
-     this(pitchClass, 0, BEAT/2);
-     } 
+    /** constructor */
 
-
-   /** constructor */
-   
-   public NoteSymbol(NoteSymbol that)
-     {
-     this(that.getPitchClass(), that.octave, that.duration, that.volume);
-     } 
-
-
-   /** constructor */
-   
-   public NoteSymbol(PitchClass pitchClass, int octave, int duration)
-    {
-    this(pitchClass, octave, duration, defaultVolume);
+    public NoteSymbol(PitchClass pitchClass) {
+        this(pitchClass, 0, BEAT / 2);
     }
 
-    public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume)
-    {
-    this.pitchClass = pitchClass;
-    this.octave = octave;
-    this.duration = duration;
-    this.volume = volume;
-    establishStringRep(octave, duration);
+
+    /** constructor */
+
+    public NoteSymbol(NoteSymbol that) {
+        this(that.getPitchClass(), that.octave, that.duration, that.volume);
+    }
+
+
+    /** constructor */
+
+    public NoteSymbol(PitchClass pitchClass, int octave, int duration) {
+        this(pitchClass, octave, duration, defaultVolume);
+    }
+
+    public NoteSymbol(PitchClass pitchClass, int octave, int duration, int volume) {
+        this.pitchClass = pitchClass;
+        this.octave = octave;
+        this.duration = duration;
+        this.volume = volume;
+        establishStringRep(octave, duration);
     }
 
     /**
@@ -139,426 +136,368 @@ public class NoteSymbol extends MelodySymbol
      * Because the String could be ill-formed, we use a factory rather than a constructor
      * and keep the actual constructor private.
      */
-   public static NoteSymbol makeNoteSymbol(String string)
-     {
-     return makeNoteSymbol(string, 0);
-     } 
+    public static NoteSymbol makeNoteSymbol(String string) {
+        return makeNoteSymbol(string, 0);
+    }
 
-   public static NoteSymbol makeNoteSymbol(Note note)
-     {
-     return makeNoteSymbol(note.toLeadsheet());
-     } 
-   
-   public static NoteSymbol makeNoteSymbol(int midiValue)
-     {
-       return makeNoteSymbol(new Note(midiValue));
-     }
+    public static NoteSymbol makeNoteSymbol(Note note) {
+        return makeNoteSymbol(note.toLeadsheet());
+    }
 
-   public static NoteSymbol makeNoteSymbol(int midiValue, int duration)
-     {
-       return makeNoteSymbol(new Note(midiValue, duration));
-     }
+    public static NoteSymbol makeNoteSymbol(int midiValue) {
+        return makeNoteSymbol(new Note(midiValue));
+    }
 
-   public static NoteSymbol makeNoteSymbol(String string, int transposition)
-     {
-     int len = string.length();
+    public static NoteSymbol makeNoteSymbol(int midiValue, int duration) {
+        return makeNoteSymbol(new Note(midiValue, duration));
+    }
 
-     if( len == 0 )
-       {
-       return null;
-       }
+    public static NoteSymbol makeNoteSymbol(String string, int transposition) {
+        int len = string.length();
 
-    string = string.toLowerCase();
+        if (len == 0) {
+            return null;
+        }
 
-    NoteSymbol noteSymbol = new NoteSymbol();
+        string = string.toLowerCase();
 
-     // First determine if we have a rest
+        NoteSymbol noteSymbol = new NoteSymbol();
 
-     char c = string.charAt(0);
+        // First determine if we have a rest
 
-     if( c == Key.RESTCHAR )
-       {
-       noteSymbol.pitchClass = null;
-       noteSymbol.duration = Duration.getDuration(string.substring(1));
-       noteSymbol.stringRep = string;
-       return noteSymbol;
-       }    
+        char c = string.charAt(0);
 
-     if( !PitchClass.isValidPitchStart(c) )
-       {
-       return null;
-       }
+        if (c == Key.RESTCHAR) {
+            noteSymbol.pitchClass = null;
+            noteSymbol.duration = Duration.getDuration(string.substring(1));
+            noteSymbol.stringRep = string;
+            return noteSymbol;
+        }
 
-     int index = 1;
+        if (!PitchClass.isValidPitchStart(c)) {
+            return null;
+        }
 
-     boolean natural = true;
-     boolean sharp = false;
+        int index = 1;
 
-     StringBuilder noteBase = new StringBuilder();
+        boolean natural = true;
+        boolean sharp = false;
 
-     noteBase.append(c);
+        StringBuilder noteBase = new StringBuilder();
 
-     if( index < len )
-       {
-       char second = string.charAt(1);
-       if( second == SHARP || second == FLAT || second == 's')
-	 {
-	 index++;
-	 if(second == SHARP || second == FLAT) {
-             noteBase.append(second);
-         } else {
-             noteBase.append(SHARP);
-         }
-	 natural = false;
-	 sharp = (second == SHARP || second == 's');
-	 }
-       }
+        noteBase.append(c);
 
-     noteSymbol.pitchClass = PitchClass.getPitchClass(noteBase.toString()).transpose(transposition);
+        if (index < len) {
+            char second = string.charAt(1);
+            if (second == SHARP || second == FLAT || second == 's') {
+                index++;
+                if (second == SHARP || second == FLAT) {
+                    noteBase.append(second);
+                } else {
+                    noteBase.append(SHARP);
+                }
+                natural = false;
+                sharp = (second == SHARP || second == 's');
+            }
+        }
 
-     if( noteSymbol.pitchClass == null )
-       {
-       return null;
-       }
+        noteSymbol.pitchClass = PitchClass.getPitchClass(noteBase.toString()).transpose(transposition);
 
-     noteSymbol.octave = 0;
+        if (noteSymbol.pitchClass == null) {
+            return null;
+        }
 
-     // Check for any octave shifts specified in the notation
+        noteSymbol.octave = 0;
 
-     boolean more = true;
-     while( index < len && more )
-       {
-       switch( string.charAt(index) )
-	 {
-	 case PLUS:
-	     noteSymbol.octave++;
-	     index++;
-	     break;
+        // Check for any octave shifts specified in the notation
 
-	 case MINUS:
-	     noteSymbol.octave--;
-	     index++;
-	     break;
-             
-         case 'u':
-             noteSymbol.octave++;
-             index++;
-             break;
+        boolean more = true;
+        while (index < len && more) {
+            switch (string.charAt(index)) {
+                case PLUS:
+                    noteSymbol.octave++;
+                    index++;
+                    break;
 
-	 default:
-	     more = false;
-	 }
-       }
+                case MINUS:
+                    noteSymbol.octave--;
+                    index++;
+                    break;
 
-     noteSymbol.duration = Duration.getDuration(string.substring(index));
+                case 'u':
+                    noteSymbol.octave++;
+                    index++;
+                    break;
 
-     noteSymbol.establishStringRep(noteSymbol.octave, noteSymbol.duration);
+                default:
+                    more = false;
+            }
+        }
 
-     return noteSymbol;
-     }
+        noteSymbol.duration = Duration.getDuration(string.substring(index));
+
+        noteSymbol.establishStringRep(noteSymbol.octave, noteSymbol.duration);
+
+        return noteSymbol;
+    }
 
 
-    public int getVolume()
-      {
+    public int getVolume() {
         return volume;
-      }
-    
+    }
+
     /**
      * Set the probability of this note symbol in its context.
      * @param probability
      */
-    public void setProbability(double probability)
-    {
-         this.probability = probability;
-    }
-    
-    public Double getProbability()
-    {
-    return probability;
+    public void setProbability(double probability) {
+        this.probability = probability;
     }
 
-    public static NoteSymbol getRestSymbol(int duration)
-    {
-    return new NoteSymbol(null, 0, duration);
+    public Double getProbability() {
+        return probability;
     }
 
-  public boolean enharmonic(NoteSymbol other)
-    {
-    return getSemitones() == other.getSemitones();
+    public static NoteSymbol getRestSymbol(int duration) {
+        return new NoteSymbol(null, 0, duration);
     }
 
-  public boolean enharmonic(PitchClass pc)
-    {
-    return getSemitones() == pc.getSemitones();
+    public boolean enharmonic(NoteSymbol other) {
+        return getSemitones() == other.getSemitones();
     }
 
-  public int getRise(NoteSymbol other)
-    {
-    return other.getSemitones() - getSemitones();
+    public boolean enharmonic(PitchClass pc) {
+        return getSemitones() == pc.getSemitones();
     }
 
-  public static boolean equalNoteSequences(Polylist x, Polylist y)
-    {
-    while( x.nonEmpty() && y.nonEmpty() )
-      {
-      if( !((NoteSymbol)x.first()).equalNotes((NoteSymbol)y.first()) )
-        {
+    public int getRise(NoteSymbol other) {
+        return other.getSemitones() - getSemitones();
+    }
+
+    public static boolean equalNoteSequences(Polylist x, Polylist y) {
+        while (x.nonEmpty() && y.nonEmpty()) {
+            if (!((NoteSymbol) x.first()).equalNotes((NoteSymbol) y.first())) {
+                return false;
+            }
+            x = x.rest();
+            y = y.rest();
+        }
+
+        return x.isEmpty() && y.isEmpty();
+    }
+
+    public static boolean isomorphicNoteSequences(Polylist x, Polylist y) {
+        if (x.isEmpty() || y.isEmpty()) {
+            return x.isEmpty() && y.isEmpty();
+        }
+
+        NoteSymbol x0 = (NoteSymbol) x.first();
+        NoteSymbol y0 = (NoteSymbol) y.first();
+
+        x = x.rest();
+        y = y.rest();
+
+        int rise = x0.getRise(y0);
+
+        x = transposeNoteSymbolList(x, rise);
+
+        return equalNoteSequences(x, y);
+    }
+
+    public boolean equalNotes(NoteSymbol other) {
+        return duration == other.duration
+                && octave == other.octave
+                && enharmonic(other);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof NoteSymbol) {
+            return equalNotes((NoteSymbol) other);
+        }
         return false;
+    }
+
+    // Not sure that this does what is intended. USE CAUTION
+
+    public int getSemitonesAbove(NoteSymbol other) {
+        int distance = other.getSemitones() - this.getSemitones();
+        while (distance <= 0) {
+            distance += OCTAVE;
         }
-      x = x.rest();
-      y = y.rest();
-      }
-
-    return x.isEmpty() && y.isEmpty();
-    }
- 
-  public static boolean isomorphicNoteSequences(Polylist x, Polylist y)
-    {
-    if( x.isEmpty() || y.isEmpty() )
-      {
-      return x.isEmpty() && y.isEmpty();
-      }
-    
-    NoteSymbol x0 = (NoteSymbol)x.first();
-    NoteSymbol y0 = (NoteSymbol)y.first();
-
-    x = x.rest();
-    y = y.rest();
-
-    int rise = x0.getRise(y0);
-
-    x = transposeNoteSymbolList(x, rise);
-
-    return equalNoteSequences(x, y);
+        return distance;
     }
 
-  public boolean equalNotes(NoteSymbol other)
-    {
-    return duration == other.duration 
-        && octave == other.octave
-        && enharmonic(other);
-    }
-
-  @Override
-  public boolean equals(Object other)
-     {
-     if( other instanceof NoteSymbol )
-       {
-       return equalNotes((NoteSymbol)other);
-       }
-     return false;
-     }
-
-  // Not sure that this does what is intended. USE CAUTION
-  
-  public int getSemitonesAbove(NoteSymbol other)
-    {
-    int distance = other.getSemitones() - this.getSemitones();
-    while( distance <= 0 )
-      {
-      distance += OCTAVE;
-      }
-    return distance;
-    }
-
-/**
- * Check to see whether the list argument contains a member that
- * is enharmonically equivalent to this member.
- */ 
-  public boolean enhMember(Polylist noteSymbols)
-    {
-    while( noteSymbols.nonEmpty() )
-      {
-      NoteSymbol ns = (NoteSymbol)noteSymbols.first();
-      if( enharmonic(ns) )
-        {
-        return ns.getProbability() > 0; //true;
+    /**
+     * Check to see whether the list argument contains a member that
+     * is enharmonically equivalent to this member.
+     */
+    public boolean enhMember(Polylist noteSymbols) {
+        while (noteSymbols.nonEmpty()) {
+            NoteSymbol ns = (NoteSymbol) noteSymbols.first();
+            if (enharmonic(ns)) {
+                return ns.getProbability() > 0; //true;
+            }
+            noteSymbols = noteSymbols.rest();
         }
-      noteSymbols = noteSymbols.rest();
-      }
-    return false;
+        return false;
     }
 
-  public Polylist enhDrop(Polylist noteSymbols)
-    {
-    return enhDrop(noteSymbols, pitchClass);
+    public Polylist enhDrop(Polylist noteSymbols) {
+        return enhDrop(noteSymbols, pitchClass);
     }
 
-  public static Polylist enhDrop(Polylist noteSymbols, PitchClass toDrop)
-    {
-    Polylist result = Polylist.nil;
+    public static Polylist enhDrop(Polylist noteSymbols, PitchClass toDrop) {
+        Polylist result = Polylist.nil;
 
-    while( noteSymbols.nonEmpty() )
-      {
-      NoteSymbol first = (NoteSymbol)noteSymbols.first();
-      if( !first.enharmonic(toDrop) )
-        {
-        result = result.cons(first);
+        while (noteSymbols.nonEmpty()) {
+            NoteSymbol first = (NoteSymbol) noteSymbols.first();
+            if (!first.enharmonic(toDrop)) {
+                result = result.cons(first);
+            }
+            noteSymbols = noteSymbols.rest();
         }
-      noteSymbols = noteSymbols.rest();
-      }
-    return result.reverse();
+        return result.reverse();
     }
-  
-  public static NoteSymbol getHighest(Polylist notes) {
-      NoteSymbol highest = (NoteSymbol)notes.first();
-      notes = notes.rest();
-      while(notes.nonEmpty()) {
-          NoteSymbol current = (NoteSymbol)notes.first();
-          notes = notes.rest();
-          if(current.getMIDI() > highest.getMIDI())
-              highest = current;
-      }
-      return highest;
-  }
-  
-  public static NoteSymbol getLowest(Polylist notes) {
-      NoteSymbol lowest = (NoteSymbol)notes.first();
-      notes = notes.rest();
-      while(notes.nonEmpty()) {
-          NoteSymbol current = (NoteSymbol)notes.first();
-          notes = notes.rest();
-          if(current.getMIDI() < lowest.getMIDI())
-              lowest = current;
-      }
-      return lowest;
-  }
-  
- /**
-  * Create a closed voicing ascending from the first note in the list.
-  */
-  public static Polylist closedVoicing(Polylist noteSymbols)
-    {
-    if( noteSymbols.isEmpty() )
-      {
-      return Polylist.nil;
-      }
 
-    Polylist result = Polylist.nil;
-
-    // below, applying the constructor adjusts the octave
-    NoteSymbol previous = new NoteSymbol((NoteSymbol)noteSymbols.first());
-    noteSymbols = previous.enhDrop(noteSymbols);
-    result = result.cons(previous);
-
-    while( noteSymbols.nonEmpty() )
-      {
-      NoteSymbol next = new NoteSymbol(previous.findNextHigher(noteSymbols));
-      if( !next.enharmonic(previous) )
-        {
-        result = result.cons(next);
+    public static NoteSymbol getHighest(Polylist notes) {
+        NoteSymbol highest = (NoteSymbol) notes.first();
+        notes = notes.rest();
+        while (notes.nonEmpty()) {
+            NoteSymbol current = (NoteSymbol) notes.first();
+            notes = notes.rest();
+            if (current.getMIDI() > highest.getMIDI())
+                highest = current;
         }
-      noteSymbols = next.enhDrop(noteSymbols);
-      }
-    return result.reverse();
+        return highest;
     }
 
-  public NoteSymbol findNextHigher(Polylist noteSymbols)
-    {
-    // below, applying the constructor adjusts the octave
-    NoteSymbol nextHigher = new NoteSymbol((NoteSymbol)noteSymbols.first());
-    noteSymbols = noteSymbols.rest();
-    int distance = getSemitonesAbove(nextHigher);
-
-    while( noteSymbols.nonEmpty() )
-      {
-    // below, applying the constructor adjusts the octave
-      NoteSymbol next = new NoteSymbol((NoteSymbol)noteSymbols.first());
-      int d = getSemitonesAbove(next);
-      if( d < distance )
-        {
-        nextHigher = next;
-        distance = d;
+    public static NoteSymbol getLowest(Polylist notes) {
+        NoteSymbol lowest = (NoteSymbol) notes.first();
+        notes = notes.rest();
+        while (notes.nonEmpty()) {
+            NoteSymbol current = (NoteSymbol) notes.first();
+            notes = notes.rest();
+            if (current.getMIDI() < lowest.getMIDI())
+                lowest = current;
         }
-      noteSymbols = noteSymbols.rest();
-      }
-    return nextHigher;
-    }  
-
-  public Note toNote()
-    {
-      return toNote(volume);
-    }
-  
-  public Note toNote(int volume)
-    {
-    if( pitchClass == null )
-      {
-      return Note.makeRest(duration);
-      }
-    else
-      {
-      Note note = PitchClass.makeNote(pitchClass, getMIDIoctave(), duration);
-      note.setVolume(volume);
-      return note;
-      }
+        return lowest;
     }
 
-  public NoteSymbol transpose(int rise)
-    {
-    if( isRest() || rise == 0 )
-      {
-      return this;	// no transposition for rest
-      }
+    /**
+     * Create a closed voicing ascending from the first note in the list.
+     */
+    public static Polylist closedVoicing(Polylist noteSymbols) {
+        if (noteSymbols.isEmpty()) {
+            return Polylist.nil;
+        }
 
-    int newOctave = octave;
-    int newSemitones = pitchClass.getSemitones() + rise;
-    while( newSemitones >= 12 )
-      {
-      newOctave++;
-      newSemitones -= 12;
-      }
-    while( newSemitones < 0 )
-      {
-      newOctave--;
-      newSemitones += 12;
-      }
+        Polylist result = Polylist.nil;
 
-    NoteSymbol newNoteSymbol = new NoteSymbol(pitchClass.transpose(rise), newOctave, duration);
-    newNoteSymbol.setProbability(getProbability());
+        // below, applying the constructor adjusts the octave
+        NoteSymbol previous = new NoteSymbol((NoteSymbol) noteSymbols.first());
+        noteSymbols = previous.enhDrop(noteSymbols);
+        result = result.cons(previous);
+
+        while (noteSymbols.nonEmpty()) {
+            NoteSymbol next = new NoteSymbol(previous.findNextHigher(noteSymbols));
+            if (!next.enharmonic(previous)) {
+                result = result.cons(next);
+            }
+            noteSymbols = next.enhDrop(noteSymbols);
+        }
+        return result.reverse();
+    }
+
+    public NoteSymbol findNextHigher(Polylist noteSymbols) {
+        // below, applying the constructor adjusts the octave
+        NoteSymbol nextHigher = new NoteSymbol((NoteSymbol) noteSymbols.first());
+        noteSymbols = noteSymbols.rest();
+        int distance = getSemitonesAbove(nextHigher);
+
+        while (noteSymbols.nonEmpty()) {
+            // below, applying the constructor adjusts the octave
+            NoteSymbol next = new NoteSymbol((NoteSymbol) noteSymbols.first());
+            int d = getSemitonesAbove(next);
+            if (d < distance) {
+                nextHigher = next;
+                distance = d;
+            }
+            noteSymbols = noteSymbols.rest();
+        }
+        return nextHigher;
+    }
+
+    public Note toNote() {
+        return toNote(volume);
+    }
+
+    public Note toNote(int volume) {
+        if (pitchClass == null) {
+            return Note.makeRest(duration);
+        } else {
+            Note note = PitchClass.makeNote(pitchClass, getMIDIoctave(), duration);
+            note.setVolume(volume);
+            return note;
+        }
+    }
+
+    public NoteSymbol transpose(int rise) {
+        if (isRest() || rise == 0) {
+            return this;    // no transposition for rest
+        }
+
+        int newOctave = octave;
+        int newSemitones = pitchClass.getSemitones() + rise;
+        while (newSemitones >= 12) {
+            newOctave++;
+            newSemitones -= 12;
+        }
+        while (newSemitones < 0) {
+            newOctave--;
+            newSemitones += 12;
+        }
+
+        NoteSymbol newNoteSymbol = new NoteSymbol(pitchClass.transpose(rise), newOctave, duration);
+        newNoteSymbol.setProbability(getProbability());
 
 //System.out.println("transposing NoteSymbol " + this + " by " + rise + " to " + newNoteSymbol);
 
-    return newNoteSymbol;
+        return newNoteSymbol;
     }
 
-   public String toPitchString() {
-       return toPitchStringBuilder(octave).toString();
-   }
+    public String toPitchString() {
+        return toPitchStringBuilder(octave).toString();
+    }
 
-   public StringBuilder toPitchStringBuilder(int octave) {
-       StringBuilder buffer0 = new StringBuilder();
-       if( pitchClass == null ) {
-           buffer0.append(REST_STRING);
-       }
-       else {
-           buffer0.append(pitchClass);
-           this.octave = octave;
-           while( octave >= 1 )
-           {
-               buffer0.append(PLUS);
-               octave--;
-           }
-           while( octave < 0 )
-           {
-               buffer0.append(MINUS);
-               octave++;
-           }
-       }
+    public StringBuilder toPitchStringBuilder(int octave) {
+        StringBuilder buffer0 = new StringBuilder();
+        if (pitchClass == null) {
+            buffer0.append(REST_STRING);
+        } else {
+            buffer0.append(pitchClass);
+            this.octave = octave;
+            while (octave >= 1) {
+                buffer0.append(PLUS);
+                octave--;
+            }
+            while (octave < 0) {
+                buffer0.append(MINUS);
+                octave++;
+            }
+        }
 
-       return buffer0;
-   }
+        return buffer0;
+    }
 
-  protected void establishStringRep(int octave, int duration)
-    {
-    StringBuilder buffer0 = toPitchStringBuilder(octave);
+    protected void establishStringRep(int octave, int duration) {
+        StringBuilder buffer0 = toPitchStringBuilder(octave);
 
-    StringBuilder buffer = new StringBuilder();
-    int value = Note.getDurationString(buffer, duration);
-     if( /*value == 0 && */ buffer.length() > 1 )
-       {
-       buffer0.append(buffer.substring(1));	// discard initial +
-       }
+        StringBuilder buffer = new StringBuilder();
+        int value = Note.getDurationString(buffer, duration);
+        if ( /*value == 0 && */ buffer.length() > 1) {
+            buffer0.append(buffer.substring(1));    // discard initial +
+        }
 /* suppress warning -- RK
     else
        {
@@ -566,444 +505,386 @@ public class NoteSymbol extends MelodySymbol
        }
 */
 
-    stringRep = buffer0.toString();
+        stringRep = buffer0.toString();
     }
 
-  public static Note toNote(String string)
-    {
-    return makeNoteSymbol(string).toNote();
+    public static Note toNote(String string) {
+        return makeNoteSymbol(string).toNote();
     }
 
-   /** 
-    * Return an indication of whether or not this is a rest
-    */
-   public boolean isRest()
-     {
-     return pitchClass == null;
-     }
+    /**
+     * Return an indication of whether or not this is a rest
+     */
+    public boolean isRest() {
+        return pitchClass == null;
+    }
 
 
     /**
      * Return the number of semitones of the pitch class of this note
      */
-   public int getSemitones()
-     {
-     if( isRest() )
-       {
-       return -1;
-       }
-     return pitchClass.getSemitones();
-     }
-   
-     /**
+    public int getSemitones() {
+        if (isRest()) {
+            return -1;
+        }
+        return pitchClass.getSemitones();
+    }
+
+    /**
      * Indicate whether or not this note is higher than the argument note
      */
-   public boolean higher(NoteSymbol that)
-     {
-     return this.getMIDI() > that.getMIDI();
-     }
-   
-   /**
+    public boolean higher(NoteSymbol that) {
+        return this.getMIDI() > that.getMIDI();
+    }
+
+    /**
      * Return the midi pitch number for this NoteSymbol
      */
-   public int getMIDI()
-     {
-     if( isRest() )
-       {
-       return -1;
-       }
-     return pitchClass.getSemitones() + getMIDIoctave();
-     }
+    public int getMIDI() {
+        if (isRest()) {
+            return -1;
+        }
+        return pitchClass.getSemitones() + getMIDIoctave();
+    }
 
     /**
      * Return the octave component.
      */
-   public int getOctave()
-     {
-     return octave;
-     }
+    public int getOctave() {
+        return octave;
+    }
 
     /**
      * Return the midi pitch number for this NoteSymbol
      */
-   public int getMIDIoctave()
-     {
-     return CMIDI + 12*octave;
-     }
+    public int getMIDIoctave() {
+        return CMIDI + 12 * octave;
+    }
 
     /**
      * Return the duration in slots for this NoteSymbol
      */
-   public int getDuration()
-     {
-     return duration;
-     }
-   
-   public String getDurationString()
-     {
-       return Note.getDurationString(duration);
-     }
+    public int getDuration() {
+        return duration;
+    }
+
+    public String getDurationString() {
+        return Note.getDurationString(duration);
+    }
 
     /**
      * Return the PitchClass for this NoteSymbol
      */
-   public PitchClass getPitchClass()
-     {
-     return pitchClass;
-     }
-   
+    public PitchClass getPitchClass() {
+        return pitchClass;
+    }
+
     /**
      * Return the PitchClass for this NoteSymbol
      */
-   public int getPitchClassIndex()
-     {
-     return pitchClass.getSemitones();
-     }
+    public int getPitchClassIndex() {
+        return pitchClass.getSemitones();
+    }
 
     /**
      * Return the PitchClass name for this NoteSymbol
      */
-   public String getPitchString()
-     {
-     return pitchClass.toString();
-     }
-   
-   /**
-    * Get pitch, e.g. "a++"
-    * @return 
-    */
-   public String getPitchOnly()
-     {
-     return toPitchStringBuilder(octave).toString();
-     }
+    public String getPitchString() {
+        return pitchClass.toString();
+    }
+
+    /**
+     * Get pitch, e.g. "a++"
+     * @return
+     */
+    public String getPitchOnly() {
+        return toPitchStringBuilder(octave).toString();
+    }
 
     /**
      * Return the leadsheet notation string for this NoteSymbol.
      */
-   public String toString()
-     {
-     return stringRep;
-     }
-
-/**
- * Get duration of a list of NoteSymbols
- * except for trailing rests
- * returning an integer duration
- */
-
-public static int getDuration(Polylist L)
-  {
-  Polylist R = L.reverse();
-
-  // ignore any rests at end (beginning of reverse)
-
-  while( R.nonEmpty() )
-    {
-    NoteSymbol noteSymbol = (NoteSymbol)R.first();
-    if( !noteSymbol.isRest() )
-      {
-      break;
-      }
-    R = R.rest();
+    public String toString() {
+        return stringRep;
     }
 
-  int totalDuration = 0;
+    /**
+     * Get duration of a list of NoteSymbols
+     * except for trailing rests
+     * returning an integer duration
+     */
 
-  while( R.nonEmpty() )
-    {
-    assert(R.first() instanceof NoteSymbol);
-    totalDuration += ((NoteSymbol)R.first()).getDuration();
-    R = R.rest();
+    public static int getDuration(Polylist L) {
+        Polylist R = L.reverse();
+
+        // ignore any rests at end (beginning of reverse)
+
+        while (R.nonEmpty()) {
+            NoteSymbol noteSymbol = (NoteSymbol) R.first();
+            if (!noteSymbol.isRest()) {
+                break;
+            }
+            R = R.rest();
+        }
+
+        int totalDuration = 0;
+
+        while (R.nonEmpty()) {
+            assert (R.first() instanceof NoteSymbol);
+            totalDuration += ((NoteSymbol) R.first()).getDuration();
+            R = R.rest();
+        }
+
+        return totalDuration;
     }
-
-  return totalDuration;
-  }
 
     public static Polylist makePitchStringList(Polylist noteSymbolList) {
         Polylist stringList = Polylist.nil;
-        while(noteSymbolList.nonEmpty()) {
-            stringList = stringList.cons(((NoteSymbol)noteSymbolList.first()).toPitchString());
+        while (noteSymbolList.nonEmpty()) {
+            stringList = stringList.cons(((NoteSymbol) noteSymbolList.first()).toPitchString());
             noteSymbolList = noteSymbolList.rest();
         }
         return stringList.reverse();
     }
 
-public static Polylist makeNoteSymbolList(Polylist stringList)
-  {
-  return makeNoteSymbolList(stringList, 0);
-  }
+    public static Polylist makeNoteSymbolList(Polylist stringList) {
+        return makeNoteSymbolList(stringList, 0);
+    }
 
-/**
- * Make a NoteSymbol list from a list of Strings.
- * As of 6/11/09, a pair (String Probability) can also be used,
- * e.g. to represent the user-declared probability of a color tone.
- @param stringList
- @param rise
- @return
- */
-public static Polylist makeNoteSymbolList(Polylist stringList, int rise)
-  {
-  //System.out.print("makeNoteSymbolList " + stringList);
-  Polylist R = Polylist.nil;
-    while( stringList.nonEmpty() )
-      {
-        Object ob = stringList.first();
-        if( ob instanceof Polylist )
-          {
-            Polylist L = (Polylist) ob;
+    /**
+     * Make a NoteSymbol list from a list of Strings.
+     * As of 6/11/09, a pair (String Probability) can also be used,
+     * e.g. to represent the user-declared probability of a color tone.
+     @param stringList
+     @param rise
+     @return
+     */
+    public static Polylist makeNoteSymbolList(Polylist stringList, int rise) {
+        //System.out.print("makeNoteSymbolList " + stringList);
+        Polylist R = Polylist.nil;
+        while (stringList.nonEmpty()) {
+            Object ob = stringList.first();
+            if (ob instanceof Polylist) {
+                Polylist L = (Polylist) ob;
 
-            // Handle the option of specifying note probabilities in the
-            // vocabulary
-            
-            if( L.length() == 2 && L.first() instanceof String && L.second() instanceof Number )
-              {
-                String string = (String) L.first();
-                Double prob = ((Number) L.second()).doubleValue();
+                // Handle the option of specifying note probabilities in the
+                // vocabulary
+
+                if (L.length() == 2 && L.first() instanceof String && L.second() instanceof Number) {
+                    String string = (String) L.first();
+                    Double prob = ((Number) L.second()).doubleValue();
+                    NoteSymbol ns = makeNoteSymbol(string);
+                    if (ns != null) // Ignore invalid NoteSymbol
+                    {
+                        ns = ns.transpose(rise);
+                        ns.setProbability(prob);
+                        R = R.cons(ns);
+                    }
+                }
+            } else {
+                String string;
+                if (ob instanceof Long) {
+                    // Make an integer into a note for subsequent use
+                    string = DEFAULT_PITCH_SYMBOL + ob.toString();
+                } else {
+                    string = (String) ob;
+                }
                 NoteSymbol ns = makeNoteSymbol(string);
-                if( ns != null ) // Ignore invalid NoteSymbol
-                  {
-                  ns = ns.transpose(rise);
-                  ns.setProbability(prob);
-                  R = R.cons(ns);
-                  }
-              }
-          }
-        else
-          {
-            String string;
-            if( ob instanceof Long )
-              {
-                // Make an integer into a note for subsequent use
-                string = DEFAULT_PITCH_SYMBOL + ob.toString();
-              } 
-            else
-              {
-              string = (String) ob;
-              }
-            NoteSymbol ns = makeNoteSymbol(string);
-            if( ns != null ) // Ignore invalid NoteSymbol
-              {
-              ns = ns.transpose(rise);
-              R = R.cons(ns);
-              }
-          }
-        stringList = stringList.rest();
-      }
+                if (ns != null) // Ignore invalid NoteSymbol
+                {
+                    ns = ns.transpose(rise);
+                    R = R.cons(ns);
+                }
+            }
+            stringList = stringList.rest();
+        }
 //System.out.println(", rise = " + rise + ", bits = " + showContents(noteSymbolListToBitVector(R)));
 //System.out.println(", rise = " + rise + " to " + R.reverse());
-    return R.reverse();
-  }
+        return R.reverse();
+    }
 
-public static Polylist transposeNoteSymbolList(Polylist noteSymbolList, int rise)
-  {
+    public static Polylist transposeNoteSymbolList(Polylist noteSymbolList, int rise) {
 //System.out.print("transposeNoteSymbolList " + noteSymbolList);
-  Polylist R = Polylist.nil;
-  while( noteSymbolList.nonEmpty() )
-    {
-    NoteSymbol ns = (NoteSymbol)noteSymbolList.first();
+        Polylist R = Polylist.nil;
+        while (noteSymbolList.nonEmpty()) {
+            NoteSymbol ns = (NoteSymbol) noteSymbolList.first();
 
-    NoteSymbol noteSymbol = ns.transpose(rise);
-    R = R.cons(noteSymbol);
-    noteSymbolList = noteSymbolList.rest();
-    }
+            NoteSymbol noteSymbol = ns.transpose(rise);
+            R = R.cons(noteSymbol);
+            noteSymbolList = noteSymbolList.rest();
+        }
 //System.out.println(", rise = " + rise + " to " + R.reverse());
-  return R.reverse();
-  }
-
-static Polylist noteSymbolListToStringList(Polylist noteSymbolList, int rise)
-  {
-  Polylist R = Polylist.nil;
-  while( noteSymbolList.nonEmpty() )
-    {
-    NoteSymbol noteSymbol = (NoteSymbol)noteSymbolList.first();
-    String string = noteSymbol.transpose(rise).toString();
-    R = R.cons(string);
-    noteSymbolList = noteSymbolList.rest();
-    }
-  return R.reverse();
-  }
-
-
-/**
- * Convert a list of NoteSymbols, transposed by a specified distance, to a
- * bitVector, i.e. an array of booleans
- * @param noteSymbolList
- * @param rise
- * @return an array of booleans representing the notes in the argument list
- *         after transposition by rise
- */
-static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList, int rise)
-  {
-  boolean result[] = new boolean[OCTAVE];
-  for( int i = 0; i < OCTAVE; i++ )
-    {
-      result[i] = false;
-    }
-  
-  while( noteSymbolList.nonEmpty() )
-    {
-    NoteSymbol noteSymbol = (NoteSymbol)noteSymbolList.first();
-    if( noteSymbol.getPitchClass() != null )
-      {
-      NoteSymbol transposed = noteSymbol.transpose(rise);
-      result[transposed.getPitchClassIndex()%OCTAVE] = true;
-      }
-    noteSymbolList = noteSymbolList.rest();
-    }
-  return result;
-  }
-
-static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList, int rise)
-  {
-    ArrayList<Integer> result = new ArrayList<Integer>();
-    while( noteSymbolList.nonEmpty() )
-    {
-    NoteSymbol noteSymbol = (NoteSymbol)noteSymbolList.first();
-    
-    if( noteSymbol.getPitchClass() != null )
-      {
-      NoteSymbol transposed = noteSymbol.transpose(rise);
-      result.add(transposed.getMIDI());
-      }
-    noteSymbolList = noteSymbolList.rest();
-    }
-    
-  return result;
-  }
-
-static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList)
-  {
-  return noteSymbolListToMIDIarray(noteSymbolList, 0);
-  }
-
-/**
- * Show the contents of an array of booleans;
- * @param array
- * @return 
- */
-static String showContents(boolean[] array)
-  {
-    StringBuilder buffer = new StringBuilder();
-    buffer.append("[");
-    for( boolean x: array)
-      {
-        buffer.append(x ? "1 " : "0 ");
-      }
-    buffer.append("]");
-    return buffer.toString();
-  }
-
-/**
- * Show the notes of an array of booleans;
- * @param array
- * @return 
- */
-static String showNoteContents(boolean[] array)
-  {
-    String[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-    StringBuilder buffer = new StringBuilder();
-    buffer.append("[");
-    for(int i = 0; i < array.length; i++)
-      {
-          if(array[i]==true){
-        buffer.append(notes[i] + " ");
-          }
-      }
-    buffer.append("]");
-    return buffer.toString();
-  }
-
-/**
- * Convert a list of NoteSymbols to a bitVector, i.e. an array of booleans
- * @param noteSymbolList
- * @return an array of booleans representing the notes in the argument list
-  */
-static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList)
-  {
-    return noteSymbolListToBitVector(noteSymbolList, 0);
-  }
-
-  
-  /**
-   * Determines if a string is a valid note in leadsheet notation.
-   */
-
-  public static boolean isValidNote(String string)
-    {
-    return makeNoteSymbol(string, 0) != null;
+        return R.reverse();
     }
 
-
-
-private static final Accidental S = Accidental.SHARP;
-private static final Accidental F = Accidental.FLAT;
-private static final Accidental N = Accidental.NATURAL;
-
-public static final Accidental accidentalByKey[][] = {
-                                         { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* gb */
-                                         { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* db */
-                                         { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* ab */
-                                         { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* eb */
-                                         { N, F,  N,  F,  F,  N, F,  N, F,  N, F, F}, /* bb */
-                                         { N, F,  N,  F,  N,  N, F,  N, F,  N, F, F}, /* f  */
-                                         { N, F,  N,  F,  N,  N, F,  N, F,  N, F, N}, /* c  */
-                                         { N, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* g  */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* d  */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* a  */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* e  */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* b  */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}, /* f# */
-                                         { S, S,  N,  S,  N,  S, S,  N, S,  N, S, N}  /* c# */
-                                         };
-/**
- * newPitchesForNotes makes from a Polylist notes of NoteSymbols a new
- * Polylist of NoteSymbols, with the same durations as in notes, but
- * with pitches determined from Polylist pitches of NoteSymbols.
- * If there are few NoteSymbols in pitches than there are in notes,
- * then pitches is used again from the beginning, and so on, until
- * all NoteSymbols in notes are used up.
- * @param notes
- * @param pitches
- * @return 
- */
-
-static public Polylist newPitchesForNotes(Polylist notes, Polylist pitches)
-  {
-      if( pitches.isEmpty() )
-        {
-          return notes;
+    static Polylist noteSymbolListToStringList(Polylist noteSymbolList, int rise) {
+        Polylist R = Polylist.nil;
+        while (noteSymbolList.nonEmpty()) {
+            NoteSymbol noteSymbol = (NoteSymbol) noteSymbolList.first();
+            String string = noteSymbol.transpose(rise).toString();
+            R = R.cons(string);
+            noteSymbolList = noteSymbolList.rest();
         }
-      Polylist L = notes;
-      Polylist M = Polylist.nil;
-      PolylistBuffer buffer = new PolylistBuffer();
-      int i = 0;
-      while( L.nonEmpty() )
-        {
-        if( M.isEmpty() )
-          {
-            M = pitches;
-          }
-        NoteSymbol noteSymbol = (NoteSymbol)L.first();
-        if( noteSymbol.isRest() )
-          {
-            buffer.append(noteSymbol);
-          }
-        else
-          {
-            NoteSymbol newPitchNoteSymbol = (NoteSymbol)M.first();
-            int dur = noteSymbol.getDuration();
-            if( newPitchNoteSymbol.isRest() )
-              {
-              buffer.append(NoteSymbol.getRestSymbol(dur));
-              }
-            else
-              {
-              buffer.append(NoteSymbol.makeNoteSymbol(newPitchNoteSymbol.getMIDI(), dur));
-              }
-          }
-        L = L.rest();
-        M = M.rest();
+        return R.reverse();
+    }
+
+
+    /**
+     * Convert a list of NoteSymbols, transposed by a specified distance, to a
+     * bitVector, i.e. an array of booleans
+     * @param noteSymbolList
+     * @param rise
+     * @return an array of booleans representing the notes in the argument list
+     *         after transposition by rise
+     */
+    static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList, int rise) {
+        boolean result[] = new boolean[OCTAVE];
+        for (int i = 0; i < OCTAVE; i++) {
+            result[i] = false;
         }
-      return buffer.toPolylist();
-  }
+
+        while (noteSymbolList.nonEmpty()) {
+            NoteSymbol noteSymbol = (NoteSymbol) noteSymbolList.first();
+            if (noteSymbol.getPitchClass() != null) {
+                NoteSymbol transposed = noteSymbol.transpose(rise);
+                result[transposed.getPitchClassIndex() % OCTAVE] = true;
+            }
+            noteSymbolList = noteSymbolList.rest();
+        }
+        return result;
+    }
+
+    static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList, int rise) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        while (noteSymbolList.nonEmpty()) {
+            NoteSymbol noteSymbol = (NoteSymbol) noteSymbolList.first();
+
+            if (noteSymbol.getPitchClass() != null) {
+                NoteSymbol transposed = noteSymbol.transpose(rise);
+                result.add(transposed.getMIDI());
+            }
+            noteSymbolList = noteSymbolList.rest();
+        }
+
+        return result;
+    }
+
+    static ArrayList<Integer> noteSymbolListToMIDIarray(Polylist noteSymbolList) {
+        return noteSymbolListToMIDIarray(noteSymbolList, 0);
+    }
+
+    /**
+     * Show the contents of an array of booleans;
+     * @param array
+     * @return
+     */
+    static String showContents(boolean[] array) {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("[");
+        for (boolean x : array) {
+            buffer.append(x ? "1 " : "0 ");
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+
+    /**
+     * Show the notes of an array of booleans;
+     * @param array
+     * @return
+     */
+    static String showNoteContents(boolean[] array) {
+        String[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("[");
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == true) {
+                buffer.append(notes[i] + " ");
+            }
+        }
+        buffer.append("]");
+        return buffer.toString();
+    }
+
+    /**
+     * Convert a list of NoteSymbols to a bitVector, i.e. an array of booleans
+     * @param noteSymbolList
+     * @return an array of booleans representing the notes in the argument list
+     */
+    static boolean[] noteSymbolListToBitVector(Polylist noteSymbolList) {
+        return noteSymbolListToBitVector(noteSymbolList, 0);
+    }
+
+
+    /**
+     * Determines if a string is a valid note in leadsheet notation.
+     */
+
+    public static boolean isValidNote(String string) {
+        return makeNoteSymbol(string, 0) != null;
+    }
+
+
+    private static final Accidental S = Accidental.SHARP;
+    private static final Accidental F = Accidental.FLAT;
+    private static final Accidental N = Accidental.NATURAL;
+
+    public static final Accidental accidentalByKey[][] = {
+            {N, F, N, F, F, N, F, N, F, N, F, F}, /* gb */
+            {N, F, N, F, F, N, F, N, F, N, F, F}, /* db */
+            {N, F, N, F, F, N, F, N, F, N, F, F}, /* ab */
+            {N, F, N, F, F, N, F, N, F, N, F, F}, /* eb */
+            {N, F, N, F, F, N, F, N, F, N, F, F}, /* bb */
+            {N, F, N, F, N, N, F, N, F, N, F, F}, /* f  */
+            {N, F, N, F, N, N, F, N, F, N, F, N}, /* c  */
+            {N, S, N, S, N, S, S, N, S, N, S, N}, /* g  */
+            {S, S, N, S, N, S, S, N, S, N, S, N}, /* d  */
+            {S, S, N, S, N, S, S, N, S, N, S, N}, /* a  */
+            {S, S, N, S, N, S, S, N, S, N, S, N}, /* e  */
+            {S, S, N, S, N, S, S, N, S, N, S, N}, /* b  */
+            {S, S, N, S, N, S, S, N, S, N, S, N}, /* f# */
+            {S, S, N, S, N, S, S, N, S, N, S, N}  /* c# */
+    };
+
+    /**
+     * newPitchesForNotes makes from a Polylist notes of NoteSymbols a new
+     * Polylist of NoteSymbols, with the same durations as in notes, but
+     * with pitches determined from Polylist pitches of NoteSymbols.
+     * If there are few NoteSymbols in pitches than there are in notes,
+     * then pitches is used again from the beginning, and so on, until
+     * all NoteSymbols in notes are used up.
+     * @param notes
+     * @param pitches
+     * @return
+     */
+
+    static public Polylist newPitchesForNotes(Polylist notes, Polylist pitches) {
+        if (pitches.isEmpty()) {
+            return notes;
+        }
+        Polylist L = notes;
+        Polylist M = Polylist.nil;
+        PolylistBuffer buffer = new PolylistBuffer();
+        int i = 0;
+        while (L.nonEmpty()) {
+            if (M.isEmpty()) {
+                M = pitches;
+            }
+            NoteSymbol noteSymbol = (NoteSymbol) L.first();
+            if (noteSymbol.isRest()) {
+                buffer.append(noteSymbol);
+            } else {
+                NoteSymbol newPitchNoteSymbol = (NoteSymbol) M.first();
+                int dur = noteSymbol.getDuration();
+                if (newPitchNoteSymbol.isRest()) {
+                    buffer.append(NoteSymbol.getRestSymbol(dur));
+                } else {
+                    buffer.append(NoteSymbol.makeNoteSymbol(newPitchNoteSymbol.getMIDI(), dur));
+                }
+            }
+            L = L.rest();
+            M = M.rest();
+        }
+        return buffer.toPolylist();
+    }
 }

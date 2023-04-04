@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2012-2014 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of merchantability or fitness
  * for a particular purpose. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * Impro-Visor; if not, write to the Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110-1301 USA
@@ -31,11 +31,13 @@ import imp.gui.WindowRegistry;
 import imp.midi.MidiChannelInfo.ChannelInfo;
 import imp.util.LeadsheetFileView;
 import imp.util.MidiFilter;
+
 import java.io.File;
 import java.util.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+
 import jm.midi.MidiSynth;
 
 /**
@@ -45,180 +47,161 @@ import jm.midi.MidiSynth;
 
 @SuppressWarnings("serial")
 
-public class MidiImportFrame extends javax.swing.JDialog implements Constants
-{
-Notate notate;
-File file;
-File midiDirectory;
-MidiImport midiImport;
-DefaultListModel trackListModel;
-private LinkedList<MidiImportRecord> melodies;
-MelodyPart selectedPart = null;
+public class MidiImportFrame extends javax.swing.JDialog implements Constants {
+    Notate notate;
+    File file;
+    File midiDirectory;
+    MidiImport midiImport;
+    DefaultListModel trackListModel;
+    private LinkedList<MidiImportRecord> melodies;
+    MelodyPart selectedPart = null;
 
-// used in chord extract:
-private int melodyChannel = -1;
-private int bassChannel = -1;
-private int chordChannel = -1;
-private int chordResolution = WHOLE;
-private MidiChannelInfo.ChannelInfo[] channelInfo;
+    // used in chord extract:
+    private int melodyChannel = -1;
+    private int bassChannel = -1;
+    private int chordChannel = -1;
+    private int chordResolution = WHOLE;
+    private MidiChannelInfo.ChannelInfo[] channelInfo;
 
-String filenameDisplay;
-private JFileChooser midiFileChooser = new JFileChooser();
+    String filenameDisplay;
+    private JFileChooser midiFileChooser = new JFileChooser();
 
 
-/**
- * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
- * We also use a jMusic score, in addition to an Impro-Visor score later.
- */
+    /**
+     * Note that this is a jMusic MidiSynth and not an Impro-Visor MidiSynth.
+     * We also use a jMusic score, in addition to an Impro-Visor score later.
+     */
 
-MidiSynth jmSynth;
-jm.music.data.Score jmScore;
+    MidiSynth jmSynth;
+    jm.music.data.Score jmScore;
 
-int INITIAL_RESOLUTION_COMBO = 3; // 32nd note triplets
+    int INITIAL_RESOLUTION_COMBO = 3; // 32nd note triplets
 
-/**
- * Creates new form MidiImportFrame.
- * Imported choruses are sent to notate once they are selected from the menu.
- */
-public MidiImportFrame(Notate notate)
-  {
-    trackListModel = new DefaultListModel();
-    initComponents();
-    this.notate = notate;
-    midiImport = new MidiImport();
-    initFileChooser();
+    /**
+     * Creates new form MidiImportFrame.
+     * Imported choruses are sent to notate once they are selected from the menu.
+     */
+    public MidiImportFrame(Notate notate) {
+        trackListModel = new DefaultListModel();
+        initComponents();
+        this.notate = notate;
+        midiImport = new MidiImport();
+        initFileChooser();
 
-    WindowRegistry.registerWindow(this);
-    
-    volumeSpinner.setVisible(false); // volume setting doesn't work yet
-    
-    noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
-    
-    midiDirectory = ImproVisor.getMidiDirectory();
-  }
+        WindowRegistry.registerWindow(this);
 
-public void loadFileAndMenu()
-  {
-    getFile();
-    if( file != null )
-      {
-      setTitle("MIDI Import: " + getFilenameDisplay());
-      loadFile();
-      loadMenu();
-      initChannelInfo(file.getAbsolutePath());
-      }
-  }
+        volumeSpinner.setVisible(false); // volume setting doesn't work yet
 
-public void getFile()
-  {
-    file = null;
-    try
-      {
-        midiFileChooser.setCurrentDirectory(midiDirectory);
-        int midiChoice = midiFileChooser.showOpenDialog(notate);
-        if( midiChoice == JFileChooser.CANCEL_OPTION )
-          {
-            return;
-          }
-        if( midiChoice == JFileChooser.APPROVE_OPTION )
-          {
-            file = midiFileChooser.getSelectedFile();
-            midiDirectory = midiFileChooser.getCurrentDirectory();
-          }
-        filenameDisplay = file.getName();
-      }
-    catch( Exception e )
-      {
-      }
-  }
+        noteResolutionComboBox.setSelectedIndex(NoteResolutionComboBoxModel.getSelectedIndex());
 
-public void loadFile()
-  {
-  midiImport.importMidi(file); 
-  }
-
-public void loadMenu()
-  {
-  melodies = midiImport.getMelodies();
-  
-  if( melodies != null )
-    {
-    setResolution();
-    trackListModel.clear();
-    
-    int channelNumber = 0;
-    for( final MidiImportRecord record: melodies )
-      {
-        if(record.getChannel() > channelNumber )
-          {
-            trackListModel.addElement("-------------------------------------");
-            channelNumber = record.getChannel();
-          }
-        trackListModel.addElement(record);
-      }
-    selectTrack(0);
+        midiDirectory = ImproVisor.getMidiDirectory();
     }
-  }
 
-private void reloadMenu()
-  {
-    //midiImport.importMidi();
-    setResolution();
-    int saveIndex = importedTrackList.getSelectedIndex();
-    midiImport.scoreToMelodies();
-    
-    loadMenu();
-    selectTrack(saveIndex);
-    
-  }
-
-
-private void initFileChooser()
-  {
-    LeadsheetFileView fileView = new LeadsheetFileView();
-    midiFileChooser.setCurrentDirectory(ImproVisor.getUserDirectory());
-    midiFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-    midiFileChooser.setDialogTitle("Open MIDI file");
-    midiFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    midiFileChooser.resetChoosableFileFilters();
-    midiFileChooser.addChoosableFileFilter(new MidiFilter());
-    midiFileChooser.setFileView(fileView);
-  }
-
-
-public String getFilenameDisplay()
-  {
-    return filenameDisplay;
-  }
-
-private void initChannelInfo(String filename)
-{
-    MidiChannelInfo midiChannelInfo = new MidiChannelInfo(filename);
-    channelInfo = midiChannelInfo.getChannelInfo();
-    bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
-    chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
-    melodyChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
-
-    bassChannel = midiChannelInfo.getBassChannel() + 1;
-    chordChannel = midiChannelInfo.getChordChannel() + 1;
-    melodyChannel = -1;
-    melodyChannelNumberComboBox.setSelectedIndex(0);
-    for (int j = 0; j < channelInfo.length; j++) {
-        if (channelInfo[j].getChannelNum() == bassChannel) {
-            bassChannelNumberComboBox.setSelectedItem(channelInfo[j]);
-        }
-        if (channelInfo[j].getChannelNum() == chordChannel) {
-            chordChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+    public void loadFileAndMenu() {
+        getFile();
+        if (file != null) {
+            setTitle("MIDI Import: " + getFilenameDisplay());
+            loadFile();
+            loadMenu();
+            initChannelInfo(file.getAbsolutePath());
         }
     }
-}
 
-/**
- * This method is called from within the constructor to initialize the form.
- * WARNING: Do NOT modify this code. The content of this method is always
- * regenerated by the Form Editor.
- */
-@SuppressWarnings("unchecked")
+    public void getFile() {
+        file = null;
+        try {
+            midiFileChooser.setCurrentDirectory(midiDirectory);
+            int midiChoice = midiFileChooser.showOpenDialog(notate);
+            if (midiChoice == JFileChooser.CANCEL_OPTION) {
+                return;
+            }
+            if (midiChoice == JFileChooser.APPROVE_OPTION) {
+                file = midiFileChooser.getSelectedFile();
+                midiDirectory = midiFileChooser.getCurrentDirectory();
+            }
+            filenameDisplay = file.getName();
+        } catch (Exception e) {
+        }
+    }
+
+    public void loadFile() {
+        midiImport.importMidi(file);
+    }
+
+    public void loadMenu() {
+        melodies = midiImport.getMelodies();
+
+        if (melodies != null) {
+            setResolution();
+            trackListModel.clear();
+
+            int channelNumber = 0;
+            for (final MidiImportRecord record : melodies) {
+                if (record.getChannel() > channelNumber) {
+                    trackListModel.addElement("-------------------------------------");
+                    channelNumber = record.getChannel();
+                }
+                trackListModel.addElement(record);
+            }
+            selectTrack(0);
+        }
+    }
+
+    private void reloadMenu() {
+        //midiImport.importMidi();
+        setResolution();
+        int saveIndex = importedTrackList.getSelectedIndex();
+        midiImport.scoreToMelodies();
+
+        loadMenu();
+        selectTrack(saveIndex);
+
+    }
+
+
+    private void initFileChooser() {
+        LeadsheetFileView fileView = new LeadsheetFileView();
+        midiFileChooser.setCurrentDirectory(ImproVisor.getUserDirectory());
+        midiFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        midiFileChooser.setDialogTitle("Open MIDI file");
+        midiFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        midiFileChooser.resetChoosableFileFilters();
+        midiFileChooser.addChoosableFileFilter(new MidiFilter());
+        midiFileChooser.setFileView(fileView);
+    }
+
+
+    public String getFilenameDisplay() {
+        return filenameDisplay;
+    }
+
+    private void initChannelInfo(String filename) {
+        MidiChannelInfo midiChannelInfo = new MidiChannelInfo(filename);
+        channelInfo = midiChannelInfo.getChannelInfo();
+        bassChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+        chordChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+        melodyChannelNumberComboBox.setModel(new javax.swing.DefaultComboBoxModel(channelInfo));
+
+        bassChannel = midiChannelInfo.getBassChannel() + 1;
+        chordChannel = midiChannelInfo.getChordChannel() + 1;
+        melodyChannel = -1;
+        melodyChannelNumberComboBox.setSelectedIndex(0);
+        for (int j = 0; j < channelInfo.length; j++) {
+            if (channelInfo[j].getChannelNum() == bassChannel) {
+                bassChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+            }
+            if (channelInfo[j].getChannelNum() == chordChannel) {
+                chordChannelNumberComboBox.setSelectedItem(channelInfo[j]);
+            }
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
@@ -283,6 +266,7 @@ private void initChannelInfo(String filename)
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 importTrackSelected(evt);
             }
+
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 importedTrackListMouseClicked(evt);
             }
@@ -574,26 +558,25 @@ private void initChannelInfo(String filename)
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
-  {//GEN-HEADEREND:event_importTrackSelected
-  setSelectedTrack();
-  //playSelectedTrack();
-  }//GEN-LAST:event_importTrackSelected
+    private void importTrackSelected(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importTrackSelected
+    {//GEN-HEADEREND:event_importTrackSelected
+        setSelectedTrack();
+        //playSelectedTrack();
+    }//GEN-LAST:event_importTrackSelected
 
-private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
-  {//GEN-HEADEREND:event_importedTrackListMouseClicked
-    setSelectedTrack();
- 
-    if( evt.getClickCount() > 1 )
-      {
-      importSelectedTrack();
-      }
-  }//GEN-LAST:event_importedTrackListMouseClicked
+    private void importedTrackListMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_importedTrackListMouseClicked
+    {//GEN-HEADEREND:event_importedTrackListMouseClicked
+        setSelectedTrack();
 
-private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openAnotherFileMIActionPerformed
-  {//GEN-HEADEREND:event_openAnotherFileMIActionPerformed
-    loadFileAndMenu();
-  }//GEN-LAST:event_openAnotherFileMIActionPerformed
+        if (evt.getClickCount() > 1) {
+            importSelectedTrack();
+        }
+    }//GEN-LAST:event_importedTrackListMouseClicked
+
+    private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_openAnotherFileMIActionPerformed
+    {//GEN-HEADEREND:event_openAnotherFileMIActionPerformed
+        loadFileAndMenu();
+    }//GEN-LAST:event_openAnotherFileMIActionPerformed
 
     private void stopPlayingTrackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopPlayingTrackButtonActionPerformed
         stopPlaying();
@@ -656,155 +639,138 @@ private void openAnotherFileMIActionPerformed(java.awt.event.ActionEvent evt)//G
         reloadMenu();
     }//GEN-LAST:event_noteResolutionComboBoxChanged
 
-private void setJmVolume()
-  {
-   int value = (Integer)volumeSpinner.getValue();
-   if( jmScore != null )
-     {
-     //jmScore.setVolume(value);
-   
-     //System.out.println("jmVolume = " + jmScore.getVolume());
-     }
-  }
+    private void setJmVolume() {
+        int value = (Integer) volumeSpinner.getValue();
+        if (jmScore != null) {
+            //jmScore.setVolume(value);
 
-
-private void setResolution()
-  {
-    int index = noteResolutionComboBox.getSelectedIndex();
-    NoteResolutionComboBoxModel.setSelectedIndex(index);
-    midiImport.setResolution(NoteResolutionComboBoxModel.getResolution());
-  }
-
-/**
- * This sets the start and end beat spinners, as well as getting the track
- * as an Impro-Visor part.
- */
-private void setSelectedTrack()
-  {
-    int index = importedTrackList.getSelectedIndex();
-    selectTrack(index);  
-  }
-
-private void selectTrack(int index)
-  {
-  if( index < 0 || index >= trackListModel.size() )
-    {
-      return;
-    }
-  Object ob = trackListModel.get(index);
-  if( ob instanceof MidiImportRecord )
-      {
-       importedTrackList.setSelectedIndex(index); // establish, if not already
-       MidiImportRecord record = (MidiImportRecord)ob;
-       selectedPart = record.getPart();
-       
-       int initialRestSlots = record.getInitialRestSlots();
-       int beatsPerMeasure = (Integer)meterSpinner.getValue();
-       int initialRestBeats = initialRestSlots/BEAT;
-       int initialRestMeasures = initialRestBeats/beatsPerMeasure;
-       int initialIntegralBeats = beatsPerMeasure*initialRestMeasures;
-       int startBeat = 1+initialIntegralBeats;
-
-       startBeatSpinner.setValue(startBeat);
-       
-       int numBeats = record.getBeats();
-       endBeatSpinner.setValue(numBeats);
-       ((javax.swing.SpinnerNumberModel)endBeatSpinner.getModel()).setMaximum(numBeats);
-       }
-  }
-
-private MelodyPart getSelectedTrackMelody()
-  {
-    if( selectedPart != null )
-      {
-          int startBeat = (Integer) startBeatSpinner.getValue() - 1;
-          int endBeat = (Integer) endBeatSpinner.getValue();
-          endBeatSpinner.setValue(endBeat);
-          int startSlot = BEAT * startBeat;
-          int endSlot = (BEAT * endBeat) - 1;
-      return selectedPart.copy(startSlot, endSlot);
-      }
-    return null;
-  }
-
-
-private void importSelectedTrack()
-  {
-    MelodyPart part = getSelectedTrackMelody();
-    
-    if( part != null )
-      {
-        notate.addChorus(part);
-        notate.requestFocusInWindow();
-      }
-  }
-
-
-private void playSelectedTrack()
-  {
-   MelodyPart part = getSelectedTrackMelody();
-    
-    if( part != null )
-      {
-        stopPlaying();
-        Score score = new Score();
-        score.addPart(part);
-        //System.out.println("score = " + score);
-        notate.playAscore(score);
-      }
-  }
-
-private void stopPlaying()
-  {
-    // Stop both possible synths, the track one and the score one.
-    notate.stopPlayAscore();
-    if( jmSynth != null )
-      {
-        jmSynth.stop();
-      }
-  }
-
-//method which extracts the chords from the given midi file, must specify bass track, chord track, and/or melody track
-private void extractChords()
-{
-    int startBeat = (Integer) startBeatSpinner.getValue();
-    int endBeat = (Integer) endBeatSpinner.getValue();
-    
-    if (melodyChannel != -1) {
-        int startSlot = BEAT*(startBeat-1);
-        LinkedList<MidiImportRecord> newMelodies = midiImport.getMelodies();
-        //create two separate arrays for the bass MelodyParts and the chord MelodyParts
-        List<MelodyPart> melodyMelodyParts = new ArrayList<MelodyPart>();
-        MelodyPart melodyPart;
-        for (final MidiImportRecord newRecord : newMelodies) {
-            melodyPart = newRecord.getPart();
-            int endSlot = Math.min(melodyPart.getSize() - 1, (BEAT * endBeat) - 1);
-            if (newRecord.getChannel() == melodyChannel && melodyPart != null) {
-                melodyPart = melodyPart.copy(startSlot, endSlot);
-                melodyMelodyParts.add(melodyPart);
-            }
+            //System.out.println("jmVolume = " + jmScore.getVolume());
         }
-        notate.addChorus(melodyMelodyParts.get(0));
-        notate.requestFocusInWindow();
     }
 
-    ChordExtract chordextract = new ChordExtract(file.getPath(), chordResolution,
-            bassChannel, chordChannel);
-    ChordPart chords = chordextract.extract(startBeat, endBeat);
 
-    if (chords != null) {
-        notate.setChordProg(chords);
+    private void setResolution() {
+        int index = noteResolutionComboBox.getSelectedIndex();
+        NoteResolutionComboBoxModel.setSelectedIndex(index);
+        midiImport.setResolution(NoteResolutionComboBoxModel.getResolution());
     }
-}
 
-@Override
-public void dispose()
-  {
-    stopPlaying();
-    notate.closeMidiImportFrame();
-    WindowRegistry.unregisterWindow(this);
-    super.dispose();
-  }
+    /**
+     * This sets the start and end beat spinners, as well as getting the track
+     * as an Impro-Visor part.
+     */
+    private void setSelectedTrack() {
+        int index = importedTrackList.getSelectedIndex();
+        selectTrack(index);
+    }
+
+    private void selectTrack(int index) {
+        if (index < 0 || index >= trackListModel.size()) {
+            return;
+        }
+        Object ob = trackListModel.get(index);
+        if (ob instanceof MidiImportRecord) {
+            importedTrackList.setSelectedIndex(index); // establish, if not already
+            MidiImportRecord record = (MidiImportRecord) ob;
+            selectedPart = record.getPart();
+
+            int initialRestSlots = record.getInitialRestSlots();
+            int beatsPerMeasure = (Integer) meterSpinner.getValue();
+            int initialRestBeats = initialRestSlots / BEAT;
+            int initialRestMeasures = initialRestBeats / beatsPerMeasure;
+            int initialIntegralBeats = beatsPerMeasure * initialRestMeasures;
+            int startBeat = 1 + initialIntegralBeats;
+
+            startBeatSpinner.setValue(startBeat);
+
+            int numBeats = record.getBeats();
+            endBeatSpinner.setValue(numBeats);
+            ((javax.swing.SpinnerNumberModel) endBeatSpinner.getModel()).setMaximum(numBeats);
+        }
+    }
+
+    private MelodyPart getSelectedTrackMelody() {
+        if (selectedPart != null) {
+            int startBeat = (Integer) startBeatSpinner.getValue() - 1;
+            int endBeat = (Integer) endBeatSpinner.getValue();
+            endBeatSpinner.setValue(endBeat);
+            int startSlot = BEAT * startBeat;
+            int endSlot = (BEAT * endBeat) - 1;
+            return selectedPart.copy(startSlot, endSlot);
+        }
+        return null;
+    }
+
+
+    private void importSelectedTrack() {
+        MelodyPart part = getSelectedTrackMelody();
+
+        if (part != null) {
+            notate.addChorus(part);
+            notate.requestFocusInWindow();
+        }
+    }
+
+
+    private void playSelectedTrack() {
+        MelodyPart part = getSelectedTrackMelody();
+
+        if (part != null) {
+            stopPlaying();
+            Score score = new Score();
+            score.addPart(part);
+            //System.out.println("score = " + score);
+            notate.playAscore(score);
+        }
+    }
+
+    private void stopPlaying() {
+        // Stop both possible synths, the track one and the score one.
+        notate.stopPlayAscore();
+        if (jmSynth != null) {
+            jmSynth.stop();
+        }
+    }
+
+    //method which extracts the chords from the given midi file, must specify bass track, chord track, and/or melody track
+    private void extractChords() {
+        int startBeat = (Integer) startBeatSpinner.getValue();
+        int endBeat = (Integer) endBeatSpinner.getValue();
+
+        if (melodyChannel != -1) {
+            int startSlot = BEAT * (startBeat - 1);
+            LinkedList<MidiImportRecord> newMelodies = midiImport.getMelodies();
+            //create two separate arrays for the bass MelodyParts and the chord MelodyParts
+            List<MelodyPart> melodyMelodyParts = new ArrayList<MelodyPart>();
+            MelodyPart melodyPart;
+            for (final MidiImportRecord newRecord : newMelodies) {
+                melodyPart = newRecord.getPart();
+                int endSlot = Math.min(melodyPart.getSize() - 1, (BEAT * endBeat) - 1);
+                if (newRecord.getChannel() == melodyChannel && melodyPart != null) {
+                    melodyPart = melodyPart.copy(startSlot, endSlot);
+                    melodyMelodyParts.add(melodyPart);
+                }
+            }
+            notate.addChorus(melodyMelodyParts.get(0));
+            notate.requestFocusInWindow();
+        }
+
+        ChordExtract chordextract = new ChordExtract(file.getPath(), chordResolution,
+                bassChannel, chordChannel);
+        ChordPart chords = chordextract.extract(startBeat, endBeat);
+
+        if (chords != null) {
+            notate.setChordProg(chords);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        stopPlaying();
+        notate.closeMidiImportFrame();
+        WindowRegistry.unregisterWindow(this);
+        super.dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu MIDIimportFileMenu;

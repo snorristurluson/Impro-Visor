@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2019 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,6 +23,7 @@ package imp.com;
 import imp.data.*;
 import imp.util.*;
 import imp.util.BasicEditor;
+
 import java.io.*;
 
 /**
@@ -31,7 +32,7 @@ import java.io.*;
  * @see         CommandManager
  * @see         Score
  * @see         File
- * @author      Robert Keller, following OpenLeadsheetCommand
+ * @author Robert Keller, following OpenLeadsheetCommand
  */
 public class GrammarToEditorCommand implements Command {
 
@@ -71,8 +72,7 @@ public class GrammarToEditorCommand implements Command {
             BufferedReader in = new BufferedReader(filereader);
             String c = in.readLine();
 
-            while (c != null)
-            {
+            while (c != null) {
                 rules.append(c);
                 rules.append("\n");
                 c = in.readLine();
@@ -89,8 +89,8 @@ public class GrammarToEditorCommand implements Command {
      * Undo unsupported.
      */
     public void undo() {
-        throw new 
-            UnsupportedOperationException("Undo unsupported for GetEditorContents.");
+        throw new
+                UnsupportedOperationException("Undo unsupported for GetEditorContents.");
     }
 
     /**
@@ -98,9 +98,9 @@ public class GrammarToEditorCommand implements Command {
      */
     public void redo() {
         throw new
-            UnsupportedOperationException("Redo unsupported for GetEditorContents.");
+                UnsupportedOperationException("Redo unsupported for GetEditorContents.");
     }
-    
+
     public boolean isUndoable() {
         return undoable;
     }

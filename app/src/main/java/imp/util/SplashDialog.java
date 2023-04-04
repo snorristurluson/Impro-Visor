@@ -1,19 +1,19 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2009 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
-
+ * <p>
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -24,15 +24,17 @@ package imp.util;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
 import java.awt.*;
+
 import imp.gui.*;
 
 /**
  *
- * @author  dmorrison
+ * @author dmorrison
  */
 public class SplashDialog extends JDialog {
     SplashPanel sp;
     Image splash;
+
     /** Creates new form SplashDialog */
     public SplashDialog(JFrame parent, boolean modal, boolean showSplash) {
         super(parent, modal);
@@ -44,7 +46,7 @@ public class SplashDialog extends JDialog {
         } catch (Exception e) {
         }
         if (showSplash) {
-            
+
             splash = ToolkitImages.getInstance().getSplash();
             sp = new SplashPanel();
             sp.setSize(300, 200);
@@ -53,30 +55,30 @@ public class SplashDialog extends JDialog {
             gbc.gridy = 0;
             gbc.weightx = 1.0;
             gbc.weighty = 1.0;
-            gbc.insets = new Insets(2,2,0,2);
+            gbc.insets = new Insets(2, 2, 0, 2);
             gbc.fill = GridBagConstraints.BOTH;
             getContentPane().add(sp, gbc);
             getContentPane().setBackground(Color.black);
-            setSize(300,210);
+            setSize(300, 210);
         } else {
             setSize(150, 50);
         }
     }
-    
+
     public class SplashPanel extends JPanel {
         public SplashPanel() {
         }
-        
+
         public void paintComponent(Graphics g) {
             super.paintComponents(g);
             g.drawImage(splash, 0, 0, 300, 200, this);
         }
     }
-    
+
     public void setText(String s) {
         loadString.setText(s);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -126,10 +128,10 @@ public class SplashDialog extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar loadProgressBar;
     private javax.swing.JLabel loadString;
     // End of variables declaration//GEN-END:variables
-    
+
 }

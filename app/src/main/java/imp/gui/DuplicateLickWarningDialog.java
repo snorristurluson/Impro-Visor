@@ -1,18 +1,18 @@
 /**
  * This Java Class is part of the Impro-Visor Application
- *
+ * <p>
  * Copyright (C) 2005-2017 Robert Keller and Harvey Mudd College
- *
+ * <p>
  * Impro-Visor is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * Impro-Visor is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * merchantability or fitness for a particular purpose.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with Impro-Visor; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -29,15 +29,13 @@ import static imp.Constants.OVERWRITE;
  *
  * @author keller
  */
-public class DuplicateLickWarningDialog extends javax.swing.JDialog
-  {
+public class DuplicateLickWarningDialog extends javax.swing.JDialog {
     Notate notate;
-    
+
     /**
      * Creates new form DuplicateLickWarningDialog
      */
-    public DuplicateLickWarningDialog(Notate notate, boolean modal)
-    {
+    public DuplicateLickWarningDialog(Notate notate, boolean modal) {
         super(notate, modal);
         initComponents();
         this.notate = notate;
@@ -51,8 +49,7 @@ public class DuplicateLickWarningDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         duplicateLickLabel = new javax.swing.JLabel();
@@ -103,10 +100,8 @@ public class DuplicateLickWarningDialog extends javax.swing.JDialog
         saveDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         saveDuplicate.setDefaultCapable(false);
         saveDuplicate.setOpaque(true);
-        saveDuplicate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveDuplicateActionPerformed(evt);
             }
         });
@@ -126,10 +121,8 @@ public class DuplicateLickWarningDialog extends javax.swing.JDialog
         ignoreDuplicate.setToolTipText("Do not save the duplicate in the vocabulary.");
         ignoreDuplicate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ignoreDuplicate.setOpaque(true);
-        ignoreDuplicate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        ignoreDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ignoreDuplicateActionPerformed(evt);
             }
         });
@@ -159,10 +152,9 @@ public class DuplicateLickWarningDialog extends javax.swing.JDialog
         setVisible(false);
     }//GEN-LAST:event_saveDuplicateActionPerformed
 
-public void setMessage(String text)
-{
-    duplicateLickText.setText(text);
-}
+    public void setMessage(String text) {
+        duplicateLickText.setText(text);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel duplicateLickLabel;
@@ -171,4 +163,4 @@ public void setMessage(String text)
     private javax.swing.JButton ignoreDuplicate;
     private javax.swing.JButton saveDuplicate;
     // End of variables declaration//GEN-END:variables
-  }
+}
