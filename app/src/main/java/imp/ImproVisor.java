@@ -37,7 +37,6 @@ import java.io.IOException;
 import javax.sound.midi.InvalidMidiDataException;
 
 import polya.*;
-import imp.osc.*;
 
 /**
  * Impro-Visor main class
@@ -744,25 +743,4 @@ public class ImproVisor implements Constants {
     public static Color getWindowFrameColor() {
         return windowFrameColor;
     }
-
-    //
-// Muse object and functions
-//
-    static MuseReceiver museReceiver;
-
-    public static MuseReceiver getMuseReceiver() {
-        if (!museIsUsed()) {
-            museReceiver = new MuseReceiver();
-        }
-        return museReceiver;
-    }
-
-    public static boolean museIsUsed() {
-        return museReceiver != null;
-    }
-
-    public static void resetMuse() {
-        museReceiver.resetCalibration();
-    }
-
 }
