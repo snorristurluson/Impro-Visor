@@ -4497,7 +4497,7 @@ public class ThemeWeaver extends javax.swing.JDialog {
         }
 
         //use Theme Use Interval from text field
-        int themeInterval = new Integer(themeIntervalTextField.getText());
+        int themeInterval = Integer.parseInt(themeIntervalTextField.getText());
         //int themeIntervalUse = themeInterval * 120;//comment 6.4.15: this is assuming 120 bpm
         int tempo = (int) notate.getTempo();
         int themeIntervalUse = themeInterval * tempo;//change made 6.4.15
@@ -4506,7 +4506,7 @@ public class ThemeWeaver extends javax.swing.JDialog {
             //loop through the remaining length of the score
             int beat = i / tempo;//this is the beat number that we're on
             int bar = 1 + (beat / notate.getBeatsPerMeasure());//this is the bar number we're on
-            Integer noThemevalue = (int) (10 * themeUses.size() * (1.0 - Double.valueOf(themeProbTextField.getText())));
+            int noThemevalue = (int) (10 * themeUses.size() * (1.0 - Double.parseDouble(themeProbTextField.getText())));
 
             int themei = random.nextInt(probUsetotal + noThemevalue);
             //System.out.println(themei);
@@ -4624,7 +4624,7 @@ public class ThemeWeaver extends javax.swing.JDialog {
         imp.ImproVisor.setPlayEntrySounds(false); //don't play insertions yet
 
         //use Theme Use Interval from text field
-        int themeInterval = new Integer(themeIntervalTextField.getText());
+        int themeInterval = Integer.parseInt(themeIntervalTextField.getText());
 
         int slots = 120;//number of slots in a beat
 
@@ -4640,7 +4640,7 @@ public class ThemeWeaver extends javax.swing.JDialog {
         while (i < notate.getScoreLength()) {//increment through and fill the whole score
             prevSection = newMelody;
 
-            themeInterval = new Integer(themeIntervalTextField.getText());
+            themeInterval = Integer.parseInt(themeIntervalTextField.getText());
             double randProbNT = random.nextDouble();//random number used for no-theme
 
             int beat = i / slots;//this is the beat number that we're on

@@ -2600,8 +2600,8 @@ public class LickgenFrame
         layerDataTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]
                         {
-                                {new Integer(1), new Integer(64), "Logsig"},
-                                {new Integer(2), new Integer(1), "Logsig"}
+                                {1, 64, "Logsig"},
+                                {2, 1, "Logsig"}
                         },
                 new String[]
                         {
@@ -3918,7 +3918,7 @@ public class LickgenFrame
         DefaultTableModel model = (DefaultTableModel) layerDataTable.getModel();
 
         int nextIndex = layerDataTable.getRowCount();
-        model.insertRow(nextIndex - 1, new Object[]{nextIndex, new Integer(64), "Logsig"});
+        model.insertRow(nextIndex - 1, new Object[]{nextIndex, 64, "Logsig"});
         model.setValueAt(nextIndex + 1, nextIndex, 0);
         model.fireTableRowsInserted(nextIndex, nextIndex);
         layerDataTable.getSelectionModel().setSelectionInterval(nextIndex, nextIndex);
@@ -6268,7 +6268,7 @@ public class LickgenFrame
     // Re-number all rows, reseting the index of each row
     private void resetIndexColumn(DefaultTableModel model) {
         for (int i = 0; i < layerDataTable.getRowCount(); i++) {
-            model.setValueAt(new Integer(i + 1), i, 0);
+            model.setValueAt(i + 1, i, 0);
         }
     }
 

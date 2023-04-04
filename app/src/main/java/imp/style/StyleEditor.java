@@ -2718,9 +2718,9 @@ public class StyleEditor
         // The actual value set in the cell depends on the indices of the cell
         // and the kind of value expected.
         if (isIncludeCell(row, column)) {
-            Boolean value;
+            boolean value;
             try {
-                value = new Boolean(text);
+                value = Boolean.parseBoolean(text);
             } catch (Exception e) {
                 value = false;
             }
@@ -2753,7 +2753,7 @@ public class StyleEditor
         }
 
         Object beingSet;
-        Float weight;
+        float weight;
         String patternName;
         // FIX: This replicates stuff in StyleCellEditor.java. The latter should be changed to use this code.
         // Also, some of the branches below can be collapsed into one.
@@ -2765,9 +2765,9 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
 
-                contents.setWeight(weight.floatValue());
+                contents.setWeight(weight);
                 double beats = contents.getBeats();
                 styleTable.setValueAt(beats, StyleTableModel.CHORD_PATTERN_BEATS_ROW,
                         column);
@@ -2785,8 +2785,8 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.BASS_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
-                contents.setWeight(weight.floatValue());
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
+                contents.setWeight((float) weight);
                 double beats = contents.getBeats();
                 styleTable.setValueAt(beats, StyleTableModel.BASS_PATTERN_BEATS_ROW,
                         column);
@@ -2818,12 +2818,12 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
             } catch (Exception e) {
-                weight = new Float(0);
+                weight = (float) 0;
             }
 
-            pattern.setWeight(weight.floatValue());
+            pattern.setWeight((float) weight);
 
             if (play) {
                 maybePlay(contents);
@@ -2857,9 +2857,9 @@ public class StyleEditor
         // The actual value set in the cell depends on the indices of the cell
         // and the kind of value expected.
         if (isIncludeCell(row, column)) {
-            Boolean value;
+            boolean value;
             try {
-                value = new Boolean(text);
+                value = Boolean.parseBoolean(text);
             } catch (Exception e) {
                 value = false;
             }
@@ -2904,9 +2904,9 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.CHORD_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
 
-                contents.setWeight(weight.floatValue());
+                contents.setWeight(weight);
                 double beats = contents.getBeats();
                 contents.setName(textName);
                 styleTable.setValueAt(beats, StyleTableModel.CHORD_PATTERN_BEATS_ROW,
@@ -2925,8 +2925,8 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.BASS_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
-                contents.setWeight(weight.floatValue());
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
+                contents.setWeight(weight);
                 double beats = contents.getBeats();
                 contents.setName(textName);
                 styleTable.setValueAt(beats, StyleTableModel.BASS_PATTERN_BEATS_ROW,
@@ -2964,12 +2964,12 @@ public class StyleEditor
                     styleTable.getValueAt(StyleTableModel.DRUM_PATTERN_WEIGHT_ROW,
                             column);
             try {
-                weight = new Float(weightCell.toString());  // FIX: Check that it is the right type of value
+                weight = Float.parseFloat(weightCell.toString());  // FIX: Check that it is the right type of value
             } catch (Exception e) {
-                weight = new Float(0);
+                weight = (float) 0;
             }
 
-            pattern.setWeight(weight.floatValue());
+            pattern.setWeight(weight);
 
             //System.out.println("The pattern's new name is: " + pattern.getName());
 

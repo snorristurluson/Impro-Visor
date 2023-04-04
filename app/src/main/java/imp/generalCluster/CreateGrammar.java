@@ -564,7 +564,7 @@ public class CreateGrammar implements imp.Constants {
 
         Vector<Integer> segLengths = new Vector<Integer>();
         for (int i = 0; i < reps.length; i++) {
-            Integer length = new Integer(reps[i].getSegLength());
+            Integer length = reps[i].getSegLength();
             if (!segLengths.contains(length)) {
                 segLengths.add(length);
             }
@@ -613,7 +613,7 @@ public class CreateGrammar implements imp.Constants {
 
                     String rule = "(base (Cluster";
                     for (int q = 0; q < k; q++) {
-                        rule = rule.concat((new Integer((int) chain[q]).toString()));
+                        rule = rule.concat((Integer.valueOf((int) chain[q]).toString()));
                         if (q != k - 1) {
                             rule = rule.concat("to");
                         }
@@ -636,12 +636,12 @@ public class CreateGrammar implements imp.Constants {
 
                     String rule = "(rule (Cluster";
                     for (int q = 0; q < k; q++) {
-                        rule = rule.concat((new Integer((int) chain[q]).toString()));
+                        rule = rule.concat((Integer.valueOf((int) chain[q]).toString()));
                         if (q != k - 1) {
                             rule = rule.concat("to");
                         }
                     }
-                    rule = rule.concat(" Z) " + "(Q" + new Integer((int) chain[k - 1]).toString());
+                    rule = rule.concat(" Z) " + "(Q" + Integer.valueOf((int) chain[k - 1]).toString());
                     rule = rule.concat(" (Cluster");
                     /* here we handle a special case; for example, if you are using a trigram but are only on the
                      second measure (you can only use the previous states that you have) */
@@ -673,7 +673,7 @@ public class CreateGrammar implements imp.Constants {
                         chain[chainLength + 1] = (float) 100.0 * numOccurrences / numPreviousState;
 
                         for (int q = 0; q < k + 1; q++) {
-                            rule = rule.concat((new Integer((int) chain[q]).toString()));
+                            rule = rule.concat((Integer.valueOf((int) chain[q]).toString()));
                             if (q != k) {
                                 rule = rule.concat("to");
                             }
@@ -685,7 +685,7 @@ public class CreateGrammar implements imp.Constants {
                             rule = rule.concat(Integer.toString(ngram.getLast()));
                         } else {
                             for (int q = 1; q <= k; q++) {
-                                rule = rule.concat((new Integer((int) chain[q]).toString()));
+                                rule = rule.concat((Integer.valueOf((int) chain[q]).toString()));
                                 if (chainLength > 2 && q != k) {
                                     rule = rule.concat("to");
                                 }

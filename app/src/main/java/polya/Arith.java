@@ -27,62 +27,52 @@ package polya;
 //          Implements "polymorphic arithmetic"
 
 public class Arith {
-    static public boolean
-    greaterThan(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public boolean greaterThan(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return ((Long) v1).longValue() > ((Long) v2).longValue();
+                return (Long) v1 > (Long) v2;
             } else {
-                return ((Long) v1).longValue() > ((Number) v2).doubleValue();
+                return (Long) v1 > ((Number) v2).doubleValue();
             }
         } else {
             if (v2 instanceof Long) {
-                return ((Number) v1).doubleValue() > ((Long) v2).longValue();
+                return ((Number) v1).doubleValue() > (Long) v2;
             } else {
                 return ((Number) v1).doubleValue() > ((Number) v2).doubleValue();
             }
         }
     }
 
-    static public boolean
-    greaterThanOrEqual(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public boolean greaterThanOrEqual(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return ((Long) v1).longValue() >= ((Long) v2).longValue();
+                return (Long) v1 >= (Long) v2;
             } else {
-                return ((Long) v1).longValue() >= ((Number) v2).doubleValue();
+                return (Long) v1 >= ((Number) v2).doubleValue();
             }
         } else {
             if (v2 instanceof Long) {
-                return ((Number) v1).doubleValue() >= ((Long) v2).longValue();
+                return ((Number) v1).doubleValue() >= (Long) v2;
             } else {
                 return ((Number) v1).doubleValue() >= ((Number) v2).doubleValue();
             }
         }
     }
 
-    static public boolean
-    equal(Object v1, Object v2) {
-        if (v1.equals(v2))
-            return true;
+    static public boolean equal(Object v1, Object v2) {
+        if (v1.equals(v2)) return true;
 
         if (v1 instanceof Polylist) {
-            if (v2 instanceof Polylist)
-                return Polylist.equals((Polylist) v1, (Polylist) v2);
-            else
-                return false;
+            if (v2 instanceof Polylist) return Polylist.equals((Polylist) v1, (Polylist) v2);
+            else return false;
         }
 
         if (v2 instanceof Polylist) {
@@ -90,10 +80,8 @@ public class Arith {
         }
 
         if (v1 instanceof String) {
-            if (v2 instanceof String)
-                return v1.equals(v2);
-            else
-                return false;
+            if (v2 instanceof String) return v1.equals(v2);
+            else return false;
         }
 
         if (v2 instanceof String) {
@@ -101,10 +89,8 @@ public class Arith {
         }
 
         if (v1 instanceof Boolean) {
-            if (v2 instanceof Boolean)
-                return v1.equals(v2);
-            else
-                return false;
+            if (v2 instanceof Boolean) return v1.equals(v2);
+            else return false;
         }
 
         if (v2 instanceof Boolean) {
@@ -116,11 +102,11 @@ public class Arith {
                 if (v2 instanceof Long) {
                     return ((Long) v1).longValue() == ((Long) v2).longValue();
                 } else {
-                    return ((Long) v1).longValue() == ((Number) v2).doubleValue();
+                    return (Long) v1 == ((Number) v2).doubleValue();
                 }
             } else {
                 if (v2 instanceof Long) {
-                    return ((Number) v1).doubleValue() == ((Long) v2).longValue();
+                    return ((Number) v1).doubleValue() == (Long) v2;
                 } else {
                     return ((Number) v1).doubleValue() == ((Number) v2).doubleValue();
                 }
@@ -130,137 +116,105 @@ public class Arith {
         return false;
     }
 
-    static public Number
-    add(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public Number add(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return new Long(((Long) v1).longValue()
-                        + ((Long) v2).longValue());
+                return (Long) v1 + (Long) v2;
             } else {
-                return new Double(((Long) v1).longValue()
-                        + ((Double) v2).doubleValue());
+                return (Long) v1 + (Double) v2;
             }
         } else {
             if (v2 instanceof Long) {
-                return new Double(((Double) v1).doubleValue()
-                        + ((Long) v2).longValue());
+                return (Double) v1 + (Long) v2;
             } else {
-                return new Double(((Double) v1).doubleValue()
-                        + ((Double) v2).doubleValue());
+                return (Double) v1 + (Double) v2;
             }
         }
     }
 
-    static public Number
-    subtract(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public Number subtract(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return new Long(((Long) v1).longValue()
-                        - ((Long) v2).longValue());
+                return (Long) v1 - (Long) v2;
             } else {
-                return new Double(((Long) v1).longValue()
-                        - ((Double) v2).doubleValue());
+                return (Long) v1 - (Double) v2;
             }
         } else {
             if (v2 instanceof Long) {
-                return new Double(((Double) v1).doubleValue()
-                        - ((Long) v2).longValue());
+                return (Double) v1 - (Long) v2;
             } else {
-                return new Double(((Double) v1).doubleValue()
-                        - ((Double) v2).doubleValue());
+                return (Double) v1 - (Double) v2;
             }
         }
     }
 
-    static public Number
-    multiply(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public Number multiply(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return new Long(((Long) v1).longValue()
-                        * ((Long) v2).longValue());
+                return (Long) v1 * (Long) v2;
             } else {
-                return new Double(((Long) v1).longValue()
-                        * ((Double) v2).doubleValue());
+                return (Long) v1 * (Double) v2;
             }
         } else {
             if (v2 instanceof Long) {
-                return new Double(((Double) v1).doubleValue()
-                        * ((Long) v2).longValue());
+                return (Double) v1 * (Long) v2;
             } else {
-                return new Double(((Double) v1).doubleValue()
-                        * ((Double) v2).doubleValue());
+                return (Double) v1 * (Double) v2;
             }
         }
     }
 
-    static public Number
-    divide(Object v1, Object v2) {
-        if (!(v1 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public Number divide(Object v1, Object v2) {
+        if (!(v1 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Number))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Number)) throw new IllegalArgumentException("NotNumber: " + v2);
 
         if (v1 instanceof Long) {
             if (v2 instanceof Long) {
-                return new Long(((Long) v1).longValue()
-                        / ((Long) v2).longValue());
+                return (Long) v1 / (Long) v2;
             } else {
-                return new Double(((Long) v1).longValue()
-                        / ((Double) v2).doubleValue());
+                return (Long) v1 / (Double) v2;
             }
         } else {
             if (v2 instanceof Long) {
-                return new Double(((Double) v1).doubleValue()
-                        / ((Long) v2).longValue());
+                return (Double) v1 / (Long) v2;
             } else {
-                return new Double(((Double) v1).doubleValue()
-                        / ((Double) v2).doubleValue());
+                return (Double) v1 / (Double) v2;
             }
         }
     }
 
-    static public Number
-    mod(Object v1, Object v2) {
-        if (!(v1 instanceof Long))
-            throw new IllegalArgumentException("NotNumber: " + v1);
+    static public Number mod(Object v1, Object v2) {
+        if (!(v1 instanceof Long)) throw new IllegalArgumentException("NotNumber: " + v1);
 
-        if (!(v2 instanceof Long))
-            throw new IllegalArgumentException("NotNumber: " + v2);
+        if (!(v2 instanceof Long)) throw new IllegalArgumentException("NotNumber: " + v2);
 
-        return new Long(((Long) v1).longValue()
-                % ((Long) v2).longValue());
+        return (Long) v1 % (Long) v2;
     }
 
     /**
      * Convert a long (as used for fixed precision values in Polya) to an
      * int, assuming no digits will be lost. If digits will be lost, this will
      * throw an IllegalArgumentException
+     *
      * @param value
      * @return
      */
     static public int long2int(long value) {
         if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException
-                    ("Loss of precision converting " + value + " to int");
+            throw new IllegalArgumentException("Loss of precision converting " + value + " to int");
         } else {
             return (int) value;
         }

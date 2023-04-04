@@ -538,7 +538,7 @@ public class Polylist implements Serializable {
         if (M > N) {
             return nil;
         } else {
-            return cons(new Long(M), range(M + 1, N));
+            return cons(M, range(M + 1, N));
         }
     }
 
@@ -562,7 +562,7 @@ public class Polylist implements Serializable {
         if (M > N) {
             return nil;
         } else {
-            return cons(new Long(M), rangeUp(M + S, N, S));
+            return cons(M, rangeUp(M + S, N, S));
         }
     }
 
@@ -574,7 +574,7 @@ public class Polylist implements Serializable {
         if (M < N) {
             return nil;
         } else {
-            return cons(new Long(M), range(M + S, N, S));
+            return cons(M, range(M + S, N, S));
         }
     }
 
@@ -743,25 +743,25 @@ public class Polylist implements Serializable {
     /**
      *  test program for Polylists etc.
      */
-    static public void main(String args[]) {
+    static public void main(String[] args) {
         System.out.println("Testing Polylist");
 
-        Polylist x = list(new Long(3), new Long(4));
+        Polylist x = list(3L, 4L);
 
         // x = (3 4)
 
 
-        x = list(new Long(2), x);
+        x = list(2L, x);
 
         // x = (2 (3 4))
 
 
-        x = list(list(new Long(1)), x);
+        x = list(list(1L), x);
 
         // x = ((1) (2 (3 4)))
 
 
-        x = cons(new Long(0), x);
+        x = cons(0L, x);
 
         // x = (0 (1) (2 (3 4)))
 
@@ -852,7 +852,7 @@ public class Polylist implements Serializable {
 
         System.out.println(nitt.implode());
 
-        System.out.println(list("foo", "bar", new Long(123)).implode());
+        System.out.println(list("foo", "bar",123L).implode());
 
         try {
             System.out.println(nil.first());
@@ -999,7 +999,7 @@ public class Polylist implements Serializable {
     public static Polylist explode(String S) {
         Polylist result = nil;
         for (int i = S.length() - 1; i >= 0; i--) {
-            result = cons(new Character(S.charAt(i)), result);
+            result = cons(S.charAt(i), result);
         }
         return result;
     }

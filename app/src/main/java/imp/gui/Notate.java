@@ -11690,11 +11690,7 @@ public class Notate
         public void addARow() {
             sectionTableModel.insertRow(0, new Object[]
                     {
-                            new Integer(0),
-                            new Integer(0),
-                            new Integer(0),
-                            "",
-                            new JCheckBox()
+                            0, 0, 0, "", new JCheckBox()
                     });
         }
 
@@ -13690,7 +13686,7 @@ public class Notate
      *
      */
     static double doubleFromString(String string) throws NumberFormatException {
-        return new Double(string).doubleValue();
+        return Double.parseDouble(string);
     }
 
     /**

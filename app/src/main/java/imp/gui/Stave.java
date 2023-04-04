@@ -2003,7 +2003,7 @@ public class Stave
                 // Quietly set the length to the max
                 lineLength = maxMeasuresPerLine - 1;
             }
-            result = result.cons(new Long(lineLength));
+            result = result.cons((long) lineLength);
         }
         return result;
     }
