@@ -742,7 +742,7 @@ public class TradingDialog extends javax.swing.JDialog implements TradeListener,
         tradeLengthSpinner.setToolTipText("The number of bars in melody.");
         tradeLengthSpinner.setMinimumSize(new java.awt.Dimension(50, 30));
         tradeLengthSpinner.setPreferredSize(new java.awt.Dimension(50, 30));
-        tradeLengthSpinner.setValue(new Integer(32));
+        tradeLengthSpinner.setValue(32);
         tradeLengthSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tradeLengthSpinnerlengthOfTradeSet(evt);

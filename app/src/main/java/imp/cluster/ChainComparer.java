@@ -27,17 +27,15 @@ import java.util.*;
  * @author Jon Gillick
  */
 
-public class ChainComparer implements Comparator {
+public class ChainComparer implements Comparator<float[]> {
 
-    public int compare(Object a, Object b) {
-        float[] c = (float[]) a;
-        float[] d = (float[]) b;
+    public int compare(float[] a, float[] b) {
 
         boolean first = false;
 
-        for (int i = c.length - 1; i >= 0; i--) {
-            if (c[i] < d[i]) first = true;
-            if (c[i] > d[i]) first = false;
+        for (int i = a.length - 1; i >= 0; i--) {
+            if (((float[]) a)[i] < ((float[]) b)[i]) first = true;
+            if (((float[]) a)[i] > ((float[]) b)[i]) first = false;
         }
 
         if (first) return -1;

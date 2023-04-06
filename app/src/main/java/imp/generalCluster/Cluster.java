@@ -217,24 +217,24 @@ public class Cluster implements Serializable {
     public int getDistance(String chord1, String chord2) {
         if (chord1.equals("NC") || chord2.equals("NC")) return 0;
         //create a hashtable to map root notes to values
-        Hashtable roots = new Hashtable();
-        roots.put("C", new Integer(0));
-        roots.put("C#", new Integer(1));
-        roots.put("Db", new Integer(1));
-        roots.put("D", new Integer(2));
-        roots.put("D#", new Integer(3));
-        roots.put("Eb", new Integer(3));
-        roots.put("E", new Integer(4));
-        roots.put("F", new Integer(5));
-        roots.put("F#", new Integer(6));
-        roots.put("Gb", new Integer(6));
-        roots.put("G", new Integer(7));
-        roots.put("G#", new Integer(8));
-        roots.put("Ab", new Integer(8));
-        roots.put("A", new Integer(9));
-        roots.put("A#", new Integer(10));
-        roots.put("Bb", new Integer(10));
-        roots.put("B", new Integer(11));
+        Hashtable<String, Integer> roots = new Hashtable<>();
+        roots.put("C", 0);
+        roots.put("C#", 1);
+        roots.put("Db", 1);
+        roots.put("D", 2);
+        roots.put("D#", 3);
+        roots.put("Eb", 3);
+        roots.put("E", 4);
+        roots.put("F", 5);
+        roots.put("F#", 6);
+        roots.put("Gb", 6);
+        roots.put("G", 7);
+        roots.put("G#", 8);
+        roots.put("Ab", 8);
+        roots.put("A", 9);
+        roots.put("A#", 10);
+        roots.put("Bb", 10);
+        roots.put("B", 11);
 
         String r1, r2;
         int root1, root2;

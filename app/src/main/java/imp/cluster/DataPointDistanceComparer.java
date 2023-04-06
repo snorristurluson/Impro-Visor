@@ -33,13 +33,10 @@ import imp.cluster.ClusterSet;
  * @author Jon Gillick
  */
 
-public class DataPointDistanceComparer implements Comparator {
+public class DataPointDistanceComparer implements Comparator<DataPoint> {
 
     //sorts points by distance from Average Point
-    public int compare(Object a, Object b) {
-
-        DataPoint point1 = (DataPoint) a;
-        DataPoint point2 = (DataPoint) b;
+    public int compare(DataPoint point1, DataPoint point2) {
 
         double distance1 = CreateGrammar.getAveragePoint().calcEuclideanDistance(point1);
         double distance2 = CreateGrammar.getAveragePoint().calcEuclideanDistance(point2);

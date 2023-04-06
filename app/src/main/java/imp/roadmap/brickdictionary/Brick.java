@@ -39,7 +39,7 @@ import polya.*;
  */
 public class Brick extends Block {
 
-    private static final Long DEFAULT_SUBRICK_DURATION = new Long(1);
+    private static final Long DEFAULT_SUBRICK_DURATION = 1L;
     private static final String DEFAULT_VARIANT = "";
 
     private ArrayList<Block> subBlocks;       // Components of a Brick

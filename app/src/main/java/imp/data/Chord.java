@@ -675,7 +675,7 @@ public class Chord implements Constants, Unit, Serializable {
     public void saveLeadsheet(BufferedWriter out, int[] metre, boolean lineBreaks) throws IOException {
         names.add(getName());
         accumulation += rhythmValue;
-        durations.add(new Integer(rhythmValue));
+        durations.add(rhythmValue);
         int beatValue = WHOLE / metre[1];
         int beatsPerMeasure = beatValue * metre[0];
 //System.out.println("metre = " + metre[0] + "/" + metre[1] + ", beatsPerMeasure = " + beatsPerMeasure);

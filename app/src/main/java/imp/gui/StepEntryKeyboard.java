@@ -2803,7 +2803,7 @@ public class StepEntryKeyboard extends javax.swing.JDialog {
     private void adviceNumSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_adviceNumSpinnerStateChanged
         try {
             String newValueStr = adviceNumSpinner.getValue().toString();
-            int newValue = new Integer(newValueStr);
+            int newValue = Integer.parseInt(newValueStr);
 
             if (newValue <= ADVICE_NUM_MIN) {
                 adviceNum = ADVICE_NUM_MIN;
@@ -2840,7 +2840,7 @@ public class StepEntryKeyboard extends javax.swing.JDialog {
 
         try {
             String newValueStr = subDivComboBox.getSelectedItem().toString();
-            int newValue = new Integer(newValueStr);
+            int newValue = Integer.parseInt(newValueStr);
             Stave stave = notate.getCurrentStave();
 
             int slot = stave.getSelectionStart() / SLOTS_PER_BEAT;
