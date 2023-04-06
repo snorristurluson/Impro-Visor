@@ -12791,7 +12791,9 @@ public class Notate
     }//GEN-LAST:event_textEntryLosesFocus
 
     private void textEntryGainsFocus(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textEntryGainsFocus
-        textRequestFocus();
+        disableAccelerators();
+        textEntryLabel.setForeground(Color.black);
+        textEntry.setEnabled(true);
         setNormalStatus();
     }//GEN-LAST:event_textEntryGainsFocus
 
@@ -12959,7 +12961,7 @@ public class Notate
     }//GEN-LAST:event_enterBothMIActionPerformed
 
     private void textEntryKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textEntryKeyPressed
-        textEntryLabel.setForeground(Color.black);
+        evt.consume();
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!slotIsSelected()) {
@@ -12987,12 +12989,6 @@ public class Notate
             staveRequestFocus();
 
             redoAdvice();
-
-            // set the menu and button states
-
-            setButtonAndMenuStates();
-        } else {
-            disableAccelerators();        // to prevent keys from triggering
         }
     }//GEN-LAST:event_textEntryKeyPressed
 
@@ -21259,12 +21255,12 @@ public class Notate
 
     private void textEntryMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_textEntryMouseClicked
     {//GEN-HEADEREND:event_textEntryMouseClicked
-        textRequestFocus();
+        textEntry.requestFocusInWindow();
     }//GEN-LAST:event_textEntryMouseClicked
 
     private void enterTextMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_enterTextMIActionPerformed
     {//GEN-HEADEREND:event_enterTextMIActionPerformed
-        textRequestFocus();
+        textEntry.requestFocusInWindow();
     }//GEN-LAST:event_enterTextMIActionPerformed
 
     private void firstTimePrefsMIActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_firstTimePrefsMIActionPerformed
@@ -22697,14 +22693,9 @@ public class Notate
      * staveRequestFocus() will be called (in textEntryActionHandler).
      */
     public void textRequestFocus() {
-        String text = textEntry.getText();
-
         textEntryLabel.setForeground(Color.black);
         textEntry.requestFocusInWindow();
         textEntry.setEnabled(true);
-        int length = text.length();
-        //textEntry.setSelectionStart(length-1);
-        //textEntry.setSelectionEnd(length);
     }
 
     int improviseStartSlot, improviseEndSlot;
@@ -24158,6 +24149,8 @@ public class Notate
 
         stopPlayMI.setEnabled(true);
         pausePlayMI.setEnabled(true);
+        playSelectionMI.setEnabled(true);
+        playSelectionToEndMI.setEnabled(true);
         preferencesAcceleratorMI.setEnabled(true);
 
         // check to see if undo & redo can be enabled
@@ -24311,22 +24304,10 @@ public class Notate
     }
 
     /**
-     *
-     * Disable accelerators. We do this for a work-around: When letters are typed
-     * into the
-     *
-     * chord/melody text entry window
-     *
-     * if any of those letters correspond to accelerators, the corresponding method
-     * will
-     *
-     * be invoked. This seems like a bug in swing to me, but I don't know another
-     * way of
-     *
-     * getting around it at present. We will rely on the call to setItemStates() to
-     *
-     * re-enable the accelerators upon hitting return in the text entry field.
-     *
+     * Disable accelerators. We do this for a work-around: When letters are typed into the chord/melody text entry
+     * window if any of those letters correspond to accelerators, the corresponding method will be invoked. This
+     * seems like a bug in swing to me, but I don't know another way of getting around it at present. We will rely on
+     * the call to setItemStates() to re-enable the accelerators upon hitting return in the text entry field.
      */
     protected void disableAccelerators() {
         addRestMI.setEnabled(false);
@@ -24334,6 +24315,8 @@ public class Notate
         playAllMI.setEnabled(false);
         stopPlayMI.setEnabled(false);
         pausePlayMI.setEnabled(false);
+        playSelectionMI.setEnabled(false);
+        playSelectionToEndMI.setEnabled(false);
 
         undoMI.setEnabled(false);
         redoMI.setEnabled(false);
