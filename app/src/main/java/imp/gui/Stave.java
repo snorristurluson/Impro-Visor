@@ -53,11 +53,10 @@ import polya.PolylistBuffer;
 
 /**
  * A Java Swing Component for displaying a Common Practice Notation stave.
- * Stave Contains all of the information on a particular Stave, such as what
- * part it is displaying, its key signature, etc. It also contains all of the
- * functions associated with setting construction lines for a Stave, and all of
+ * Stave Contains all the information on a particular Stave, such as what
+ * part it is displaying, its key signature, etc. It also contains all the
+ * functions associated with setting construction lines for a Stave, and all
  * the functions for drawing a Stave.
- *
  *
  * @author Aaron Wolin, Stephen Jones, Bob Keller
  *         (revised from code by Andrew Brown & Adam Kirby)
@@ -66,6 +65,8 @@ import polya.PolylistBuffer;
 public class Stave
         extends JPanel
         implements Constants, FocusListener {
+    public static final String PHI = "\u03D5";
+    public static final String DELTA = "\u0394";
     static int MAX_LICK_CHORDS = 1000;
 
     String noteColorString = Preferences.getPreference(Preferences.NOTE_COLORING);
@@ -73,14 +74,14 @@ public class Stave
     /**
      * Style and phrase layout parameters
      */
-    private String PHRASE_MARK = ",";
-    private String STYLE_MARK = "Style: ";
+    private static final String PHRASE_MARK = ",";
+    private static final String STYLE_MARK = "Style: ";
 
-    private static int DOUBLE_BAR_OFFSET = 5;
-    private static int PHRASE_MARK_X_OFFSET = 30;
-    private static int PHRASE_MARK_Y_OFFSET = 15;
-    private static int styleXoffset = 20;
-    private static int styleYoffset = 50;
+    private static final int DOUBLE_BAR_OFFSET = 5;
+    private static final int PHRASE_MARK_X_OFFSET = 30;
+    private static final int PHRASE_MARK_Y_OFFSET = 15;
+    private static final int styleXoffset = 20;
+    private static final int styleYoffset = 50;
 
     /**
      * The maximum width alloted to time signature. Longer than this causes too
@@ -121,13 +122,13 @@ public class Stave
     /**
      * Action handler for the Stave.
      */
-    private StaveActionHandler staveActionHandler;
+    private final StaveActionHandler staveActionHandler;
 
     ArrayList<BeamNote> beamNotes = null;
     /**
      * The panel width
      */
-    private int panelWidth = 1000;
+    private final int panelWidth = 1000;
     /**
      * The panel height
      */
@@ -141,11 +142,6 @@ public class Stave
      */
     private StaveType type;
 
-    /*
-     * Colors for drawing stems
-     * Not used currently
-     * java.awt.Color stemColor[] = {Color.black, Color.red, Color.green, Color.blue};
-     */
     /**
      * Images to be used for drawing notes, accidentals, and other stave components
      */
@@ -210,14 +206,14 @@ public class Stave
     /**
      * The array of construction lines
      */
-    protected CstrLine cstrLines[];
+    protected CstrLine[] cstrLines;
     // the last note entered, used with drawing ties
     Note lastNote = null;
     // The index of lastNote
     int ilast = -1;
-    // Whether or not lastNote was beamed
+    // Whether lastNote was beamed
     boolean lastNoteBeamed = false;
-    // Whether or not lastNote had stem up (used for beaming)
+    // Whether lastNote had stem up (used for beaming)
     boolean lastNoteStemUp = true;
     // Whether stems are up in a beam
     boolean beamStemUp = true;
@@ -226,7 +222,7 @@ public class Stave
     /**
      * The metre of the Stave
      */
-    private int[] metre = new int[2];
+    private final int[] metre = new int[2];
     private int beatValue = BEAT;                // default for 4/4
     private int measureLength = 4 * beatValue;        // default for 4/4
 
@@ -351,7 +347,6 @@ public class Stave
     /**
      * Flag for if the Stave should be editable
      */
-    private boolean editable = true;
     private Color titleColor = new Color(0, 0, 40);
     private Color titleBGHighlightColor = new Color(250, 250, 250);
     /**
@@ -1065,7 +1060,7 @@ public class Stave
 
     /**
      * Sets the year
-     * @param title         the year
+     * @param year         the year
      */
     public void setYear(String year) {
         this.year = year;
@@ -1140,7 +1135,8 @@ public class Stave
     /**
      * Sets the current metre for this Stave instance. This effects the
      * displayed time signature. 4 = 4/4, 3 = 3/4, etc.
-     * @param timeSig       the metre for the Stave to be set to
+     * @param top       the top value of the metre for the Stave to be set to
+     * @param bottom    the bottom value of the metre for the Stave to be set to
      */
     public void setMetre(int top, int bottom) {
         metre[0] = top;    // beats per measure
@@ -1317,18 +1313,9 @@ public class Stave
 
     /**
      * Returns the current maximum MIDI pitch number
-     * @return int          the maximum pitch allowed
      */
     public int getMaxPitch() {
         return this.maxPitch;
-    }
-
-    /**
-     * Decide to allow stave to be editable or not
-     * @param state         true or false for the stave to be editable
-     */
-    public void setEditable(boolean state) {
-        this.editable = state;
     }
 
     /**
@@ -1389,7 +1376,6 @@ public class Stave
     /**
      * Sets both starting and ending selection indices to the same value
      * @param index the new start and end index
-     * @param end the end index
      */
     public void setSelection(int index) {
         selectionStart = index;
@@ -2382,40 +2368,33 @@ public class Stave
     }
 
     public String toPhi(String chordName) {
-        if (!contains(chordName, "m7b5"))
+        if (!chordName.contains("m7b5"))
             return chordName;
         else {
-            if (chordName.substring(0, 4).equals("m7b5"))
-                return "\u03D5" + toPhi(chordName.substring(4));
-            else if (chordName.substring(1, 5).equals("m7b5"))
-                return chordName.substring(0, 1) + "\u03D5" + toPhi(chordName.substring(5));
-            else if (chordName.substring(2, 6).equals("m7b5"))
-                return chordName.substring(0, 2) + "\u03D5" + toPhi(chordName.substring(6));
-            else if (chordName.substring(3, 7).equals("m7b5"))
-                return chordName.substring(0, 3) + "\u03D5" + toPhi(chordName.substring(7));
+            if (chordName.startsWith("m7b5"))
+                return PHI + toPhi(chordName.substring(4));
+            else if (chordName.startsWith("m7b5", 1))
+                return chordName.charAt(0) + PHI + toPhi(chordName.substring(5));
+            else if (chordName.startsWith("m7b5", 2))
+                return chordName.substring(0, 2) + PHI + toPhi(chordName.substring(6));
+            else if (chordName.startsWith("m7b5", 3))
+                return chordName.substring(0, 3) + PHI + toPhi(chordName.substring(7));
             else
                 return chordName.substring(0, 4) + toPhi(chordName.substring(4));
         }
     }
 
     public String toDelta(String chordName) {
-        if (!contains(chordName, "M7"))
+        if (!chordName.contains( "M7"))
             return chordName;
         else {
-            if (chordName.substring(0, 2).equals("M7"))
-                return "\u0394" + toDelta(chordName.substring(2));
-            else if (chordName.substring(1, 3).equals("M7"))
-                return chordName.substring(0, 1) + "\u0394" + toDelta(chordName.substring(3));
+            if (chordName.startsWith("M7"))
+                return DELTA + toDelta(chordName.substring(2));
+            else if (chordName.startsWith("M7", 1))
+                return chordName.charAt(0) + DELTA + toDelta(chordName.substring(3));
             else
                 return chordName.substring(0, 2) + toDelta(chordName.substring(2));
         }
-    }
-
-    public boolean contains(String chordName, String target) {
-        for (int j = 0; j <= chordName.length() - target.length(); j++)
-            if (chordName.substring(j, j + target.length()).equals(target))
-                return true;
-        return false;
     }
 
     NoteStatistics noteStat;
@@ -2424,7 +2403,7 @@ public class Stave
      * Cycles through the slots in a given MelodyPart, part, and draws the
      * entire stave consisting of the construction lines, notes, accidentals,
      * chords, and various brackets. It can only draw a unit (note, rest, or
-     * chord), if there is a construction line on the unit's slot. If there is
+     * chord) if there is a construction line on the unit's slot. If there is
      * not a construction line there, drawPart will call calcSubDivs(int) on
      * the slot's beat to reset the subdivisions to incorporate the unit.
      * <p>
@@ -2434,8 +2413,6 @@ public class Stave
      * @param part          the part to draw on the Stave
      * @param g             the panel to draw onto
      *
-     * @see #drawNote(Note, boolean, Graphics)
-     * @see #findSpacing(int, MelodyPart)
      */
     private boolean drawPart(MelodyPart part, Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -2497,9 +2474,7 @@ public class Stave
         if (cstrLines.length != part.size()) {
             resizeCstrLines(part);
         }
-
-//    Note pitchDeterminer = null;
-
+        
         SectionInfo sectionInfo = chordProg.getSectionInfo();
 
         Iterator<SectionRecord> sectionIter = sectionInfo.iterator();
@@ -2530,11 +2505,9 @@ public class Stave
         }
 
         Style previousStyle = null;
-//System.out.println();
         // cycle through the entire part
         for (int i = 0; i < cstrLines.length; i++) {
             if (indicateStyle && style != previousStyle && !styleName.equals(Style.USE_PREVIOUS_STYLE)) {
-//  System.out.println("style = " + style + " vs. " + previousStyle);
                 g.drawString(STYLE_MARK + styleName,
                         xCoordinate - styleXoffset,
                         headSpace + (staveLine * lineSpacing) - styleYoffset);
@@ -2546,12 +2519,7 @@ public class Stave
             Note note = part.getNote(i);
             Note orignote = origPart.getNote(i);
 
-//        if( orignote != null )
-//          {
-//            pitchDeterminer = orignote;
-//          }
-
-            // Handle sections within or at start of line.
+            // Handle sections within or at the start of line.
 
             int xSection = xCoordinate - 25;
 
@@ -2578,15 +2546,6 @@ public class Stave
 
                 if (previousSectionType == Block.SECTION_END || previousSectionType == Block.PHRASE_END) {
                     int ySection = headSpace + (staveLine * lineSpacing) - styleYoffset;
-/*
-                  System.out.println("staveLine = " + staveLine
-                          + ", xSection = " + xSection
-                          + ", ySection = " + ySection
-                          + ", i = " + i + ", sectionType = "
-                          + (sectionType == Block.SECTION_END ? "section" : "phrase")
-                          + ", previousSectionType = "
-                          + (previousSectionType == Block.SECTION_END ? "section" : "phrase"));
-*/
                     if (previousSectionType == Block.PHRASE_END) {
                         // Possibly draw phrase mark.
                         if (i > 0 && notate.showPhrasemarks()) {
@@ -2601,7 +2560,7 @@ public class Stave
 
                     if (previousSectionType == Block.SECTION_END /* && lineMeasureCount > 1*/) {
                         // Set up to draw double barline when barline is drawn.
-                        // Also possibly indicate style at start of next section.
+                        // Also, possibly indicate style at the start of the next section.
                         doubleBar = true;
                         indicateStyle = true;
                     }
@@ -2622,11 +2581,6 @@ public class Stave
             int beatres = beatValue / 4;
 
             if (i % beatres == 0) {
-                // We need this to set the construction lines, even tho' sdivs
-                // is no longer used.
-
-                int sdivs = checkBeatResolution(i / beatres);
-
                 // This chain of tests can be folded into an iteration, probably.
 
                 if (noteValue == THIRTYSECOND_TRIPLET) {
@@ -2681,10 +2635,11 @@ public class Stave
 
             // if there is a construction line at the given index...
             if (cstrLines[i] != null) {
+                boolean isSelected = i >= selectionStart && i <= selectionEnd;
                 if (notate.getShowConstructionLinesAndBoxes()) {
                     // draw a construction line orange/red if selected
 
-                    if (i >= selectionStart && i <= selectionEnd) {
+                    if (isSelected) {
                         if (i % beatValue == 0) {
                             drawCstrLine(xCoordinate, staveLine,
                                     Color.red, 2, g);
@@ -2743,7 +2698,6 @@ public class Stave
 
                     boolean beamThis = beamed || lastNoteBeamed;
 
-                    //System.out.println("beamed = " + beamed + ", i = " + i + ", inext = " + inext + ", sameBeat = " + sameBeat(i, inext));
                     if (isNote
                             && i >= selectionStart
                             && i <= selectionEnd
@@ -2753,7 +2707,7 @@ public class Stave
                         //System.out.println("Case A " + beamed + " " + note);
                         drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, inext, stemUp);
                         boxTies = true;
-                    } else if (boxTies == true && !note.firstTied() && note.isTied()) {
+                    } else if (boxTies && !note.firstTied() && note.isTied()) {
                         //System.out.println("Case B " + beamed + " " + note);
                         drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, inext, stemUp);
                     } else {
@@ -2780,47 +2734,19 @@ public class Stave
                     cstrLines[i].setHasNote(false);
                 }
 
-                // if there's a chord progression at the given index, draw the
-                // name of the chord
-                if (i < chordProg.size() && chordProg.getChord(i) != null) {
-                    // calculate the height to draw the chord at
-                    int chordHeight = headSpace + (staveLine * lineSpacing) - 25;
-                    if (yCoordinate < chordHeight + 5) {
-                        chordHeight = yCoordinate + 5;
-                    }
-
-                    // If the chord symbol is getting drawn up a line for some
-                    // reason, we're just going to bring it down an arbitrary distance.
-                    if (chordHeight < (staveLine - 1) * lineSpacing + 100) {
-                        chordHeight += lineSpacing - 20;
-                    }
+                // if there's a chord progression at the given index, draw the name of the chord
+                Chord chord = chordProg.getChord(i);
+                if (i < chordProg.size() && chord != null) {
+                    cstrLines[i].setHasChord(true);
 
                     // Hack; if the note is a quarter-note triplet that crosses over a barline,
-                    // we need to adjust the height of the chord so it doesn't run into the bracket.
+                    // we need to adjust the height of the chord, so it doesn't run into the bracket.
+                    int chordHeightAdjustment = 0;
                     if (note != null && note.isTied() && note.getRhythmValue() == beatValue / 3) {
-                        chordHeight -= 20;
+                        chordHeightAdjustment -= 20;
                     }
 
-                    // draw the chord red if selected, black if not
-                    if (i >= selectionStart && i <= selectionEnd) {
-                        g.setColor(Color.RED);
-                    } else {
-                        g.setColor(Color.BLACK);
-                    }
-
-                    g.setFont(chordFont);
-
-                    String chordName = toSymbols(chordProg.getChord(i).getName());
-
-                    g.drawString(chordName,
-                            xCoordinate - 4,
-                            chordHeight);
-
-                    g.setFont(barNumFont);
-
-                    g.setColor(Color.BLACK);
-
-                    cstrLines[i].setHasChord(true);
+                    drawChord(g, chord, isSelected, chordHeightAdjustment);
                 }
 
                 cstrLines[i].setSpacing(cstrLineSpacing + spacingMod);
@@ -3011,6 +2937,40 @@ public class Stave
 
     }
 
+    private void drawChord(Graphics g, Chord chord, boolean isSelected, int chordHeightAdjustment) {
+        // calculate the height to draw the chord at
+        int chordHeight = headSpace + (staveLine * lineSpacing) - 25;
+        if (yCoordinate < chordHeight + 5) {
+            chordHeight = yCoordinate + 5;
+        }
+
+        // If the chord symbol is getting drawn up a line for some
+        // reason, we're just going to bring it down an arbitrary distance.
+        if (chordHeight < (staveLine - 1) * lineSpacing + 100) {
+            chordHeight += lineSpacing - 20;
+        }
+        chordHeight += chordHeightAdjustment;
+
+        // draw the chord red if selected, black if not
+        if (isSelected) {
+            g.setColor(Color.RED);
+        } else {
+            g.setColor(Color.BLACK);
+        }
+
+        g.setFont(chordFont);
+
+        String chordName = toSymbols(chord.getName());
+
+        g.drawString(chordName,
+                xCoordinate - 4,
+                chordHeight);
+
+        g.setFont(barNumFont);
+
+        g.setColor(Color.BLACK);
+    }
+
     /**
      * Checks to see where the tuplet bracket should end
      */
@@ -3031,13 +2991,9 @@ public class Stave
      *
      * @param note          the note to draw
      * @param boxed         if the note is selected or not
-     * @param index         the index of the note.
+     * @param i         the index of the note.
      * @param g             the panel to draw the note on
      *
-     * @see #drawPart(MelodyPart, Graphics)
-     * @see #chooseImage(int, int, int, int, int)
-     * @see #drawLedgerLine(int, int, int, Graphics)
-     * @see #drawTie(int, int, Graphics)
      */
     private void drawNote(Note note, boolean boxed, int i, Graphics g, Graphics2D g2,
                           int noteColor, MelodyPart part, boolean beamed, int inext, boolean stemUp) {
@@ -3075,17 +3031,9 @@ public class Stave
         // draw the accidental for the note
 
         switch (note.getAccidental()) {
-            case SHARP:
-                g.drawImage(sharp[noteColor], drawWidth - 9, yCoordinate, this);
-                break;
-
-            case FLAT:
-                g.drawImage(flat[noteColor], drawWidth - 9, yCoordinate, this);
-                break;
-
-            case NATURAL:
-                g.drawImage(natural[noteColor], drawWidth - 9, yCoordinate, this);
-                break;
+            case SHARP -> g.drawImage(sharp[noteColor], drawWidth - 9, yCoordinate, this);
+            case FLAT -> g.drawImage(flat[noteColor], drawWidth - 9, yCoordinate, this);
+            case NATURAL -> g.drawImage(natural[noteColor], drawWidth - 9, yCoordinate, this);
         }
 
         // draw note at the yCoordinate
@@ -4385,16 +4333,6 @@ public class Stave
      * has a tail up or a tail down depending on the upPitch's and downPitch's
      * given.
      *
-     * @param pitch             the pitch of the note
-     * @param rhythmValue       the rhythmValue of the note
-     * @param upPitch1          the minimum pitch where the note will have a
-     *                          stem up
-     * @param downPitch         the maximum pitch where the note will have a
-     *                          stem down
-     * @param upPitch2          another maximum pitch for a stem up (used for a
-     *                          grand stave)
-     *
-     * @see #drawNote(Note, boolean, Graphics)
      */
     private Image chooseImage(int pitch, int rhythmValue, int color, boolean beamed, boolean stemUp) {
 
@@ -4640,10 +4578,6 @@ public class Stave
     /**
      * Shifts the pitch of a note or notes up by a certain amount of half steps
      *
-     * @param startIndex       starting index of the selection of notes
-     * @param endIndex         ending index of the selection of notes
-     * @param keyPressed       the key that was pressed
-     * @param octave           if it should be shifted an octave or not
      */
     public void shiftPitch(int startIndex, int endIndex, boolean up,
                            boolean octave) {
@@ -4847,9 +4781,6 @@ public class Stave
      * However, it is better for note entry, where we don't need to see the keys
      * working.
      *
-     *
-     * @param startIndex       starting index of the selection of notes
-     * @param endIndex         ending index of the selection of notes
      */
     public void playSelectionNote(Note note, int selectedIndex) {
         //System.out.println("\nStave: playSelectionNote: selectedIndex = " + selectedIndex + " note = " + note);
@@ -4887,8 +4818,6 @@ public class Stave
     /**
      * Saves the current selection to the vocabulary file.
      * Unlike other extracts, this extracts text, not a Part.
-     * @param title the title of the selection
-     * @param asLick true if saving as lick, false if as cell
      */
     public String extract(String title, ExtractMode mode, int grade,
                           int startIndex, int stopIndex) {
@@ -5203,7 +5132,6 @@ public class Stave
      * @param startIndex       starting index of the selection of chords
      * @param endIndex         ending index of the selection of chords
      * @param up               whether to transpose up or down
-     * @param octave           if it should be shifted an octave or not
      */
     public void shiftChords(int startIndex, int endIndex, boolean up) {
 
