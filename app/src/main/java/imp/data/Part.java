@@ -118,7 +118,7 @@ public class Part implements Constants, Serializable {
      * the key signature of the part
      */
 
-    protected int keySig;
+    protected int keySig = 0;
 
 
     /**

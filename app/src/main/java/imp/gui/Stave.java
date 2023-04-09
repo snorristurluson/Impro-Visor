@@ -217,8 +217,6 @@ public class Stave
     boolean lastNoteStemUp = true;
     // Whether stems are up in a beam
     boolean beamStemUp = true;
-    // Next note: use for beaming
-    Note nextNote = null;
     /**
      * The metre of the Stave
      */
@@ -230,7 +228,7 @@ public class Stave
 
     /**
      * The key signature of the Stave. Positive numbers indicate sharps,
-     * negative indicate flats
+     * negatives indicate flats
      */
     private int keySignature = 0;
     /**
@@ -512,6 +510,7 @@ public class Stave
      * Popup editor for the year
      */
     EntryPopup yearEditor;
+    private boolean boxTies;
 
     /**
      * This class is from Sun's documentation.
@@ -2242,11 +2241,6 @@ public class Stave
         return curveStroke;
     }
 
-    /**
-     * draw the selection box, and the handles (if needed)
-     */
-    int oldSelectionFirstX = 0, oldSelectionFirstY = 0;
-
     private void drawSelectionBox(Graphics g) {
         for (Rectangle r : selectionBox) {
             if (transparentFill) {
@@ -2459,16 +2453,11 @@ public class Stave
         // Whether or not lastNote had stem up (used for beaming)
         lastNoteStemUp = true;
 
-        // Next note: use for beaming
-        Note nextNote;
-
-        int inext;
-
         // the color indices for the notes in the part
         noteStat = collectNoteColors(part);
 
         // box a group of tied notes
-        boolean boxTies = false;
+        boxTies = false;
 
         // resize the cstrLines array if its length does not equal part's length
         if (cstrLines.length != part.size()) {
@@ -2485,9 +2474,9 @@ public class Stave
 
         SectionRecord record = sectionIter.next();
 
-        Style style = record.getStyle(); // sectionInfo.getStyleFromSlots(0);
+        Style style = record.getStyle();
 
-        int previousSectionType = record.getSectionType(); // sectionInfo.sectionAtSlot(0);
+        int previousSectionType = record.getSectionType();
 
         int sectionType;
 
@@ -2583,84 +2572,21 @@ public class Stave
             if (i % beatres == 0) {
                 // This chain of tests can be folded into an iteration, probably.
 
-                if (noteValue == THIRTYSECOND_TRIPLET) {
+                int currentTupletValue = getTupletValue(noteValue);
+                if (currentTupletValue > 0) {
+                    tupletValue = currentTupletValue;
                     tupletStart = xCoordinate - 10;
                     tupletStartIndex = i;
-                    tupletValue = 3;
-                    tupletEndIndex = i + 3 * THIRTYSECOND_TRIPLET - 1;
-                } else if (noteValue == THIRTYSECOND_QUINTUPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 5;
-                    tupletEndIndex = i + 5 * THIRTYSECOND_QUINTUPLET - 1;
-                } else if (noteValue == SIXTEENTH_TRIPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 3;
-                    tupletEndIndex = part.getNote(i + SIXTEENTH) != null ? i + SIXTEENTH - 1 : i + 3 * SIXTEENTH_TRIPLET - 1;
-                } else if (noteValue == SIXTEENTH_QUINTUPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 5;
-                    tupletEndIndex = i + 5 * SIXTEENTH_QUINTUPLET - 1;
-                } else if (noteValue == EIGHTH_TRIPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 3;
-                    tupletEndIndex = part.getNote(i + EIGHTH) != null ? i + EIGHTH - 1 : i + 3 * EIGHTH_TRIPLET - 1;
-                } else if (noteValue == EIGHTH_QUINTUPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 5;
-                    tupletEndIndex = i + 5 * EIGHTH_QUINTUPLET - 1;
-                } else if (noteValue == QUARTER_TRIPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 3;
-                    tupletEndIndex = part.getNote(i + QUARTER) != null ? i + QUARTER - 1 : i + 3 * QUARTER_TRIPLET - 1;
-                } else if (noteValue == QUARTER_QUINTUPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 5;
-                    tupletEndIndex = i + 5 * QUARTER_QUINTUPLET - 1;
-                } else if (noteValue == HALF_TRIPLET) {
-                    tupletStart = xCoordinate - 10;
-                    tupletStartIndex = i;
-                    tupletValue = 3;
-                    tupletEndIndex = part.getNote(i + HALF) != null ? i + HALF - 1 : i + 3 * HALF_TRIPLET - 1;
-                } else if (tupletEndIndex < i) {
-                    tupletValue = OUT_OF_BOUNDS;
+                    tupletEndIndex = getTupletEndIndex(part, i, noteValue, tupletEndIndex);
+                    if (tupletEndIndex < i) {
+                        tupletValue = OUT_OF_BOUNDS;
+                    }
                 }
             }
 
             // if there is a construction line at the given index...
             if (cstrLines[i] != null) {
-                boolean isSelected = i >= selectionStart && i <= selectionEnd;
-                if (notate.getShowConstructionLinesAndBoxes()) {
-                    // draw a construction line orange/red if selected
-
-                    if (isSelected) {
-                        if (i % beatValue == 0) {
-                            drawCstrLine(xCoordinate, staveLine,
-                                    Color.red, 2, g);
-                        } else {
-                            drawCstrLine(xCoordinate, staveLine,
-                                    Color.orange, 2, g);
-                        }
-
-                        selectionCacheSet(10);
-                    }
-                    // else draw the constuction line at index i if showAllCL true
-                    else if (showAllCL || (showMeasureCL && mouseOverMeasure == totalMeasureCount)) {
-                        if (i % beatValue == 0) {
-                            drawCstrLine(xCoordinate, staveLine,
-                                    Color.DARK_GRAY, 1, g);
-                        } else {
-                            drawCstrLine(xCoordinate, staveLine,
-                                    Color.LIGHT_GRAY, 1, g);
-                        }
-                    }
-                }
+                drawConstructionLines(g, i);
 
                 if (i == playingSlot && notate.getPlaying() != MidiPlayListener.Status.STOPPED) {
                     drawPlayLine(xCoordinate, staveLine, Color.GREEN, 3, g,
@@ -2671,83 +2597,9 @@ public class Stave
                 cstrLines[i].setX(xCoordinate);
                 cstrLines[i].setY(headSpace + (staveLine * lineSpacing) + (numPitchLines * staveSpaceHeight) / 2);
 
-                // if there is a note at the given index, draw it
-                if (note != null) {
-                    boolean stemUp = lastNoteBeamed ? lastNoteStemUp : isStemUp(note, type);
+                drawNote(part, g, g2, i, note);
 
-                    // Beamed is true when there is a beam from this note to the next
-
-                    inext = part.getNextIndex(i);
-
-                    nextNote = part.getNote(inext);
-
-                    // We need to look at the next note, if any, to determine whether to get a stem
-                    // for beaming or a regular stem.
-
-                    // conditions for beaming forward:
-                    // These are used to determined whether a note stands alone or has a beam.
-                    // A note having a beam will not also have a flag.
-
-                    boolean beamed = beamingNotes // beaming desired
-                            && sameBeat(i, inext) // in same beat interval
-                            && note.getRhythmValue() < 80 // less than quarternote
-                            && nextNote != null // next note exists
-                            && isaNote(nextNote.getPitch())
-                            && sameStemDirection(note, nextNote, type)
-                            && note.getRhythmValue() == nextNote.getRhythmValue(); // compatibility
-
-                    boolean beamThis = beamed || lastNoteBeamed;
-
-                    if (isNote
-                            && i >= selectionStart
-                            && i <= selectionEnd
-                            && (note.firstTied() || !note.isTied())
-                            && note.getPitch() != Note.REST // May seem redundant, but this is need to control boxing
-                    ) {
-                        //System.out.println("Case A " + beamed + " " + note);
-                        drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, inext, stemUp);
-                        boxTies = true;
-                    } else if (boxTies && !note.firstTied() && note.isTied()) {
-                        //System.out.println("Case B " + beamed + " " + note);
-                        drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, inext, stemUp);
-                    } else {
-                        //System.out.println("Case C " + beamed + " " + note);
-                        drawNote(note, false, i, g, g2, noteStat.getColor(i), part, beamThis, inext, stemUp);
-                        boxTies = false;
-                    }
-
-                    lastNote = note;
-                    lastNoteBeamed = isaNote(note.getPitch()) && beamed; // remember for next time around
-                    lastNoteStemUp = stemUp;
-                    ilast = i;
-
-                    // in case a bracket needs to be drawn
-
-                    int noteTop = yCoordinate - (stemUp ? upStemBracketCorrection : 0);
-
-                    if (noteTop < highestYPos) {
-                        highestYPos = noteTop;
-                    }
-
-                    cstrLines[i].setHasNote(true);
-                } else {
-                    cstrLines[i].setHasNote(false);
-                }
-
-                // if there's a chord progression at the given index, draw the name of the chord
-                Chord chord = chordProg.getChord(i);
-                if (i < chordProg.size() && chord != null) {
-                    cstrLines[i].setHasChord(true);
-
-                    // Hack; if the note is a quarter-note triplet that crosses over a barline,
-                    // we need to adjust the height of the chord, so it doesn't run into the bracket.
-                    int chordHeightAdjustment = 0;
-                    if (note != null && note.isTied() && note.getRhythmValue() == beatValue / 3) {
-                        chordHeightAdjustment -= 20;
-                    }
-
-                    drawChord(g, chord, isSelected, chordHeightAdjustment);
-                }
+                drawChord(g, i, note);
 
                 cstrLines[i].setSpacing(cstrLineSpacing + spacingMod);
 
@@ -2774,24 +2626,12 @@ public class Stave
 // all notes do. All values need to be checked.
 
             // draw a bracket for the tuplet
-            if (tupletValue != OUT_OF_BOUNDS && tupletEndIndex == i) {
+            if (tupletValue > 0 && tupletEndIndex == i) {
                 int tupletBeatValue =
                         ((tupletEndIndex + 1) - tupletStartIndex) / tupletValue;
 
                 for (int j = 0; j <= tupletValue; ++j) {
-                    int index;
-
-                  /* Not sure why there was a conditional here.
-
-                  if( j * tupletBeatValue >= beatValue )
-                  {
-                  index = (tupletStartIndex + j * tupletBeatValue) - 1;
-                  }
-                  else
-                   */
-                    {
-                        index = tupletStartIndex + j * tupletBeatValue;
-                    }
+                    int index = tupletStartIndex + j * tupletBeatValue;
 
                     // Conditional to draw the tuplet bracket.  We only draw the tuplet bracket if
                     // a) the note is not null AND
@@ -2803,8 +2643,6 @@ public class Stave
                     Note noteAtIndex = part.getNote(index);
 
                     if (noteAtIndex != null
-                            // why? && !noteAtIndex.isRest()
-                            // && part.getNote(index - 1) != noteAtIndex
                             && noteAtIndex.getRhythmValue() < tupletBeatValue * tupletValue
                             && noteAtIndex.getRhythmValue() % tupletBeatValue == 0 // why? || tupletEndIndex - tupletStartIndex > beatValue
                     ) {
@@ -2835,13 +2673,11 @@ public class Stave
                             headSpace + (staveLine * lineSpacing) - 10);
                 }
 
-                // if the line measures is maxed out draw a bar line and set
-                // the toNextLine flag
                 if (lineMeasureCount == measuresOnLine) {
                     drawBarLine(STAVE_WIDTH, staveLine, g);
                     toNextLine = true;
                 }
-                // otherwise draw the bar line at the current location
+                // otherwise, draw the bar line at the current location
                 else {
                     drawBarLine(xCoordinate, staveLine, g);
                     // set the bracketStart to 10 pixels before the next cstr
@@ -2858,7 +2694,7 @@ public class Stave
             }
 
             // if the stave should go to the next line...
-            if (toNextLine == true && i != part.size() - 1) {
+            if (toNextLine && i != part.size() - 1) {
                 // increment the stave position on the y-axis and draw the new
                 // line's pitch lines
                 staveLine++;
@@ -2937,38 +2773,189 @@ public class Stave
 
     }
 
-    private void drawChord(Graphics g, Chord chord, boolean isSelected, int chordHeightAdjustment) {
-        // calculate the height to draw the chord at
-        int chordHeight = headSpace + (staveLine * lineSpacing) - 25;
-        if (yCoordinate < chordHeight + 5) {
-            chordHeight = yCoordinate + 5;
-        }
+    private void drawChord(Graphics g, int i, Note note) {
+        // if there's a chord progression at the given index, draw the name of the chord
+        Chord chord = chordProg.getChord(i);
+        if (chord != null) {
+            cstrLines[i].setHasChord(true);
 
-        // If the chord symbol is getting drawn up a line for some
-        // reason, we're just going to bring it down an arbitrary distance.
-        if (chordHeight < (staveLine - 1) * lineSpacing + 100) {
-            chordHeight += lineSpacing - 20;
-        }
-        chordHeight += chordHeightAdjustment;
+            // Hack; if the note is a quarter-note triplet that crosses over a barline,
+            // we need to adjust the height of the chord, so it doesn't run into the bracket.
+            int chordHeightAdjustment = 0;
+            if (note != null && note.isTied() && note.getRhythmValue() == beatValue / 3) {
+                chordHeightAdjustment -= 20;
+            }
 
-        // draw the chord red if selected, black if not
-        if (isSelected) {
-            g.setColor(Color.RED);
-        } else {
+            boolean isSelected = i >= selectionStart && i <= selectionEnd;
+            // calculate the height to draw the chord at
+            int chordHeight = headSpace + (staveLine * lineSpacing) - 25;
+            if (yCoordinate < chordHeight + 5) {
+                chordHeight = yCoordinate + 5;
+            }
+
+            // If the chord symbol is getting drawn up a line for some
+            // reason, we're just going to bring it down an arbitrary distance.
+            if (chordHeight < (staveLine - 1) * lineSpacing + 100) {
+                chordHeight += lineSpacing - 20;
+            }
+            chordHeight += chordHeightAdjustment;
+
+            // draw the chord red if selected, black if not
+            if (isSelected) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.BLACK);
+            }
+
+            g.setFont(chordFont);
+
+            String chordName = toSymbols(chord.getName());
+
+            g.drawString(chordName,
+                    xCoordinate - 4,
+                    chordHeight);
+
+            g.setFont(barNumFont);
+
             g.setColor(Color.BLACK);
         }
+    }
 
-        g.setFont(chordFont);
+    private void drawNote(MelodyPart part, Graphics g, Graphics2D g2, int i, Note note) {
+        // if there is a note at the given index, draw it
+        if (note != null) {
+            boolean stemUp = lastNoteBeamed ? lastNoteStemUp : isStemUp(note, type);
 
-        String chordName = toSymbols(chord.getName());
+            // Beamed is true when there is a beam from this note to the next
 
-        g.drawString(chordName,
-                xCoordinate - 4,
-                chordHeight);
+            int iNext = part.getNextIndex(i);
+            Note nextNote = part.getNote(iNext);
 
-        g.setFont(barNumFont);
+            // We need to look at the next note, if any, to determine whether to get a stem
+            // for beaming or a regular stem.
 
-        g.setColor(Color.BLACK);
+            // Conditions for beaming forward:
+            // These are used to determine whether a note stands alone or has a beam.
+            // A note having a beam will not also have a flag.
+
+            boolean beamed = beamingNotes // beaming desired
+                    && sameBeat(i, iNext) // in the same beat interval
+                    && note.getRhythmValue() < 80 // less than a quarter note
+                    && nextNote != null // next note exists
+                    && isaNote(nextNote.getPitch())
+                    && sameStemDirection(note, nextNote, type)
+                    && note.getRhythmValue() == nextNote.getRhythmValue(); // compatibility
+
+            boolean beamThis = beamed || lastNoteBeamed;
+
+            if (isNote
+                    && i >= selectionStart
+                    && i <= selectionEnd
+                    && (note.firstTied() || !note.isTied())
+                    && note.getPitch() != Note.REST // May seem redundant, but this is need to control boxing
+            ) {
+                drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, iNext, stemUp);
+                boxTies = true;
+            } else if (boxTies && !note.firstTied() && note.isTied()) {
+                drawNote(note, true, i, g, g2, noteStat.getColor(i), part, beamThis, iNext, stemUp);
+            } else {
+                drawNote(note, false, i, g, g2, noteStat.getColor(i), part, beamThis, iNext, stemUp);
+                boxTies = false;
+            }
+
+            lastNote = note;
+            lastNoteBeamed = isaNote(note.getPitch()) && beamed; // remember for next time around
+            lastNoteStemUp = stemUp;
+            ilast = i;
+
+            // in case a bracket needs to be drawn
+
+            int noteTop = yCoordinate - (stemUp ? upStemBracketCorrection : 0);
+
+            if (noteTop < highestYPos) {
+                highestYPos = noteTop;
+            }
+
+            cstrLines[i].setHasNote(true);
+        } else {
+            cstrLines[i].setHasNote(false);
+        }
+    }
+
+    private void drawConstructionLines(Graphics g, int i) {
+        if (notate.getShowConstructionLinesAndBoxes()) {
+            // draw a construction line orange/red if selected
+
+            if (i >= selectionStart && i <= selectionEnd) {
+                if (i % beatValue == 0) {
+                    drawCstrLine(xCoordinate, staveLine,
+                            Color.red, 2, g);
+                } else {
+                    drawCstrLine(xCoordinate, staveLine,
+                            Color.orange, 2, g);
+                }
+
+                selectionCacheSet(10);
+            }
+            // else draw the construction line at index i if showAllCL true
+            else if (showAllCL || (showMeasureCL && mouseOverMeasure == i)) {
+                if (i % beatValue == 0) {
+                    drawCstrLine(xCoordinate, staveLine,
+                            Color.DARK_GRAY, 1, g);
+                } else {
+                    drawCstrLine(xCoordinate, staveLine,
+                            Color.LIGHT_GRAY, 1, g);
+                }
+            }
+        }
+    }
+
+    private static int getTupletValue(int noteValue) {
+        int tupletValue = 0;
+        if (noteValue == THIRTYSECOND_TRIPLET) {
+            tupletValue = 3;
+        } else if (noteValue == THIRTYSECOND_QUINTUPLET) {
+            tupletValue = 5;
+        } else if (noteValue == SIXTEENTH_TRIPLET) {
+            tupletValue = 3;
+        } else if (noteValue == SIXTEENTH_QUINTUPLET) {
+            tupletValue = 5;
+        } else if (noteValue == EIGHTH_TRIPLET) {
+            tupletValue = 3;
+        } else if (noteValue == EIGHTH_QUINTUPLET) {
+            tupletValue = 5;
+        } else if (noteValue == QUARTER_TRIPLET) {
+            tupletValue = 3;
+        } else if (noteValue == QUARTER_QUINTUPLET) {
+            tupletValue = 5;
+        } else if (noteValue == HALF_TRIPLET) {
+            tupletValue = 3;
+        }
+        return tupletValue;
+    }
+
+    private static int getTupletEndIndex(MelodyPart part, int i, int noteValue, int prevTupleEndIndex) {
+        int tupletEndIndex = prevTupleEndIndex;
+        if (noteValue == THIRTYSECOND_TRIPLET) {
+            tupletEndIndex = i + 3 * THIRTYSECOND_TRIPLET - 1;
+        } else if (noteValue == THIRTYSECOND_QUINTUPLET) {
+            tupletEndIndex = i + 5 * THIRTYSECOND_QUINTUPLET - 1;
+        } else if (noteValue == SIXTEENTH_TRIPLET) {
+            tupletEndIndex = part.getNote(i + SIXTEENTH) != null ? i + SIXTEENTH - 1 : i + 3 * SIXTEENTH_TRIPLET - 1;
+        } else if (noteValue == SIXTEENTH_QUINTUPLET) {
+            tupletEndIndex = i + 5 * SIXTEENTH_QUINTUPLET - 1;
+        } else if (noteValue == EIGHTH_TRIPLET) {
+            tupletEndIndex = part.getNote(i + EIGHTH) != null ? i + EIGHTH - 1 : i + 3 * EIGHTH_TRIPLET - 1;
+        } else if (noteValue == EIGHTH_QUINTUPLET) {
+            tupletEndIndex = i + 5 * EIGHTH_QUINTUPLET - 1;
+        } else if (noteValue == QUARTER_TRIPLET) {
+            tupletEndIndex = part.getNote(i + QUARTER) != null ? i + QUARTER - 1 : i + 3 * QUARTER_TRIPLET - 1;
+        } else if (noteValue == QUARTER_QUINTUPLET) {
+            tupletEndIndex = i + 5 * QUARTER_QUINTUPLET - 1;
+        } else if (noteValue == HALF_TRIPLET) {
+            tupletEndIndex = part.getNote(i + HALF) != null ? i + HALF - 1 : i + 3 * HALF_TRIPLET - 1;
+        }
+        return tupletEndIndex;
     }
 
     /**

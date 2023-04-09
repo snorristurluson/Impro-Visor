@@ -46,6 +46,7 @@ import java.util.ListIterator;
 
 import polya.Polylist;
 import polya.PolylistEnum;
+import polya.Tokenizer;
 
 /**
  * Contains a set of rules read and processed during construction that can
@@ -259,7 +260,7 @@ public class Advisor
     }
 
 
-    public void setRules(Polylist rules) {
+    public static void setRules(Polylist rules) {
         if (rules == null) {
             return;
         }
@@ -369,6 +370,41 @@ public class Advisor
     }
 
 
+    public static Polylist loadRules(File ruleFile) throws FileNotFoundException {
+        FileInputStream inputStream = new FileInputStream(ruleFile);
+        Tokenizer in = new Tokenizer(inputStream);
+        Object ob;
+        Polylist rules = new Polylist();
+
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            rules = rules.cons(ob);
+        }
+
+        return rules.reverse();
+    }
+
+    public static void loadDefaultRules() {
+        Preferences.loadPreferences();
+        // Load the default rule file from the Preferences file
+        String ruleFilePath = Preferences.getPreference(Preferences.DEFAULT_VOCAB_FILE);
+        String ruleFileName;
+        if (ruleFilePath.lastIndexOf(File.separator) == -1) {
+            ruleFileName = ruleFilePath;
+        } else {
+            ruleFileName = ruleFilePath.substring(ruleFilePath.lastIndexOf(File.separator));
+        }
+
+        File ruleFile = new File(ImproVisor.getVocabDirectory(), ruleFileName);
+
+        Polylist rules = null;
+        try {
+            rules = Advisor.loadRules(ruleFile);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Advisor.setRules(rules);
+
+    }
     /**
      * List all chords on out for reference purposes.
      */
@@ -422,7 +458,7 @@ public class Advisor
      * organized Polylists.
      * @param rules     a Polylist containing Advisor rules
      */
-    public void addRules() {
+    public static void addRules() {
         int numRules = ruleArray.size();
         for (int serial = 0; serial < numRules; serial++) {
             addOneRule(ruleArray.get(serial),
@@ -2393,7 +2429,7 @@ public class Advisor
      * by extensions.  This has to be done after chords are read
      * and extensions are computed.
      */
-    public void updateColors(Polylist chords) {
+    public static void updateColors(Polylist chords) {
         while (chords.nonEmpty()) {
             Polylist item = (Polylist) chords.first();
             ChordForm form = (ChordForm) item.second();
@@ -2542,7 +2578,7 @@ public class Advisor
      * @param chordName         a String specifying the chord to process
      * @param extensions        a Polylist containing the extension path
      */
-    public void traverseExtensions(String chordName, Polylist extensions) {
+    public static void traverseExtensions(String chordName, Polylist extensions) {
         ChordSymbol chordSymbol = ChordSymbol.makeChordSymbol(chordName);
 
         ChordForm chordForm = chordSymbol.getChordForm();
@@ -2577,7 +2613,7 @@ public class Advisor
      * @param chordName         the name of the chord to add
      * @param extensions        the extensions path to add
      */
-    public void addExtensions(String chordName, Polylist extensions) {
+    public static void addExtensions(String chordName, Polylist extensions) {
         // if there is no extensions path, just add the chord
         if (extensions.isEmpty()) {
             extensionsTable = extensionsTable.cons(Polylist.list(chordName));
@@ -3279,7 +3315,7 @@ public class Advisor
     /**
      * Dump out everything, primarily for development.
      */
-    public void showRules(PrintStream out) {
+    public static void showRules(PrintStream out) {
         ListIterator v = ruleArray.listIterator();
         for (int i = 0; v.hasNext(); i++) {
             out.println("" + i + " " + v.next());

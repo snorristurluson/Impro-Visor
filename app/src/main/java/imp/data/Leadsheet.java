@@ -23,21 +23,19 @@ package imp.data;
 import imp.style.Style;
 import imp.data.advice.Advisor;
 import imp.Constants;
-import imp.Constants.StaveType;
 import imp.util.ErrorLog;
 import imp.util.ErrorLogWithResponse;
 import imp.util.Preferences;
 import imp.util.Trace;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 
 import polya.Polylist;
 import polya.Tokenizer;
 
 public class Leadsheet
         implements Constants {
-    static String keyword[] =
+    static String[] keyword =
             {"title", "key", "meter", "bars", "tempo", "transpose", "volume",
                     "part", "type", "instrument", "chords", "melody", "swing",
                     "breakpoint", "composer", "comments",
@@ -202,571 +200,528 @@ public class Leadsheet
 
     /**
      * Read leadsheet from tokens provided by Tokenizer into Score
-     * @param in
-     * @param score
-     * @return
      */
-
     public static boolean readLeadSheet(Tokenizer in, Score score) {
-        return readLeadSheet(in,
+        LeadSheetReader leadSheetReader = new LeadSheetReader(in,
                 score,
                 Preferences.getAlwaysUseStave(),
                 Preferences.getStaveTypeFromPreferences());
+        return leadSheetReader.readLeadSheet();
     }
 
 
-    /**
-     * Read leadsheet from tokens provided by Tokenizer into Score, with
-     * a given StaveType, which can be overridden.
-     * @param in
-     * @param score
-     * @return
-     */
-
-    public static boolean readLeadSheet(Tokenizer in,
-                                        Score score,
-                                        boolean overrideStaveType,
-                                        StaveType useStaveType) {
-        int rise = 0;
-
-        boolean headStarted = false;
-
-        String titleString;
-
-        String composerString;
-
-        String showTitleString;
-
-        String year;
-
-        int beatValue = WHOLE / score.getMetre()[1];    // These may change as a result of reading metre!!
-        int beatsPerBar = score.getMetre()[0];
-        int measureLength = beatsPerBar * beatValue;
-
-        score.setTempo(160);            // default
-
-        ChordPart chords = new ChordPart();    // in case these parts are not explicit
-        MelodyPart melody = new MelodyPart();
-
-        melody.setKeySignature(0);        // default
-
-        Key key = Key.getKey(0);        // default
-
-        chords.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
-
-        chords.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_CHORD_INSTRUMENT)) - 1);
-        melody.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
-
-        score.setScoreItemsFromPreferences();
-
-        Object ob;
-
-        boolean firstUnitPassed = false;
-        boolean pickupExists = true;    // unless starts with bar
-
-        Part partReferenced = chords;
-
-        Polylist chordInputReversed = Polylist.nil;
-
-        Polylist melodyInputReversed = Polylist.nil;
-
-        while ((ob = in.nextSexp()) != Tokenizer.eof) {
-            // Polylists are directives
-            // Atoms by themselves are chords and melody
-
-            if (ob instanceof Polylist) {
-                Polylist item = (Polylist) ob;
-
-                if (item.nonEmpty()) {
-                    Object dispatcher = item.first();
-                    item = item.rest();        // bypass first thing in list
-
-                    if (!(dispatcher instanceof String)) {
-                        ErrorLog.log(ErrorLog.SEVERE,
-                                "Expected keyword, found '" + dispatcher + "', ingnoring");
-                    } else {
-                        switch (lookup((String) dispatcher, keyword)) {
-                            case TITLE: {
-                                titleString = concatElements(item);
-                                score.setTitle(titleString);
-                            }
-                            break;
-
-                            case COMPOSER: {
-                                composerString = concatElements(item);
-                                score.setComposer(composerString);
-                            }
-                            break;
-
-                            case SHOW_TITLE: {
-                                showTitleString = concatElements(item);
-                                score.setShowTitle(showTitleString);
-                            }
-                            break;
-
-                            case YEAR: {
-                                year = concatElements(item);
-                                score.setYear(year);
-                            }
-                            break;
-
-                            case COMMENTS: {
-                                String commentsString = concatElements(item);
-                                score.setComments(commentsString);
-                            }
-                            break;
-
-                            case PLAYBACK_TRANSPOSE: {
-                                switch (item.length()) {
-                                    case 1: // old version, bass and chords the same
-                                        if (item.first() instanceof Long) {
-                                            int value1 = ((Long) item.first()).intValue();
-                                            score.setTransposition(new Transposition(value1, value1, 0));
-                                        }
-                                        break;
-                                    case 3: // new version, bass, chords and melody
-                                        if (item.first() instanceof Long &&
-                                                item.second() instanceof Long &&
-                                                item.third() instanceof Long) {
-                                            int value1 = ((Long) item.first()).intValue();
-                                            int value2 = ((Long) item.second()).intValue();
-                                            int value3 = ((Long) item.third()).intValue();
-
-                                            score.setTransposition(new Transposition(value1, value2, value3));
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-
-                            case CHORD_FONT_SIZE:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setChordFontSize(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case BASS_INSTRUMENT:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setBassInstrument(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case BASS_VOLUME:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setBassVolume(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case DRUM_VOLUME:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setDrumVolume(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case CHORD_VOLUME:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setChordVolume(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case MELODY_VOLUME:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setMelodyVolume(((Long) item.first()).intValue());
-                                }
-                                break;
-
-
-                            case STYLE:
-                                if (item.nonEmpty() && item.first() instanceof String) {
-                                    chordInputReversed =
-                                            chordInputReversed.cons(item.cons(dispatcher));
-
-                                    String styleName = (String) item.first();
-                                    Style style = Advisor.getStyle(styleName);
-                                    if (style == null) {
-                                        String defaultStyleName =
-                                                Preferences.getPreference(Preferences.DEFAULT_STYLE);
-                                        ErrorLog.log(ErrorLog.WARNING,
-                                                "Style named " + styleName +
-                                                        " not found, using default " +
-                                                        defaultStyleName);
-                                        style = Advisor.getStyle(defaultStyleName);
-                                    }
-                                    item = item.rest();
-                                    while (item.nonEmpty()) {
-                                        Polylist L = (Polylist) item.first();
-                                        item = item.rest();
-                                        style.load((String) L.first(), L.rest());
-                                    }
-                                }
-                                break;
-
-                            case PHRASE:
-                            case SECTION:
-                                //if( item.nonEmpty() )
-                            {
-                                chordInputReversed =
-                                        chordInputReversed.cons(item.cons(dispatcher));
-                            }
-                            break;
-
-                            case KEY:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    int sharps = ((Long) item.first()).intValue();
-                                    score.setKeySignature(Key.getKeyDelta(sharps, rise));
-                                    key = Key.getKey(sharps);
-                                }
-                                break;
-
-                            // Read in the meter from the leadesheet.  To support older versions
-                            // that didn't recognize different time signatures, we look at the first
-                            // value, and if there isn't a second value, we just assume that it's a
-                            // four.
-                            case METER:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    beatsPerBar = ((Long) item.first()).intValue();
-                                    if (beatsPerBar > MAX_BEATS_PER_BAR) {
-                                        ErrorLog.log(ErrorLog.SEVERE, beatsPerBar
-                                                + " beats per bar not supported, using "
-                                                + DEFAULT_BEATS_PER_BAR);
-                                        beatsPerBar = DEFAULT_BEATS_PER_BAR;
-                                    }
-                                }
-
-                                if (item.rest().nonEmpty() && item.rest().first() instanceof Long) {
-                                    long beat_denominator = ((Long) item.rest().first()).intValue();
-                                    if (beat_denominator < 1 || beat_denominator > MAX_BEAT_DENOMINATOR) {
-                                        ErrorLog.log(ErrorLog.SEVERE, beat_denominator
-                                                + " not supported in beat denominator, using "
-                                                + DEFAULT_BEAT_DENOMINATOR);
-                                        beat_denominator = DEFAULT_BEAT_DENOMINATOR;
-                                    }
-                                    beatValue = WHOLE / (int) beat_denominator;
-                                } else {
-                                    beatValue = BEAT;
-                                }
-
-                                measureLength = beatsPerBar * beatValue;
-                                score.setMetre(beatsPerBar, WHOLE / beatValue);
-                                chords.setMetre(beatsPerBar, WHOLE / beatValue);
-
-                                break;
-
-                            case TEMPO:
-                                if (item.nonEmpty() && item.first() instanceof Double) {
-                                    score.setTempo(((Double) item.first()).doubleValue());
-                                }
-                                break;
-
-                            case BREAKPOINT:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    score.setBreakpoint(((Long) item.first()).intValue());
-                                }
-                                break;
-
-                            case LAYOUT:
-                                // FIX: check syntax
-                                score.setLayoutList(item);
-                                break;
-
-                            case ROADMAP_LAYOUT:
-                                // FIX: check syntax
-                                score.setRoadmapLayout(((Long) item.first()).intValue());
-                                break;
-
-                            case BARS:
-                                // No longer used
-                                break;
-
-                            case PART: {
-                                while (item.nonEmpty()) {
-                                    boolean handled = false;
-                                    Object subOb = item.first();
-                                    if (subOb instanceof Polylist) {
-                                        Polylist subitem = (Polylist) subOb;
-                                        if (subitem.nonEmpty()) {
-                                            Object subkey = subitem.first();
-                                            if (subkey instanceof String) {
-                                                switch (lookup((String) subkey, keyword)) {
-                                                    case TYPE: {
-                                                        if (subitem.rest().nonEmpty()) {
-                                                            if (subitem.rest().first() instanceof String) {
-                                                                String type = (String) subitem.rest().first();
-                                                                if (type.equals(keyword[CHORDS])) {
-                                                                  //chords = new ChordPart();	// FIX
-                                                                    handled = true;
-                                                                    partReferenced = chords;
-                                                                } else if (type.equals(keyword[MELODY])) {
-                                                                    // Start a new melody part iff head not already started
-
-                                                                    if (headStarted && melodyInputReversed.nonEmpty()) {
-                                                                        // process accumulated melody
-
-                                                                        addToMelodyPart(melodyInputReversed,
-                                                                                melody, rise, beatValue, key);
-                                                                        melodyInputReversed = Polylist.nil;
-
-                                                                        melody = new MelodyPart();
-                                                                        score.addPart(melody);
-                                                                    }
-                                                                    handled = true;
-                                                                    partReferenced = melody;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    if (overrideStaveType) {
-                                                        partReferenced.setStaveType(useStaveType);
-                                                    }
-                                                    break; // case TYPE
-
-                                                    case INSTRUMENT: {
-                                                        if (subitem.rest().nonEmpty()) {
-                                                            Object inst = subitem.rest().first();
-                                                            if (inst instanceof Long) {
-                                                                partReferenced.setInstrument(((Long) inst).intValue());
-                                                                handled = true;
-                                                            }
-                                                        }
-                                                    }
-                                                    break; // case INSTRUMENT
-
-                                                    case VOLUME: {
-                                                        if (subitem.rest().nonEmpty()) {
-                                                            Object inst = subitem.rest().first();
-                                                            if (inst instanceof Long) {
-                                                                partReferenced.setVolume(((Long) inst).intValue());
-                                                                handled = true;
-                                                            }
-                                                        }
-                                                    }
-                                                    break; // case VOLUME
-
-                                                    case KEY: {
-                                                        if (subitem.rest().nonEmpty()) {
-                                                            Object inst = subitem.rest().first();
-                                                            if (inst instanceof Long) {
-                                                                int sharps =
-                                                                        Key.getKeyDelta(((Long) inst).intValue(),
-                                                                                rise);
-                                                                partReferenced.setKeySignature(sharps);
-                                                                key = Key.getKey(sharps);
-                                                                handled = true;
-                                                            }
-                                                        }
-                                                    }
-                                                    break; // case KEY
-
-                                                    case ROADMAP:
-                                                        Polylist roadmapPoly = ((Polylist) item.first()).rest();
-                                                        ((ChordPart) partReferenced).setRoadmapPoly(roadmapPoly);
-                                                        //System.out.println("roadmap read as " + roadmapPoly);
-                                                        handled = true;
-                                                        break;
-
-                                                    case METER:
-                                                        handled = true;
-                              /* Ignoring meter in parts right now
-                              if( subitem.rest().nonEmpty() )
-                              {
-                              Object inst = subitem.rest().first();
-                              if( inst instanceof Long )
-                              {
-                              // Do something here.
-                              partReferenced.setMetre(((Long)inst).intValue(), WHOLE/beatValue);
-                              handled = true;
-                              }
-                              }
-                              if (subitem.rest().length() == 2)
-                              {
-                              Object inst = subitem.rest().second();
-                              if (inst instanceof Long)
-                              partReferenced.setMetre(beatsPerBar, ((Long)inst).intValue());
-                              }
-                               */
-                                                        break;
-
-                            /*
-                            case SWING:
-                            {
-                            if( subitem.rest().nonEmpty() )
-                            {
-                            Object inst = subitem.rest().first();
-                            if( inst instanceof Double )
-                            {
-                            partReferenced.setSwing(((Double)inst).doubleValue());
-                            handled = true;
-                            }
-                            }
-                            }
-                            break; */
-
-                                                    case TITLE: {
-                                                        String title = concatElements(subitem.rest());
-                                                        partReferenced.setTitle(title);
-                                                        handled = true;
-                                                    }
-                                                    break; // case TITLE
-
-                                                    case COMPOSER: {
-                                                        String partComposerString =
-                                                                concatElements(subitem.rest());
-                                                        partReferenced.setComposer(partComposerString);
-                                                        handled = true;
-                                                    }
-                                                    break; // case COMPOSER
-
-                                                    case STAVE: {
-                                                        if (!overrideStaveType) {
-                                                            String partStaveString =
-                                                                    concatElements(subitem.rest());
-                                                            switch (lookup(partStaveString, keyword)) {
-                                                                case TREBLE:
-                                                                    partReferenced.setStaveType(StaveType.TREBLE);
-                                                                    break;
-                                                                case BASS:
-                                                                    partReferenced.setStaveType(StaveType.BASS);
-                                                                    break;
-                                                                case GRAND:
-                                                                    partReferenced.setStaveType(StaveType.GRAND);
-                                                                    break;
-                                                                case AUTO:
-                                                                    partReferenced.setStaveType(StaveType.AUTO);
-                                                                    break;
-                                                                default:
-                                                                    ErrorLog.log(ErrorLog.WARNING,
-                                                                            "Stave type unrecognized: "
-                                                                                    + partStaveString);
-                                                            }
-                                                        }
-
-                                                        handled = true;
-                                                    }
-                                                    break; // case STAVE
-
-                                                }
-                                            } // end switch
-                                        }
-                                    }
-                                    if (!handled && subOb instanceof Polylist && ((Polylist) subOb).nonEmpty()) {
-                                        ErrorLog.log(ErrorLog.WARNING,
-                                                "item in part not handled: " + subOb);
-                                    }
-                                    item = item.rest();
-                                }
-                            }
-                            break;
-
-                            case TRANSPOSE:
-                                if (item.nonEmpty() && item.first() instanceof Long) {
-                                    rise = ((Long) item.first()).intValue();
-                                    int sharps = score.getKeySignature() + rise;
-                                    score.setKeySignature(sharps);
-                                    key = Key.getKey(sharps);
-                                }
-                                break;
-                        }
-                    }
+    private static class LeadSheetReader {
+
+        private int beatValue;
+        private int beatsPerBar;
+        private int measureLength;
+
+        Tokenizer in;
+        Score score;
+        boolean overrideStaveType;
+        StaveType useStaveType;
+        private ChordPart chords;
+        private MelodyPart melody;
+        private Key key;
+        private boolean firstUnitPassed;
+        private Part partReferenced;
+        private Polylist chordInputReversed;
+        private Polylist melodyInputReversed;
+        private int rise;
+        private boolean headStarted;
+
+        public LeadSheetReader(Tokenizer in, Score score, boolean overrideStaveType, StaveType useStaveType) {
+            this.in = in;
+            this.score = score;
+            this.overrideStaveType = overrideStaveType;
+            this.useStaveType = useStaveType;
+        }
+
+        /**
+         * Read leadsheet from tokens provided by Tokenizer into Score, with
+         * a given StaveType, which can be overridden.
+         */
+        public boolean readLeadSheet() {
+
+            // These may change as a result of reading metre!!
+            beatValue = WHOLE / score.getMetre()[1];
+            beatsPerBar = score.getMetre()[0];
+            measureLength = beatsPerBar * beatValue;
+
+            score.setTempo(160);
+            chords = new ChordPart();
+            melody = new MelodyPart();
+            key = Key.getKey(0);
+
+            chords.setStyle(Preferences.getPreference(Preferences.DEFAULT_STYLE));
+
+            chords.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_CHORD_INSTRUMENT)) - 1);
+            melody.setInstrument(Integer.parseInt(Preferences.getPreference(Preferences.DEFAULT_MELODY_INSTRUMENT)) - 1);
+
+            score.setScoreItemsFromPreferences();
+
+            firstUnitPassed = false;
+            // unless starts with bar
+
+            partReferenced = chords;
+
+            chordInputReversed = Polylist.nil;
+            melodyInputReversed = Polylist.nil;
+
+            Object ob;
+            rise = 0;
+            headStarted = false;
+            while ((ob = in.nextSexp()) != Tokenizer.eof) {
+                // Polylists are directives
+                // Atoms by themselves are chords and melody
+
+                if (ob instanceof Polylist) {
+                    ParsePolylist((Polylist) ob);
+                } else if (ob instanceof MelodySymbol) {
+                    ParseMelodySymbol(ob);
+                } else if (ob instanceof String) {
+                    ParseString(ob);
                 }
-            } else if (ob instanceof MelodySymbol) {
-                melodyInputReversed = melodyInputReversed.cons(ob);
-            } else if (ob instanceof String) {
-                String stringOb = (String) ob;
+            }
 
-                // Because it was read from the tokenizer, stringOb is not empty.
+            // Force a closing bar as necessary to prevent later mess-up
 
-                char firstChar = stringOb.charAt(0);
+            if (chordInputReversed.nonEmpty() && !endsBar(chordInputReversed.first())) {
+                chordInputReversed = chordInputReversed.cons(BARSTRING);
+            }
 
-                boolean handled = false;
+            addToChordPart(chordInputReversed, chords, rise, measureLength, key);
+            addToMelodyPart(melodyInputReversed, melody, rise);
 
-                // first non-list starts the head.
+            if (melody.getUnit(0) == null) {
+                melody.addRest(new Rest(BEAT));
+            }
 
-                if (!headStarted) {
-                    headStarted = true;
-                    score.addPart(melody);
-                    score.setChordProg(chords);
+            return true;
+        }
+
+        private void ParseMelodySymbol(Object ob) {
+            melodyInputReversed = melodyInputReversed.cons(ob);
+        }
+
+        private void ParseString(Object ob) {
+            String stringOb = (String) ob;
+
+            // Because it was read from the tokenizer, stringOb is not empty.
+
+            char firstChar = stringOb.charAt(0);
+
+            boolean handled = false;
+
+            // first non-list starts the head.
+
+            if (!headStarted) {
+                headStarted = true;
+                score.addPart(melody);
+                score.setChordProg(chords);
+            }
+
+            if (firstChar == BAR || firstChar == COMMA) {
+                if (stringOb.length() > 1) {
+                    ErrorLog.log(ErrorLog.WARNING,
+                            "A space is required after a bar line. "
+                                    + "Impro-Visor is ignoring what follows the bar in: " + ob);
                 }
 
-                if (firstChar == BAR || firstChar == COMMA) {
-                    if (stringOb.length() > 1) {
-                        ErrorLog.log(ErrorLog.WARNING,
-                                "A space is required after a bar line. "
-                                        + "Impro-Visor is ignoring what follows the bar in: " + ob);
-                    }
-
-                    if (!firstUnitPassed) {
-                        firstUnitPassed = true;
-                        pickupExists = false;
-                    }
-
-                    chordInputReversed = chordInputReversed.cons(BARSTRING);
-                    handled = true;
-                } else if (firstChar == SLASH) {
-                    chordInputReversed = chordInputReversed.cons(SLASHSTRING);
-                    handled = true;
-                } else if (Character.isLetter(firstChar)) {
+                if (!firstUnitPassed) {
                     firstUnitPassed = true;
-                    if (Character.isLowerCase(firstChar)) {
-                        // Melody note or rest
-                        MelodySymbol melodySymbol = MelodySymbol.makeMelodySymbol(stringOb);
-                        if (melodySymbol != null) {
-                            melodyInputReversed = melodyInputReversed.cons(melodySymbol);
-                            handled = true;
-                        }
-                    } else {
-                        ChordSymbol symbol = ChordSymbol.makeChordSymbol(stringOb);
+                }
 
-                        if (symbol != null) {
-                            chordInputReversed = chordInputReversed.cons(stringOb);
-                        } else {
-                            if (ErrorLogWithResponse.log(ErrorLog.WARNING,
-                                    "Impro-Visor does not recognize this chord: " + stringOb
-                                            + "\nusing NC instead")) {
-                                return false;
-                            }
-                        }
+                chordInputReversed = chordInputReversed.cons(BARSTRING);
+                handled = true;
+            } else if (firstChar == SLASH) {
+                chordInputReversed = chordInputReversed.cons(SLASHSTRING);
+                handled = true;
+            } else if (Character.isLetter(firstChar)) {
+                firstUnitPassed = true;
+                if (Character.isLowerCase(firstChar)) {
+                    // Melody note or rest
+                    MelodySymbol melodySymbol = MelodySymbol.makeMelodySymbol(stringOb);
+                    if (melodySymbol != null) {
+                        melodyInputReversed = melodyInputReversed.cons(melodySymbol);
                         handled = true;
                     }
-                }
-                if (!handled) {
-                    if (ErrorLogWithResponse.log(ErrorLog.SEVERE,
-                            "Unidentified item in input: " + ob
-                                    + "\nJava class is " + ob.getClass())) {
-                        return false;
+                } else {
+                    ChordSymbol symbol = ChordSymbol.makeChordSymbol(stringOb);
+
+                    if (symbol != null) {
+                        chordInputReversed = chordInputReversed.cons(stringOb);
+                    } else {
+                        if (ErrorLogWithResponse.log(ErrorLog.WARNING,
+                                "Impro-Visor does not recognize this chord: " + stringOb
+                                        + "\nusing NC instead")) {
+                            // return false;
+                        }
                     }
-                    continue;
+                    handled = true;
+                }
+            }
+            if (!handled) {
+                if (ErrorLogWithResponse.log(ErrorLog.SEVERE,
+                        "Unidentified item in input: " + ob
+                                + "\nJava class is " + ob.getClass())) {
+                    // return false;
+                }
+                return;
+            }
+        }
+
+        private void ParsePolylist(Polylist ob) {
+            Polylist item = ob;
+
+            if (item.nonEmpty()) {
+                Object dispatcher = item.first();
+                item = item.rest();        // bypass first thing in list
+
+                if (!(dispatcher instanceof String)) {
+                    ErrorLog.log(ErrorLog.SEVERE,
+                            "Expected keyword, found '" + dispatcher + "', ingnoring");
+                } else {
+                    switch (lookup((String) dispatcher, keyword)) {
+                        case TITLE: {
+                            String titleString = concatElements(item);
+                            score.setTitle(titleString);
+                        }
+                        break;
+
+                        case COMPOSER: {
+                            String composerString = concatElements(item);
+                            score.setComposer(composerString);
+                        }
+                        break;
+
+                        case SHOW_TITLE: {
+                            String showTitleString = concatElements(item);
+                            score.setShowTitle(showTitleString);
+                        }
+                        break;
+
+                        case YEAR: {
+                            String year = concatElements(item);
+                            score.setYear(year);
+                        }
+                        break;
+
+                        case COMMENTS: {
+                            String commentsString = concatElements(item);
+                            score.setComments(commentsString);
+                        }
+                        break;
+
+                        case PLAYBACK_TRANSPOSE: {
+                            switch (item.length()) {
+                                case 1 -> { // old version, bass and chords the same
+                                    if (item.first() instanceof Long) {
+                                        int value1 = ((Long) item.first()).intValue();
+                                        score.setTransposition(new Transposition(value1, value1, 0));
+                                    }
+                                }
+                                case 3 -> { // new version, bass, chords and melody
+                                    if (item.first() instanceof Long &&
+                                            item.second() instanceof Long &&
+                                            item.third() instanceof Long) {
+                                        int value1 = ((Long) item.first()).intValue();
+                                        int value2 = ((Long) item.second()).intValue();
+                                        int value3 = ((Long) item.third()).intValue();
+
+                                        score.setTransposition(new Transposition(value1, value2, value3));
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
+                        case CHORD_FONT_SIZE:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setChordFontSize(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case BASS_INSTRUMENT:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setBassInstrument(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case BASS_VOLUME:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setBassVolume(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case DRUM_VOLUME:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setDrumVolume(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case CHORD_VOLUME:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setChordVolume(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case MELODY_VOLUME:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setMelodyVolume(((Long) item.first()).intValue());
+                            }
+                            break;
+
+
+                        case STYLE:
+                            if (item.nonEmpty() && item.first() instanceof String styleName) {
+                                chordInputReversed =
+                                        chordInputReversed.cons(item.cons(dispatcher));
+
+                                Style style = Advisor.getStyle(styleName);
+                                if (style == null) {
+                                    String defaultStyleName =
+                                            Preferences.getPreference(Preferences.DEFAULT_STYLE);
+                                    ErrorLog.log(ErrorLog.WARNING,
+                                            "Style named " + styleName +
+                                                    " not found, using default " +
+                                                    defaultStyleName);
+                                    style = Advisor.getStyle(defaultStyleName);
+                                }
+                                item = item.rest();
+                                while (item.nonEmpty()) {
+                                    Polylist L = (Polylist) item.first();
+                                    item = item.rest();
+                                    assert style != null;
+                                    style.load((String) L.first(), L.rest());
+                                }
+                            }
+                            break;
+
+                        case PHRASE:
+                        case SECTION:
+                            //if( item.nonEmpty() )
+                        {
+                            chordInputReversed =
+                                    chordInputReversed.cons(item.cons(dispatcher));
+                        }
+                        break;
+
+                        case KEY:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                int sharps = ((Long) item.first()).intValue();
+                                score.setKeySignature(Key.getKeyDelta(sharps, rise));
+                                key = Key.getKey(sharps);
+                            }
+                            break;
+
+                        // Read in the meter from the leadesheet.  To support older versions
+                        // that didn't recognize different time signatures, we look at the first
+                        // value, and if there isn't a second value, we just assume that it's a
+                        // four.
+                        case METER:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                beatsPerBar = ((Long) item.first()).intValue();
+                                if (beatsPerBar > MAX_BEATS_PER_BAR) {
+                                    ErrorLog.log(ErrorLog.SEVERE, beatsPerBar
+                                            + " beats per bar not supported, using "
+                                            + DEFAULT_BEATS_PER_BAR);
+                                    beatsPerBar = DEFAULT_BEATS_PER_BAR;
+                                }
+                            }
+
+                            if (item.rest().nonEmpty() && item.rest().first() instanceof Long) {
+                                long beat_denominator = ((Long) item.rest().first()).intValue();
+                                if (beat_denominator < 1 || beat_denominator > MAX_BEAT_DENOMINATOR) {
+                                    ErrorLog.log(ErrorLog.SEVERE, beat_denominator
+                                            + " not supported in beat denominator, using "
+                                            + DEFAULT_BEAT_DENOMINATOR);
+                                    beat_denominator = DEFAULT_BEAT_DENOMINATOR;
+                                }
+                                beatValue = WHOLE / (int) beat_denominator;
+                            } else {
+                                beatValue = BEAT;
+                            }
+
+                            measureLength = beatsPerBar * beatValue;
+                            score.setMetre(beatsPerBar, WHOLE / beatValue);
+                            chords.setMetre(beatsPerBar, WHOLE / beatValue);
+
+                            break;
+
+                        case TEMPO:
+                            if (item.nonEmpty() && item.first() instanceof Double) {
+                                score.setTempo((Double) item.first());
+                            }
+                            break;
+
+                        case BREAKPOINT:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                score.setBreakpoint(((Long) item.first()).intValue());
+                            }
+                            break;
+
+                        case LAYOUT:
+                            // FIX: check syntax
+                            score.setLayoutList(item);
+                            break;
+
+                        case ROADMAP_LAYOUT:
+                            // FIX: check syntax
+                            score.setRoadmapLayout(((Long) item.first()).intValue());
+                            break;
+
+                        case BARS:
+                            // No longer used
+                            break;
+
+                        case PART:
+                            ParsePart(item);
+                            break;
+
+                        case TRANSPOSE:
+                            if (item.nonEmpty() && item.first() instanceof Long) {
+                                rise = ((Long) item.first()).intValue();
+                                int sharps = score.getKeySignature() + rise;
+                                score.setKeySignature(sharps);
+                                key = Key.getKey(sharps);
+                            }
+                            break;
+                    }
                 }
             }
         }
 
-        // Force a closing bar as necessary to prevent later mess-up
+        private void ParsePart(Polylist item) {
+            while (item.nonEmpty()) {
+                boolean handled = false;
+                Object subOb = item.first();
+                if (subOb instanceof Polylist subitem && subitem.nonEmpty()) {
+                    Object subkey = subitem.first();
+                    if (subkey instanceof String) {
+                        switch (lookup((String) subkey, keyword)) {
+                            case TYPE -> {
+                                {
+                                    if (subitem.rest().nonEmpty()) {
+                                        if (subitem.rest().first() instanceof String type) {
+                                            if (type.equals(keyword[CHORDS])) {
+                                                //chords = new ChordPart();	// FIX
+                                                handled = true;
+                                                partReferenced = chords;
+                                            } else if (type.equals(keyword[MELODY])) {
+                                                // Start a new melody part iff head not already started
 
-        if (chordInputReversed.nonEmpty() && !endsBar(chordInputReversed.first())) {
-            chordInputReversed = chordInputReversed.cons(BARSTRING);
+                                                if (headStarted && melodyInputReversed.nonEmpty()) {
+                                                    // process accumulated melody
+
+                                                    addToMelodyPart(melodyInputReversed,
+                                                            melody, rise);
+                                                    melodyInputReversed = Polylist.nil;
+
+                                                    melody = new MelodyPart();
+                                                    score.addPart(melody);
+                                                }
+                                                handled = true;
+                                                partReferenced = melody;
+                                            }
+                                        }
+                                    }
+                                }
+                                if (overrideStaveType) {
+                                    partReferenced.setStaveType(useStaveType);
+                                }
+                            } // case TYPE
+
+                            case INSTRUMENT -> {
+                                if (subitem.rest().nonEmpty()) {
+                                    Object inst = subitem.rest().first();
+                                    if (inst instanceof Long) {
+                                        partReferenced.setInstrument(((Long) inst).intValue());
+                                        handled = true;
+                                    }
+                                }
+                            }
+                            // case INSTRUMENT
+
+                            case VOLUME -> {
+                                if (subitem.rest().nonEmpty()) {
+                                    Object inst = subitem.rest().first();
+                                    if (inst instanceof Long) {
+                                        partReferenced.setVolume(((Long) inst).intValue());
+                                        handled = true;
+                                    }
+                                }
+                            }
+                            // case VOLUME
+
+                            case KEY -> {
+                                if (subitem.rest().nonEmpty()) {
+                                    Object inst = subitem.rest().first();
+                                    if (inst instanceof Long) {
+                                        int sharps =
+                                                Key.getKeyDelta(((Long) inst).intValue(),
+                                                        rise);
+                                        partReferenced.setKeySignature(sharps);
+                                        key = Key.getKey(sharps);
+                                        handled = true;
+                                    }
+                                }
+                            }
+                            // case KEY
+
+                            case ROADMAP -> {
+                                Polylist roadmapPoly = ((Polylist) item.first()).rest();
+                                ((ChordPart) partReferenced).setRoadmapPoly(roadmapPoly);
+                                //System.out.println("roadmap read as " + roadmapPoly);
+                                handled = true;
+                            }
+                            case METER -> handled = true;
+                            case TITLE -> {
+                                String title = concatElements(subitem.rest());
+                                partReferenced.setTitle(title);
+                                handled = true;
+                            }
+                            // case TITLE
+
+                            case COMPOSER -> {
+                                String partComposerString =
+                                        concatElements(subitem.rest());
+                                partReferenced.setComposer(partComposerString);
+                                handled = true;
+                            }
+                            // case COMPOSER
+
+                            case STAVE -> {
+                                if (!overrideStaveType) {
+                                    String partStaveString =
+                                            concatElements(subitem.rest());
+                                    switch (lookup(partStaveString, keyword)) {
+                                        case TREBLE -> partReferenced.setStaveType(StaveType.TREBLE);
+                                        case BASS -> partReferenced.setStaveType(StaveType.BASS);
+                                        case GRAND -> partReferenced.setStaveType(StaveType.GRAND);
+                                        case AUTO -> partReferenced.setStaveType(StaveType.AUTO);
+                                        default -> ErrorLog.log(ErrorLog.WARNING,
+                                                "Stave type unrecognized: "
+                                                        + partStaveString);
+                                    }
+                                }
+
+                                handled = true;
+                            }
+                            // case STAVE
+
+                        }
+                    } // end switch
+                }
+                if (!handled && subOb instanceof Polylist && ((Polylist) subOb).nonEmpty()) {
+                    ErrorLog.log(ErrorLog.WARNING,
+                            "item in part not handled: " + subOb);
+                }
+                item = item.rest();
+            }
         }
 
-        addToChordPart(chordInputReversed, chords, rise, measureLength, key);
-        addToMelodyPart(melodyInputReversed, melody, rise, beatValue, key);
-
-        if (melody.getUnit(0) == null) {
-            melody.addRest(new Rest(BEAT));
-        }
-
-        // Jim: Uncomment this to see note classifications on standard out
-
-        //classifyNotes(score.getPart(0), score.getChordProg());
-
-        // Thee following two lines are only for testing:
-
-        //System.out.println("chord symbols: " + chords.getChordSymbols());
-        //System.out.println("chord durations: " + chords.getChordDurations());
-
-        // Test code for getSyncVector
-//    int[] syncVector = melody.getSyncVector(1, 1000000000);
-//    int[] synco = Tension.getWindowedSyncopation2(syncVector, melody.size()/480, 2);
-//    System.out.println(Arrays.toString(synco)); 
-        return true;
-    } // readLeadsheet
+    }
 
     public static Polylist extractChordsAndMelody(Polylist chordsAndMelody) {
         Polylist chordsReversed = Polylist.nil;
@@ -776,11 +731,10 @@ public class Leadsheet
             Object ob = chordsAndMelody.first();
             if (ob instanceof MelodySymbol) {
                 melodyReversed = melodyReversed.cons(ob);
-            } else if (!(ob instanceof String)) {
+            } else if (!(ob instanceof String stringOb)) {
                 ErrorLog.log(ErrorLog.SEVERE,
                         "Ignoring the following string, which is not recognized as chords or melody: " + ob);
             } else {
-                String stringOb = (String) ob;
 
                 // Because it was read from the tokenizer, stringOb is not empty.
 
@@ -809,7 +763,6 @@ public class Leadsheet
 
                         melodyReversed = melodyReversed.cons(stringOb);
 
-                        handled = true;
                     } else {
                         ChordSymbol symbol = ChordSymbol.makeChordSymbol(stringOb);
 
@@ -820,8 +773,8 @@ public class Leadsheet
                                     "Impro-Visor does not recognize this chord: " + stringOb
                                             + "\nusing NC instead");
                         }
-                        handled = true;
                     }
+                    handled = true;
                 }
                 if (!handled) {
                     ErrorLog.log(ErrorLog.SEVERE,
@@ -837,19 +790,11 @@ public class Leadsheet
     /**
      * Add a Polylist of MelodySymbols or Strings that can be converted to
      * MelodySymbols, in reverse, to a MelodyPart.
-     * @param melodyInputReversed
-     * @param melody
-     * @param rise
-     * @param beatValue
-     * @param key
      */
     public static void addToMelodyPart(Polylist melodyInputReversed,
                                        MelodyPart melody,
-                                       int rise,
-                                       int beatValue,
-                                       Key key) {
+                                       int rise) {
         int volume = MAX_VOLUME;
-        int totalDuration = 0;
         Polylist melodyInput = melodyInputReversed.reverse();
         while (melodyInput.nonEmpty()) {
             Object ob = melodyInput.first();
@@ -868,7 +813,6 @@ public class Leadsheet
                 Note note = ((NoteSymbol) melodySymbol).transpose(rise).toNote();
                 note.setVolume(volume);
                 melody.addNote(note);
-                totalDuration += note.getRhythmValue();
             } else if (melodySymbol instanceof VolumeSymbol) {
                 volume = ((VolumeSymbol) melodySymbol).getVolume();
             }
@@ -881,10 +825,10 @@ public class Leadsheet
      * slotsAvailable is only the initial slots available; the rest are
      * determined by measure size.
      */
-    static public boolean populatePartWithChords(ChordPart chordProg,
-                                                 Polylist chords,
-                                                 int slotsAvailable,
-                                                 int slotsPerBar) {
+    static public void populatePartWithChords(ChordPart chordProg,
+                                              Polylist chords,
+                                              int slotsAvailable,
+                                              int slotsPerBar) {
         Polylist L = chords;
         String previousChordName = null;
         int accumulatedDuration = 0;
@@ -917,7 +861,7 @@ public class Leadsheet
                     ErrorLog.log(ErrorLog.SEVERE,
                             "Number of chords does not conform to slots available: " + chords + ", ignoring.");
 
-                    return false;
+                    return;
                 }
 
                 int slotsPerChord = slotsAvailable / chordsInMeasure;
@@ -970,19 +914,15 @@ public class Leadsheet
 
             chordProg.addChord(chord);
         }
-        return true;
     }
 
 
     static void addToChordPart(Polylist chordInputReversed, ChordPart chords,
                                int rise, int slotsPerBar, Key key) {
 
-        Style previousStyle = null;
-
-        Polylist chordInput = chordInputReversed.cons(NOCHORD).reverse();
         // NOCHORD is to force final output below
 
-        Polylist L = chordInput;
+        Polylist L = chordInputReversed.cons(NOCHORD).reverse();
 
         int measure = 0;
 
@@ -1039,24 +979,20 @@ public class Leadsheet
             while (chordsInBar.nonEmpty()) {
                 Object ob = chordsInBar.first();
                 chordsInBar = chordsInBar.rest();
-                if (ob instanceof Polylist) {
+                if (ob instanceof Polylist item) {
                     // All this code is placeholder until Sections are fully
                     // implemented
-                    Polylist item = (Polylist) ob;
                     String dispatcher = (String) item.first();
                     item = item.rest();
 
                     boolean isPhrase = false;
-                    //System.out.println("dispatcher = " + dispatcher);
                     switch (lookup(dispatcher, keyword)) {
                         case STYLE:
-                            if (item.nonEmpty() && item.first() instanceof String) {
-                                String stylename = (String) item.first();
+                            if (item.nonEmpty() && item.first() instanceof String stylename) {
                                 Style style = Advisor.getStyle(stylename);
                                 if (style == null) {
                                     ErrorLog.log(ErrorLog.WARNING, "Style " + stylename + " not found");
                                 } else {
-                                    previousStyle = style;
 
                                     item = item.rest();
                                     while (item.nonEmpty()) {
@@ -1085,13 +1021,10 @@ public class Leadsheet
 
                             String styleName = Style.USE_PREVIOUS_STYLE;
                             while (item.nonEmpty()) {
-                                if (item.first() instanceof Polylist
+                                if (item.first() instanceof Polylist sectItem
                                         && ((Polylist) item.first()).nonEmpty()) {
-                                    Polylist sectItem = (Polylist) item.first();
                                     if (sectItem.first().equals("style")) {
-                                        if (sectItem.rest().isEmpty()) {
-                                            // Empty: Use previous style
-                                        } else {
+                                        if (!sectItem.rest().isEmpty()) {
                                             // Non-empty: get specified style
 
                                             if (sectItem.second() instanceof String) {
@@ -1104,7 +1037,6 @@ public class Leadsheet
                                                     }
                                                 }
                                             }
-
                                         }
                                     }
                                 }
@@ -1161,8 +1093,7 @@ public class Leadsheet
                 handled = true;
             } else if (ob instanceof VolumeSymbol) {
                 volume = ((VolumeSymbol) ob).getVolume();
-            } else if (ob instanceof String) {
-                String stringOb = (String) ob;
+            } else if (ob instanceof String stringOb) {
                 Polylist item = Polylist.explode(stringOb);
                 Character c = (Character) item.first();
                 if (Character.isLetter(c)) {
@@ -1193,51 +1124,16 @@ public class Leadsheet
         return -1;
     }
 
-    /*
-    static boolean samePitchClass(String x, String y)
-    {
-    PitchClass pcx = PitchClass.getPitchClass(x);
-    PitchClass pcy = PitchClass.getPitchClass(y);
-    return pcx == pcy;
-    }
-     */
-    /* sample prototype for Jim
-     *
-     * Classifies notes in a melody with respect to chords.
-     * Classes are numbers: CHORD_TONE, etc. as defined in Constants.javaclas
-     */
-    static void classifyNotes(MelodyPart melody, ChordPart chords) {
-        System.out.println("Classifying melody tones ...");
-        String className[] = {"Chord tone", "Color tone", "Approach tone",
-                "Other tone"
-        };
-
-        int len = melody.getSize();
-        for (int i = 0; i < len; i++) {
-            Note note = melody.getNote(i);
-            if (note != null && !note.isRest()) {
-                Chord chord = chords.getCurrentChord(i);
-
-                int j = melody.getNextIndex(i);
-                if (j <= len) {
-                    Note nextNote = melody.getNote(j);
-                    if (nextNote != null && !nextNote.isRest()) {
-                        Chord nextChord = chords.getCurrentChord(j);
-                        int noteClassification = chord.classify(note, nextNote, nextChord);
-                        System.out.println("slot " + i + ": " + className[noteClassification] + " " + note.toLeadsheet() + " " + chord.toLeadsheet());
-                    } else {
-                        // Handle last and unconnected notes specially.
-                        System.out.println("slot " + i + ": " + className[chord.getTypeIndex(note)] + " " + note.toLeadsheet() + " " + chord.toLeadsheet());
-
-                    }
-                }
-            }
-        }
-    }
-
     private static boolean endsBar(Object s) {
         return s.equals(BARSTRING) || s.equals(COMMASTRING);
     }
 
+    public static Score readFile(File f) throws FileNotFoundException {
+        Score score = new Score();
+        FileInputStream leadStream = new FileInputStream(f);
+        Tokenizer tokenizer = new Tokenizer(leadStream);
+        Leadsheet.readLeadSheet(tokenizer, score);
+        return score;
+    }
 }
 

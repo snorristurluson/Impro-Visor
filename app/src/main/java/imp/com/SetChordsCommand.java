@@ -109,7 +109,7 @@ public class SetChordsCommand extends PasteCommand {
         if (melody != null) {
             source = new MelodyPart();
 
-            Leadsheet.addToMelodyPart(notes.reverse(), (MelodyPart) source, 0, measureLength, Key.Ckey);
+            Leadsheet.addToMelodyPart(notes.reverse(), (MelodyPart) source, 0);
         }
 
     }

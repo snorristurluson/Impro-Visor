@@ -48,10 +48,10 @@ import polya.PolylistEnum;
 
 /**
  * The Chord class represents a chord in a chord progression.
- * Right now the Chord only stores its name and its rhythmValue.
- * It has a function called getPitches that returns a ArrayList
+ * Right now, the Chord only stores its name and its rhythmValue.
+ * It has a function called getPitches that returns an ArrayList
  * containing the MIDI numbers of all the pitches in the chord.
- * Currently it is just a bunch of if statements with very limited 
+ * Currently, it is just a bunch of if statements with very limited
  * knowledge (but with enough information to play "Half Nelson")
  * and in the future it will likely call Prolog or wherever we
  * put the actual music theory knowledge.  Perhaps the Chord
