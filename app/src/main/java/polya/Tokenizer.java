@@ -138,17 +138,12 @@ public class Tokenizer extends StreamTokenizer {
         getSkippingWhiteSpace();
         switch (ttype)    // parens by themselves are tokens
         {
-            case '|':
-            case ',':
-            case '[':
-            case ']':
-            case '(':
-            case ')':
-            case TT_EOF:
+            case '|', ',', '[', ']', '(', ')', TT_EOF -> {
                 return ttype;
+            }
         }
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
 
         buff.append((char) ttype);
 
@@ -173,25 +168,30 @@ public class Tokenizer extends StreamTokenizer {
 
         sval = buff.toString();
 
-        try                                  // try token as a long (TT_LONG)
-        {
-            Long as_long = new Long(sval);
-            lval = as_long.longValue();
-            ttype = TT_LONG;
-            return ttype;
-        } catch (NumberFormatException e) {                                  // exception converting to long
-            try                                // try token as double (TT_NUMBER)
+        char c = sval.charAt(0);
+        if ((c >= '0' && c <= '9') || c == '-') {
+            try                                  // try token as a long (TT_LONG)
             {
-                Double as_double = new Double(sval);
-                nval = as_double.doubleValue();
-                ttype = TT_NUMBER;
+                lval = Long.parseLong(sval);
+                ttype = TT_LONG;
                 return ttype;
-            } catch (NumberFormatException f)   // exception converting to double
-            {                                // default to word (TT_WORD)
-                ttype = TT_WORD;
-                return ttype;
+            } catch (NumberFormatException e) {                                  // exception converting to long
+                try                                // try token as double (TT_NUMBER)
+                {
+                    nval = Double.parseDouble(sval);
+                    ttype = TT_NUMBER;
+                    return ttype;
+                } catch (NumberFormatException f)   // exception converting to double
+                {                                // default to word (TT_WORD)
+                    ttype = TT_WORD;
+                    return ttype;
+                }
             }
+        } else {
+            ttype = TT_WORD;
+            return ttype;
         }
+
     }
 
 
@@ -204,39 +204,36 @@ public class Tokenizer extends StreamTokenizer {
         try {
             int c = nextToken();
             switch (c) {
-                case TT_EOF:
+                case TT_EOF -> {
                     return eof;
-
-                case ',':
+                }
+                case ',' -> {
                     return ",";
-
-                case '|':
+                }
+                case '|' -> {
                     return "|";
-
-                case ')': {
+                }
+                case ')' -> {
                     return Polylist.nil;
                 }
-
-                case '(': {
+                case '(' -> {
                     return getRestSexp();
                 }
-
-                case '[': {
+                case '[' -> {
                     return "[";
                 }
-
-                case ']': {
+                case ']' -> {
                     return "]";
                 }
-
-                case TT_LONG:
-                    return new Long(lval);
-
-                case TT_NUMBER:
-                    return new Double(nval);
-
-                default:
-                    return new String(sval);
+                case TT_LONG -> {
+                    return lval;
+                }
+                case TT_NUMBER -> {
+                    return nval;
+                }
+                default -> {
+                    return sval;
+                }
             }
         } catch (Exception e) {
             exceptionHandler(e);
@@ -245,47 +242,40 @@ public class Tokenizer extends StreamTokenizer {
     }
 
     Polylist getRestSexp() {
-        try {
-            int c = nextToken();
+        int c = nextToken();
 
-            switch (c) {
-                case TT_EOF:
-                    return Polylist.nil;
-
-                case '|':
-                    return Polylist.cons("|", getRestSexp());
-
-                case ',':
-                    return Polylist.cons(",", getRestSexp());
-
-                case ')':
-                    return Polylist.nil;
-
-                case '(': {
-                    return Polylist.cons(getRestSexp(), getRestSexp());
-                }
-
-                case '[': {
-                    return Polylist.cons("[", getRestSexp());
-                }
-
-                case ']': {
-                    return Polylist.cons("]", getRestSexp());
-                }
-
-                case TT_LONG:
-                    return Polylist.cons(new Long(lval), getRestSexp());
-
-                case TT_NUMBER:
-                    return Polylist.cons(new Double(nval), getRestSexp());
-
-                default:
-                    return Polylist.cons(new String(sval), getRestSexp());
+        switch (c) {
+            case TT_LONG -> {
+                return Polylist.cons(lval, getRestSexp());
             }
-        } catch (Exception e) {
-            exceptionHandler(e);
+            case TT_NUMBER -> {
+                return Polylist.cons(nval, getRestSexp());
+            }
+            case '|' -> {
+                return Polylist.cons("|", getRestSexp());
+            }
+            case ',' -> {
+                return Polylist.cons(",", getRestSexp());
+            }
+            case ')' -> {
+                return Polylist.nil;
+            }
+            case '(' -> {
+                return Polylist.cons(getRestSexp(), getRestSexp());
+            }
+            case '[' -> {
+                return Polylist.cons("[", getRestSexp());
+            }
+            case ']' -> {
+                return Polylist.cons("]", getRestSexp());
+            }
+            case TT_EOF -> {
+                return Polylist.nil;
+            }
+            default -> {
+                return Polylist.cons(sval, getRestSexp());
+            }
         }
-        return Polylist.nil;
     }
 
 

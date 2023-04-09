@@ -643,6 +643,21 @@ public class Advisor
     }
 
 
+    public static Polylist parseListFromString(String input) {
+
+        Tokenizer in = new Tokenizer(new StringReader(input));
+
+        Object ob;
+
+        Polylist result = Polylist.nil;
+
+        while ((ob = in.nextSexp()) != Tokenizer.eof) {
+            result = result.cons(ob);
+        }
+
+        return result.reverse();
+    }
+
     /**
      * Read one style file
      @param file
@@ -664,7 +679,7 @@ public class Advisor
                     fileContents += in;
                 }
             }
-            Polylist p = Notate.parseListFromString(fileContents);
+            Polylist p = parseListFromString(fileContents);
             if (p == null || p.isEmpty()) {
                 throw new IOException("empty file");
             }
